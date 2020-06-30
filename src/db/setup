@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+#####################################################################
+#  Copyright (c) 2020, AJXS.
+#  This program is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by the
+#  Free Software Foundation; either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  Authors:
+#     Anthony <ajxs [at] panoptic.online>
+#####################################################################
+
+db_host="localhost"
+db_port=54327
+db_user="webmaster"
+db_pass="pw"
+db_name="webring_dev"
+
+# The database connection string.
+connection_string="postgresql://${db_user}:${db_pass}@${db_host}:${db_port}/${db_name}"
+
+echo "Creating database schema"
+psql --quiet --no-password "${connection_string}" -f "schema.sql" || exit 1
+
+# echo "Inserting test data"
+# psql --quiet --no-password "${connection_string}" -f "test_data.sql" || exit 1

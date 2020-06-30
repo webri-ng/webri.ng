@@ -1,0 +1,41 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"plugin:@typescript-eslint/recommended"
+	],
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"ecmaVersion": 12,
+		"sourceType": "module"
+	},
+	"rules": {
+		"max-len": [
+			"error",
+			{
+				"code": 100,
+				"ignoreComments": true,
+				"ignoreUrls": true,
+				"ignoreStrings": true,
+				"ignoreRegExpLiterals": true
+			}
+		],
+		"no-var": "error",
+		"object-curly-spacing": ["error", "always"],
+		"one-var-declaration-per-line": "error",
+		"quotes": [
+			"error",
+			"single",
+			{
+				"allowTemplateLiterals": true,
+				"avoidEscape": true
+			}
+		],
+		"semi": "error",
+		"keyword-spacing": "error",
+		"@typescript-eslint/no-explicit-any": "error",
+		"@typescript-eslint/no-invalid-void-type": "error",
+		"@typescript-eslint/no-this-alias": "error",
+		"@typescript-eslint/require-await": "error",
+		"@typescript-eslint/type-annotation-spacing": "error"
+	}
+}

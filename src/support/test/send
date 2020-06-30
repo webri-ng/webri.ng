@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+base_url="https://sgupciqitc.execute-api.ap-southeast-2.amazonaws.com/"
+url="${base_url}/user/register"
+
+http POST ${url} < test.json

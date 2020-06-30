@@ -1,0 +1,10 @@
+.vscode
+.idea
+.nyc_output
+.DS_Store
+node_modules
+dist
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -1,0 +1,86 @@
+{
+	"name": "webri.ng",
+	"version": "1.0.0",
+	"description": "Webri.ng site",
+	"repository": {
+		"type": "git",
+		"url": "git+"
+	},
+	"main": "./index.js",
+	"license": "UNLICENSED",
+	"engines": {
+		"node": "14.18.3"
+	},
+	"contributors": [
+		"Anthony Richardson <anthony@ajxs.me> (https://github.com/ajxs)"
+	],
+	"scripts": {
+		"build:dev": "tsc -w",
+		"build": "tsc",
+		"test:lint": "eslint './**/*.ts'",
+		"test:lint:fix": "eslint --fix './**/*.ts'",
+		"test:app": "NODE_ENV=test npm run build && nyc mocha --require ./test-setup.ts './app/**/*.spec.ts' './model/**/*.spec.ts'",
+		"test": "NODE_ENV=test npm run test:app && npm run test:lint",
+		"test:app:single": "NODE_ENV=test nyc mocha --require ./test-setup.ts"
+	},
+	"nyc": {
+		"include": [
+			"**/*.ts"
+		],
+		"exclude": [
+			"**/*.d.ts",
+			"**/*.spec.ts"
+		],
+		"extension": [
+			".ts"
+		],
+		"require": [
+			"ts-node/register"
+		],
+		"reporter": [
+			"text-summary",
+			"html"
+		],
+		"report-dir": "./coverage",
+		"sourceMap": true,
+		"instrument": true
+	},
+	"dependencies": {
+		"ajv": "^8.8.2",
+		"bcrypt": "^5.0.1",
+		"dayjs": "^1.10.7",
+		"nodemailer": "^6.7.2",
+		"pg": "^8.7.1",
+		"pug": "^3.0.2",
+		"typeorm": "^0.2.41",
+		"uuid": "^8.3.2",
+		"winston": "^3.3.3"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.61",
+		"@types/bcrypt": "^5.0.0",
+		"@types/bcryptjs": "^2.4.2",
+		"@types/chai": "^4.3.0",
+		"@types/chai-as-promised": "^7.1.4",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "^17.0.8",
+		"@types/nodemailer": "^6.4.4",
+		"@types/pug": "^2.0.6",
+		"@types/sinon": "^10.0.8",
+		"@types/uuid": "^8.3.4",
+		"@typescript-eslint/eslint-plugin": "^5.9.0",
+		"@typescript-eslint/parser": "^5.9.0",
+		"chai": "^4.3.4",
+		"chai-as-promised": "^7.1.1",
+		"eslint": "^8.6.0",
+		"mocha": "^9.1.3",
+		"nyc": "^15.1.0",
+		"prettier": "^2.5.1",
+		"serverless": "^2.70.0",
+		"serverless-offline": "^8.3.1",
+		"serverless-plugin-typescript": "^2.1.0",
+		"sinon": "^12.0.1",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.5.4"
+	}
+}

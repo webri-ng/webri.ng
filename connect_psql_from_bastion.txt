@@ -1,0 +1,1 @@
+psql postgresql://webmaster:webpassword@wm1kv37046dcugl.cqswkpohcmny.ap-southeast-2.rds.amazonaws.com:5432/webring_dev

@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  database:
+    image: postgres:11
+    environment:
+      - POSTGRES_USER=webmaster
+      - POSTGRES_PASSWORD=pw
+      - POSTGRES_DB=webring_dev
+    ports:
+      - '54327:5432'
+  email:
+    build: github.com/Nilhcem/FakeSMTP
+    ports:
+     - "3725:25"
