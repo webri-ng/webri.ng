@@ -21,6 +21,7 @@ describe('User soft-deletion', function() {
 	let testUser3: User;
 	let testUser4: User;
 	let testWebring: Webring;
+	let testPrivateWebring: Webring;
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
@@ -28,6 +29,9 @@ describe('User soft-deletion', function() {
 		testUser3 = await testUtils.insertTestUser();
 		testUser4 = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser3.userId || '');
+		testPrivateWebring = await testUtils.insertTestWebring(testUser3.userId || '', {
+			private: true
+		});
 	});
 
 
@@ -69,7 +73,11 @@ describe('User soft-deletion', function() {
 		expect(deletedUser.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedUser.dateDeleted).isSame(deletionDate)).to.be.true;
 
-		const deletedWebring = await getRepository(Webring).findOne(testWebring.ringId);
+		let deletedWebring = await getRepository(Webring).findOne(testWebring.ringId);
+		expect(deletedWebring?.dateDeleted).to.not.be.null;
+		expect(dayjs(deletedWebring?.dateDeleted).isSame(deletionDate)).to.be.true;
+
+		deletedWebring = await getRepository(Webring).findOne(testPrivateWebring.ringId);
 		expect(deletedWebring?.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedWebring?.dateDeleted).isSame(deletionDate)).to.be.true;
 	});

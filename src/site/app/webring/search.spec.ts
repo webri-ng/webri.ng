@@ -122,6 +122,16 @@ describe('Search Webrings', function ()
 		});
 
 
+		it('should return private webrings if specified', async function ()
+		{
+			const results = await search(SearchWebringsMethod.Tag, testTag5.name, {
+				returnPrivateWebrings: true
+			});
+			expect(results).to.not.be.undefined;
+			expect(results).to.have.length(1);
+		});
+
+
 		it('should correctly return webrings tagged with a certain tag', async function ()
 		{
 			let results = await search(SearchWebringsMethod.Tag, testTag1.name);
@@ -190,6 +200,16 @@ describe('Search Webrings', function ()
 		});
 
 
+		it('should return private webrings if specified', async function ()
+		{
+			const results = await search(SearchWebringsMethod.Creator, testUser3.userId || '', {
+				returnPrivateWebrings: true
+			});
+			expect(results).to.not.be.undefined;
+			expect(results).to.have.length(1);
+		});
+
+
 		it('should correctly return webrings created by a specified user', async function ()
 		{
 			let results = await search(SearchWebringsMethod.Creator, testUser?.userId || '');
@@ -237,6 +257,16 @@ describe('Search Webrings', function ()
 			const results = await search(SearchWebringsMethod.Name, testPrivateWebring.name);
 			expect(results).to.not.be.undefined;
 			expect(results).to.have.length(0);
+		});
+
+
+		it('should return private webrings if specified', async function ()
+		{
+			const results = await search(SearchWebringsMethod.Name, testPrivateWebring.name, {
+				returnPrivateWebrings: true
+			});
+			expect(results).to.not.be.undefined;
+			expect(results).to.have.length(1);
 		});
 
 

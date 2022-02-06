@@ -52,6 +52,7 @@ export async function deleteUser(userId: UUID,
 	// Delete any webrings created by this user.
 	const userWebrings: Webring[] = await webringService.search(SearchWebringsMethod.Creator,
 		userId, {
+			returnPrivateWebrings: true,
 			transactionalEntityManager: options.transactionalEntityManager
 		});
 	for (const webring of userWebrings) {

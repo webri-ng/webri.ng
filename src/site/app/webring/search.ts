@@ -21,6 +21,8 @@ export interface SearchWebringsOptions {
 	* If this option is specified, then the operation will be run with this manager.
 	*/
 	transactionalEntityManager?: EntityManager;
+	/** Whether to return private webrings. */
+	returnPrivateWebrings?: boolean;
 }
 
 /**
@@ -34,7 +36,7 @@ export interface SearchWebringsOptions {
  */
 export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	identifier: Readonly<UUID | string>,
-	options: SearchWebringsOptions = {}): Promise<Webring[]>
+	options: Readonly<SearchWebringsOptions> = {}): Promise<Webring[]>
 {
 	if (searchMethod === SearchWebringsMethod.Tag) {
 		if (!identifier) {
@@ -49,7 +51,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		}
 
 		return taggedWebrings.filter((webring) => {
-			if (webring.private) {
+			if(options.returnPrivateWebrings !== true && webring.private) {
 				return false;
 			}
 
@@ -65,13 +67,12 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	/** The search conditions used to get the user entity. */
 	const searchConditions: FindConditions<Webring> = {
 		dateDeleted: IsNull(),
-		private: false
 	};
 
 	// Set the search criteria based on which search field is selected.
 	if (searchMethod === SearchWebringsMethod.Name) {
 		if (!identifier) {
-			throw new InvalidIdentifierError('The provided email is invalid',
+			throw new InvalidIdentifierError('The provided webring name is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
 		}
 
@@ -85,10 +86,20 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		searchConditions.createdBy = identifier;
 	}
 
+	let webringResuls: Webring[];
+
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
-		return options.transactionalEntityManager.find(Webring, searchConditions);
+		webringResuls = await options.transactionalEntityManager.find(Webring, searchConditions);
 	} else {
-		return getRepository(Webring).find(searchConditions);
+		webringResuls = await getRepository(Webring).find(searchConditions);
 	}
+
+	return webringResuls.filter((webring) => {
+		if(options.returnPrivateWebrings !== true && webring.private) {
+			return false;
+		}
+
+		return true;
+	});
 }
