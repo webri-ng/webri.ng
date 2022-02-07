@@ -9,3 +9,5 @@ export class InvalidRingUrlError extends ApiReturnableError { }
 export class RingUrlNotUniqueError extends ApiReturnableError { }
 
 export class TooManyTagsError extends ApiReturnableError { }
+
+export class InvalidSiteIndexError extends ApiReturnableError { }

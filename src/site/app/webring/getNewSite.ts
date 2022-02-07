@@ -1,7 +1,7 @@
 import { getWebring, GetWebringSearchField } from '.';
-import { webringNotFoundError } from '../../api/api-error-response';
+import { invalidSiteIndexError, webringNotFoundError } from '../../api/api-error-response';
 import { Site, UUID } from '../../model';
-import { WebringNotFoundError } from '../error';
+import { InvalidSiteIndexError, WebringNotFoundError } from '../error';
 import { getWebringSites } from './getWebringSites';
 
 /** Which method to use when getting the 'new' site. */
@@ -17,13 +17,20 @@ export enum GetNewSiteMethod {
  * the webring.
  * @param {UUID} webringId - The id of the parent webring to get the next site of.
  * @param {GetNewSiteMethod} method - The 'method' to use for selecting the next site.
- * @param {number} currentIndex - The user's current index within the webring.
+ * @param {number} [currentIndex] - The user's current index within the webring. This is
+ * not required for getting a random site.
  * @returns The 'new' site.
  */
 export async function getNewSite(webringId: Readonly<UUID>,
 	method: Readonly<GetNewSiteMethod>,
-	currentIndex: Readonly<number>): Promise<Site>
+	currentIndex?: Readonly<number>): Promise<Site>
 {
+	// Test that if the index is provided, that it is a valid number.
+	if (currentIndex !== undefined && ((currentIndex < 0) || isNaN(currentIndex))) {
+		throw new InvalidSiteIndexError(invalidSiteIndexError.message,
+			invalidSiteIndexError.code, invalidSiteIndexError.httpStatus);
+	}
+
 	// Ensure that the specified webring exists.
 	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
 	if (!webring) {
@@ -39,7 +46,7 @@ export async function getNewSite(webringId: Readonly<UUID>,
 	}
 
 	// If an invalid 'current index' has been provided, return the first site.
-	if (currentIndex >= webringSites.length || currentIndex < 0) {
+	if (currentIndex === undefined || currentIndex >= webringSites.length) {
 		return webringSites[0];
 	}
 

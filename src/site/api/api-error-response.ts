@@ -307,3 +307,10 @@ export const siteNotFoundError: ApiErrorResponseDetails = {
 	code: 'err-site-not-found',
 	message: 'The specified site cannot be found'
 };
+
+/** Error when an invalid index into a webring is passed. */
+export const invalidSiteIndexError: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-invalid-site-index',
+	message: 'The specified site index is invalid'
+};
