@@ -51,7 +51,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		}
 
 		return taggedWebrings.filter((webring) => {
-			if(options.returnPrivateWebrings !== true && webring.private) {
+			if (options.returnPrivateWebrings !== true && webring.private) {
 				return false;
 			}
 
@@ -96,7 +96,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	}
 
 	return webringResuls.filter((webring) => {
-		if(options.returnPrivateWebrings !== true && webring.private) {
+		if (options.returnPrivateWebrings !== true && webring.private) {
 			return false;
 		}
 
