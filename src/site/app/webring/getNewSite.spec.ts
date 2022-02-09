@@ -6,7 +6,7 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 import { testUtils, userService } from '..';
-import { InvalidIdentifierError, InvalidSiteIndexError, WebringNotFoundError } from '../error';
+import { InvalidIdentifierError, WebringNotFoundError } from '../error';
 import { getNewSite, GetNewSiteMethod } from '.';
 
 
@@ -93,17 +93,17 @@ describe('Get new site', function ()
 	});
 
 
-	it('should raise an exception when passed a negative index', async function ()
+	it('should return the first site when passed a negative index', async function ()
 	{
-		return expect(getNewSite(testWebring?.ringId || '', GetNewSiteMethod.Next, -2))
-			.to.be.rejectedWith(InvalidSiteIndexError);
+		const nextSite = await getNewSite(testWebring?.ringId || '', GetNewSiteMethod.Next);
+		expect(nextSite.siteId).to.equal(testSite.siteId);
 	});
 
 
-	it('should raise an exception when passed an invalid index', async function ()
+	it('should return the first site when passed an invalid index', async function ()
 	{
-		return expect(getNewSite(testWebring?.ringId || '', GetNewSiteMethod.Next, parseInt('f')))
-			.to.be.rejectedWith(InvalidSiteIndexError);
+		const nextSite = await getNewSite(testWebring?.ringId || '', GetNewSiteMethod.Next);
+		expect(nextSite.siteId).to.equal(testSite.siteId);
 	});
 
 

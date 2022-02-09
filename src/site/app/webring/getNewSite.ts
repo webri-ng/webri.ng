@@ -1,7 +1,7 @@
 import { getWebring, GetWebringSearchField } from '.';
-import { invalidSiteIndexError, webringNotFoundError } from '../../api/api-error-response';
+import { webringNotFoundError } from '../../api/api-error-response';
 import { Site, UUID } from '../../model';
-import { InvalidSiteIndexError, WebringNotFoundError } from '../error';
+import { WebringNotFoundError } from '../error';
 import { getWebringSites } from './getWebringSites';
 
 /** Which method to use when getting the 'new' site. */
@@ -25,12 +25,6 @@ export async function getNewSite(webringId: Readonly<UUID>,
 	method: Readonly<GetNewSiteMethod>,
 	currentIndex?: Readonly<number>): Promise<Site>
 {
-	// Test that if the index is provided, that it is a valid number.
-	if (currentIndex !== undefined && ((currentIndex < 0) || isNaN(currentIndex))) {
-		throw new InvalidSiteIndexError(invalidSiteIndexError.message,
-			invalidSiteIndexError.code, invalidSiteIndexError.httpStatus);
-	}
-
 	// Ensure that the specified webring exists.
 	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
 	if (!webring) {
@@ -40,6 +34,11 @@ export async function getNewSite(webringId: Readonly<UUID>,
 
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webringId);
+
+	// Test that if the index is provided, that it is a valid number.
+	if (currentIndex !== undefined && ((currentIndex < 0) || isNaN(currentIndex))) {
+		return webringSites[0];
+	}
 
 	if (method === GetNewSiteMethod.Random) {
 		return webringSites[Math.floor(Math.random() * webringSites.length)];
