@@ -4,4 +4,4 @@
  */
 
 export * from './createRandomString';
-export * from './loadEmailTemplate';
+export * from './loadTemplate';

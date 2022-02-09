@@ -1,6 +1,6 @@
 import * as pug from 'pug';
 import { User } from '../../../../model';
-import { loadEmailTemplate } from '../../../util';
+import { loadTemplate } from '../../../util';
 
 /** The compiled registration email template. */
 export let compiledRegistrationEmailTemplate: pug.compileTemplate | undefined;
@@ -13,7 +13,7 @@ export let compiledRegistrationEmailTemplate: pug.compileTemplate | undefined;
 export async function createRegistrationEmailContent(user: Readonly<User>): Promise<string>
 {
 	if (!compiledRegistrationEmailTemplate) {
-		compiledRegistrationEmailTemplate = await loadEmailTemplate('template/registration.pug');
+		compiledRegistrationEmailTemplate = await loadTemplate('template/registration.pug');
 	}
 
 	return compiledRegistrationEmailTemplate({
