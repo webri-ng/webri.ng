@@ -61,7 +61,7 @@ describe('Get user', function ()
 		it('should throw an exception when passed an invalid user id', async function ()
 		{
 			return expect(getUser(GetUserSearchField.UserId,
-				testUtils.invalidUiid)).to.be.rejectedWith(InvalidIdentifierError);
+				testUtils.invalidUuid)).to.be.rejectedWith(InvalidIdentifierError);
 		});
 
 

@@ -48,7 +48,7 @@ describe('Update user', function ()
 		const email = createRandomEmailAddress();
 		const username = createRandomUsername();
 
-		return expect(updateUser(testUtils.invalidUiid, username, email))
+		return expect(updateUser(testUtils.invalidUuid, username, email))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 

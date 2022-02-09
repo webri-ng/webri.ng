@@ -44,7 +44,7 @@ describe('Get site', function ()
 
 	it('should throw an exception when passed an invalid site id', async function ()
 	{
-		return expect(getSite(testUtils.invalidUiid)).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(getSite(testUtils.invalidUuid)).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
 

@@ -44,7 +44,7 @@ describe('Update user password', function ()
 	{
 		const newPassword = testUtils.createRandomPassword();
 
-		return expect(updatePassword(testUtils.invalidUiid, newPassword))
+		return expect(updatePassword(testUtils.invalidUuid, newPassword))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 

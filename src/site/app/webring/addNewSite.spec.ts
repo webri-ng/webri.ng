@@ -48,7 +48,7 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(addNewSite(testUtils.invalidUiid,
+		return expect(addNewSite(testUtils.invalidUuid,
 			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidIdentifierError);
 	});
 

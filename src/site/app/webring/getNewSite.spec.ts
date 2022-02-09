@@ -65,7 +65,7 @@ describe('Get new site', function ()
 
 	it('should throw an exception when passed an invalid webring id', async function ()
 	{
-		return expect(getNewSite(testUtils.invalidUiid, GetNewSiteMethod.Next, 0))
+		return expect(getNewSite(testUtils.invalidUuid, GetNewSiteMethod.Next, 0))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 

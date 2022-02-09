@@ -50,7 +50,7 @@ describe('Remove webring site', function() {
 
 
 	it('should throw an exception when passed an invalid ringId', async function() {
-		return expect(removeSite(testUtils.invalidUiid, testSite.siteId || ''))
+		return expect(removeSite(testUtils.invalidUuid, testSite.siteId || ''))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 
@@ -74,7 +74,7 @@ describe('Remove webring site', function() {
 
 
 	it('should throw an exception when passed an invalid siteId', async function() {
-		return expect(removeSite(testWebring.ringId || '', testUtils.invalidUiid))
+		return expect(removeSite(testWebring.ringId || '', testUtils.invalidUuid))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 

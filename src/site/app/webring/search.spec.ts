@@ -162,7 +162,7 @@ describe('Search Webrings', function ()
 		it('should correctly raise an exception if an invalid user id is provided',
 			async function ()
 		{
-			return expect(search(SearchWebringsMethod.Creator, testUtils.invalidUiid))
+			return expect(search(SearchWebringsMethod.Creator, testUtils.invalidUuid))
 				.to.be.rejectedWith(InvalidIdentifierError);
 		});
 

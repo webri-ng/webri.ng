@@ -50,7 +50,7 @@ describe('Add site to webring', function ()
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testUtils.invalidUiid, name, url))
+		return expect(updateSite(testUtils.invalidUuid, name, url))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 

@@ -17,7 +17,7 @@ export const dummyUuid = 'a90d2103-bc3b-40be-ba29-ffffffffffff';
 /**
  * An invalid UUID for testing purposes.
  */
-export const invalidUiid = 'ffffffffffff';
+export const invalidUuid = 'ffffffffffff';
 
 
 /**

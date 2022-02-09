@@ -60,7 +60,7 @@ describe('Get tag', function ()
 		it('should throw an exception when passed an invalid tag id', async function ()
 		{
 			return expect(getTag(GetTagSearchField.TagId,
-				testUtils.invalidUiid)).to.be.rejectedWith(InvalidIdentifierError);
+				testUtils.invalidUuid)).to.be.rejectedWith(InvalidIdentifierError);
 		});
 
 

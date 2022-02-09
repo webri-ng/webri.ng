@@ -46,7 +46,7 @@ describe('Webring soft-deletion', function() {
 
 
 	it('should throw an exception when passed an invalid ringId', async function() {
-		return expect(deleteWebring(testUtils.invalidUiid))
+		return expect(deleteWebring(testUtils.invalidUuid))
 			.to.be.rejectedWith(InvalidIdentifierError);
 	});
 

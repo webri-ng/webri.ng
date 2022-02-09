@@ -62,7 +62,7 @@ describe('Get Webring', function ()
 
 		it('should throw an exception when passed an invalid webring id', async function ()
 		{
-			return expect(getWebring(GetWebringSearchField.RingId, testUtils.invalidUiid)).to.be
+			return expect(getWebring(GetWebringSearchField.RingId, testUtils.invalidUuid)).to.be
 				.rejectedWith(InvalidIdentifierError);
 		});
 

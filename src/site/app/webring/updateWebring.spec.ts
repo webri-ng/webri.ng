@@ -52,7 +52,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testUtils.invalidUiid, testUser?.userId || '',
+		return expect(updateWebring(testUtils.invalidUuid, testUser?.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
