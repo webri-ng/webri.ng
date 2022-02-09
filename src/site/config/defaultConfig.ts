@@ -35,6 +35,9 @@ import { Config, LoggingLevel } from './config';
 			}
 		}
 	},
+	global: {
+		baseDomain: 'http://localhost:3000'
+	},
 	logging: {
 		loggingLevel: LoggingLevel.Debug,
 		logRequestValidation: true,

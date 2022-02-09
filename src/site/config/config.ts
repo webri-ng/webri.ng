@@ -117,6 +117,16 @@ export interface WebringConfig {
 }
 
 
+export interface GlobalConfig {
+	/**
+	 * The base domain of the site.
+	 * In the case that a bad URL parameter is passed, and the resulting URI becomes invalid,
+	 * and unservable, the server will redirect back to the base site.
+	 */
+	baseDomain: string;
+}
+
+
 export interface Config
 {
 	database: DatabaseConfig;
@@ -127,4 +137,5 @@ export interface Config
 	session: SessionConfig;
 	site: SiteConfig;
 	webring: WebringConfig;
+	global: GlobalConfig;
 }
