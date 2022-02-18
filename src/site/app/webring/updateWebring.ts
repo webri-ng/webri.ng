@@ -4,7 +4,7 @@ import { tagService } from '..';
 import { invalidRingUrlNotUniqueError, tooManyTagsError,
 	webringNotFoundError } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
-import { Tag, User, UUID, Webring } from '../../model';
+import { Tag, UUID, Webring } from '../../model';
 import { RingUrlNotUniqueError, TooManyTagsError, WebringNotFoundError } from '../error';
 import { GetTagSearchField } from '../tag';
 

@@ -99,7 +99,7 @@ describe('User login', function()
 	});
 
 
-	describe('Successful login scenario', async function() {
+	describe('Successful login scenario', function() {
 		let authenticatedUser: User;
 
 		it('should correctly authenticate a correct login', async function()
@@ -112,7 +112,7 @@ describe('User login', function()
 		});
 
 
-		it('should correctly set the last login date for a user', async function()
+		it('should correctly set the last login date for a user', function()
 		{
 			expect(authenticatedUser?.dateLastLogin).to.not.be.null;
 			expect(dayjs(authenticatedUser?.dateLastLogin).isSame(dayjs(), 'minute')).to.be.true;
