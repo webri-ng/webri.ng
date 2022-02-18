@@ -6,3 +6,4 @@
  */
 
 export * as database from './database';
+export * as server from './server';

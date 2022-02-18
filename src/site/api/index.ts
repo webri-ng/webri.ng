@@ -1,7 +1,17 @@
-import { Handler, APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
-
 /**
- * AWS API Gateway function handler type.
- * This is used to correctly type AWS Lambda functions.
+ * API.
+ * This is the root module where all individual API endpoints are exposed.
+ * @module api
  */
-export type ApiGatewayHandler = Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2>;
+
+import { Router } from 'express';
+import { userApi } from './user';
+import { webringApi } from './webring';
+
+export * as requestErrorHander from './errorHandler';
+
+/** API Router for handling admin specific requests. */
+export const api = Router();
+
+api.use('/webring', webringApi);
+api.use('/user', userApi);

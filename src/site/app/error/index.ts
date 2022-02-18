@@ -54,6 +54,7 @@ export class InvalidSessionError extends Error { }
 export * from './authentication';
 export * from './authorisation';
 export * from './email';
+export * from './session';
 export * from './site';
 export * from './tag';
 export * from './user';

@@ -35,7 +35,7 @@ export const testEnvironmentConfig: Config = Object.assign(defaultConfig, {
 		}
 	},
 	global: {
-		baseDomain: 'http://localhost:3000'
+		baseDomainUrl: 'http://localhost:3000'
 	},
 	site: {
 		nameRequirements: {

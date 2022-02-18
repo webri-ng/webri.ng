@@ -31,6 +31,7 @@ export const databaseConfig = applicationConfig.database;
 export const emailConfig = applicationConfig.email;
 export const globalConfig = applicationConfig.global;
 export const loggingConfig = applicationConfig.logging;
+export const serverConfig = applicationConfig.server;
 export const siteConfig = applicationConfig.site;
 export const tagConfig = applicationConfig.tag;
 export const userConfig = applicationConfig.user;

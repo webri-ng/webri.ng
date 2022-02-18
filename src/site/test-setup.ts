@@ -4,7 +4,7 @@
  * Refer to: https://mochajs.org/#root-hook-plugins
  */
 
-import { database } from './infra';
+import { initApplication, shutdownApplication } from '.';
 
 
 export const mochaHooks = {
@@ -15,7 +15,7 @@ export const mochaHooks = {
 	 */
 	async beforeAll()
 	{
-		await database.initialiseConnection();
+		await initApplication();
 	},
 
 
@@ -26,6 +26,6 @@ export const mochaHooks = {
 	 */
 	async afterAll()
 	{
-		await database.closeConnection();
+		await shutdownApplication();
 	}
 };

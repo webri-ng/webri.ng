@@ -46,6 +46,16 @@ export interface EmailConfig {
 }
 
 
+export interface GlobalConfig {
+	/**
+	 * The URL of the site's domain.
+	 * In the case that a bad URL parameter is passed, and the resulting URI becomes invalid,
+	 * and unservable, the server will redirect back to the base site.
+	 */
+	baseDomainUrl: string;
+}
+
+
 /**
  * The logging level passed to Winston.
  * @enum {string}
@@ -117,13 +127,16 @@ export interface WebringConfig {
 }
 
 
-export interface GlobalConfig {
+export interface ServerConfig {
+	port: number;
 	/**
-	 * The base domain of the site.
-	 * In the case that a bad URL parameter is passed, and the resulting URI becomes invalid,
-	 * and unservable, the server will redirect back to the base site.
+	 * The CORS white-list.
+	 * Refer to documentation for the CORS module for the types of values that are supported
+	 * here. If no value is specified, this will default to a boolean value of `true`, which
+	 * will whitelist all requests.
 	 */
-	baseDomain: string;
+	// tslint:disable-next-line
+	corsWhitelist?: RegExp|boolean|RegExp[]|string[];
 }
 
 
@@ -131,11 +144,12 @@ export interface Config
 {
 	database: DatabaseConfig;
 	email: EmailConfig;
-	tag: TagConfig;
-	user: UserConfig;
+	global: GlobalConfig;
 	logging: LoggingConfig;
+	server: ServerConfig;
 	session: SessionConfig;
 	site: SiteConfig;
+	tag: TagConfig;
+	user: UserConfig;
 	webring: WebringConfig;
-	global: GlobalConfig;
 }

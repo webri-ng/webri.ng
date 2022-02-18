@@ -36,7 +36,7 @@ import { Config, LoggingLevel } from './config';
 		}
 	},
 	global: {
-		baseDomain: 'http://localhost:3000'
+		baseDomainUrl: 'http://localhost:3000'
 	},
 	logging: {
 		loggingLevel: LoggingLevel.Debug,
@@ -62,9 +62,12 @@ import { Config, LoggingLevel } from './config';
 		},
 		maxUnsuccessfulLoginAttempts: 3,
 	},
+	server: {
+		port: parseInt(process.env.PORT || '') || 3000,
+	},
 	session: {
 		validityPeriod: [1, 'week'],
-		signingKey: 'fff'
+		signingKey: process.env.SESSION_SIGNING_KEY || 'dev-signing-key'
 	},
 	site: {
 		nameRequirements: {
