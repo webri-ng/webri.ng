@@ -1,3 +1,4 @@
+import { User } from '../../model';
 import { createRandomString } from '../util';
 
 /**
@@ -6,5 +7,5 @@ import { createRandomString } from '../util';
  */
 export function createRandomEmailAddress(): string
 {
-	return `${createRandomString()}@example.org`;
+	return `${User.normaliseEmailAddress(createRandomString())}@example.org`;
 }
