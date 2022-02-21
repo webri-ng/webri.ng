@@ -59,6 +59,8 @@ export default function requestErrorHander(err: Error,
 	 */
 	const errorReference: string = createErrorReference();
 
+	console.error(err);
+
 	logger.error(`Unhandled error '${errorReference}'`, err);
 
 	return res.status(unhandledExceptionError.httpStatus).json({
