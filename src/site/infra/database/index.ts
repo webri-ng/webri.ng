@@ -20,31 +20,23 @@ let connection: Connection;
  */
 export async function initialiseConnection(): Promise<Connection>
 {
-	try {
-		connection = await createConnection({
-			type: 'postgres',
-			host: databaseConfig.connection.host,
-			port: databaseConfig.connection.port,
-			username: databaseConfig.connection.user,
-			password: databaseConfig.connection.password,
-			database: databaseConfig.databaseName,
-			logging: ['error'],
-			schema: databaseConfig.schema,
-			entities: [
-				Session, Site, Tag, User, Webring
-			]
-		});
-	} catch (err) {
-		logger.error('Unable to establish database connection');
-		logger.warn('If this error is occurring on a first-run, have you remembered to ' +
-			'initialise the seed data and application user?');
-
-		throw new Error(`Error initialising database connection: ${(err as Error).message}`);
-	}
-
-	logger.info(`\x1b[33mConnected to postgresql://${databaseConfig.connection.user}@` +
+	logger.info(`\x1b[33mConnecting to postgresql://${databaseConfig.connection.user}@` +
 		`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
 		`${databaseConfig.databaseName}\x1b[0m`);
+
+	connection = await createConnection({
+		type: 'postgres',
+		host: databaseConfig.connection.host,
+		port: databaseConfig.connection.port,
+		username: databaseConfig.connection.user,
+		password: databaseConfig.connection.password,
+		database: databaseConfig.databaseName,
+		logging: ['error'],
+		schema: databaseConfig.schema,
+		entities: [
+			Session, Site, Tag, User, Webring
+		]
+	});
 
 	return connection;
 }

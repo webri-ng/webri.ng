@@ -5,6 +5,7 @@
 
 import { Server } from 'net';
 import * as Express from 'express';
+import * as cookieParser from 'cookie-parser';
 import { database, server } from './infra';
 import { logger } from './app';
 import { api } from './api';
@@ -12,6 +13,8 @@ import requestErrorHander from './api/errorHandler';
 
 server.app.set('view engine', 'pug');
 server.app.set('views', './api/views');
+server.app.use(cookieParser());
+
 server.app.use(api);
 // This is the main request error handling middleware.
 // All API handleable exceptions are caught by this middleware, and the response sent
@@ -41,7 +44,15 @@ export async function initApplication(): Promise<Server>
 {
 	try {
 		await database.initialiseConnection();
+	} catch (err) {
+		logger.error('Unable to establish database connection', err);
+		logger.warn('If this error is occurring on a first-run, have you remembered to ' +
+			'initialise the seed data and application user?');
 
+		process.exit(1);
+	}
+
+	try {
 		return server.initialise();
 	} catch (err) {
 		logger.error('Error initialising server', err);
