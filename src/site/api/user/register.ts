@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { sessionService, userService } from '../../app';
 import { RequestSchema, User } from '../../model';
-import { createSessionCookieOptions } from '../createSessionCookieOptions';
+import { createSessionCookieResponse } from '../createSessionCookieResponse';
 
 /** Register user request schema. */
 export const registrationRequestSchema: RequestSchema = {
@@ -25,9 +25,9 @@ export const registrationRequestSchema: RequestSchema = {
 
 /**
  * User registration API controller.
- * @param {Request} req - Express request body.
- * @param {Response} res - Express Response.
- * @param {NextFunction} next - Express next middleware handler.
+ * @param {Request} req Express request body.
+ * @param {Response} res Express Response.
+ * @param {NextFunction} next Express next middleware handler.
  * @returns A response object to return to the caller.
  */
  export async function registerController(req: Request,
@@ -39,10 +39,10 @@ export const registrationRequestSchema: RequestSchema = {
 
 		/** The newly created user entity. */
 		const user: User | null = await userService.register(username, email, password);
-
+		// Create an authentication session for the newly created user.
 		const session = await sessionService.createSession(user);
 
-		return res.cookie('session', session.sessionId, createSessionCookieOptions(session)).json();
+		return createSessionCookieResponse(res, session);
 	} catch (err) {
 		return next(err);
 	}

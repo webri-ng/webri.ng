@@ -210,7 +210,7 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
-
+				expect(res).to.have.cookie('session');
 				done();
 			});
 	});
