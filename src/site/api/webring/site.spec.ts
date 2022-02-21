@@ -70,8 +70,6 @@ describe('Get new site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(302);
 
-				console.log(res.header);
-
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
 			});
@@ -88,8 +86,6 @@ describe('Get new site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(302);
-
-				console.log(res.header);
 
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
@@ -108,8 +104,6 @@ describe('Get new site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(302);
 
-				console.log(res.header);
-
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
 			});
@@ -125,8 +119,6 @@ describe('Get new site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(302);
-				console.log(res.header);
-
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
 			});

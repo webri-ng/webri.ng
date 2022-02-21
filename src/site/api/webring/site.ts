@@ -5,7 +5,7 @@ import { GetNewSiteMethod } from '../../app/webring';
 import { globalConfig } from '../../config';
 
 /**
- * Get random site event handler.
+ * Get random site controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
@@ -33,7 +33,7 @@ export async function getRandomSiteController(req: Request,
 
 
 /**
- * Get previous site event handler.
+ * Get previous site controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
@@ -67,7 +67,7 @@ export async function getPreviousSiteController(req: Request,
 
 
 /**
- * Get next site event handler.
+ * Get next site controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
