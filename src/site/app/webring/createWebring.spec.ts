@@ -111,7 +111,7 @@ describe('Create new webring', function ()
 	{
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
-		const tags = Array(webringConfig.maxTagCount + 1).map(() => createRandomString());
+		const tags = Array(webringConfig.maxTagCount + 1).fill('').map(() => createRandomString());
 
 		return expect(createWebring(name, url, 'description', false,
 			testUser?.userId || '', tags)).to.be.rejectedWith(TooManyTagsError);
