@@ -35,6 +35,8 @@ let emailTransport: nodemailer.Transporter<any>;
 function createTransport(): void
 {
 	logger.debug('Creating email transport');
+
+	emailTransport = nodemailer.createTransport(emailConfig.transport);
 }
 
 
@@ -50,25 +52,17 @@ function createTransport(): void
 export async function sendEmail(to: Readonly<string>,
 	subject: Readonly<string>,
 	htmlContent: Readonly<string>,
-	options: IEmailOptions = {}): Promise<void>
+	options: Readonly<IEmailOptions> = {}): Promise<void>
 {
-	logger.debug({
-		to,
-		subject,
-		htmlContent,
-		options
-	});
-
-	/*
 	if (!emailTransport) {
-		logger.debug('Email transport does not exist');
 		createTransport();
 	}
 
 	// Verify the SMTP connection is established.
 	emailTransport.verify((err) => {
-		if(err) {
-			throw new Error(`Error initialising email transport: ${err.message}`);
+		if (err) {
+			logger.error('Error initialising email transport', err);
+			throw err;
 		}
 	});
 
@@ -80,7 +74,4 @@ export async function sendEmail(to: Readonly<string>,
 		html: htmlContent,
 		attachments: options.attachments || []
 	});
-
-	return new EmailResult(to, subject, htmlContent, true);
-	*/
 }

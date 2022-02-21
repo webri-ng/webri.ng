@@ -26,23 +26,20 @@ export interface DatabaseConfig {
 }
 
 
-export interface EmailTransportConfig {
-	name: string;
-	host: string;
-	port: number;
-	secure: boolean;
-	authMethod: string;
-	auth: {
-		user: string;
-		pass: string;
-	};
-}
-
-
 export interface EmailConfig {
 	from: string;
 	bcc: string | null;
-	transport: EmailTransportConfig;
+	transport: {
+		name: string;
+		host: string;
+		port: number;
+		secure: boolean;
+		authMethod: string;
+		auth?: {
+			user: string;
+			pass: string;
+		};
+	}
 }
 
 
