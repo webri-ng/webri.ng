@@ -5,7 +5,7 @@ import { Config, LoggingLevel } from './config';
  * The specific configurations inside this object will be overriden by environment
  * specific configuration options.
  */
- export const defaultConfig: Config = {
+export const defaultConfig: Config = {
 	database: {
 		schema: process.env.DB_SCHEMA || 'webring',
 		databaseName: process.env.DB_NAME || 'webring_dev',
@@ -67,7 +67,6 @@ import { Config, LoggingLevel } from './config';
 	},
 	session: {
 		validityPeriod: [1, 'week'],
-		signingKey: process.env.SESSION_SIGNING_KEY || 'dev-signing-key'
 	},
 	site: {
 		nameRequirements: {

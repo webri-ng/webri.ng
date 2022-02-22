@@ -4,7 +4,8 @@ import { defaultConfig } from '../defaultConfig';
 /**
  * Test environment application configuration.
  */
-export const testEnvironmentConfig: Config = Object.assign(defaultConfig, {
+export const testEnvironmentConfig: Config = {
+	...defaultConfig,
 	email: {
 		from: 'noreply@webri.ng',
 		bcc: null,
@@ -16,7 +17,10 @@ export const testEnvironmentConfig: Config = Object.assign(defaultConfig, {
 		}
 	},
 	global: {
-		baseDomainUrl: 'http://localhost:3000'
+		baseDomainUrl: 'http://localhost:3456'
+	},
+	server: {
+		port: 3456,
 	},
 	site: {
 		nameRequirements: {
@@ -34,8 +38,9 @@ export const testEnvironmentConfig: Config = Object.assign(defaultConfig, {
 			maxLength: 128,
 			tempPasswordExpiryPeriod: [1, 'week'],
 			expiryPeriod: [3, 'months'],
-			saltRounds: 10
+			saltRounds: 10,
+			resetTokenValidity: [1, 'hour']
 		},
 		maxUnsuccessfulLoginAttempts: 3,
 	},
-});
+};

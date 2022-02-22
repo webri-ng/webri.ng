@@ -34,7 +34,7 @@ export interface EmailConfig {
 		host: string;
 		port: number;
 		secure: boolean;
-		authMethod: string;
+		authMethod?: string;
 		auth?: {
 			user: string;
 			pass: string;
@@ -98,7 +98,6 @@ export interface UserConfig {
 
 export interface SessionConfig {
 	validityPeriod: Duration;
-	signingKey: string;
 }
 
 

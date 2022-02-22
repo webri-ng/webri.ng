@@ -10,6 +10,7 @@ import { database, server } from './infra';
 import { logger } from './app';
 import { api } from './api';
 import requestErrorHander from './api/errorHandler';
+import { applicationEnvironment } from './config';
 
 server.app.set('view engine', 'pug');
 server.app.set('views', './api/views');
@@ -42,6 +43,8 @@ export const app: Express.Application = server.app;
  */
 export async function initApplication(): Promise<Server>
 {
+	logger.info(`\x1b[33mApplication environment: '${applicationEnvironment}'\x1b[0m`);
+
 	try {
 		await database.initialiseConnection();
 	} catch (err) {

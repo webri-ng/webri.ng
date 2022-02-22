@@ -2,8 +2,11 @@ import { Config } from './config';
 import { defaultConfig } from './defaultConfig';
 import { testEnvironmentConfig } from './environment/test';
 
-/** The environment setting, as fetched from the `NODE_ENV` environment variable. */
-const ENVIRONMENT: string = process.env.NODE_ENV || 'development';
+/**
+ * The application's current environment.
+ * This is computed from the `NODE_ENV` environment variable.
+ */
+export const applicationEnvironment: string = process.env.NODE_ENV || 'development';
 
 /** The environment-specific configuration. */
 const environmentConfigs: { [key: string]: Config; } = {
@@ -22,8 +25,8 @@ let applicationConfig: Config = defaultConfig;
 
 
 // If a config matching this environment is found, override the default config.
-if (environmentConfigs[ENVIRONMENT]) {
-	applicationConfig = environmentConfigs[ENVIRONMENT];
+if (environmentConfigs[applicationEnvironment]) {
+	applicationConfig = environmentConfigs[applicationEnvironment];
 }
 
 export * from './config';
