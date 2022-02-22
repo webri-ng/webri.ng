@@ -21,9 +21,8 @@
 		"start": "npm install --production && node start.js",
 		"test:lint": "eslint './**/*.ts'",
 		"test:lint:fix": "eslint --fix './**/*.ts'",
-		"test:api:offline": "NODE_ENV=test sls offline",
-		"test": "NODE_ENV=test npm run build && nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
-		"test:single": "NODE_ENV=test nyc mocha --require ./test-setup.ts"
+		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
+		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts"
 	},
 	"nyc": {
 		"include": [
