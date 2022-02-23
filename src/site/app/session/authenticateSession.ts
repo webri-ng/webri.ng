@@ -1,7 +1,9 @@
+import * as uuid from 'uuid';
 import * as dayjs from 'dayjs';
-import { getRepository } from 'typeorm';
+import { getRepository, IsNull } from 'typeorm';
 import { Session, UUID } from '../../model';
-import { SessionExpiredError, SessionNotFoundError } from '../error';
+import { InvalidSessionError, SessionExpiredError, SessionNotFoundError } from '../error';
+
 
 /**
  * Authenticates an individual session token.
@@ -12,17 +14,34 @@ import { SessionExpiredError, SessionNotFoundError } from '../error';
  * @throws {SessionNotFoundError} If the provided session token does not correspond to a
  * real session.
  * @throws {SessionExpiredError} If the session is found, but it has expired.
+ * @throws {invalidSessionError} If the session is found, but has been invalidated.
  */
 export async function authenticateSession(sessionId: Readonly<UUID>,
 	authenticationDate: Readonly<Date> = new Date()): Promise<Session>
 {
-	const session = await getRepository(Session).findOne(sessionId);
+	if (!uuid.validate(sessionId)) {
+		throw new SessionNotFoundError();
+	}
+
+	const session = await getRepository(Session).findOne({
+		sessionId,
+		dateDeleted: IsNull()
+	});
 	if (!session) {
 		throw new SessionNotFoundError();
 	}
 
 	if (dayjs(authenticationDate).isAfter(session?.expiryDate)) {
 		throw new SessionExpiredError();
+	}
+
+	if (dayjs(authenticationDate).isBefore(session?.dateCreated)) {
+		throw new InvalidSessionError();
+	}
+
+	// If this session has previous been invalidated.
+	if (dayjs(authenticationDate).isAfter(session?.dateEnded)) {
+		throw new InvalidSessionError();
 	}
 
 	return session;
