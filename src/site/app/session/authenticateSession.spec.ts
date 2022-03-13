@@ -19,7 +19,7 @@ describe('Authenticate User Session', function()
 	let testUser: User;
 	let userSession: Session;
 	let expiredSession: Session;
-	let expiryDate = new Date();
+	const expiryDate = new Date();
 	let invalidatedSession: Session;
 	let deletedSession: Session;
 
@@ -86,6 +86,7 @@ describe('Authenticate User Session', function()
 	it('should correctly authenticate a valid session', async function ()
 	{
 		const validSession = await authenticateSession(userSession.sessionId || '');
+		expect(validSession.sessionId).to.equal(userSession.sessionId);
 	});
 
 
@@ -93,6 +94,7 @@ describe('Authenticate User Session', function()
 	{
 		const validSession = await authenticateSession(expiredSession.sessionId || '',
 			dayjs(expiryDate).subtract(1, 'hour').toDate());
+		expect(validSession.sessionId).to.equal(expiredSession.sessionId);
 	});
 
 	it('should raise an exception when an arbitrary authentication date is before the ' +
