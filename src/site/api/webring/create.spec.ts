@@ -1,4 +1,3 @@
-import dayjs = require('dayjs');
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -222,12 +221,14 @@ describe('Create Webring API', function ()
 
 
 	it('should successfully create a webring', function(done) {
+		const newWebringUrl = testUtils.createRandomWebringUrl();
+
 		chai.request(app)
 			.post(`/webring/`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
 				name: createRandomString(),
-				url: testUtils.createRandomWebringUrl(),
+				url: newWebringUrl,
 				description: 'Test Description',
 				privateRing: false,
 				tags: ['one', 'two', 'three']
@@ -235,6 +236,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
+				expect(res.body).to.have.property('url');
+				expect(res.body.url).to.equal(newWebringUrl);
 				done();
 			});
 	});
