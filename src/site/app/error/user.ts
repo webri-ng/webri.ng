@@ -27,9 +27,3 @@ export class LoginAttemptCountExceededError extends ApiReturnableError { }
  * threshold of successive authentication failures.
  */
 export class LoginDisabledDueToAuthFailureError extends ApiReturnableError { }
-
-/** Error propagated back to the API boundary when an account is locked pending approval. */
-export class LoginDisabledDueToPendingApprovalError extends ApiReturnableError { }
-
-/** Error propagated back to the API boundary when an account is permanently locked. */
-export class LoginDisabledDueToAccountLockedError extends ApiReturnableError { }
