@@ -24,6 +24,17 @@ export class Session
 	})
 	public expiryDate: Date | null;
 
+	/**
+	 * This field represents the date that a session was 'ended'. If a user manually logs out
+	 * this will end the session, invalidating it.
+	 */
+	@Column({
+		name: 'date_ended',
+		type: 'timestamptz',
+		nullable: true
+	})
+	public dateEnded: Date | null;
+
 	@Column({
 		name: 'date_deleted',
 		type: 'timestamptz',
@@ -45,6 +56,7 @@ export class Session
 		this.expiryDate = expiryDate || Session.getDefaultExpiryDate();
 		this.dateDeleted = null;
 		this.dateCreated = new Date();
+		this.dateEnded = null;
 	}
 
 	/**

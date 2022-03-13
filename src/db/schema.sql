@@ -26,6 +26,7 @@ CREATE TABLE webring.user_session (
 	session_id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
 	user_id UUID NOT NULL REFERENCES webring.user_account(user_id),
 	expiry_date TIMESTAMPTZ,
+	date_ended TIMESTAMPTZ,
 	date_created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	date_deleted TIMESTAMPTZ
 );
