@@ -27,12 +27,7 @@ export const defaultConfig: Config = {
 			name: process.env.EMAIL_TRANSPORT_NAME || 'fakeSMTP',
 			host: process.env.EMAIL_TRANSPORT_HOST || 'localhost',
 			port: parseInt(process.env.EMAIL_TRANSPORT_PORT || '') || 3725,
-			secure: process.env.EMAIL_TRANSPORT_SECURE === '1',
-			authMethod: process.env.EMAIL_TRANSPORT_AUTH_METHOD || 'PLAIN',
-			auth: {
-				user: process.env.EMAIL_TRANSPORT_AUTH_USER || 'user',
-				pass: process.env.EMAIL_TRANSPORT_AUTH_PASS || 'pass'
-			}
+			secure: false
 		}
 	},
 	global: {

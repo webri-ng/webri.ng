@@ -29,6 +29,10 @@ export interface DatabaseConfig {
 export interface EmailConfig {
 	from: string;
 	bcc: string | null;
+	/**
+	 * Email transport configuration.
+	 * Refer to: https://nodemailer.com/smtp/
+	 */
 	transport: {
 		name: string;
 		host: string;
