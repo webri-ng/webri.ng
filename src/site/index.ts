@@ -8,28 +8,16 @@ import * as Express from 'express';
 import * as cookieParser from 'cookie-parser';
 import { database, server } from './infra';
 import { logger } from './app';
-import { api } from './api';
-import requestErrorHander from './api/errorHandler';
+import { apiRouter, viewRouter } from './api';
 import { applicationEnvironment } from './config';
 
 server.app.set('view engine', 'pug');
-server.app.set('views', './api/views');
+server.app.set('views', './api/view');
+server.app.use('/static', Express.static('static'));
 server.app.use(cookieParser());
 
-server.app.use(api);
-// This is the main request error handling middleware.
-// All API handleable exceptions are caught by this middleware, and the response sent
-// to the client.
-server.app.use(requestErrorHander);
-
-// Endpoint to test that app is live.
-server.app.get('/', function logController(req: Express.Request,
-	res: Express.Response,
-	next: Express.NextFunction): Express.Response|void
-{
-	res.end('webri.ng');
-});
-
+server.app.use(viewRouter);
+server.app.use(apiRouter);
 
 // Export for chai-http.
 export const app: Express.Application = server.app;

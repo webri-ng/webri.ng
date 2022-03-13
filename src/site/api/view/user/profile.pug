@@ -1,0 +1,9 @@
+include ../include/page.pug
+h2 Profile
+div 
+	| Hello #{user.username}
+
+	h3 Webrings
+	ul
+		each webring in webrings
+			li webring.name

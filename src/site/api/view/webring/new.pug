@@ -1,0 +1,18 @@
+include ../include/page.pug
+h2 Create Webring
+form#create-webring-form
+	div
+		label(for='name') Webring Name: 
+		input#name(type='text' name='name' minlength=2 maxlength=80 required='')
+	div
+		label(for='url') Webring URL: 
+		input#url(type='text' name='url' required='')
+	div
+		label(for='description') Description: 
+		input#description(type='text' name='description' required='')
+	div
+		label(for='privateRing') Private Webring?: 
+		input#private-ring(type='checkbox' name='privateRing')
+	button(type='button', onclick="createWebring()")
+		| Create
+	div#create-webring-error-message.error-message

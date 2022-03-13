@@ -1,20 +1,38 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger, createErrorReference } from '../app';
+import { NoAuthenticationError, SessionExpiredError, SessionNotFoundError,
+	UserNotFoundError } from '../app/error';
 import { unhandledExceptionError } from './api-error-response';
+import { removeSessionCookieResponse } from './removeSessionCookieResponse';
 
 /**
- * Renders the 'unhandled exception page'.
+ * Renders an error view according to the error received.
  * @param {Error} err The error raised by the previous controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  * @returns The rendered view.
  */
-export function unhandledExceptionViewHandler(err: Error | undefined,
+export function viewErrorHandler(err: Error | undefined,
 	req: Request,
 	res: Response,
 	next: NextFunction): Response | void
 {
+	if (err instanceof NoAuthenticationError ||
+		err instanceof SessionNotFoundError ||
+		err instanceof UserNotFoundError)
+	{
+		return res.status(401).render('sessionError', {
+			errorMessage: 'Session'
+		});
+	}
+
+	if (err instanceof SessionExpiredError) {
+		const { session } = res.locals;
+
+		return removeSessionCookieResponse(res, session).redirect('/');
+	}
+
 	/**
 	 * The error 'reference' code to return to the frontend.
 	 * This provides a code which can be referenced when talking with support. This makes

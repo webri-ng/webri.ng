@@ -8,9 +8,11 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { logger, createErrorReference } from '../app';
-import { requestValidationError, unhandledExceptionError } from '../api/api-error-response';
+import { loginExpiredError, requestAuthenticationFailedError, requestValidationError,
+	unhandledExceptionError } from '../api/api-error-response';
 import { loggingConfig } from '../config';
-import { ApiReturnableError, RequestValidationError } from '../app/error';
+import { ApiReturnableError, AuthenticationFailedError, RequestValidationError,
+	SessionExpiredError } from '../app/error';
 
 
 /**
@@ -28,6 +30,7 @@ export default function requestErrorHander(err: Error,
 	res: Response,
 	next: NextFunction): Response
 {
+	// Handle request vlidation errors.
 	if (err instanceof RequestValidationError) {
 		if (loggingConfig.logRequestValidation) {
 			// If we want to log request validation debug information.
@@ -38,6 +41,21 @@ export default function requestErrorHander(err: Error,
 		return res.status(requestValidationError.httpStatus).json({
 			code: requestValidationError.code,
 			error: requestValidationError.message
+		});
+	}
+
+	// Handle authentication errors.
+	if (err instanceof AuthenticationFailedError) {
+		return res.status(requestAuthenticationFailedError.httpStatus).json({
+			code: requestAuthenticationFailedError.code,
+			error: requestAuthenticationFailedError.message,
+		});
+	}
+
+	if (err instanceof SessionExpiredError) {
+		return res.status(loginExpiredError.httpStatus).json({
+			code: loginExpiredError.code,
+			error: loginExpiredError.message,
 		});
 	}
 
