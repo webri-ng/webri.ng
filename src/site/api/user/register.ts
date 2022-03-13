@@ -30,7 +30,7 @@ export const registrationRequestSchema: RequestSchema = {
  * @param {NextFunction} next Express next middleware handler.
  * @returns A response object to return to the caller.
  */
- export async function registerController(req: Request,
+export async function registerController(req: Request,
 	res: Response,
 	next: NextFunction): Promise<Response|void>
 {
@@ -42,7 +42,7 @@ export const registrationRequestSchema: RequestSchema = {
 		// Create an authentication session for the newly created user.
 		const session = await sessionService.createSession(user);
 
-		return createSessionCookieResponse(res, session);
+		return createSessionCookieResponse(res, session).send();
 	} catch (err) {
 		return next(err);
 	}

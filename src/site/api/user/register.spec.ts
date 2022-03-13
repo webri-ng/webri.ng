@@ -3,13 +3,14 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../..';
-import { User } from '../../model';
+import { Session, User } from '../../model';
 import { userService, testUtils } from '../../app';
 import { userConfig } from '../../config';
 import { emailNotUniqueError, invalidNewPasswordTooLongError, invalidNewPasswordTooShortError,
 	invalidUsernameTooLongError, invalidUsernameTooShortError, requestValidationError,
 	usernameNotUniqueError } from '../api-error-response';
 import { GetUserSearchField } from '../../app/user';
+import { getRepository } from 'typeorm';
 
 chai.use(chaiHttp);
 
@@ -210,8 +211,22 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
-				expect(res).to.have.cookie('session');
-				done();
+
+				getRepository(User).findOne({
+					email: newRegisteredUserEmail
+				}).then((newUser) => {
+					getRepository(Session).findOne({
+						where: {
+							userId: newUser?.userId
+						},
+						order: {
+							dateCreated: 'DESC'
+						}
+					}).then((userSession) => {
+						expect(res).to.have.cookie('session', userSession?.sessionId);
+						done();
+					});
+				});
 			});
 	});
 });
