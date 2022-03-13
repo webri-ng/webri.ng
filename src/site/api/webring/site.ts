@@ -13,17 +13,17 @@ import { globalConfig } from '../../config';
  */
 export async function getRandomSiteController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	const { webringId } = req.params;
 
 	try {
 		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Random);
 
-		return res.redirect(newSite.url);
+		return res.redirect(303, newSite.url);
 	} catch (err) {
 		if (err instanceof WebringNotFoundError || err instanceof InvalidIdentifierError) {
-			return res.redirect(globalConfig.baseDomainUrl);
+			return res.redirect(404, globalConfig.baseDomainUrl);
 		}
 
 		// Proceed to rendering the 'unhandled exception' view if this error has not been handled.
@@ -41,7 +41,7 @@ export async function getRandomSiteController(req: Request,
  */
 export async function getPreviousSiteController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	const { webringId } = req.params;
 	const { index } = req.query;
@@ -55,10 +55,10 @@ export async function getPreviousSiteController(req: Request,
 		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Previous,
 			currentIndex);
 
-		return res.redirect(newSite.url);
+		return res.redirect(303, newSite.url);
 	} catch (err) {
 		if (err instanceof WebringNotFoundError || err instanceof InvalidIdentifierError) {
-			return res.redirect(globalConfig.baseDomainUrl);
+			return res.redirect(404, globalConfig.baseDomainUrl);
 		}
 
 		return next(err);
@@ -75,7 +75,7 @@ export async function getPreviousSiteController(req: Request,
  */
 export async function getNextSiteController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	const { webringId } = req.params;
 	const { index } = req.query;
@@ -89,10 +89,10 @@ export async function getNextSiteController(req: Request,
 		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Next,
 			currentIndex);
 
-		return res.redirect(newSite.url);
+		return res.redirect(303, newSite.url);
 	} catch (err) {
 		if (err instanceof WebringNotFoundError || err instanceof InvalidIdentifierError) {
-			return res.redirect(globalConfig.baseDomainUrl);
+			return res.redirect(404, globalConfig.baseDomainUrl);
 		}
 
 		return next(err);

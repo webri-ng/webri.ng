@@ -68,7 +68,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(404);
 
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
@@ -85,7 +85,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(404);
 
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
@@ -102,7 +102,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(404);
 
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
@@ -118,7 +118,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(404);
 				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
 			});
@@ -133,7 +133,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -148,7 +148,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -163,7 +163,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -178,7 +178,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -193,7 +193,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -208,7 +208,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -222,7 +222,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite2.url);
 				done();
 			});
@@ -237,7 +237,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -251,7 +251,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite.url);
 				done();
 			});
@@ -266,7 +266,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite5.url);
 				done();
 			});
@@ -280,7 +280,7 @@ describe('Get new site API', function ()
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(302);
+				expect(res.status).to.equal(303);
 				expect(res.header.location).to.be.oneOf([testSite.url, testSite2.url,
 					testSite3.url, testSite4.url, testSite5.url]);
 				done();
