@@ -11,13 +11,14 @@ interface ProfileViewData {
 
 async function getProfileViewData(user: Readonly<User>): Promise<ProfileViewData>
 {
-	const webrings = await webringService.search(SearchWebringsMethod.Creator, user.userId || '', {
-		returnPrivateWebrings: true
+	const searchResults = await webringService.search(SearchWebringsMethod.Creator, user.userId || '', {
+		returnPrivateWebrings: true,
+		page: 1
 	});
 
 	return {
 		user,
-		webrings
+		webrings: searchResults.webrings
 	};
 }
 

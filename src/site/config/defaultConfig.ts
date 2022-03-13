@@ -68,6 +68,7 @@ export const defaultConfig: Config = {
 			minLength: 2,
 			maxLength: 80
 		},
+		webringSearchPageLength: 24
 	},
 	webring: {
 		nameRequirements: {

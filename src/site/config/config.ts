@@ -110,6 +110,7 @@ export interface SiteConfig {
 		minLength: number;
 		maxLength: number;
 	};
+	webringSearchPageLength: number;
 }
 
 

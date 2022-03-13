@@ -22,12 +22,6 @@ export const testEnvironmentConfig: Config = {
 	server: {
 		port: 3456,
 	},
-	site: {
-		nameRequirements: {
-			minLength: 2,
-			maxLength: 80
-		}
-	},
 	user: {
 		usernameRequirements: {
 			minLength: 2,
