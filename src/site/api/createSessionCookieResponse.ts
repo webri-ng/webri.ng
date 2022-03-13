@@ -14,5 +14,5 @@ export function createSessionCookieResponse(res: Response,
 		expires: session.expiryDate || undefined,
 		httpOnly: true,
 		secure: true
-	}).json();
+	});
 }
