@@ -46,7 +46,9 @@ export async function getWebring(searchField: Readonly<GetWebringSearchField>,
 		}
 
 		searchConditions.url = identifier;
-	} else if (searchField === GetWebringSearchField.RingId) {
+	}
+
+	if (searchField === GetWebringSearchField.RingId) {
 		if (!uuid.validate(identifier)) {
 			throw new InvalidIdentifierError('The provided webring id is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
