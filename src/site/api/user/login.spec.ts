@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../..';
-import { User } from '../../model';
+import { User, Session } from '../../model';
 import { getRepository } from 'typeorm';
 import { userService, testUtils } from '../../app';
 import { userConfig } from '../../config';
@@ -129,8 +129,18 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
-				expect(res).to.have.cookie('session');
-				done();
+
+				getRepository(Session).findOne({
+					where: {
+						userId: testUser.userId
+					},
+					order: {
+						dateCreated: 'DESC'
+					}
+				}).then((userSession) => {
+					expect(res).to.have.cookie('session', userSession?.sessionId);
+					done();
+				});
 			});
 	});
 
@@ -145,8 +155,18 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
-				expect(res).to.have.cookie('session');
-				done();
+
+				getRepository(Session).findOne({
+					where: {
+						userId: testUser.userId
+					},
+					order: {
+						dateCreated: 'DESC'
+					}
+				}).then((userSession) => {
+					expect(res).to.have.cookie('session', userSession?.sessionId);
+					done();
+				});
 			});
 	});
 
