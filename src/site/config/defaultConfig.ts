@@ -11,9 +11,9 @@ export const defaultConfig: Config = {
 		databaseName: process.env.DB_NAME || 'webring_dev',
 		connection: {
 			host: process.env.DB_HOST || 'localhost',
-			user: process.env.DB_USER || 'webmaster',
+			user: process.env.DB_USER || 'webring_app',
 			port: parseInt(process.env.DB_PORT || '') || 54327,
-			password: process.env.DB_PASS || 'pw',
+			password: process.env.DB_PASS || 'adventure2022',
 		},
 		pool: {
 			min: 5,
