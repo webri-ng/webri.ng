@@ -9,6 +9,8 @@ import { InvalidIdentifierError } from '../error';
 import { search, SearchWebringsMethod } from './search';
 import { siteConfig } from '../../config';
 import { EntityManager, getManager } from 'typeorm';
+import dayjs = require('dayjs');
+import { SearchWebringsSort } from '.';
 
 
 describe('Search Webrings', function ()
@@ -20,6 +22,7 @@ describe('Search Webrings', function ()
 	let testUser3: User;
 	let testUser4: User;
 	let testUser5: User;
+	let testUser6: User;
 
 	let testTag1: Tag;
 	let testTag2: Tag;
@@ -27,6 +30,7 @@ describe('Search Webrings', function ()
 	let testTag4: Tag;
 	let testTag5: Tag;
 	let testTag6: Tag;
+	let testTag7: Tag;
 
 	let testWebring: Webring;
 	let testWebring2: Webring;
@@ -43,6 +47,7 @@ describe('Search Webrings', function ()
 		testUser3 = await testUtils.insertTestUser();
 		testUser4 = await testUtils.insertTestUser();
 		testUser5 = await testUtils.insertTestUser();
+		testUser6 = await testUtils.insertTestUser();
 
 		testTag1 = await testUtils.insertTestTag(testUser.userId || '');
 		testTag2 = await testUtils.insertTestTag(testUser.userId || '');
@@ -50,6 +55,7 @@ describe('Search Webrings', function ()
 		testTag4 = await testUtils.insertTestTag(testUser.userId || '');
 		testTag5 = await testUtils.insertTestTag(testUser.userId || '');
 		testTag6 = await testUtils.insertTestTag(testUser.userId || '');
+		testTag7 = await testUtils.insertTestTag(testUser.userId || '');
 
 		testWebring = await testUtils.insertTestWebring(testUser?.userId || '', {
 			name: 'Test Webring',
@@ -382,8 +388,6 @@ describe('Search Webrings', function ()
 		let totalPages = totalPublicPages + 1;
 		const totalWebrings = siteConfig.webringSearchPageLength + totalPublicWebrings;
 
-		console.log(totalPublicWebrings, totalWebrings);
-
 		before(async function beforeTesting() {
 			for(let i = 0; i < totalWebrings; i++) {
 				await testUtils.insertTestWebring(testUser5?.userId || '', {
@@ -487,6 +491,91 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(totalWebrings)
 			expect(results.totalPages).to.equal(totalPages)
 			expect(results.webrings).to.have.length(3);
+		});
+	});
+
+
+	describe('Sorting', function () {
+		const totalWebrings = 20;
+
+		before(async function beforeTesting() {
+			for(let i = 0; i < totalWebrings; i++) {
+				const randomDays = Math.ceil(Math.random() * totalWebrings);
+				const dateCreated = dayjs().subtract(randomDays, 'days').toDate();
+
+				await testUtils.insertTestWebring(testUser6?.userId || '', {
+					tags: [testTag7],
+					dateCreated
+				});
+			}
+		});
+
+		it('should correctly sort results by date created', async function() {
+			let results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+				sortBy: SearchWebringsSort.Created
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.webrings).to.have.length(totalWebrings);
+
+			let previousDate:Date = dayjs('2999-01-01').toDate();
+			for(const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
+		});
+
+		it('should correctly sort results by date modified', async function() {
+			let results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+				sortBy: SearchWebringsSort.Modified
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.webrings).to.have.length(totalWebrings);
+
+			let previousDate:Date = dayjs('2999-01-01').toDate();
+			for(const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
+		});
+
+		it('should correctly sort results by date created when searching by tag', async function() {
+			let results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
+				sortBy: SearchWebringsSort.Created
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.webrings).to.have.length(totalWebrings);
+
+			let previousDate:Date = dayjs('2999-01-01').toDate();
+			for(const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
+		});
+
+		it('should correctly sort results by date modified when searching by tag', async function() {
+			let results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
+				sortBy: SearchWebringsSort.Modified
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.webrings).to.have.length(totalWebrings);
+
+			let previousDate:Date = dayjs('2999-01-01').toDate();
+			for(const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
 		});
 	});
 });

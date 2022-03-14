@@ -15,7 +15,7 @@ interface CreateRandomStringOptions {
  * @param {CreateRandomStringOptions} [options] - Additional options for the process.
  * @returns The created random string.
  */
- export function createRandomString(options: CreateRandomStringOptions = {}): string
+export function createRandomString(options: CreateRandomStringOptions = {}): string
 {
 	/**
 	 * The ASCII 'Source Characters' array.

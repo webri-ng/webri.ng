@@ -1,11 +1,12 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindConditions, getRepository, ILike, IsNull } from 'typeorm';
+import { EntityManager, FindConditions, FindManyOptions, getRepository, ILike, IsNull } from 'typeorm';
 import { UUID, Webring } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
 import { tagService } from '..';
 import { GetTagSearchField } from '../tag';
 import { siteConfig } from '../../config';
+import dayjs = require('dayjs');
 
 
 /** Which search field to use when searching for webrings. */
@@ -53,6 +54,76 @@ export interface SearchWebringsResults {
 
 
 /**
+ * Searches the database for webrings tagged with a certain tag.
+ * This is called by the main search function, as the logic is entirely different for
+ * tagged webrings.
+ * @private
+ * @param {SearchWebringsMethod} searchMethod The method by which to search for
+ * matching webrings.
+ * @param {UUID | string} searchTerm The term to search for according to this method.
+ * @param {SearchWebringsOptions} [options] Additional options for the process.
+ * @returns the found webrings, or an empty array if none found.
+ * @throws {InvalidIdentifierError} If the provided identifier is invalid.
+ */
+async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>,
+	searchTerm: Readonly<UUID | string>,
+	options: Readonly<SearchWebringsOptions>): Promise<SearchWebringsResults>
+{
+	/** The results to return from the search. */
+	const results: SearchWebringsResults = {
+		totalResults: 0,
+		currentPage: options.page || 1,
+		totalPages: 0,
+		webrings: [],
+		searchMethod,
+		searchTerm
+	}
+
+	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
+	const skip = (results.currentPage - 1) * resultsPerPage;
+
+	if (!searchTerm) {
+		throw new InvalidIdentifierError('The provided tag is invalid',
+			invalidIdentifierError.code, invalidIdentifierError.httpStatus);
+	}
+
+	const tag = await tagService.getTag(GetTagSearchField.Name, searchTerm);
+	if(!tag) {
+		return results;
+	}
+
+	const allTaggedWebrings = await tag?.taggedWebrings;
+	if (!allTaggedWebrings.length) {
+		return results;
+	}
+
+	const taggedWebrings = allTaggedWebrings.filter((webring) => {
+		if (options.returnPrivateWebrings !== true && webring.private) {
+			return false;
+		}
+
+		if (webring.dateDeleted) {
+			return false;
+		}
+
+		return true;
+	});
+
+	if(options.sortBy === SearchWebringsSort.Created) {
+		taggedWebrings.sort((a, b) => dayjs(b.dateCreated).valueOf() - dayjs(a.dateCreated).valueOf());
+	}
+
+	if(options.sortBy === SearchWebringsSort.Modified) {
+		taggedWebrings.sort((a, b) => dayjs(b.dateModified).valueOf() - dayjs(a.dateModified).valueOf());
+	}
+
+	results.totalResults = taggedWebrings.length;
+	results.totalPages = Math.ceil(taggedWebrings.length / resultsPerPage);
+	results.webrings = taggedWebrings.slice(skip, skip + resultsPerPage);
+	return results;
+}
+
+/**
  * Searches the database for webrings matching specified criteria.
  * @param {SearchWebringsMethod} searchMethod The method by which to search for
  * matching webrings.
@@ -75,43 +146,12 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		searchTerm
 	}
 
-	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
-	const skip = (results.currentPage - 1) * resultsPerPage;
-
 	if (searchMethod === SearchWebringsMethod.Tag) {
-		if (!searchTerm) {
-			throw new InvalidIdentifierError('The provided tag is invalid',
-				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
-		}
-
-		const tag = await tagService.getTag(GetTagSearchField.Name, searchTerm);
-		if(!tag) {
-			return results;
-		}
-
-		const taggedWebrings = await tag?.taggedWebrings;
-		if (!taggedWebrings.length) {
-			return results;
-		}
-
-		const allTaggedWebrings = taggedWebrings.filter((webring) => {
-			if (options.returnPrivateWebrings !== true && webring.private) {
-				return false;
-			}
-
-			if (webring.dateDeleted) {
-				return false;
-			}
-
-			return true;
-		});
-
-		results.totalResults = allTaggedWebrings.length;
-		results.totalPages = Math.ceil(allTaggedWebrings.length / resultsPerPage);
-		results.webrings = allTaggedWebrings.slice(skip, skip + resultsPerPage);
-		return results;
+		return searchTaggedWebrings(searchMethod, searchTerm, options);
 	}
 
+	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
+	const skip = (results.currentPage - 1) * resultsPerPage;
 
 	/** The search conditions used to get the user entity. */
 	const searchConditions: FindConditions<Webring> = {
@@ -142,23 +182,40 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		searchConditions.createdBy = searchTerm;
 	}
 
+	/**
+	 * Query conditions object.
+	 * This is where the final database query is constructed.
+	 */
+	let queryOptions: FindManyOptions<Webring> = {
+		where: searchConditions,
+		skip,
+		take: resultsPerPage,
+		order: undefined
+	};
+
+	queryOptions.order = {};
+	if(options.sortBy === SearchWebringsSort.Created) {
+		queryOptions.order.dateCreated = 'DESC';
+	}
+
+	if(options.sortBy === SearchWebringsSort.Modified) {
+		queryOptions.order.dateModified = 'DESC';
+	}
+
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
 		// Get the total count, to compute the total number of pages.
-		results.totalResults = await options.transactionalEntityManager.count(Webring, searchConditions);
-		results.webrings = await options.transactionalEntityManager.find(Webring, {
-			where: searchConditions,
-			skip,
-			take: resultsPerPage
-		});
+		const [webrings, totalResults] = await options.transactionalEntityManager
+			.findAndCount(Webring, queryOptions);
+
+		results.totalResults = totalResults;
+		results.webrings = webrings;
 	} else {
 		// Get the total count, to compute the total number of pages.
-		results.totalResults = await getRepository(Webring).count(searchConditions)
-		results.webrings = await getRepository(Webring).find({
-			where: searchConditions,
-			skip,
-			take: resultsPerPage
-		});
+		const [webrings, totalResults] = await getRepository(Webring).findAndCount(queryOptions);
+
+		results.totalResults = totalResults;
+		results.webrings = webrings;
 	}
 
 	results.totalPages = Math.ceil(results.totalResults / resultsPerPage);

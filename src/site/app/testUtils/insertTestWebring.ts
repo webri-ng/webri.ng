@@ -9,7 +9,9 @@ export interface InsertTestWebringOptions
 	description?: Readonly<string>;
 	url?: Readonly<string>
 	private?: Readonly<boolean>,
-	tags?: Tag[]
+	tags?: Tag[],
+	dateCreated?: Date;
+	dateModified?: Date;
 }
 
 
@@ -27,6 +29,9 @@ export async function insertTestWebring(createdBy: Readonly<UUID>,
 	const privateRing = options.private || false;
 
 	const newWebring = new Webring(name, description, url, privateRing, createdBy);
+	newWebring.dateCreated = options.dateCreated || new Date();
+	newWebring.dateModified = options.dateModified || newWebring.dateCreated;
+
 	newWebring.tags = options.tags || [];
 
 	return getRepository(Webring).save(newWebring);
