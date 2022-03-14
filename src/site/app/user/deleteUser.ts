@@ -1,10 +1,9 @@
 import { User, UUID, Webring } from '../../model';
-import { getRepository, EntityManager } from 'typeorm';
+import { getRepository, EntityManager, FindConditions, IsNull } from 'typeorm';
 import { UserNotFoundError } from '../error';
 import { userNotFoundError } from '../../api/api-error-response';
 import { getUser, GetUserSearchField } from './getUser';
 import { webringService } from '..';
-import { SearchWebringsMethod } from '../webring';
 
 
 /**
@@ -49,13 +48,19 @@ export async function deleteUser(userId: UUID,
 
 	const deletionDate: Date = options.deletionDate || new Date();
 
-	// Delete any webrings created by this user.
-	const searchResults = await webringService.search(SearchWebringsMethod.Creator,
-		userId, {
-			returnPrivateWebrings: true,
-			transactionalEntityManager: options.transactionalEntityManager
-		});
-	for (const webring of searchResults.webrings) {
+	let searchConditions:FindConditions<Webring> = {
+		createdBy: userId,
+		dateDeleted: IsNull()
+	};
+
+	let webrings:Webring[];
+	if(options.transactionalEntityManager) {
+		webrings = await options.transactionalEntityManager.find(Webring, searchConditions);
+	} else {
+		webrings = await getRepository(Webring).find(searchConditions);
+	}
+
+	for (const webring of webrings) {
 		await webringService.deleteWebring(webring.ringId || '', {
 			deletionDate,
 			transactionalEntityManager: options.transactionalEntityManager
