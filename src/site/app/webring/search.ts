@@ -11,6 +11,7 @@ import dayjs = require('dayjs');
 
 /** Which search field to use when searching for webrings. */
 export enum SearchWebringsMethod {
+	All,
 	Creator,
 	Name,
 	Tag
@@ -49,7 +50,7 @@ export interface SearchWebringsResults {
 	totalPages: number;
 	webrings: Webring[];
 	searchMethod: SearchWebringsMethod;
-	searchTerm: UUID | string;
+	searchTerm: UUID | string | undefined;
 }
 
 
@@ -60,13 +61,13 @@ export interface SearchWebringsResults {
  * @private
  * @param {SearchWebringsMethod} searchMethod The method by which to search for
  * matching webrings.
- * @param {UUID | string} searchTerm The term to search for according to this method.
+ * @param {UUID | string | undefined} searchTerm The term to search for according to this method.
  * @param {SearchWebringsOptions} [options] Additional options for the process.
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
 async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>,
-	searchTerm: Readonly<UUID | string>,
+	searchTerm: Readonly<UUID | string | undefined>,
 	options: Readonly<SearchWebringsOptions>): Promise<SearchWebringsResults>
 {
 	/** The results to return from the search. */
@@ -127,13 +128,13 @@ async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>
  * Searches the database for webrings matching specified criteria.
  * @param {SearchWebringsMethod} searchMethod The method by which to search for
  * matching webrings.
- * @param {UUID | string} searchTerm The term to search for according to this method.
+ * @param {UUID | string |undefined} searchTerm The term to search for according to this method.
  * @param {SearchWebringsOptions} [options] Additional options for the process.
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
 export async function search(searchMethod: Readonly<SearchWebringsMethod>,
-	searchTerm: Readonly<UUID | string>,
+	searchTerm?: Readonly<UUID | string | undefined>,
 	options: Readonly<SearchWebringsOptions> = {}): Promise<SearchWebringsResults>
 {
 	/** The results to return from the search. */
@@ -147,7 +148,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	}
 
 	if (searchMethod === SearchWebringsMethod.Tag) {
-		return searchTaggedWebrings(searchMethod, searchTerm, options);
+		return searchTaggedWebrings(searchMethod, searchTerm || '', options);
 	}
 
 	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
@@ -174,7 +175,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	}
 
 	if (searchMethod === SearchWebringsMethod.Creator) {
-		if (!uuid.validate(searchTerm)) {
+		if (!uuid.validate(searchTerm || '')) {
 			throw new InvalidIdentifierError('The provided user id is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
 		}

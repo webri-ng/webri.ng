@@ -90,6 +90,7 @@ describe('Search Webrings', function ()
 		testUser3 = await userService.deleteUser(testUser3?.userId || '');
 		testUser4 = await userService.deleteUser(testUser4?.userId || '');
 		testUser5 = await userService.deleteUser(testUser5?.userId || '');
+		testUser6 = await userService.deleteUser(testUser6?.userId || '');
 	});
 
 
@@ -380,6 +381,34 @@ describe('Search Webrings', function ()
 			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId)).to.not.be.undefined;
 		});
 	});
+
+
+	describe('Return all webrings', function ()
+	{
+		it('should correctly return all webrings', async function ()
+		{
+			let results = await search(SearchWebringsMethod.All);
+			expect(results).to.not.be.undefined;
+			expect(results.totalResults).to.equal(4)
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalPages).to.equal(1)
+			expect(results.webrings).to.have.length(4);
+		});
+
+
+		it('should correctly return private webrings', async function ()
+		{
+			let results = await search(SearchWebringsMethod.All, undefined, {
+				returnPrivateWebrings: true
+			});
+			expect(results).to.not.be.undefined;
+			expect(results.totalResults).to.equal(5)
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalPages).to.equal(1)
+			expect(results.webrings).to.have.length(5);
+		});
+	});
+
 
 	describe('Pagination', function () {
 		let totalPublicPages = 3;
