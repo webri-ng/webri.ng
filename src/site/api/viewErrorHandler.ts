@@ -18,12 +18,22 @@ export function viewErrorHandler(err: Error | undefined,
 	res: Response,
 	next: NextFunction): Response | void
 {
-	if (err instanceof NoAuthenticationError ||
-		err instanceof SessionNotFoundError ||
+	if (err instanceof NoAuthenticationError) {
+		return res.status(401).render('error', {
+			pageHeading: 'Error',
+			errorMessage: 'You are not authorised to access this page!'
+		});
+	}
+
+	if (err instanceof SessionNotFoundError ||
 		err instanceof UserNotFoundError)
 	{
-		return res.status(401).render('sessionError', {
-			errorMessage: 'Session'
+		const { session } = res.locals;
+
+		// If there is an invalid session, remove the session cookie.
+		return removeSessionCookieResponse(res, session).status(401).render('error', {
+			pageHeading: 'Error',
+			errorMessage: 'Invalid Session!'
 		});
 	}
 
@@ -42,7 +52,8 @@ export function viewErrorHandler(err: Error | undefined,
 
 	logger.error(`Unhandled error '${errorReference}'`, err);
 
-	return res.status(unhandledExceptionError.httpStatus).render('500', {
+	return res.status(unhandledExceptionError.httpStatus).render('error', {
+		pageHeading: 'Something terrible has happened',
 		errorMessage: 'An unhandled server error has occurred. ' +
 			'If this error persists, please contact support and quote error ' +
 			`reference '${errorReference}'`
