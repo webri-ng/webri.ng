@@ -59,62 +59,25 @@ describe('Get new site API', function ()
 	});
 
 
-	it('should redirect to the base domain URL when passed an invalid webring id, and the ' +
-		'method is random',
+	it('should return a 404 status when passed a valid site, and an invalid method',
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testUtils.invalidUuid}/random`)
+			.get(`/webring/${testWebring?.url}/invalid`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(404);
-
-				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
 				done();
 			});
 	});
 
 
-	it('should redirect to the base domain URL when passed an invalid webring id, and the ' +
-		'method is next',
+	it('should redirect to the base domain URL when passed a nonexistent webring url',
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testUtils.invalidUuid}/next`)
-			.redirects(0)
-			.end(function (err, res) {
-				expect(err).to.be.null;
-				expect(res.status).to.equal(404);
-
-				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
-				done();
-			});
-	});
-
-
-	it('should redirect to the base domain URL when passed an invalid webring id, and the ' +
-		'method is previous',
-		function (done)
-	{
-		chai.request(app)
-			.get(`/webring/${testUtils.invalidUuid}/previous`)
-			.redirects(0)
-			.end(function (err, res) {
-				expect(err).to.be.null;
-				expect(res.status).to.equal(404);
-
-				expect(res.header.location).to.equal(globalConfig.baseDomainUrl);
-				done();
-			});
-	});
-
-
-	it('should redirect to the base domain URL when passed a nonexistent webring id',
-		function (done)
-	{
-		chai.request(app)
-			.get(`/webring/${testUtils.dummyUuid}/random`)
+			.get('/webring/@@@@@/random')
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -129,7 +92,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/next`)
+			.get(`/webring/${testWebring?.url}/next`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -144,7 +107,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/next`)
+			.get(`/webring/${testWebring?.url}/next`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -159,7 +122,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/next?index=-1`)
+			.get(`/webring/${testWebring?.url}/next?index=-1`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -174,7 +137,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/previous?index=-1`)
+			.get(`/webring/${testWebring?.url}/previous?index=-1`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -189,7 +152,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/previous?index=ffff`)
+			.get(`/webring/${testWebring?.url}/previous?index=ffff`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -204,7 +167,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/previous?index=99999`)
+			.get(`/webring/${testWebring?.url}/previous?index=99999`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -218,7 +181,7 @@ describe('Get new site API', function ()
 	it('should redirect to the next site when passed a valid index', function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/next?index=0`)
+			.get(`/webring/${testWebring?.url}/next?index=0`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -233,7 +196,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/next?index=4`)
+			.get(`/webring/${testWebring?.url}/next?index=4`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -247,7 +210,7 @@ describe('Get new site API', function ()
 	it('should return the previous site when passed a valid index', function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/previous?index=1`)
+			.get(`/webring/${testWebring?.url}/previous?index=1`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -262,7 +225,7 @@ describe('Get new site API', function ()
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/previous?index=0`)
+			.get(`/webring/${testWebring?.url}/previous?index=0`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -276,7 +239,7 @@ describe('Get new site API', function ()
 	it('should return a random site', function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testWebring?.ringId}/random`)
+			.get(`/webring/${testWebring?.url}/random`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;

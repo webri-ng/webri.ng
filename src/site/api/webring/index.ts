@@ -10,8 +10,7 @@ import { authenticateSessionController } from '../authenticateSessionController'
 import { genericViewController } from '../genericViewController';
 import { validateRequestBody } from '../validateRequestBody';
 import { createWebringController, createWebringRequestSchema } from './create';
-import { getNextSiteController, getPreviousSiteController,
-	getRandomSiteController } from './site';
+import { getNewSiteController } from './site';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -24,9 +23,7 @@ webringApiRouter.post('/',
 webringViewRouter.get('/new', genericViewController('webring/new'));
 
 webringViewRouter.get('/:webringUrl', webringViewController);
-webringViewRouter.get('/:webringId/next', getNextSiteController);
-webringViewRouter.get('/:webringId/previous', getPreviousSiteController);
-webringViewRouter.get('/:webringId/random', getRandomSiteController);
+webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteController);
 
 
 export async function webringViewController(req: Request,
