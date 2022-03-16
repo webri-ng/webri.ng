@@ -78,7 +78,7 @@ async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>
 		webrings: [],
 		searchMethod,
 		searchTerm
-	}
+	};
 
 	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
 	const skip = (results.currentPage - 1) * resultsPerPage;
@@ -89,7 +89,7 @@ async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>
 	}
 
 	const tag = await tagService.getTag(GetTagSearchField.Name, searchTerm);
-	if(!tag) {
+	if (!tag) {
 		return results;
 	}
 
@@ -110,12 +110,12 @@ async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>
 		return true;
 	});
 
-	if(options.sortBy === SearchWebringsSort.Created) {
-		taggedWebrings.sort((a, b) => dayjs(b.dateCreated).valueOf() - dayjs(a.dateCreated).valueOf());
+	if (options.sortBy === SearchWebringsSort.Created) {
+		taggedWebrings.sort((a, b) => dayjs(b.dateCreated).diff(a.dateCreated));
 	}
 
-	if(options.sortBy === SearchWebringsSort.Modified) {
-		taggedWebrings.sort((a, b) => dayjs(b.dateModified).valueOf() - dayjs(a.dateModified).valueOf());
+	if (options.sortBy === SearchWebringsSort.Modified) {
+		taggedWebrings.sort((a, b) => dayjs(b.dateModified).diff(a.dateModified));
 	}
 
 	results.totalResults = taggedWebrings.length;
@@ -145,7 +145,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		webrings: [],
 		searchMethod,
 		searchTerm
-	}
+	};
 
 	if (searchMethod === SearchWebringsMethod.Tag) {
 		return searchTaggedWebrings(searchMethod, searchTerm || '', options);
@@ -160,7 +160,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 		private: false
 	};
 
-	if(options.returnPrivateWebrings === true) {
+	if (options.returnPrivateWebrings === true) {
 		delete searchConditions.private;
 	}
 
@@ -187,7 +187,7 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	 * Query conditions object.
 	 * This is where the final database query is constructed.
 	 */
-	let queryOptions: FindManyOptions<Webring> = {
+	const queryOptions: FindManyOptions<Webring> = {
 		where: searchConditions,
 		skip,
 		take: resultsPerPage,
@@ -195,11 +195,11 @@ export async function search(searchMethod: Readonly<SearchWebringsMethod>,
 	};
 
 	queryOptions.order = {};
-	if(options.sortBy === SearchWebringsSort.Created) {
+	if (options.sortBy === SearchWebringsSort.Created) {
 		queryOptions.order.dateCreated = 'DESC';
 	}
 
-	if(options.sortBy === SearchWebringsSort.Modified) {
+	if (options.sortBy === SearchWebringsSort.Modified) {
 		queryOptions.order.dateModified = 'DESC';
 	}
 

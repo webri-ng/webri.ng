@@ -178,15 +178,20 @@ describe('Search Webrings', function ()
 			let results = await search(SearchWebringsMethod.Tag, testTag1.name);
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(2);
-			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
 
 			results = await search(SearchWebringsMethod.Tag, testTag2.name);
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(3);
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring4.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring4.ringId))
+				.to.not.be.undefined;
 		});
 	});
 
@@ -271,21 +276,25 @@ describe('Search Webrings', function ()
 			let results = await search(SearchWebringsMethod.Creator, testUser?.userId || '');
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(2);
-			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
 
 			results = await search(SearchWebringsMethod.Creator, testUser2?.userId || '');
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(2);
-			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring4.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring4.ringId))
+				.to.not.be.undefined;
 		});
 
 
 		it('should correctly search webrings in a transaction', async function ()
 		{
 			await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-				let results = await search(SearchWebringsMethod.Creator, testUser?.userId || '', {
+				const results = await search(SearchWebringsMethod.Creator, testUser?.userId || '', {
 					transactionalEntityManager
 				});
 				expect(results).to.not.be.undefined;
@@ -293,8 +302,10 @@ describe('Search Webrings', function ()
 				expect(results.currentPage).to.equal(1);
 				expect(results.totalPages).to.equal(1);
 				expect(results.webrings).to.have.length(2);
-				expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-				expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+				expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+					.to.not.be.undefined;
+				expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+					.to.not.be.undefined;
 			});
 		});
 	});
@@ -351,8 +362,10 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(2);
 			expect(results.searchMethod).to.equal(SearchWebringsMethod.Name);
 			expect(results.searchTerm).to.equal('Test Webri');
-			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
 
 			results = await search(SearchWebringsMethod.Name, 'Webring');
 			expect(results).to.not.be.undefined;
@@ -360,8 +373,10 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(2);
 			expect(results.searchMethod).to.equal(SearchWebringsMethod.Name);
 			expect(results.searchTerm).to.equal('Webring');
-			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
 
 			results = await search(SearchWebringsMethod.Name, 'ring');
 			expect(results).to.not.be.undefined;
@@ -369,8 +384,10 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(2);
 			expect(results.searchMethod).to.equal(SearchWebringsMethod.Name);
 			expect(results.searchTerm).to.equal('ring');
-			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId)).to.not.be.undefined;
-			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
+				.to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
+				.to.not.be.undefined;
 
 			results = await search(SearchWebringsMethod.Name, testWebring3.name);
 			expect(results).to.not.be.undefined;
@@ -378,7 +395,8 @@ describe('Search Webrings', function ()
 			expect(results.webrings).to.have.length(1);
 			expect(results.searchMethod).to.equal(SearchWebringsMethod.Name);
 			expect(results.searchTerm).to.equal(testWebring3.name);
-			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId)).to.not.be.undefined;
+			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId))
+				.to.not.be.undefined;
 		});
 	});
 
@@ -387,38 +405,38 @@ describe('Search Webrings', function ()
 	{
 		it('should correctly return all webrings', async function ()
 		{
-			let results = await search(SearchWebringsMethod.All);
+			const results = await search(SearchWebringsMethod.All);
 			expect(results).to.not.be.undefined;
-			expect(results.totalResults).to.equal(4)
+			expect(results.totalResults).to.equal(4);
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalPages).to.equal(1)
+			expect(results.totalPages).to.equal(1);
 			expect(results.webrings).to.have.length(4);
 		});
 
 
 		it('should correctly return private webrings', async function ()
 		{
-			let results = await search(SearchWebringsMethod.All, undefined, {
+			const results = await search(SearchWebringsMethod.All, undefined, {
 				returnPrivateWebrings: true
 			});
 			expect(results).to.not.be.undefined;
-			expect(results.totalResults).to.equal(5)
+			expect(results.totalResults).to.equal(5);
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalPages).to.equal(1)
+			expect(results.totalPages).to.equal(1);
 			expect(results.webrings).to.have.length(5);
 		});
 	});
 
 
 	describe('Pagination', function () {
-		let totalPublicPages = 3;
+		const totalPublicPages = 3;
 		const totalPublicWebrings = siteConfig.webringSearchPageLength * (totalPublicPages - 1) + 3;
 
-		let totalPages = totalPublicPages + 1;
+		const totalPages = totalPublicPages + 1;
 		const totalWebrings = siteConfig.webringSearchPageLength + totalPublicWebrings;
 
 		before(async function beforeTesting() {
-			for(let i = 0; i < totalWebrings; i++) {
+			for (let i = 0; i < totalWebrings; i++) {
 				await testUtils.insertTestWebring(testUser5?.userId || '', {
 					tags: [testTag6],
 					private: i > (totalPublicWebrings - 1)
@@ -432,9 +450,9 @@ describe('Search Webrings', function ()
 			let results = await search(SearchWebringsMethod.Creator, testUser5.userId || '');
 
 			expect(results).to.not.be.undefined;
-			expect(results.totalResults).to.equal(totalPublicWebrings)
+			expect(results.totalResults).to.equal(totalPublicWebrings);
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalPages).to.equal(totalPublicPages)
+			expect(results.totalPages).to.equal(totalPublicPages);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
 			results = await search(SearchWebringsMethod.Creator, testUser5.userId || '', {
@@ -443,8 +461,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(totalPublicPages);
-			expect(results.totalResults).to.equal(totalPublicWebrings)
-			expect(results.totalPages).to.equal(totalPublicPages)
+			expect(results.totalResults).to.equal(totalPublicWebrings);
+			expect(results.totalPages).to.equal(totalPublicPages);
 			expect(results.webrings).to.have.length(3);
 		});
 
@@ -456,9 +474,9 @@ describe('Search Webrings', function ()
 			});
 
 			expect(results).to.not.be.undefined;
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalPages).to.equal(totalPages)
+			expect(results.totalPages).to.equal(totalPages);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
 			results = await search(SearchWebringsMethod.Creator, testUser5.userId || '', {
@@ -468,8 +486,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(totalPages);
-			expect(results.totalResults).to.equal(totalWebrings)
-			expect(results.totalPages).to.equal(totalPages)
+			expect(results.totalResults).to.equal(totalWebrings);
+			expect(results.totalPages).to.equal(totalPages);
 			expect(results.webrings).to.have.length(3);
 		});
 
@@ -481,8 +499,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalResults).to.equal(totalPublicWebrings)
-			expect(results.totalPages).to.equal(totalPublicPages)
+			expect(results.totalResults).to.equal(totalPublicWebrings);
+			expect(results.totalPages).to.equal(totalPublicPages);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
 			results = await search(SearchWebringsMethod.Tag, testTag6.name || '', {
@@ -491,8 +509,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(totalPublicPages);
-			expect(results.totalResults).to.equal(totalPublicWebrings)
-			expect(results.totalPages).to.equal(totalPublicPages)
+			expect(results.totalResults).to.equal(totalPublicWebrings);
+			expect(results.totalPages).to.equal(totalPublicPages);
 			expect(results.webrings).to.have.length(3);
 		});
 
@@ -506,8 +524,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalPages).to.equal(totalPages)
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalPages).to.equal(totalPages);
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
 			results = await search(SearchWebringsMethod.Tag, testTag6.name || '', {
@@ -517,8 +535,8 @@ describe('Search Webrings', function ()
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(totalPages);
-			expect(results.totalResults).to.equal(totalWebrings)
-			expect(results.totalPages).to.equal(totalPages)
+			expect(results.totalResults).to.equal(totalWebrings);
+			expect(results.totalPages).to.equal(totalPages);
 			expect(results.webrings).to.have.length(3);
 		});
 	});
@@ -528,7 +546,7 @@ describe('Search Webrings', function ()
 		const totalWebrings = 20;
 
 		before(async function beforeTesting() {
-			for(let i = 0; i < totalWebrings; i++) {
+			for (let i = 0; i < totalWebrings; i++) {
 				const randomDays = Math.ceil(Math.random() * totalWebrings);
 				const dateCreated = dayjs().subtract(randomDays, 'days').toDate();
 
@@ -540,68 +558,68 @@ describe('Search Webrings', function ()
 		});
 
 		it('should correctly sort results by date created', async function() {
-			let results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+			const results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
 				sortBy: SearchWebringsSort.Created
 			});
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.webrings).to.have.length(totalWebrings);
 
-			let previousDate:Date = dayjs('2999-01-01').toDate();
-			for(const webring of results.webrings) {
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
 				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
 				previousDate = webring.dateCreated;
 			}
 		});
 
 		it('should correctly sort results by date modified', async function() {
-			let results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+			const results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
 				sortBy: SearchWebringsSort.Modified
 			});
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.webrings).to.have.length(totalWebrings);
 
-			let previousDate:Date = dayjs('2999-01-01').toDate();
-			for(const webring of results.webrings) {
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
 				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
 				previousDate = webring.dateCreated;
 			}
 		});
 
 		it('should correctly sort results by date created when searching by tag', async function() {
-			let results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
+			const results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
 				sortBy: SearchWebringsSort.Created
 			});
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.webrings).to.have.length(totalWebrings);
 
-			let previousDate:Date = dayjs('2999-01-01').toDate();
-			for(const webring of results.webrings) {
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
 				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
 				previousDate = webring.dateCreated;
 			}
 		});
 
 		it('should correctly sort results by date modified when searching by tag', async function() {
-			let results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
+			const results = await search(SearchWebringsMethod.Tag, testTag7.name || '', {
 				sortBy: SearchWebringsSort.Modified
 			});
 
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
-			expect(results.totalResults).to.equal(totalWebrings)
+			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.webrings).to.have.length(totalWebrings);
 
-			let previousDate:Date = dayjs('2999-01-01').toDate();
-			for(const webring of results.webrings) {
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
 				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
 				previousDate = webring.dateCreated;
 			}
