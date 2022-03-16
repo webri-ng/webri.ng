@@ -3,8 +3,7 @@ import { getRepository } from 'typeorm';
 import { createRandomString } from '../util';
 
 /** Additional options for inserting a test webring. */
-export interface InsertTestWebringOptions
-{
+export type InsertTestWebringOptions = {
 	name?: Readonly<string>;
 	description?: Readonly<string>;
 	url?: Readonly<string>

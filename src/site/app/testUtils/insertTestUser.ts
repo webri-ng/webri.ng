@@ -3,8 +3,7 @@ import { getRepository } from 'typeorm';
 import { createRandomEmailAddress, createRandomUsername, testPasswordHash } from '.';
 
 /** Additional options for inserting a test user. */
-export interface InsertTestUserOptions
-{
+export type InsertTestUserOptions = {
 	username?: Readonly<string>;
 	email?: Readonly<string>;
 	passwordHash?: Readonly<string>

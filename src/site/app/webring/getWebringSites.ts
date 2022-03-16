@@ -3,7 +3,7 @@ import { Site, UUID } from '../../model';
 
 
 /** Additional options for the process. */
-export interface GetSitesOptions {
+export type GetSitesOptions = {
 	/**
 	* The entity manager managing the transaction the process will be run in.
 	* If this option is specified, then the operation will be run with this manager.

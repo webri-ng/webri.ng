@@ -8,8 +8,7 @@ import { getSite } from '.';
 /**
  * Additional options for the process.
  */
-export interface DeleteSiteOptions
-{
+export type DeleteSiteOptions = {
 	/**
 	 * The effective date for the deletion.
 	 * Defaults to the current date if not specified.

@@ -2,7 +2,7 @@ import { EntityManager, getRepository } from 'typeorm';
 import { Session, User } from '../../model';
 
 /** Additional options for the process. */
-export interface CreateSessionOptions {
+export type CreateSessionOptions = {
 	/**
 	* The entity manager managing the transaction the process will be run in.
 	* If this option is specified, then the operation will be run with this manager.

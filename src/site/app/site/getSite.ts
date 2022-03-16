@@ -6,7 +6,7 @@ import { invalidIdentifierError } from '../../api/api-error-response';
 
 
 /** Additional options for the process. */
-export interface GetSiteOptions {
+export type GetSiteOptions = {
 	/**
 	* The entity manager managing the transaction the process will be run in.
 	* If this option is specified, then the operation will be run with this manager.

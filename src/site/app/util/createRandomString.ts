@@ -1,5 +1,5 @@
 /** Additional options for the process. */
-interface CreateRandomStringOptions {
+type CreateRandomStringOptions = {
 	/** The length of the random string to produce. Defaults to 8. */
 	length?: Readonly<number>;
 	/**

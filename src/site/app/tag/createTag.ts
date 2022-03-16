@@ -6,8 +6,7 @@ import { EntityManager, getRepository } from 'typeorm';
 
 
 /** Additional options for the process. */
-export interface CreateTagOptions
-{
+export type CreateTagOptions = {
 	/**
 	* The entity manager managing the transaction this will be run in.
 	* If this option is specified, then the operation will be run with this manager.

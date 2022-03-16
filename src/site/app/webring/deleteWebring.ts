@@ -11,8 +11,7 @@ import { siteService } from '..';
 /**
  * Additional options for the process.
  */
-export interface DeleteWebringOptions
-{
+export type DeleteWebringOptions = {
 	/**
 	 * The effective date for the deletion.
 	 * Defaults to the current date if not specified.

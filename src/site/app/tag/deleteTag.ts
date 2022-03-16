@@ -8,8 +8,7 @@ import { TagNotFoundError } from '../error';
 /**
  * Additional options for the process.
  */
-export interface DeleteTagOptions
-{
+export type DeleteTagOptions = {
 	/**
 	 * The effective date for the deletion.
 	 * Defaults to the current date if not specified.

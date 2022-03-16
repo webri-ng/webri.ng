@@ -10,7 +10,7 @@
 type Duration = [number, string];
 
 
-export interface DatabaseConfig {
+export type DatabaseConfig = {
 	schema: string;
 	databaseName: string;
 	connection: {
@@ -26,7 +26,7 @@ export interface DatabaseConfig {
 }
 
 
-export interface EmailConfig {
+export type EmailConfig = {
 	from: string;
 	bcc: string | null;
 	/**
@@ -47,7 +47,7 @@ export interface EmailConfig {
 }
 
 
-export interface GlobalConfig {
+export type GlobalConfig = {
 	/**
 	 * The URL of the site's domain.
 	 * In the case that a bad URL parameter is passed, and the resulting URI becomes invalid,
@@ -68,13 +68,13 @@ export enum LoggingLevel {
 }
 
 /** Logging settings passed to the logging service. */
-export interface LoggingConfig {
+export type LoggingConfig = {
 	loggingLevel: LoggingLevel;
 	logRequestValidation: boolean;
 }
 
 
-export interface TagConfig {
+export type TagConfig = {
 	nameRequirements: {
 		minLength: number;
 		maxLength: number;
@@ -82,7 +82,7 @@ export interface TagConfig {
 }
 
 
-export interface UserConfig {
+export type UserConfig = {
 	usernameRequirements: {
 		minLength: number;
 		maxLength: number;
@@ -100,12 +100,12 @@ export interface UserConfig {
 }
 
 
-export interface SessionConfig {
+export type SessionConfig = {
 	validityPeriod: Duration;
 }
 
 
-export interface SiteConfig {
+export type SiteConfig = {
 	nameRequirements: {
 		minLength: number;
 		maxLength: number;
@@ -114,7 +114,7 @@ export interface SiteConfig {
 }
 
 
-export interface WebringConfig {
+export type WebringConfig = {
 	nameRequirements: {
 		minLength: number;
 		maxLength: number;
@@ -128,7 +128,7 @@ export interface WebringConfig {
 }
 
 
-export interface ServerConfig {
+export type ServerConfig = {
 	port: number;
 	/**
 	 * The CORS white-list.
@@ -141,8 +141,7 @@ export interface ServerConfig {
 }
 
 
-export interface Config
-{
+export type Config = {
 	database: DatabaseConfig;
 	email: EmailConfig;
 	global: GlobalConfig;

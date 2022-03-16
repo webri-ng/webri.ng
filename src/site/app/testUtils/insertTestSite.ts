@@ -5,8 +5,7 @@ import { createRandomSiteUrl } from '.';
 
 
 /** Additional options for inserting a test site. */
-export interface InsertTestSiteOptions
-{
+export type InsertTestSiteOptions = {
 	name?: Readonly<string>;
 	url?: Readonly<string>;
 	dateCreated?: Readonly<Date>;

@@ -5,7 +5,7 @@
  */
 
 /** Request validation schema type. */
-export interface RequestSchema {
+export type RequestSchema = {
 	$schema: string;
 	type: string;
 	properties: Record<string, unknown>,

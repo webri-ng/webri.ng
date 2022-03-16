@@ -13,7 +13,7 @@ export enum GetUserSearchField {
 }
 
 /** Additional options for the process. */
-export interface GetUserOptions {
+export type GetUserOptions = {
 	/**
 	* The entity manager managing the transaction the process will be run in.
 	* If this option is specified, then the operation will be run with this manager.

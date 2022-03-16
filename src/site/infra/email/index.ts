@@ -4,8 +4,8 @@ import { emailConfig } from '../../config';
 import { logger } from '../../app';
 
 
-/** Interface type representing the data dependencies for an email attachment. */
- export interface IEmailAttachment {
+/** Type representing the data dependencies for an email attachment. */
+export type IEmailAttachment = {
 	/** The name of the attachment file. */
 	filename: string|false;
 	/** A Node file stream or buffer object representing the attachment file. */
@@ -13,8 +13,8 @@ import { logger } from '../../app';
 }
 
 
-/** Interface type representing options for the email sending process. */
-export interface IEmailOptions {
+/** Type representing options for the email sending process. */
+export type IEmailOptions = {
 	/** The FROM address to use in the SMTP request. */
 	from?: string;
 	/** Addresses from this value get added to RCPT TO list. */

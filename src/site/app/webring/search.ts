@@ -25,7 +25,7 @@ export enum SearchWebringsSort {
 
 
 /** Additional options for the process. */
-export interface SearchWebringsOptions {
+export type SearchWebringsOptions = {
 	/**
 	* The entity manager managing the transaction the process will be run in.
 	* If this option is specified, then the operation will be run with this manager.
@@ -44,7 +44,7 @@ export interface SearchWebringsOptions {
 /**
  * A type to encapsulate the result set returned from a webring search operation.
  */
-export interface SearchWebringsResults {
+export type SearchWebringsResults = {
 	totalResults: number;
 	currentPage: number;
 	totalPages: number;
