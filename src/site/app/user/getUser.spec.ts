@@ -25,22 +25,22 @@ describe('Get user', function ()
 		testUser2 = await testUtils.insertTestUser();
 		testUser3 = await testUtils.insertTestUser();
 		testDeletedUser = await testUtils.insertTestUser();
-		testDeletedUser = await userService.deleteUser(testDeletedUser?.userId || '');
+		testDeletedUser = await userService.deleteUser(testDeletedUser?.userId!);
 	});
 
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId || '');
-		testUser2 = await userService.deleteUser(testUser2?.userId || '');
-		testUser3 = await userService.deleteUser(testUser3?.userId || '');
+		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser2 = await userService.deleteUser(testUser2?.userId!);
+		testUser3 = await userService.deleteUser(testUser3?.userId!);
 	});
 
 
 	it('should get a user within a transaction', async function ()
 	{
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-			const result = await getUser(GetUserSearchField.UserId, testUser?.userId || '', {
+			const result = await getUser(GetUserSearchField.UserId, testUser?.userId!, {
 				transactionalEntityManager
 			});
 
@@ -67,7 +67,7 @@ describe('Get user', function ()
 
 		it('should correctly get a user by their id', async function ()
 		{
-			const result = await getUser(GetUserSearchField.UserId, testUser?.userId || '');
+			const result = await getUser(GetUserSearchField.UserId, testUser?.userId!);
 
 			expect(result).to.not.be.null;
 			expect(result?.userId).to.equal(testUser?.userId);
@@ -76,7 +76,7 @@ describe('Get user', function ()
 
 		it('should correctly ignore a deleted user', async function ()
 		{
-			const result = await getUser(GetUserSearchField.UserId, testDeletedUser?.userId || '');
+			const result = await getUser(GetUserSearchField.UserId, testDeletedUser?.userId!);
 			expect(result).to.be.null;
 		});
 	});

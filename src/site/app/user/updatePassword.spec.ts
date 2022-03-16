@@ -27,7 +27,7 @@ describe('Update user password', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -64,7 +64,7 @@ describe('Update user password', function ()
 		const shortPassword = Array(userConfig.password.minLength - 1)
 			.fill('n').join('');
 
-		return expect(updatePassword(testUser?.userId || '',
+		return expect(updatePassword(testUser?.userId!,
 			shortPassword)).to.be.rejectedWith(InvalidPasswordError);
 	});
 
@@ -74,7 +74,7 @@ describe('Update user password', function ()
 		const longPassword = Array(userConfig.password.maxLength + 1)
 			.fill('n').join('');
 
-		return expect(updatePassword(testUser?.userId || '',
+		return expect(updatePassword(testUser?.userId!,
 			longPassword)).to.be.rejectedWith(InvalidPasswordError);
 	});
 
@@ -83,7 +83,7 @@ describe('Update user password', function ()
 	{
 		const newPassword = testUtils.createRandomPassword();
 
-		testUser = await updatePassword(testUser.userId || '', newPassword);
+		testUser = await updatePassword(testUser.userId!, newPassword);
 
 		expect(testUser).to.not.be.null;
 		expect(dayjs(testUser.dateModified).isSame(new Date(), 'hour')).to.be.true;

@@ -54,7 +54,7 @@ export async function deleteWebring(ringId: UUID,
 	// Delete all of this webring's sites.
 	const webringSites: Site[] = await getWebringSites(ringId);
 	for (const site of webringSites) {
-		await siteService.deleteSite(site.siteId || '', {
+		await siteService.deleteSite(site.siteId!, {
 			transactionalEntityManager: options.transactionalEntityManager
 		});
 	}

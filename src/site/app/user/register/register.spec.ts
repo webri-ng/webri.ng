@@ -30,8 +30,8 @@ describe('User registration', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId || '');
-		await userService.deleteUser(testExistingUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testExistingUser?.userId!);
 	});
 
 

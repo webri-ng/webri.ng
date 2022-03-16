@@ -18,7 +18,7 @@ export async function getRandomSiteController(req: Request,
 	const { webringId } = req.params;
 
 	try {
-		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Random);
+		const newSite = await webringService.getNewSite(webringId!, GetNewSiteMethod.Random);
 
 		return res.redirect(303, newSite.url);
 	} catch (err) {
@@ -52,7 +52,7 @@ export async function getPreviousSiteController(req: Request,
 	}
 
 	try {
-		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Previous,
+		const newSite = await webringService.getNewSite(webringId!, GetNewSiteMethod.Previous,
 			currentIndex);
 
 		return res.redirect(303, newSite.url);
@@ -86,7 +86,7 @@ export async function getNextSiteController(req: Request,
 	}
 
 	try {
-		const newSite = await webringService.getNewSite(webringId || '', GetNewSiteMethod.Next,
+		const newSite = await webringService.getNewSite(webringId!, GetNewSiteMethod.Next,
 			currentIndex);
 
 		return res.redirect(303, newSite.url);

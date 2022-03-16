@@ -23,13 +23,13 @@ describe('Add site to webring', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId || '');
+		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
 	});
 
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -39,7 +39,7 @@ describe('Add site to webring', function ()
 		const url = testUtils.createRandomSiteUrl();
 
 		return expect(addNewSite('',
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidIdentifierError);
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
 
@@ -49,7 +49,7 @@ describe('Add site to webring', function ()
 		const url = testUtils.createRandomSiteUrl();
 
 		return expect(addNewSite(testUtils.invalidUuid,
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidIdentifierError);
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
 
@@ -59,7 +59,7 @@ describe('Add site to webring', function ()
 		const url = testUtils.createRandomSiteUrl();
 
 		return expect(addNewSite(testUtils.dummyUuid,
-			name, url, testUser.userId || '')).to.be.rejectedWith(WebringNotFoundError);
+			name, url, testUser.userId!)).to.be.rejectedWith(WebringNotFoundError);
 	});
 
 
@@ -68,8 +68,8 @@ describe('Add site to webring', function ()
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidSiteNameError);
+		return expect(addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
 
@@ -78,8 +78,8 @@ describe('Add site to webring', function ()
 		const name = Array(siteConfig.nameRequirements.minLength - 1).fill('n').join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidSiteNameError);
+		return expect(addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
 
@@ -88,8 +88,8 @@ describe('Add site to webring', function ()
 		const name = Array(siteConfig.nameRequirements.maxLength + 1).fill('n').join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidSiteNameError);
+		return expect(addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
 	it('should raise an exception if an invalid URL is provided', async function()
@@ -97,8 +97,8 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = '';
 
-		return expect(addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '')).to.be.rejectedWith(InvalidSiteUrlError);
+		return expect(addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!)).to.be.rejectedWith(InvalidSiteUrlError);
 	});
 
 
@@ -107,8 +107,8 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomSiteUrl();
 
-		const testSite = await addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '');
+		const testSite = await addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!);
 
 		expect(testSite.name).to.equal(name);
 		expect(testSite.url).to.equal(url);
@@ -124,8 +124,8 @@ describe('Add site to webring', function ()
 		const name = "    Anthony's site";
 		const url = testUtils.createRandomSiteUrl();
 
-		const testSite = await addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '');
+		const testSite = await addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!);
 
 		expect(testSite.name).to.equal('Anthony\'s site');
 		expect(testSite.url).to.equal(url);
@@ -141,8 +141,8 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = `   http://www.test-site.com   `;
 
-		const testSite = await addNewSite(testWebring.ringId || '',
-			name, url, testUser.userId || '');
+		const testSite = await addNewSite(testWebring.ringId!,
+			name, url, testUser.userId!);
 
 		expect(testSite.name).to.equal(name);
 		expect(testSite.url).to.equal('http://www.test-site.com');

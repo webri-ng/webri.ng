@@ -24,15 +24,15 @@ describe('Add site to webring', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId || '');
-		testSite = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '');
+		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testSite = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!);
 	});
 
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -70,7 +70,7 @@ describe('Add site to webring', function ()
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId || '',
+		return expect(updateSite(testSite.siteId!,
 			name, url)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
@@ -80,7 +80,7 @@ describe('Add site to webring', function ()
 		const name = Array(siteConfig.nameRequirements.minLength - 1).fill('n').join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId || '',
+		return expect(updateSite(testSite.siteId!,
 			name, url)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
@@ -90,7 +90,7 @@ describe('Add site to webring', function ()
 		const name = Array(siteConfig.nameRequirements.maxLength + 1).fill('n').join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId || '',
+		return expect(updateSite(testSite.siteId!,
 			name, url)).to.be.rejectedWith(InvalidSiteNameError);
 	});
 
@@ -99,7 +99,7 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = '';
 
-		return expect(updateSite(testSite.siteId || '',
+		return expect(updateSite(testSite.siteId!,
 			name, url)).to.be.rejectedWith(InvalidSiteUrlError);
 	});
 
@@ -109,7 +109,7 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomSiteUrl();
 
-		testSite = await updateSite(testSite.siteId || '', name, url);
+		testSite = await updateSite(testSite.siteId!, name, url);
 
 		expect(testSite.name).to.equal(Site.normaliseName(name));
 		expect(testSite.url).to.equal(Site.normaliseUrl(url));
@@ -123,7 +123,7 @@ describe('Add site to webring', function ()
 		const name = "    Anthony's site";
 		const url = testUtils.createRandomSiteUrl();
 
-		testSite = await updateSite(testSite.siteId || '', name, url);
+		testSite = await updateSite(testSite.siteId!, name, url);
 
 		expect(testSite.name).to.equal(`Anthony's site`);
 		expect(testSite.url).to.equal(Site.normaliseUrl(url));
@@ -137,7 +137,7 @@ describe('Add site to webring', function ()
 		const name = createRandomString();
 		const url = `   http://www.test-site.com   `;
 
-		testSite = await updateSite(testSite.siteId || '', name, url);
+		testSite = await updateSite(testSite.siteId!, name, url);
 
 		expect(testSite.name).to.equal(Site.normaliseName(name));
 		expect(testSite.url).to.equal(`http://www.test-site.com`);

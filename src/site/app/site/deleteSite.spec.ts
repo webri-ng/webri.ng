@@ -24,16 +24,16 @@ describe('Site soft-deletion', function() {
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId || '');
-		testSite = await testUtils.insertTestSite(testWebring.ringId || '', testUser.userId || '');
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId || '', testUser.userId || '');
-		testSite3 = await testUtils.insertTestSite(testWebring.ringId || '', testUser.userId || '');
+		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
+		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
+		testSite3 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
 	});
 
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId || '');
+		testUser = await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -48,7 +48,7 @@ describe('Site soft-deletion', function() {
 
 
 	it('should correctly delete a site', async function() {
-		const deletedSite = await deleteSite(testSite?.siteId || '');
+		const deletedSite = await deleteSite(testSite?.siteId!);
 
 		expect(deletedSite.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedSite.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
@@ -57,7 +57,7 @@ describe('Site soft-deletion', function() {
 
 	it('should correctly delete a site at an arbitrary date', async function() {
 		const deletionDate = new Date();
-		const deletedTag = await deleteSite(testSite2?.siteId || '', {
+		const deletedTag = await deleteSite(testSite2?.siteId!, {
 			deletionDate
 		});
 
@@ -69,7 +69,7 @@ describe('Site soft-deletion', function() {
 	it('should correctly delete a site within a transaction', async function() {
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
 			const deletionDate = new Date();
-			const deletedTag = await deleteSite(testSite3?.siteId || '', {
+			const deletedTag = await deleteSite(testSite3?.siteId!, {
 				deletionDate,
 				transactionalEntityManager
 			});

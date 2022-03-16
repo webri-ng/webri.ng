@@ -14,7 +14,5 @@ export async function logoutViewController(req: Request,
 {
 	const { session } = res.locals;
 
-	console.log(session);
-
 	return removeSessionCookieResponse(res, session).redirect(302, '/');
 }

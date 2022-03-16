@@ -23,7 +23,7 @@ describe('Logout API', function()
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser.userId || '');
+		await userService.deleteUser(testUser.userId!);
 	});
 
 

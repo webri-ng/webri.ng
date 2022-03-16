@@ -25,18 +25,18 @@ describe('Webring soft-deletion', function() {
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser.userId || '');
-		testWebring2 = await testUtils.insertTestWebring(testUser.userId || '');
-		testWebring3 = await testUtils.insertTestWebring(testUser.userId || '');
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
+		testWebring3 = await testUtils.insertTestWebring(testUser.userId!);
 
-		testSite = await testUtils.insertTestSite(testWebring.ringId || '', testUser.userId || '');
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId || '', testUser.userId || '');
+		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
+		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
 	});
 
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId || '');
+		testUser = await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -58,7 +58,7 @@ describe('Webring soft-deletion', function() {
 
 	describe('should correctly delete a webring', function() {
 		it('should correctly delete the webring entity', async function() {
-			const deletedWebring = await deleteWebring(testWebring?.ringId || '');
+			const deletedWebring = await deleteWebring(testWebring?.ringId!);
 
 			expect(deletedWebring.dateDeleted).to.not.be.null;
 			expect(dayjs(deletedWebring.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
@@ -78,7 +78,7 @@ describe('Webring soft-deletion', function() {
 
 	it('should correctly delete a webring at an arbitrary date', async function() {
 		const deletionDate = new Date();
-		const deletedWebring = await deleteWebring(testWebring2?.ringId || '', {
+		const deletedWebring = await deleteWebring(testWebring2?.ringId!, {
 			deletionDate
 		});
 
@@ -90,7 +90,7 @@ describe('Webring soft-deletion', function() {
 	it('should correctly delete a webring within a transaction', async function() {
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
 			const deletionDate = new Date();
-			const deletedWebring = await deleteWebring(testWebring3?.ringId || '', {
+			const deletedWebring = await deleteWebring(testWebring3?.ringId!, {
 				deletionDate,
 				transactionalEntityManager
 			});

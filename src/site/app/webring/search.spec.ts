@@ -49,48 +49,48 @@ describe('Search Webrings', function ()
 		testUser5 = await testUtils.insertTestUser();
 		testUser6 = await testUtils.insertTestUser();
 
-		testTag1 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag2 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag3 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag4 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag5 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag6 = await testUtils.insertTestTag(testUser.userId || '');
-		testTag7 = await testUtils.insertTestTag(testUser.userId || '');
+		testTag1 = await testUtils.insertTestTag(testUser.userId!);
+		testTag2 = await testUtils.insertTestTag(testUser.userId!);
+		testTag3 = await testUtils.insertTestTag(testUser.userId!);
+		testTag4 = await testUtils.insertTestTag(testUser.userId!);
+		testTag5 = await testUtils.insertTestTag(testUser.userId!);
+		testTag6 = await testUtils.insertTestTag(testUser.userId!);
+		testTag7 = await testUtils.insertTestTag(testUser.userId!);
 
-		testWebring = await testUtils.insertTestWebring(testUser?.userId || '', {
+		testWebring = await testUtils.insertTestWebring(testUser?.userId!, {
 			name: 'Test Webring',
 			tags: [testTag1]
 		});
-		testWebring2 = await testUtils.insertTestWebring(testUser?.userId || '', {
+		testWebring2 = await testUtils.insertTestWebring(testUser?.userId!, {
 			name: 'Test Webring 2',
 			tags: [testTag1, testTag2]
 		});
-		testWebring3 = await testUtils.insertTestWebring(testUser2?.userId || '', {
+		testWebring3 = await testUtils.insertTestWebring(testUser2?.userId!, {
 			tags: [testTag2]
 		});
-		testWebring4 = await testUtils.insertTestWebring(testUser2?.userId || '', {
+		testWebring4 = await testUtils.insertTestWebring(testUser2?.userId!, {
 			tags: [testTag2]
 		});
-		testPrivateWebring = await testUtils.insertTestWebring(testUser3?.userId || '', {
+		testPrivateWebring = await testUtils.insertTestWebring(testUser3?.userId!, {
 			private: true,
 			tags: [testTag5]
 		});
-		testDeletedWebring = await testUtils.insertTestWebring(testUser4?.userId || '', {
+		testDeletedWebring = await testUtils.insertTestWebring(testUser4?.userId!, {
 			tags: [testTag4]
 		});
-		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring?.ringId || '');
+		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring?.ringId!);
 	});
 
 
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId || '');
-		testUser2 = await userService.deleteUser(testUser2?.userId || '');
-		testUser3 = await userService.deleteUser(testUser3?.userId || '');
-		testUser4 = await userService.deleteUser(testUser4?.userId || '');
-		testUser5 = await userService.deleteUser(testUser5?.userId || '');
-		testUser6 = await userService.deleteUser(testUser6?.userId || '');
+		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser2 = await userService.deleteUser(testUser2?.userId!);
+		testUser3 = await userService.deleteUser(testUser3?.userId!);
+		testUser4 = await userService.deleteUser(testUser4?.userId!);
+		testUser5 = await userService.deleteUser(testUser5?.userId!);
+		testUser6 = await userService.deleteUser(testUser6?.userId!);
 	});
 
 
@@ -227,7 +227,7 @@ describe('Search Webrings', function ()
 		it('should correctly return an empty array if the specified user has created no webrings',
 			async function ()
 		{
-			const results = await search(SearchWebringsMethod.Creator, testUser3?.userId || '');
+			const results = await search(SearchWebringsMethod.Creator, testUser3?.userId!);
 			expect(results).to.not.be.undefined;
 			expect(results.totalResults).to.equal(0);
 			expect(results.currentPage).to.equal(1);
@@ -238,7 +238,7 @@ describe('Search Webrings', function ()
 
 		it('should correctly ignore deleted webrings', async function ()
 		{
-			const results = await search(SearchWebringsMethod.Creator, testUser4.userId || '');
+			const results = await search(SearchWebringsMethod.Creator, testUser4.userId!);
 			expect(results).to.not.be.undefined;
 			expect(results.totalResults).to.equal(0);
 			expect(results.currentPage).to.equal(1);
@@ -249,7 +249,7 @@ describe('Search Webrings', function ()
 
 		it('should correctly ignore private webrings', async function ()
 		{
-			const results = await search(SearchWebringsMethod.Creator, testUser3.userId || '');
+			const results = await search(SearchWebringsMethod.Creator, testUser3.userId!);
 			expect(results).to.not.be.undefined;
 			expect(results.totalResults).to.equal(0);
 			expect(results.currentPage).to.equal(1);
@@ -260,7 +260,7 @@ describe('Search Webrings', function ()
 
 		it('should return private webrings if specified', async function ()
 		{
-			const results = await search(SearchWebringsMethod.Creator, testUser3.userId || '', {
+			const results = await search(SearchWebringsMethod.Creator, testUser3.userId!, {
 				returnPrivateWebrings: true
 			});
 			expect(results).to.not.be.undefined;
@@ -273,7 +273,7 @@ describe('Search Webrings', function ()
 
 		it('should correctly return webrings created by a specified user', async function ()
 		{
-			let results = await search(SearchWebringsMethod.Creator, testUser?.userId || '');
+			let results = await search(SearchWebringsMethod.Creator, testUser?.userId!);
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(2);
 			expect(results.webrings.find((ring) => ring.ringId === testWebring.ringId))
@@ -281,7 +281,7 @@ describe('Search Webrings', function ()
 			expect(results.webrings.find((ring) => ring.ringId === testWebring2.ringId))
 				.to.not.be.undefined;
 
-			results = await search(SearchWebringsMethod.Creator, testUser2?.userId || '');
+			results = await search(SearchWebringsMethod.Creator, testUser2?.userId!);
 			expect(results).to.not.be.undefined;
 			expect(results.webrings).to.have.length(2);
 			expect(results.webrings.find((ring) => ring.ringId === testWebring3.ringId))
@@ -294,7 +294,7 @@ describe('Search Webrings', function ()
 		it('should correctly search webrings in a transaction', async function ()
 		{
 			await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-				const results = await search(SearchWebringsMethod.Creator, testUser?.userId || '', {
+				const results = await search(SearchWebringsMethod.Creator, testUser?.userId!, {
 					transactionalEntityManager
 				});
 				expect(results).to.not.be.undefined;
@@ -437,7 +437,7 @@ describe('Search Webrings', function ()
 
 		before(async function beforeTesting() {
 			for (let i = 0; i < totalWebrings; i++) {
-				await testUtils.insertTestWebring(testUser5?.userId || '', {
+				await testUtils.insertTestWebring(testUser5?.userId!, {
 					tags: [testTag6],
 					private: i > (totalPublicWebrings - 1)
 				});
@@ -447,7 +447,7 @@ describe('Search Webrings', function ()
 		it('should correctly paginate results',
 			async function ()
 		{
-			let results = await search(SearchWebringsMethod.Creator, testUser5.userId || '');
+			let results = await search(SearchWebringsMethod.Creator, testUser5.userId!);
 
 			expect(results).to.not.be.undefined;
 			expect(results.totalResults).to.equal(totalPublicWebrings);
@@ -455,7 +455,7 @@ describe('Search Webrings', function ()
 			expect(results.totalPages).to.equal(totalPublicPages);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
-			results = await search(SearchWebringsMethod.Creator, testUser5.userId || '', {
+			results = await search(SearchWebringsMethod.Creator, testUser5.userId!, {
 				page: totalPublicPages
 			});
 
@@ -469,7 +469,7 @@ describe('Search Webrings', function ()
 		it('should correctly paginate results and return private webrings',
 			async function ()
 		{
-			let results = await search(SearchWebringsMethod.Creator, testUser5.userId || '', {
+			let results = await search(SearchWebringsMethod.Creator, testUser5.userId!, {
 				returnPrivateWebrings: true
 			});
 
@@ -479,7 +479,7 @@ describe('Search Webrings', function ()
 			expect(results.totalPages).to.equal(totalPages);
 			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
 
-			results = await search(SearchWebringsMethod.Creator, testUser5.userId || '', {
+			results = await search(SearchWebringsMethod.Creator, testUser5.userId!, {
 				page: totalPages,
 				returnPrivateWebrings: true
 			});
@@ -550,7 +550,7 @@ describe('Search Webrings', function ()
 				const randomDays = Math.ceil(Math.random() * totalWebrings);
 				const dateCreated = dayjs().subtract(randomDays, 'days').toDate();
 
-				await testUtils.insertTestWebring(testUser6?.userId || '', {
+				await testUtils.insertTestWebring(testUser6?.userId!, {
 					tags: [testTag7],
 					dateCreated
 				});
@@ -558,7 +558,7 @@ describe('Search Webrings', function ()
 		});
 
 		it('should correctly sort results by date created', async function() {
-			const results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+			const results = await search(SearchWebringsMethod.Creator, testUser6.userId!, {
 				sortBy: SearchWebringsSort.Created
 			});
 
@@ -575,7 +575,7 @@ describe('Search Webrings', function ()
 		});
 
 		it('should correctly sort results by date modified', async function() {
-			const results = await search(SearchWebringsMethod.Creator, testUser6.userId || '', {
+			const results = await search(SearchWebringsMethod.Creator, testUser6.userId!, {
 				sortBy: SearchWebringsSort.Modified
 			});
 

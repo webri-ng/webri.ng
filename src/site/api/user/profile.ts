@@ -1,26 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
-import { SearchWebringsMethod } from '../../app/webring';
-import { User, Webring } from '../../model';
-
-interface ProfileViewData {
-	user: User;
-	webrings: Webring[];
-}
-
-
-async function getProfileViewData(user: Readonly<User>): Promise<ProfileViewData>
-{
-	const searchResults = await webringService.search(SearchWebringsMethod.Creator, user.userId || '', {
-		returnPrivateWebrings: true,
-		page: 1
-	});
-
-	return {
-		user,
-		webrings: searchResults.webrings
-	};
-}
+import { SearchWebringsMethod, SearchWebringsSort } from '../../app/webring';
 
 
 /**
@@ -35,7 +15,25 @@ async function getProfileViewData(user: Readonly<User>): Promise<ProfileViewData
 	next: NextFunction): Promise<void>
 {
 	const { user } = res.locals;
-	const viewData = await getProfileViewData(user);
+	const { page } = req.query;
 
-	return res.render('user/profile', viewData);
+	let pageNumber: number|undefined;
+	if (page) {
+		pageNumber = parseInt(page.toString());
+	}
+
+	const searchResults = await webringService.search(SearchWebringsMethod.Creator, user.userId!, {
+		returnPrivateWebrings: true,
+		page: pageNumber,
+		sortBy: SearchWebringsSort.Modified
+	});
+
+	return res.render('user/profile', {
+		user,
+		currentPage: searchResults.currentPage,
+		totalPages: searchResults.totalPages,
+		nextPageNumber: searchResults.currentPage + 1,
+		previousPageNumber: searchResults.currentPage - 1,
+		webrings: searchResults.webrings
+	});
 }

@@ -27,26 +27,26 @@ describe('Get new site API', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId || '');
+		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
 
-		testSite = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '', {
+		testSite = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
 				dateCreated: dayjs().subtract(5, 'days').toDate()
 			});
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '', {
+		testSite2 = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
 				dateCreated: dayjs().subtract(4, 'days').toDate()
 			});
-		testSite3 = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '', {
+		testSite3 = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
 				dateCreated: dayjs().subtract(3, 'days').toDate()
 			});
-		testSite4 = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '', {
+		testSite4 = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
 				dateCreated: dayjs().subtract(2, 'days').toDate()
 			});
-		testSite5 = await testUtils.insertTestSite(testWebring.ringId || '',
-			testUser.userId || '', {
+		testSite5 = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
 				dateCreated: dayjs().subtract(1, 'days').toDate()
 			});
 	});
@@ -55,7 +55,7 @@ describe('Get new site API', function ()
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId || '');
+		testUser = await userService.deleteUser(testUser?.userId!);
 	});
 
 

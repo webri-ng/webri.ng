@@ -48,20 +48,20 @@ export async function deleteUser(userId: UUID,
 
 	const deletionDate: Date = options.deletionDate || new Date();
 
-	let searchConditions:FindConditions<Webring> = {
+	const searchConditions: FindConditions<Webring> = {
 		createdBy: userId,
 		dateDeleted: IsNull()
 	};
 
-	let webrings:Webring[];
-	if(options.transactionalEntityManager) {
+	let webrings: Webring[];
+	if (options.transactionalEntityManager) {
 		webrings = await options.transactionalEntityManager.find(Webring, searchConditions);
 	} else {
 		webrings = await getRepository(Webring).find(searchConditions);
 	}
 
 	for (const webring of webrings) {
-		await webringService.deleteWebring(webring.ringId || '', {
+		await webringService.deleteWebring(webring.ringId!, {
 			deletionDate,
 			transactionalEntityManager: options.transactionalEntityManager
 		});

@@ -28,21 +28,21 @@ describe('Login API', function()
 		testUser = await testUtils.insertTestUser();
 
 		testExpiredPasswordCustomer = await testUtils.insertTestUser();
-		await getRepository(User).update(testExpiredPasswordCustomer.userId || '', {
+		await getRepository(User).update(testExpiredPasswordCustomer.userId!, {
 			passwordExpiryTime: moment().subtract(1, 'day').toDate()
 		});
 
 		testMaxAttemptCountUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testMaxAttemptCountUser.userId || '', {
+		await getRepository(User).update(testMaxAttemptCountUser.userId!, {
 			loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
 		});
 	});
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser.userId || '');
-		await userService.deleteUser(testMaxAttemptCountUser.userId || '');
-		await userService.deleteUser(testExpiredPasswordCustomer.userId || '');
+		await userService.deleteUser(testUser.userId!);
+		await userService.deleteUser(testMaxAttemptCountUser.userId!);
+		await userService.deleteUser(testExpiredPasswordCustomer.userId!);
 	});
 
 

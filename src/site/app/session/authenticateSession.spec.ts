@@ -44,7 +44,7 @@ describe('Authenticate User Session', function()
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
 	});
 
 
@@ -57,7 +57,7 @@ describe('Authenticate User Session', function()
 
 	it('should throw an exception when passed a deleted session id', async function ()
 	{
-		return expect(authenticateSession(deletedSession.sessionId || ''))
+		return expect(authenticateSession(deletedSession.sessionId!))
 			.to.be.rejectedWith(SessionNotFoundError);
 	});
 
@@ -71,28 +71,28 @@ describe('Authenticate User Session', function()
 
 	it('should throw an exception when authenticating an expired session', async function ()
 	{
-		return expect(authenticateSession(expiredSession.sessionId || ''))
+		return expect(authenticateSession(expiredSession.sessionId!))
 			.to.be.rejectedWith(SessionExpiredError);
 	});
 
 
 	it('should throw an exception when authenticating an invalidated session', async function ()
 	{
-		return expect(authenticateSession(invalidatedSession.sessionId || ''))
+		return expect(authenticateSession(invalidatedSession.sessionId!))
 			.to.be.rejectedWith(InvalidSessionError);
 	});
 
 
 	it('should correctly authenticate a valid session', async function ()
 	{
-		const validSession = await authenticateSession(userSession.sessionId || '');
+		const validSession = await authenticateSession(userSession.sessionId!);
 		expect(validSession.sessionId).to.equal(userSession.sessionId);
 	});
 
 
 	it('should correctly authenticate a session as of an arbitrary date', async function ()
 	{
-		const validSession = await authenticateSession(expiredSession.sessionId || '',
+		const validSession = await authenticateSession(expiredSession.sessionId!,
 			dayjs(expiryDate).subtract(1, 'hour').toDate());
 		expect(validSession.sessionId).to.equal(expiredSession.sessionId);
 	});
@@ -100,7 +100,7 @@ describe('Authenticate User Session', function()
 	it('should raise an exception when an arbitrary authentication date is before the ' +
 		'creation of the session', async function ()
 	{
-		return expect(authenticateSession(invalidatedSession.sessionId || '',
+		return expect(authenticateSession(invalidatedSession.sessionId!,
 			dayjs(invalidatedSession.dateCreated).subtract(1, 'hour').toDate()))
 			.to.be.rejectedWith(InvalidSessionError);
 	});

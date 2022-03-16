@@ -32,5 +32,5 @@ export async function removeSite(webringId: Readonly<UUID>,
 			siteNotFoundError.code, siteNotFoundError.httpStatus);
 	}
 
-	return siteService.deleteSite(siteToRemove.siteId || '');
+	return siteService.deleteSite(siteToRemove.siteId!);
 }

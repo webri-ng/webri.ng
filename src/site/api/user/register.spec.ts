@@ -28,7 +28,7 @@ describe('Registration API', function() {
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testExistingUser?.userId || '');
+		await userService.deleteUser(testExistingUser?.userId!);
 
 		const newUser = await userService.getUser(GetUserSearchField.Email,
 			newRegisteredUserEmail);
@@ -37,7 +37,7 @@ describe('Registration API', function() {
 			throw new Error('Unable to get newly created user');
 		}
 
-		await userService.deleteUser(newUser?.userId || '');
+		await userService.deleteUser(newUser?.userId!);
 	});
 
 

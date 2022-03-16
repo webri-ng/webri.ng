@@ -29,8 +29,8 @@ describe('Update user', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId || '');
-		await userService.deleteUser(testExistingUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testExistingUser?.userId!);
 	});
 
 
@@ -68,7 +68,7 @@ describe('Update user', function ()
 		const email = testExistingUser?.email || '';
 		const username = createRandomUsername();
 
-		return expect(updateUser(testUser?.userId || '', username, email))
+		return expect(updateUser(testUser?.userId!, username, email))
 			.to.be.rejectedWith(EmailNotUniqueError);
 	});
 
@@ -78,7 +78,7 @@ describe('Update user', function ()
 		const email = createRandomEmailAddress();
 		const username = testExistingUser?.username || '';
 
-		return expect(updateUser(testUser?.userId || '', username, email))
+		return expect(updateUser(testUser?.userId!, username, email))
 			.to.be.rejectedWith(UsernameNotUniqueError);
 	});
 
@@ -88,7 +88,7 @@ describe('Update user', function ()
 		const email = '';
 		const username = testExistingUser?.username || '';
 
-		return expect(updateUser(testUser?.userId || '', username, email))
+		return expect(updateUser(testUser?.userId!, username, email))
 			.to.be.rejectedWith(InvalidEmailError);
 	});
 
@@ -100,7 +100,7 @@ describe('Update user', function ()
 		const username = Array(userConfig.usernameRequirements.minLength - 1)
 			.fill('n').join('');
 
-		return expect(updateUser(testUser?.userId || '', username, email))
+		return expect(updateUser(testUser?.userId!, username, email))
 			.to.be.rejectedWith(InvalidUsernameError);
 	});
 
@@ -112,7 +112,7 @@ describe('Update user', function ()
 		const username = Array(userConfig.usernameRequirements.maxLength + 1)
 			.fill('n').join('');
 
-		return expect(updateUser(testUser?.userId || '', username, email))
+		return expect(updateUser(testUser?.userId!, username, email))
 			.to.be.rejectedWith(InvalidUsernameError);
 	});
 
@@ -122,7 +122,7 @@ describe('Update user', function ()
 		const email = createRandomEmailAddress();
 		const username = createRandomUsername();
 
-		testUser = await updateUser(testUser?.userId || '', username, email);
+		testUser = await updateUser(testUser?.userId!, username, email);
 		if (!testUser) {
 			throw new Error('User update failed');
 		}

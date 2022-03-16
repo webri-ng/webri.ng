@@ -26,21 +26,21 @@ describe('User login', function()
 		testUser = await testUtils.insertTestUser();
 
 		testExpiredPasswordUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testExpiredPasswordUser?.userId || '', {
+		await getRepository(User).update(testExpiredPasswordUser?.userId!, {
 			passwordExpiryTime: dayjs().subtract(1, 'day').toDate()
 		});
 
 		testMaxLoginUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testMaxLoginUser?.userId || '', {
+		await getRepository(User).update(testMaxLoginUser?.userId!, {
 			loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
 		});
 	});
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser?.userId || '');
-		await userService.deleteUser(testExpiredPasswordUser?.userId || '');
-		await userService.deleteUser(testMaxLoginUser?.userId || '');
+		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testExpiredPasswordUser?.userId!);
+		await userService.deleteUser(testMaxLoginUser?.userId!);
 	});
 
 
