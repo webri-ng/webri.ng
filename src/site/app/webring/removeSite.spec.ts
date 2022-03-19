@@ -39,7 +39,7 @@ describe('Remove webring site', function() {
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 

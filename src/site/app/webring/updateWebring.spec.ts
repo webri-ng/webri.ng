@@ -25,15 +25,15 @@ describe('Update webring', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
-		testWebring2 = await testUtils.insertTestWebring(testUser?.userId!);
-		testExistingTag = await testUtils.insertTestTag(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId || '');
+		testWebring2 = await testUtils.insertTestWebring(testUser.userId || '');
+		testExistingTag = await testUtils.insertTestTag(testUser.userId || '');
 	});
 
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId || '');
 	});
 
 
@@ -42,7 +42,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring('', testUser?.userId!,
+		return expect(updateWebring('', testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
@@ -52,7 +52,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testUtils.invalidUuid, testUser?.userId!,
+		return expect(updateWebring(testUtils.invalidUuid, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
@@ -62,7 +62,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testUtils.dummyUuid, testUser?.userId!,
+		return expect(updateWebring(testUtils.dummyUuid, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(WebringNotFoundError);
 	});
 
@@ -72,7 +72,7 @@ describe('Update webring', function ()
 		const name = '';
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
@@ -82,7 +82,7 @@ describe('Update webring', function ()
 		const name = Array(webringConfig.nameRequirements.minLength - 1).fill('n').join('');
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
@@ -92,7 +92,7 @@ describe('Update webring', function ()
 		const name = Array(webringConfig.nameRequirements.maxLength + 1).fill('n').join('');
 		const url = testUtils.createRandomWebringUrl();
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
@@ -102,7 +102,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = testWebring2.url;
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(RingUrlNotUniqueError);
 	});
 
@@ -112,7 +112,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = Array(webringConfig.urlRequirements.minLength - 1).fill('n').join('');
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
@@ -122,7 +122,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = Array(webringConfig.urlRequirements.maxLength + 1).fill('n').join('');
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
@@ -132,7 +132,7 @@ describe('Update webring', function ()
 		const name = createRandomString();
 		const url = '';
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
@@ -144,7 +144,7 @@ describe('Update webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 		const tags = Array(webringConfig.maxTagCount + 1).map(() => createRandomString());
 
-		return expect(updateWebring(testWebring.ringId!, testUser?.userId!,
+		return expect(updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, 'description', false, tags)).to.be.rejectedWith(TooManyTagsError);
 	});
 
@@ -155,13 +155,13 @@ describe('Update webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 		const description = createRandomString();
 
-		testWebring = await updateWebring(testWebring.ringId!, testUser?.userId!,
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, description, false, []);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);
 		expect(testWebring.description).to.equal(description);
-		expect(testWebring.createdBy).to.equal(testUser.userId);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
 		expect(testWebring.private).to.be.false;
 		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
 		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;
@@ -176,13 +176,13 @@ describe('Update webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 		const description = createRandomString();
 
-		testWebring = await updateWebring(testWebring.ringId!, testUser?.userId!,
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, description, false, []);
 
 		expect(testWebring.name).to.equal("Anthony's webring");
 		expect(testWebring.url).to.equal(url);
 		expect(testWebring.description).to.equal(description);
-		expect(testWebring.createdBy).to.equal(testUser.userId);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
 		expect(testWebring.private).to.be.false;
 		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
 		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;
@@ -197,13 +197,13 @@ describe('Update webring', function ()
 		const url = '   test_url   ';
 		const description = createRandomString();
 
-		testWebring = await updateWebring(testWebring.ringId!, testUser?.userId!,
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, description, false, []);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal('test_url');
 		expect(testWebring.description).to.equal(description);
-		expect(testWebring.createdBy).to.equal(testUser.userId);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
 		expect(testWebring.private).to.be.false;
 		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
 		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;
@@ -221,13 +221,13 @@ describe('Update webring', function ()
 		const tag2Text = createRandomString().toLowerCase();
 		const tags = [tag1Text, tag2Text];
 
-		testWebring = await updateWebring(testWebring.ringId!, testUser?.userId!,
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, description, false, tags);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);
 		expect(testWebring.description).to.equal(description);
-		expect(testWebring.createdBy).to.equal(testUser.userId);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
 		expect(testWebring.private).to.be.false;
 		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
 		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;
@@ -248,13 +248,13 @@ describe('Update webring', function ()
 		const tag2Text = testExistingTag.name;
 		const tags = [tag1Text, tag2Text];
 
-		testWebring = await updateWebring(testWebring.ringId!, testUser?.userId!,
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
 			name, url, description, false, tags);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);
 		expect(testWebring.description).to.equal(description);
-		expect(testWebring.createdBy).to.equal(testUser.userId);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
 		expect(testWebring.private).to.be.false;
 		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
 		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;

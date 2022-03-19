@@ -15,34 +15,33 @@ describe('Get Webring', function ()
 {
 	this.timeout(testUtils.defaultTestTimeout);
 
-	let testUser: User | null = null;
-	let testWebring: Webring | null = null;
-	let testWebring2: Webring | null = null;
-	let testDeletedWebring: Webring | null = null;
+	let testUser: User;
+	let testWebring: Webring;
+	let testWebring2: Webring;
+	let testDeletedWebring: Webring;
 
 
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
-		testWebring2 = await testUtils.insertTestWebring(testUser?.userId!);
-		testDeletedWebring = await testUtils.insertTestWebring(testUser?.userId!);
-		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring?.ringId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
+		testDeletedWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring.ringId!);
 	});
 
 
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 
 	it('should get a webring within a transaction', async function ()
 	{
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-			const result = await getWebring(GetWebringSearchField.RingId,
-				testWebring?.ringId!, {
+			const result = await getWebring(GetWebringSearchField.RingId, testWebring.ringId!, {
 				transactionalEntityManager
 			});
 
@@ -69,8 +68,7 @@ describe('Get Webring', function ()
 
 		it('should correctly get a webring by its id', async function ()
 		{
-			const result = await getWebring(GetWebringSearchField.RingId,
-				testWebring?.ringId!);
+			const result = await getWebring(GetWebringSearchField.RingId, testWebring.ringId!);
 
 			expect(result).to.not.be.null;
 			expect(result?.ringId).to.equal(testWebring?.ringId);
@@ -80,7 +78,7 @@ describe('Get Webring', function ()
 		it('should correctly ignore a deleted webring', async function ()
 		{
 			const result = await getWebring(GetWebringSearchField.RingId,
-				testDeletedWebring?.ringId!);
+				testDeletedWebring.ringId!);
 
 			expect(result).to.be.null;
 		});
@@ -97,8 +95,7 @@ describe('Get Webring', function ()
 
 		it('should correctly get a webring by its url', async function ()
 		{
-			const result = await getWebring(GetWebringSearchField.Url,
-				testWebring2?.url || '');
+			const result = await getWebring(GetWebringSearchField.Url, testWebring2.url || '');
 
 			expect(result).to.not.be.null;
 			expect(result?.ringId).to.equal(testWebring2?.ringId);
@@ -107,8 +104,7 @@ describe('Get Webring', function ()
 
 		it('should correctly ignore a deleted webring', async function ()
 		{
-			const result = await getWebring(GetWebringSearchField.Url,
-				testDeletedWebring?.url || '');
+			const result = await getWebring(GetWebringSearchField.Url, testDeletedWebring.url || '');
 
 			expect(result).to.be.null;
 		});

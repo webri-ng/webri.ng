@@ -23,9 +23,9 @@ describe('Tag soft-deletion', function() {
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
-		testTag = await testUtils.insertTestTag(testUser?.userId!);
-		testTag2 = await testUtils.insertTestTag(testUser?.userId!);
-		testTag3 = await testUtils.insertTestTag(testUser?.userId!);
+		testTag = await testUtils.insertTestTag(testUser.userId!);
+		testTag2 = await testUtils.insertTestTag(testUser.userId!);
+		testTag3 = await testUtils.insertTestTag(testUser.userId!);
 	});
 
 
@@ -40,7 +40,7 @@ describe('Tag soft-deletion', function() {
 
 
 	it('should correctly delete a tag', async function() {
-		const deletedTag = await deleteTag(testTag?.tagId!);
+		const deletedTag = await deleteTag(testTag.tagId!);
 
 		expect(deletedTag.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedTag.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
@@ -49,7 +49,7 @@ describe('Tag soft-deletion', function() {
 
 	it('should correctly delete a tag at an arbitrary date', async function() {
 		const deletionDate = new Date();
-		const deletedTag = await deleteTag(testTag2?.tagId!, {
+		const deletedTag = await deleteTag(testTag2.tagId!, {
 			deletionDate
 		});
 
@@ -61,7 +61,7 @@ describe('Tag soft-deletion', function() {
 	it('should correctly delete a tag within a transaction', async function() {
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
 			const deletionDate = new Date();
-			const deletedTag = await deleteTag(testTag3?.tagId!, {
+			const deletedTag = await deleteTag(testTag3.tagId!, {
 				deletionDate,
 				transactionalEntityManager
 			});

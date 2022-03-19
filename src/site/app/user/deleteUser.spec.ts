@@ -46,7 +46,7 @@ describe('User soft-deletion', function() {
 
 
 	it('should correctly delete a user', async function() {
-		const deletedUser = await deleteUser(testUser?.userId!);
+		const deletedUser = await deleteUser(testUser.userId!);
 
 		expect(deletedUser.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedUser.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
@@ -55,7 +55,7 @@ describe('User soft-deletion', function() {
 
 	it('should correctly delete a user at an arbitrary date', async function() {
 		const deletionDate = new Date();
-		const deletedUser = await deleteUser(testUser2?.userId!, {
+		const deletedUser = await deleteUser(testUser2.userId!, {
 			deletionDate
 		});
 
@@ -66,7 +66,7 @@ describe('User soft-deletion', function() {
 
 	it('should correctly delete a user\'s created webrings', async function() {
 		const deletionDate = new Date();
-		const deletedUser = await deleteUser(testUser3?.userId!, {
+		const deletedUser = await deleteUser(testUser3.userId!, {
 			deletionDate
 		});
 
@@ -86,7 +86,7 @@ describe('User soft-deletion', function() {
 	it('should correctly delete a user within a transaction', async function() {
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
 			const deletionDate = new Date();
-			const deletedUser = await deleteUser(testUser4?.userId!, {
+			const deletedUser = await deleteUser(testUser4.userId!, {
 				deletionDate,
 				transactionalEntityManager
 			});

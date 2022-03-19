@@ -27,7 +27,7 @@ describe('Update user password', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
 	});
 
 
@@ -64,7 +64,7 @@ describe('Update user password', function ()
 		const shortPassword = Array(userConfig.password.minLength - 1)
 			.fill('n').join('');
 
-		return expect(updatePassword(testUser?.userId!,
+		return expect(updatePassword(testUser.userId!,
 			shortPassword)).to.be.rejectedWith(InvalidPasswordError);
 	});
 
@@ -74,7 +74,7 @@ describe('Update user password', function ()
 		const longPassword = Array(userConfig.password.maxLength + 1)
 			.fill('n').join('');
 
-		return expect(updatePassword(testUser?.userId!,
+		return expect(updatePassword(testUser.userId!,
 			longPassword)).to.be.rejectedWith(InvalidPasswordError);
 	});
 

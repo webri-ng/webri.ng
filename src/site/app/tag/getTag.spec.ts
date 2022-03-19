@@ -23,28 +23,28 @@ describe('Get tag', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testTag = await testUtils.insertTestTag(testUser?.userId!);
-		testTag2 = await testUtils.insertTestTag(testUser?.userId!);
-		testDeletedTag = await testUtils.insertTestTag(testUser?.userId!);
-		testDeletedTag = await deleteTag(testDeletedTag?.tagId!);
+		testTag = await testUtils.insertTestTag(testUser.userId!);
+		testTag2 = await testUtils.insertTestTag(testUser.userId!);
+		testDeletedTag = await testUtils.insertTestTag(testUser.userId!);
+		testDeletedTag = await deleteTag(testDeletedTag.tagId!);
 	});
 
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 
 	it('should get a tag within a transaction', async function ()
 	{
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-			const result = await getTag(GetTagSearchField.TagId, testTag?.tagId!, {
+			const result = await getTag(GetTagSearchField.TagId, testTag.tagId!, {
 				transactionalEntityManager
 			});
 
 			expect(result).to.not.be.null;
-			expect(result?.tagId).to.equal(testTag?.tagId);
+			expect(result?.tagId).to.equal(testTag.tagId);
 		});
 	});
 
@@ -66,16 +66,16 @@ describe('Get tag', function ()
 
 		it('should correctly get a tag by their id', async function ()
 		{
-			const result = await getTag(GetTagSearchField.TagId, testTag?.tagId!);
+			const result = await getTag(GetTagSearchField.TagId, testTag.tagId!);
 
 			expect(result).to.not.be.null;
-			expect(result?.tagId).to.equal(testTag?.tagId);
+			expect(result?.tagId).to.equal(testTag.tagId);
 		});
 
 
 		it('should correctly ignore a deleted tag', async function ()
 		{
-			const result = await getTag(GetTagSearchField.TagId, testDeletedTag?.tagId!);
+			const result = await getTag(GetTagSearchField.TagId, testDeletedTag.tagId!);
 
 			expect(result).to.be.null;
 		});

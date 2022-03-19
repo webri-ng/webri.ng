@@ -25,14 +25,14 @@ describe('Create new webring', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testExistingWebring = await testUtils.insertTestWebring(testUser?.userId!);
-		testExistingTag = await testUtils.insertTestTag(testUser?.userId!);
+		testExistingWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testExistingTag = await testUtils.insertTestTag(testUser.userId!);
 	});
 
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
 	});
 
 
@@ -42,7 +42,7 @@ describe('Create new webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
 
@@ -52,7 +52,7 @@ describe('Create new webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
 
@@ -62,7 +62,7 @@ describe('Create new webring', function ()
 		const url = testUtils.createRandomWebringUrl();
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingNameError);
 	});
 
 
@@ -72,7 +72,7 @@ describe('Create new webring', function ()
 		const url = testExistingWebring.url;
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(RingUrlNotUniqueError);
+			testUser.userId!, [])).to.be.rejectedWith(RingUrlNotUniqueError);
 	});
 
 
@@ -82,7 +82,7 @@ describe('Create new webring', function ()
 		const url = Array(webringConfig.urlRequirements.minLength - 1).fill('n').join('');
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
 
@@ -92,7 +92,7 @@ describe('Create new webring', function ()
 		const url = Array(webringConfig.urlRequirements.maxLength + 1).fill('n').join('');
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
 
@@ -102,7 +102,7 @@ describe('Create new webring', function ()
 		const url = '';
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
+			testUser.userId!, [])).to.be.rejectedWith(InvalidRingUrlError);
 	});
 
 
@@ -114,7 +114,7 @@ describe('Create new webring', function ()
 		const tags = Array(webringConfig.maxTagCount + 1).fill('').map(() => createRandomString());
 
 		return expect(createWebring(name, url, 'description', false,
-			testUser?.userId!, tags)).to.be.rejectedWith(TooManyTagsError);
+			testUser.userId!, tags)).to.be.rejectedWith(TooManyTagsError);
 	});
 
 
@@ -123,8 +123,7 @@ describe('Create new webring', function ()
 		const name = createRandomString();
 		const url = testUtils.createRandomWebringUrl();
 
-		testWebring = await createWebring(name, url, 'description', false,
-			testUser?.userId!, []);
+		testWebring = await createWebring(name, url, 'description', false, testUser.userId!, []);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);
@@ -142,8 +141,7 @@ describe('Create new webring', function ()
 		const name = "    Anthony's webring";
 		const url = testUtils.createRandomWebringUrl();
 
-		testWebring = await createWebring(name, url, 'description', false,
-			testUser?.userId!, []);
+		testWebring = await createWebring(name, url, 'description', false, testUser.userId!, []);
 
 		expect(testWebring.name).to.equal("Anthony's webring");
 		expect(testWebring.url).to.equal(url);
@@ -161,8 +159,7 @@ describe('Create new webring', function ()
 		const name = createRandomString();
 		const url = '   test_url   ';
 
-		testWebring = await createWebring(name, url, 'description', false,
-			testUser?.userId!, []);
+		testWebring = await createWebring(name, url, 'description', false, testUser.userId!, []);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal('test_url');
@@ -183,7 +180,7 @@ describe('Create new webring', function ()
 		const tag2Text = createRandomString().toLowerCase();
 
 		testWebring = await createWebring(name, url, 'description', false,
-			testUser?.userId!, [tag1Text, tag2Text]);
+			testUser.userId!, [tag1Text, tag2Text]);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);
@@ -207,7 +204,7 @@ describe('Create new webring', function ()
 		const tag2Text = testExistingTag.name;
 
 		testWebring = await createWebring(name, url, 'description', false,
-			testUser?.userId!, [tag1Text, tag2Text]);
+			testUser.userId!, [tag1Text, tag2Text]);
 
 		expect(testWebring.name).to.equal(name);
 		expect(testWebring.url).to.equal(url);

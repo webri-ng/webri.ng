@@ -23,7 +23,7 @@ describe('Create User Session', function()
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
 	});
 
 

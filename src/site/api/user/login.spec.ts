@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -29,7 +29,7 @@ describe('Login API', function()
 
 		testExpiredPasswordCustomer = await testUtils.insertTestUser();
 		await getRepository(User).update(testExpiredPasswordCustomer.userId!, {
-			passwordExpiryTime: moment().subtract(1, 'day').toDate()
+			passwordExpiryTime: dayjs().subtract(1, 'day').toDate()
 		});
 
 		testMaxAttemptCountUser = await testUtils.insertTestUser();

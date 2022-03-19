@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -7,16 +8,15 @@ import { Site, User, Webring } from '../../model';
 import { siteService, testUtils, userService } from '..';
 import { EntityManager, getManager } from 'typeorm';
 import { getWebringSites } from './getWebringSites';
-import dayjs = require('dayjs');
 
 
 describe('Get Webring Sites', function ()
 {
 	this.timeout(testUtils.defaultTestTimeout);
 
-	let testUser: User | null = null;
-	let testWebring: Webring | null = null;
-	let testWebring2: Webring | null = null;
+	let testUser: User;
+	let testWebring: Webring;
+	let testWebring2: Webring;
 
 	let testSite: Site;
 	let testSite2: Site;
@@ -28,29 +28,23 @@ describe('Get Webring Sites', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
-		testWebring2 = await testUtils.insertTestWebring(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
 
-		testSite = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
-				dateCreated: dayjs().subtract(2, 'days').toDate()
-			});
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
-				dateCreated: dayjs().subtract(1, 'days').toDate()
-			});
-		testSite5 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
-				dateCreated: dayjs().subtract(4, 'days').toDate()
-			});
+		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!, {
+			dateCreated: dayjs().subtract(2, 'days').toDate()
+		});
+		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!, {
+			dateCreated: dayjs().subtract(1, 'days').toDate()
+		});
+		testSite5 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!, {
+			dateCreated: dayjs().subtract(4, 'days').toDate()
+		});
 
-		testSite3 = await testUtils.insertTestSite(testWebring2.ringId!,
-			testUser.userId!);
-		testSite4 = await testUtils.insertTestSite(testWebring2.ringId!,
-			testUser.userId!);
+		testSite3 = await testUtils.insertTestSite(testWebring2.ringId!, testUser.userId!);
+		testSite4 = await testUtils.insertTestSite(testWebring2.ringId!, testUser.userId!);
 
-		testDeletedSite = await testUtils.insertTestSite(testWebring2.ringId!,
-			testUser.userId!);
+		testDeletedSite = await testUtils.insertTestSite(testWebring2.ringId!, testUser.userId!);
 		await siteService.deleteSite(testDeletedSite.siteId!);
 	});
 
@@ -58,13 +52,13 @@ describe('Get Webring Sites', function ()
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 
 	it('should correctly get the sites for a webring', async function ()
 	{
-		const results = await getWebringSites(testWebring?.ringId!);
+		const results = await getWebringSites(testWebring.ringId!);
 
 		expect(results).not.to.be.undefined;
 		expect(results).to.have.length(3);
@@ -76,7 +70,7 @@ describe('Get Webring Sites', function ()
 
 	it('should correctly return the sites for a webring in the order they were added', async function ()
 	{
-		const results = await getWebringSites(testWebring?.ringId!);
+		const results = await getWebringSites(testWebring.ringId!);
 
 		expect(results).not.to.be.undefined;
 		expect(results).to.have.length(3);
@@ -88,7 +82,7 @@ describe('Get Webring Sites', function ()
 
 	it('should correctly ignore deleted sites', async function ()
 	{
-		const results = await getWebringSites(testWebring2?.ringId!);
+		const results = await getWebringSites(testWebring2.ringId!);
 
 		expect(results).not.to.be.undefined;
 		expect(results).to.have.length(2);
@@ -101,7 +95,7 @@ describe('Get Webring Sites', function ()
 	it('should get a webring\'s sites within a transaction', async function ()
 	{
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-			const results = await getWebringSites(testWebring2?.ringId!, {
+			const results = await getWebringSites(testWebring2.ringId!, {
 				transactionalEntityManager
 			});
 

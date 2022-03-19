@@ -23,7 +23,7 @@ describe('Get site', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
 		testDeletedSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
 		testDeletedSite = await deleteSite(testDeletedSite.siteId!);
@@ -32,7 +32,7 @@ describe('Get site', function ()
 
 	after(async function afterTesting()
 	{
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 
@@ -50,29 +50,29 @@ describe('Get site', function ()
 
 	it('should correctly get a site by its id', async function ()
 	{
-		const result = await getSite(testSite?.siteId!);
+		const result = await getSite(testSite.siteId!);
 
 		expect(result).to.not.be.null;
-		expect(result?.siteId).to.equal(testSite?.siteId);
+		expect(result?.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should get a site within a transaction', async function ()
 	{
 		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
-			const result = await getSite(testSite?.siteId!, {
+			const result = await getSite(testSite.siteId!, {
 				transactionalEntityManager
 			});
 
 			expect(result).to.not.be.null;
-			expect(result?.siteId).to.equal(testSite?.siteId);
+			expect(result?.siteId).to.equal(testSite.siteId);
 		});
 	});
 
 
 	it('should correctly ignore a deleted site', async function ()
 	{
-		const result = await getSite(testDeletedSite?.siteId!);
+		const result = await getSite(testDeletedSite.siteId!);
 
 		expect(result).to.be.null;
 	});

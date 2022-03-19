@@ -27,7 +27,7 @@ describe('Get new site API', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 
 		testSite = await testUtils.insertTestSite(testWebring.ringId!,
 			testUser.userId!, {
@@ -55,7 +55,7 @@ describe('Get new site API', function ()
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 

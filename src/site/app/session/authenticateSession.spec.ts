@@ -44,7 +44,7 @@ describe('Authenticate User Session', function()
 
 
 	after(async function tearDown() {
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
 	});
 
 

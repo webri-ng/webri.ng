@@ -1,4 +1,3 @@
-import * as moment from 'moment';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';

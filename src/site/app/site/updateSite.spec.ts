@@ -24,7 +24,7 @@ describe('Add site to webring', function ()
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 		testSite = await testUtils.insertTestSite(testWebring.ringId!,
 			testUser.userId!);
 	});
@@ -32,7 +32,7 @@ describe('Add site to webring', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
 	});
 
 

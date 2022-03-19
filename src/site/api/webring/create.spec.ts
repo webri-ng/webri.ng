@@ -26,14 +26,14 @@ describe('Create Webring API', function ()
 	{
 		testUser = await testUtils.insertTestUser();
 		testUserSession = await sessionService.createSession(testUser);
-		testWebring = await testUtils.insertTestWebring(testUser?.userId!);
+		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 	});
 
 
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 

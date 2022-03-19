@@ -33,22 +33,22 @@ describe('Browse Webrings', function ()
 			const randomDays = Math.ceil(Math.random() * totalWebrings);
 			const dateCreated = dayjs().subtract(randomDays, 'days').toDate();
 
-			await testUtils.insertTestWebring(testUser?.userId!, {
+			await testUtils.insertTestWebring(testUser.userId!, {
 				private: i > (totalPublicWebrings - 1),
 				dateCreated
 			});
 		}
 
-		testDeletedWebring = await testUtils.insertTestWebring(testUser?.userId!, {
+		testDeletedWebring = await testUtils.insertTestWebring(testUser.userId!, {
 		});
-		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring?.ringId!);
+		testDeletedWebring = await webringService.deleteWebring(testDeletedWebring.ringId!);
 	});
 
 
 	after(async function afterTesting()
 	{
 		// Cascades to user's webrings.
-		testUser = await userService.deleteUser(testUser?.userId!);
+		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
 	it('should correctly return all webrings', async function ()
@@ -87,7 +87,7 @@ describe('Browse Webrings', function ()
 		expect(results.totalPages).to.equal(1);
 		expect(results.webrings).to.have.length(totalWebrings);
 		expect(results.webrings.find((webring) => {
-			return webring.ringId === testDeletedWebring.ringId
+			return webring.ringId === testDeletedWebring.ringId;
 		})).to.be.undefined;
 	});
 

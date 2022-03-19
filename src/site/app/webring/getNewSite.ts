@@ -1,6 +1,6 @@
 import { getWebring, GetWebringSearchField } from '.';
 import { webringNotFoundError } from '../../api/api-error-response';
-import { Site, UUID } from '../../model';
+import { Site } from '../../model';
 import { WebringNotFoundError } from '../error';
 import { getWebringSites } from './getWebringSites';
 
@@ -15,7 +15,7 @@ export enum GetNewSiteMethod {
  * Gets a 'new' site based upon the current index into the webring.
  * This allows a user to select the 'new' site, or 'previous', or a random site within
  * the webring.
- * @param {UUID} webringUrl - The url of the parent webring to get the next site of.
+ * @param {string} webringUrl - The url of the parent webring to get the next site of.
  * @param {GetNewSiteMethod} method - The 'method' to use for selecting the next site.
  * @param {number} [currentIndex] - The user's current index within the webring. This is
  * not required for getting a random site.

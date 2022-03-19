@@ -19,8 +19,8 @@ describe('User registration', function ()
 {
 	this.timeout(testUtils.defaultTestTimeout);
 
-	let testUser: User | null = null;
-	let testExistingUser: User | null = null;
+	let testUser: User;
+	let testExistingUser: User;
 
 	before(async function beforeTesting()
 	{
@@ -30,8 +30,8 @@ describe('User registration', function ()
 
 	after(async function tearDown()
 	{
-		await userService.deleteUser(testUser?.userId!);
-		await userService.deleteUser(testExistingUser?.userId!);
+		await userService.deleteUser(testUser.userId!);
+		await userService.deleteUser(testExistingUser.userId!);
 	});
 
 
