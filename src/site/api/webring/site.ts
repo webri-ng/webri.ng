@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { WebringNotFoundError } from '../../app/error';
-import { GetNewSiteMethod } from '../../app/webring';
+import { GetNewSiteMethod, GetWebringSearchField } from '../../app/webring';
 import { globalConfig } from '../../config';
+import { webringNotFoundError } from '../api-error-response';
 
 /**
  * Get next site controller.
@@ -33,7 +34,14 @@ import { globalConfig } from '../../config';
 	}
 
 	try {
-		const newSite = await webringService.getNewSite(webringUrl, newSiteMethod, currentIndex);
+		// Ensure that the specified webring exists.
+		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
+		if (!webring) {
+			throw new WebringNotFoundError(`Webring with url '${webringUrl}' cannot be found.`,
+				webringNotFoundError.code, webringNotFoundError.httpStatus);
+		}
+
+		const newSite = await webringService.getNewSite(webring, newSiteMethod, currentIndex);
 
 		return res.redirect(303, newSite.url);
 	} catch (err) {

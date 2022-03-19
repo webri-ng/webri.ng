@@ -8,6 +8,7 @@ import { Site, User, Webring } from '../../model';
 import { siteService, testUtils, userService } from '..';
 import { EntityManager, getManager } from 'typeorm';
 import { getWebringSites } from './getWebringSites';
+import { InvalidIdentifierError } from '../error';
 
 
 describe('Get Webring Sites', function ()
@@ -55,6 +56,9 @@ describe('Get Webring Sites', function ()
 		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
+	it('should throw an exception when passed an empty ringId', async function() {
+		return expect(getWebringSites('')).to.be.rejectedWith(InvalidIdentifierError);
+	});
 
 	it('should correctly get the sites for a webring', async function ()
 	{

@@ -1,27 +1,24 @@
 import { getRepository } from 'typeorm';
-import { getWebring, GetWebringSearchField } from '.';
 import { webringNotFoundError } from '../../api/api-error-response';
-import { Site, UUID } from '../../model';
+import { Site, UUID, Webring } from '../../model';
 import { WebringNotFoundError } from '../error';
 
 /**
  * Adds a new site to a wbebring.
  * This is where Site entities are created.
- * @param {UUID} webringId - The id of the webring to add the site to.
+ * @param {Webring} webring - The webring to add the site to.
  * @param {string} name - The name for the new site.
  * @param {string} url - The URL for the new site.
  * @param {UUID} addedBy - The id of the creating user.
  * @returns The newly created site.
  */
-export async function addNewSite(webringId: Readonly<UUID>,
+export async function addNewSite(webring: Readonly<Webring>,
 	name: Readonly<string>,
 	url: Readonly<string>,
 	addedBy: Readonly<UUID>): Promise<Site>
 {
-	// Ensure that the specified webring exists.
-	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
-	if (!webring) {
-		throw new WebringNotFoundError(`Webring with id '${webringId}' cannot be found.`,
+	if(!webring.ringId) {
+		throw new WebringNotFoundError(`The specified webring has not been serialised`,
 			webringNotFoundError.code, webringNotFoundError.httpStatus);
 	}
 
@@ -42,5 +39,5 @@ export async function addNewSite(webringId: Readonly<UUID>,
 	Site.validateName(normalisedName);
 
 	return getRepository(Site).save(new Site(normalisedName, normalisedUrl,
-		webringId, addedBy));
+		webring.ringId, addedBy));
 }

@@ -1,5 +1,7 @@
 import { EntityManager, FindManyOptions, getRepository, IsNull } from 'typeorm';
+import { invalidIdentifierError } from '../../api/api-error-response';
 import { Site, UUID } from '../../model';
+import { InvalidIdentifierError } from '../error';
 
 
 /** Additional options for the process. */
@@ -22,6 +24,11 @@ export type GetSitesOptions = {
 export async function getWebringSites(webringId: Readonly<UUID>,
 	options: Readonly<GetSitesOptions> = {}): Promise<Site[]>
 {
+	if(!webringId) {
+		throw new InvalidIdentifierError('The provided webring id is invalid',
+			invalidIdentifierError.code, invalidIdentifierError.httpStatus);
+	}
+
 	const searchConditions: FindManyOptions = {
 		where: {
 			parentWebringId: webringId,

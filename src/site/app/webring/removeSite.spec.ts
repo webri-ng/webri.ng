@@ -7,8 +7,9 @@ chai.use(chaiAsPromised);
 
 import { Site, User, Webring } from '../../model';
 import { removeSite } from '.';
-import { testUtils, userService, webringService } from '..';
+import { createRandomString, testUtils, userService, webringService } from '..';
 import { deleteSite } from '../site';
+import { createRandomWebringUrl } from '../testUtils';
 
 
 describe('Remove webring site', function() {
@@ -17,6 +18,7 @@ describe('Remove webring site', function() {
 	let testUser: User;
 	let testWebring: Webring;
 	let testWebring2: Webring;
+	let nonSerialisedWebring: Webring;
 
 	let testSite: Site;
 	let testSite2: Site;
@@ -27,6 +29,8 @@ describe('Remove webring site', function() {
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
+		nonSerialisedWebring = new Webring(createRandomString(), createRandomString(),
+			createRandomWebringUrl(), false, testUser.userId!);
 
 		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
 		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
@@ -42,56 +46,44 @@ describe('Remove webring site', function() {
 		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
-
-	it('should throw an exception when passed an empty ringId', async function() {
-		return expect(removeSite('', testSite.siteId!))
-			.to.be.rejectedWith(InvalidIdentifierError);
-	});
-
-
-	it('should throw an exception when passed an invalid ringId', async function() {
-		return expect(removeSite(testUtils.invalidUuid, testSite.siteId!))
-			.to.be.rejectedWith(InvalidIdentifierError);
-	});
-
-
-	it('should throw an exception when passed a nonexistent ringId', async function() {
-		return expect(removeSite(testUtils.dummyUuid, testSite.siteId!))
-			.to.be.rejectedWith(WebringNotFoundError);
+	it('should raise an exception if a non-serialised webring is provided', async function()
+	{
+		return expect(removeSite(nonSerialisedWebring,
+			testSite3.siteId!)).to.be.rejectedWith(InvalidIdentifierError);
 	});
 
 
 	it('should throw an exception when passed a nonexistent siteId', async function() {
-		return expect(removeSite(testWebring.ringId!, testUtils.dummyUuid))
+		return expect(removeSite(testWebring, testUtils.dummyUuid))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 
 
 	it('should throw an exception when passed an empty siteId', async function() {
-		return expect(removeSite(testWebring.ringId!, ''))
+		return expect(removeSite(testWebring, ''))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 
 
 	it('should throw an exception when passed an invalid siteId', async function() {
-		return expect(removeSite(testWebring.ringId!, testUtils.invalidUuid))
+		return expect(removeSite(testWebring, testUtils.invalidUuid))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 
 
 	it('should throw an exception when passed a site from another webring', async function() {
-		return expect(removeSite(testWebring.ringId!, testSite3.siteId!))
+		return expect(removeSite(testWebring, testSite3.siteId!))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 
 
 	it('should throw an exception when passed a deleted site', async function() {
-		return expect(removeSite(testWebring2.ringId!, testSite4.siteId!))
+		return expect(removeSite(testWebring2, testSite4.siteId!))
 			.to.be.rejectedWith(SiteNotFoundError);
 	});
 
 	it('should correctly remove a site from a webring', async function() {
-		testSite = await removeSite(testWebring.ringId!, testSite.siteId!);
+		testSite = await removeSite(testWebring, testSite.siteId!);
 
 		const testWebringSites = await webringService.getWebringSites(testWebring.ringId!);
 		expect(testWebringSites).to.have.length(1);
