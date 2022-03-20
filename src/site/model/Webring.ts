@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Tag, UUID } from '.';
+import { Tag, User, UUID } from '.';
 import { invalidRingNameError, invalidRingNameTooLongError, invalidRingNameTooShortError,
 	invalidRingUrlError, invalidRingUrlTooLongError,
 	invalidRingUrlTooShortError } from '../api/api-error-response';
@@ -80,6 +80,23 @@ export class Webring
 		}
 	})
 	public tags!: Tag[];
+
+	/**
+	 * The non-owner moderators of this webring.
+	 */
+	@ManyToMany(type => User)
+	@JoinTable({
+		name: 'ring_moderator',
+		joinColumn: {
+			name: 'ring_id',
+			referencedColumnName: 'ringId'
+		},
+		inverseJoinColumn: {
+			name: 'user_id',
+			referencedColumnName: 'userId'
+		}
+	})
+	public moderators!: User[];
 
 	constructor(_name: Readonly<string>,
 		_description: Readonly<string>,

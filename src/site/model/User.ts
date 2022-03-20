@@ -1,12 +1,12 @@
 import * as dayjs from 'dayjs';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { InvalidEmailError, InvalidPasswordError, InvalidUsernameError } from '../app/error';
 import { invalidEmailAddressError, invalidNewPasswordTooLongError,
 	invalidNewPasswordTooShortError, invalidNewPasswordError, invalidUsernameError,
 	invalidUsernameTooLongError, invalidUsernameTooShortError, invalidUsernameCharacters
 } from '../api/api-error-response';
 import { userConfig } from '../config';
-import { UUID } from '.';
+import { UUID, Webring } from '.';
 
 @Entity('user_account')
 export class User
@@ -89,6 +89,20 @@ export class User
 		nullable: true
 	})
 	public dateModified: Date;
+
+	@ManyToMany(type => Webring)
+	@JoinTable({
+		name: 'ring_moderator',
+		joinColumn: {
+			name: 'user_id',
+			referencedColumnName: 'userId'
+		},
+		inverseJoinColumn: {
+			name: 'ring_id',
+			referencedColumnName: 'ringId'
+		}
+	})
+	public moderatedWebrings!: Promise<Webring[]>;
 
 	constructor(_username: Readonly<string>,
 		_email: Readonly<string>,
