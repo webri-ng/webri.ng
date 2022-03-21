@@ -1,3 +1,4 @@
+import { userService } from "..";
 import { requestAuthorisationFailedError } from "../../api/api-error-response";
 import { User, Webring } from "../../model";
 import { RingActionNotAuthorisedError } from "../error";
@@ -14,7 +15,7 @@ import { RingActionNotAuthorisedError } from "../error";
 export async function authoriseWebringModeratorAction(webring:Readonly<Webring>,
 	user:Readonly<User>):Promise<void>
 {
-	const moderatedWebrings = await user.moderatedWebrings;
+	const moderatedWebrings = await userService.getModeratedWebrings(user);
 	// If the webring being actioned upon is in the list of webrings that this
 	if(moderatedWebrings.find(moderatedWebring => moderatedWebring.ringId === webring.ringId)) {
 		return;
