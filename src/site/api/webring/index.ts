@@ -9,6 +9,7 @@ import { GetWebringSearchField } from '../../app/webring';
 import { authenticateSessionController } from '../authenticateSessionController';
 import { genericViewController } from '../genericViewController';
 import { validateRequestBody } from '../validateRequestBody';
+import { addNewSiteController, addNewSiteRequestSchema } from './addNewSite';
 import { createWebringController, createWebringRequestSchema } from './create';
 import { getNewSiteController } from './site';
 
@@ -19,6 +20,11 @@ webringApiRouter.post('/',
 	authenticateSessionController,
 	validateRequestBody(createWebringRequestSchema),
 	createWebringController);
+
+webringApiRouter.post('/:webringUrl/add',
+	authenticateSessionController,
+	validateRequestBody(addNewSiteRequestSchema),
+	addNewSiteController);
 
 webringViewRouter.get('/new', genericViewController('webring/new'));
 
