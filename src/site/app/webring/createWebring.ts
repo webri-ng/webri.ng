@@ -78,5 +78,8 @@ export async function createWebring(name: Readonly<string>,
 		newWebring.tags.push(tag);
 	}
 
+	// Initialise the webring's moderators.
+	newWebring.moderators = [];
+
 	return getRepository(Webring).save(newWebring);
 }

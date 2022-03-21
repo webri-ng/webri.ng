@@ -1,4 +1,4 @@
-import { Tag, UUID, Webring } from '../../model';
+import { Tag, User, UUID, Webring } from '../../model';
 import { getRepository } from 'typeorm';
 import { createRandomString } from '../util';
 
@@ -9,6 +9,7 @@ export type InsertTestWebringOptions = {
 	url?: Readonly<string>
 	private?: Readonly<boolean>,
 	tags?: Tag[],
+	moderators?: User[];
 	dateCreated?: Date;
 	dateModified?: Date;
 }
@@ -32,6 +33,7 @@ export async function insertTestWebring(createdBy: Readonly<UUID>,
 	newWebring.dateModified = options.dateModified || newWebring.dateCreated;
 
 	newWebring.tags = options.tags || [];
+	newWebring.moderators = options.moderators || [];
 
 	return getRepository(Webring).save(newWebring);
 }

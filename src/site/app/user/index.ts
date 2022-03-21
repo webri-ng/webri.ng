@@ -4,6 +4,7 @@
  */
 
 export * from './deleteUser';
+export * from './getModeratedWebrings';
 export * from './getUser';
 export * from './login';
 export * from './register';
