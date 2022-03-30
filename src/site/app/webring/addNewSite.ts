@@ -17,7 +17,7 @@ export async function addNewSite(webring: Readonly<Webring>,
 	url: Readonly<string>,
 	addedBy: Readonly<UUID>): Promise<Site>
 {
-	if(!webring.ringId) {
+	if (!webring.ringId) {
 		throw new WebringNotFoundError(`The specified webring has not been serialised`,
 			webringNotFoundError.code, webringNotFoundError.httpStatus);
 	}

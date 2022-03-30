@@ -74,7 +74,7 @@ describe("Get user's moderated webrings", function ()
 	});
 
 
-	it("should ignore deleted webrings", async function ()
+	it('should ignore deleted webrings', async function ()
 	{
 		const moderatedWebrings = await getModeratedWebrings(testUser4);
 

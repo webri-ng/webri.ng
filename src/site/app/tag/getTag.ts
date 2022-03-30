@@ -45,7 +45,9 @@ export async function getTag(searchField: Readonly<GetTagSearchField>,
 		}
 
 		searchConditions.name = identifier;
-	} else if (searchField === GetTagSearchField.TagId) {
+	}
+
+	if (searchField === GetTagSearchField.TagId) {
 		if (!uuid.validate(identifier)) {
 			throw new InvalidIdentifierError('The provided tag id is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);

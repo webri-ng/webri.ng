@@ -24,7 +24,7 @@ export type GetSitesOptions = {
 export async function getWebringSites(webringId: Readonly<UUID>,
 	options: Readonly<GetSitesOptions> = {}): Promise<Site[]>
 {
-	if(!webringId) {
+	if (!webringId) {
 		throw new InvalidIdentifierError('The provided webring id is invalid',
 			invalidIdentifierError.code, invalidIdentifierError.httpStatus);
 	}
