@@ -4,12 +4,10 @@
  */
 
 /**
- * @interface
  * API Error Response type.
  * Contains the details necessary to create an API handled exception.
  */
-export interface ApiErrorResponseDetails
-{
+export type ApiErrorResponseDetails = {
 	/** The API response HTTP status. */
 	httpStatus: number;
 	/** The API 'error code'. */
