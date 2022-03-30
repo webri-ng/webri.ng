@@ -36,6 +36,14 @@ describe('Authorise webring moderator action', function ()
 	});
 
 
+	it('should raise an exception when passed an undefined user',
+		async function ()
+	{
+		return expect(authoriseWebringModeratorAction(testWebring, undefined))
+			.to.be.rejectedWith(RingActionNotAuthorisedError);
+	});
+
+
 	it('should raise an exception when passed a user without rights to moderate the webring',
 		async function ()
 	{
