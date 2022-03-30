@@ -1,6 +1,6 @@
-import { requestAuthorisationFailedError } from "../../api/api-error-response";
-import { User, Webring } from "../../model";
-import { RingActionNotAuthorisedError } from "../error";
+import { requestAuthorisationFailedError } from '../../api/api-error-response';
+import { User, Webring } from '../../model';
+import { RingActionNotAuthorisedError } from '../error';
 
 /**
  * Performs an authorisation check on a webring, testing whether the actioning user
@@ -11,10 +11,10 @@ import { RingActionNotAuthorisedError } from "../error";
  * @param user The user acting upon the webring.
  * @throws {RingActionNotAuthorisedError} If the action is not authorised.
  */
-export async function authoriseWebringOwnerAction(webring:Readonly<Webring>,
-	user:Readonly<User>):Promise<void>
+export function authoriseWebringOwnerAction(webring: Readonly<Webring>,
+	user: Readonly<User>): void
 {
-	if(webring.createdBy !== user.userId) {
+	if (webring.createdBy !== user.userId) {
 		throw new RingActionNotAuthorisedError(requestAuthorisationFailedError.message,
 			requestAuthorisationFailedError.code, requestAuthorisationFailedError.httpStatus);
 	}

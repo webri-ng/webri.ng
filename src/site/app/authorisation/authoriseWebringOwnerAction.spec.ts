@@ -34,13 +34,16 @@ describe('Authorise webring owner action', function ()
 
 	it('should raise an exception when passed a user that did not create the webring', async function ()
 	{
-		return expect(authoriseWebringOwnerAction(testWebring, testUser2))
-			.to.be.rejectedWith(RingActionNotAuthorisedError);
+		return expect(() => {
+			authoriseWebringOwnerAction(testWebring, testUser2);
+		}).to.throw(RingActionNotAuthorisedError);
 	});
 
 
 	it('should not raise an exception when passed a user that created the webring', async function ()
 	{
-		return expect(authoriseWebringOwnerAction(testWebring, testUser)).to.not.be.rejected;
+		return expect(() => {
+			authoriseWebringOwnerAction(testWebring, testUser);
+		}).to.not.throw();
 	});
 });

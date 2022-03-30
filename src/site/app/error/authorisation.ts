@@ -1,3 +1,5 @@
-export class RingActionNotAuthorisedError extends Error {}
+import { ApiReturnableError } from '.';
 
-export class InvalidAccountPrivilegesError extends Error {}
+export class RingActionNotAuthorisedError extends ApiReturnableError {}
+
+export class InvalidAccountPrivilegesError extends ApiReturnableError {}

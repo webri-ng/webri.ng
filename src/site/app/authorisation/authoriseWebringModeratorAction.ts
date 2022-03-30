@@ -1,7 +1,7 @@
-import { userService } from "..";
-import { requestAuthorisationFailedError } from "../../api/api-error-response";
-import { User, Webring } from "../../model";
-import { RingActionNotAuthorisedError } from "../error";
+import { webringService } from '..';
+import { requestAuthorisationFailedError } from '../../api/api-error-response';
+import { User, Webring } from '../../model';
+import { RingActionNotAuthorisedError } from '../error';
 
 /**
  * Performs an authorisation check on a webring, testing whether the actioning user
@@ -12,16 +12,16 @@ import { RingActionNotAuthorisedError } from "../error";
  * @param user The user acting upon the webring.
  * @throws {RingActionNotAuthorisedError} If the action is not authorised.
  */
-export async function authoriseWebringModeratorAction(webring:Readonly<Webring>,
-	user:Readonly<User>):Promise<void>
+export async function authoriseWebringModeratorAction(webring: Readonly<Webring>,
+	user: Readonly<User|undefined>): Promise<void>
 {
-	const moderatedWebrings = await userService.getModeratedWebrings(user);
-	// If the webring being actioned upon is in the list of webrings that this
-	if(moderatedWebrings.find(moderatedWebring => moderatedWebring.ringId === webring.ringId)) {
-		return;
+	if(!user) {
+		throw new RingActionNotAuthorisedError(requestAuthorisationFailedError.message,
+			requestAuthorisationFailedError.code, requestAuthorisationFailedError.httpStatus);
 	}
 
-	if(webring.createdBy !== user.userId) {
+	const isUserModerator = await webringService.isUserWebringModerator(webring, user);
+	if (!isUserModerator) {
 		throw new RingActionNotAuthorisedError(requestAuthorisationFailedError.message,
 			requestAuthorisationFailedError.code, requestAuthorisationFailedError.httpStatus);
 	}
