@@ -12,4 +12,5 @@ export * from './getWebring';
 export * from './getWebringSites';
 export * from './isUserWebringModerator';
 export * from './removeSite';
+export * from './updateWebring';
 export * from './search';
