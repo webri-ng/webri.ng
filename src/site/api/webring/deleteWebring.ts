@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger, webringService } from '../../app';
 import { authoriseWebringOwnerAction } from '../../app/authorisation';
+import { WebringNotFoundError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
+import { webringNotFoundError } from '../api-error-response';
 
 /**
  * Delete webring controller.
@@ -20,7 +22,8 @@ export async function deleteWebringController(req: Request,
 
 		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
 		if (!webring) {
-			return res.status(404).end();
+			throw new WebringNotFoundError(webringNotFoundError.message,
+				webringNotFoundError.code, webringNotFoundError.httpStatus);
 		}
 
 		// Check the authorisation for this action. Only the webring's creator is

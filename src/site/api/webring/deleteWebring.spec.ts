@@ -8,9 +8,9 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { Session, User, Webring } from '../../model';
 import { sessionService, testUtils, userService } from '../../app';
 import { app } from '../../index';
-import { invalidRingNameTooLongError, invalidRingNameTooShortError,
-	invalidRingUrlNotUniqueError, invalidRingUrlTooLongError, invalidRingUrlTooShortError,
-	requestAuthenticationFailedError, requestAuthorisationFailedError, tooManyTagsError } from '../api-error-response';
+import { requestAuthenticationFailedError,
+	requestAuthorisationFailedError,
+	webringNotFoundError} from '../api-error-response';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
@@ -62,6 +62,23 @@ describe('Delete Webring API', function ()
 				expect(res.body).to.have.property('error');
 				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
 
+				done();
+			});
+	});
+
+
+	it('should reject a request with an unknown URL', function(done) {
+		chai.request(app)
+			.delete(`/webring/nonexistenturl`)
+			.set('Cookie', `session=${testUserSession.sessionId}`)
+			.send()
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(webringNotFoundError.httpStatus);
+				expect(res.body).to.have.property('code');
+				expect(res.body.code).to.equal(webringNotFoundError.code);
+				expect(res.body).to.have.property('error');
+				expect(res.body.error).to.equal(webringNotFoundError.message);
 				done();
 			});
 	});
