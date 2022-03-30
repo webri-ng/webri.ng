@@ -39,7 +39,7 @@ export async function addNewSiteController(req: Request,
 		const { user } = res.locals;
 
 		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
-		if(!webring) {
+		if (!webring) {
 			throw new WebringNotFoundError(`Webring with id '${webringUrl}' cannot be found.`,
 				webringNotFoundError.code, webringNotFoundError.httpStatus);
 		}
@@ -50,12 +50,12 @@ export async function addNewSiteController(req: Request,
 
 		const newSite = await webringService.addNewSite(webring, name, url, user.userId);
 
-		logger.info(`User '${user.userId}' added new site '${newSite.url}' to webring '${webringUrl}'`);
+		logger.info(`User '${user.userId}' added site '${newSite.url}' to webring '${webringUrl}'`);
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.
 		res.json({
-			url: webring.url
+			url: `/webring/${webring.url}`
 		});
 	} catch (err) {
 		return next(err);

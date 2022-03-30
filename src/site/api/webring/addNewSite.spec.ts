@@ -174,7 +174,7 @@ describe('Add new site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 				expect(res.body).to.have.property('url');
-				expect(res.body.url).to.equal(testWebring.url);
+				expect(res.body.url).to.equal(`/webring/${testWebring.url}`);
 				done();
 			});
 	});
@@ -195,7 +195,7 @@ describe('Add new site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 				expect(res.body).to.have.property('url');
-				expect(res.body.url).to.equal(testWebring.url);
+				expect(res.body.url).to.equal(`/webring/${testWebring.url}`);
 				done();
 			});
 	});
