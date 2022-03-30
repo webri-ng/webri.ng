@@ -237,7 +237,7 @@ describe('Create Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 				expect(res.body).to.have.property('url');
-				expect(res.body.url).to.equal(newWebringUrl);
+				expect(res.body.url).to.equal(`/webring/${newWebringUrl}`);
 				done();
 			});
 	});
