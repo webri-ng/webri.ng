@@ -8,7 +8,8 @@ import { createRandomString, sessionService, testUtils, userService } from '../.
 import { app } from '../../index';
 import { invalidSiteNameTooLongError, invalidSiteNameTooShortError,
 	requestAuthenticationFailedError, requestAuthorisationFailedError,
-	requestValidationError } from '../api-error-response';
+	requestValidationError,
+	webringNotFoundError} from '../api-error-response';
 import { siteConfig } from '../../config';
 
 chai.use(chaiAsPromised);
@@ -65,6 +66,26 @@ describe('Add new site API', function ()
 				expect(res.body).to.have.property('error');
 				expect(res.body.error).to.equal(requestValidationError.message);
 
+				done();
+			});
+	});
+
+
+	it('should reject a request with an unknown URL', function(done) {
+		chai.request(app)
+			.post(`/webring/nonexistenturl/add`)
+			.set('Cookie', `session=${testUserSession.sessionId}`)
+			.send({
+				name: createRandomString(),
+				url: testUtils.createRandomSiteUrl()
+			})
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(webringNotFoundError.httpStatus);
+				expect(res.body).to.have.property('code');
+				expect(res.body.code).to.equal(webringNotFoundError.code);
+				expect(res.body).to.have.property('error');
+				expect(res.body.error).to.equal(webringNotFoundError.message);
 				done();
 			});
 	});

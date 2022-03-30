@@ -40,7 +40,7 @@ export async function addNewSiteController(req: Request,
 
 		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
 		if (!webring) {
-			throw new WebringNotFoundError(`Webring with id '${webringUrl}' cannot be found.`,
+			throw new WebringNotFoundError(webringNotFoundError.message,
 				webringNotFoundError.code, webringNotFoundError.httpStatus);
 		}
 
