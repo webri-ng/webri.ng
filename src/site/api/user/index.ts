@@ -4,8 +4,9 @@ import { genericViewController } from '../genericViewController';
 import { validateRequestBody } from '../validateRequestBody';
 import { loginController, loginRequestSchema } from './login';
 import { logoutViewController } from './logout';
-import { profileViewController } from './profile';
+import { profileViewController } from './profileView';
 import { registerController, registrationRequestSchema } from './register';
+import { updateUserController, updateUserRequestSchema } from './update';
 
 /** Express Router for handling REST requests. */
 export const userApiRouter: Router = Router();
@@ -19,6 +20,11 @@ userApiRouter.post('/login',
 userApiRouter.post('/register',
 	validateRequestBody(registrationRequestSchema),
 	registerController);
+
+userApiRouter.patch('/',
+	authenticateSessionController,
+	validateRequestBody(updateUserRequestSchema),
+	updateUserController);
 
 userViewRouter.get('/',
 	authenticateSessionController,
