@@ -1,5 +1,5 @@
 html {
-	background-color: #FDFDFD;
+	background-color: #777;
 }
 
 body {
@@ -7,9 +7,7 @@ body {
 	box-sizing: border-box;
 	font-family: Arial, "Liberation sans", sans-serif;
 	margin: 0 auto;
-	padding: 1rem;
 	width: 800px;
-	height: 100%;
 }
 
 body > header {
@@ -32,20 +30,79 @@ body > header h1 {
 	font-weight: 700;
 	margin: 0.6rem;
 	letter-spacing: 0.25rem;
+	background-color: mediumpurple;
+	display: inline-block;
+	padding: 0.4rem 1rem;
 }
 
 body > header #logged-in-as {
 	font-size: 0.8rem;
+	margin: 0.4rem 0;
 }
 
 body > header nav {
-	padding: 0.2rem;
+	padding: 1rem;
+	background-color: gainsboro;
 }
 
 body > header nav a {
-	padding: 0.2rem 0.4rem;;
+	padding: 0.2rem 0.4rem;
+	background-color: mediumpurple;
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+}
+
+body > .body {
+	padding: 1rem;
 }
 
 form .error-message {
 	color: red;
+}
+
+.webring-list {
+	list-style: none;
+	padding: 0;
+}
+
+.webring-list li {
+	margin-bottom: 1rem;
+}
+
+.webring-list li a.webring-name {
+	font-weight: bold;
+}
+
+.webring-list li a.webring-name:hover {
+	text-decoration: underline;
+}
+
+.webring-list-navigation {
+	margin-bottom: 1rem;
+}
+
+.webring-list-navigation a {
+	text-decoration: none;
+	margin-right: 0.5rem;
+}
+
+.webring-list-navigation a:hover {
+	text-decoration: underline;
+}
+
+.webring-controls {
+	margin-bottom: 1rem;
+}
+
+.webring-controls a {
+	padding: 0.2rem 0.4rem;
+	background-color: mediumpurple;
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+	color: black;
+	text-decoration: none;
+}
+
+.webring-controls a:hover {
+	text-decoration: underline;
 }
