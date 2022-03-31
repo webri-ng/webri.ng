@@ -52,7 +52,7 @@ export async function createWebringController(req: Request,
 
 		// The redirect redirect implementation is problematic. So simply return the new
 		// webring URL, and perform the redirect on the front-end.
-		res.json({
+		return res.json({
 			url: `/webring/${newWebring.url}`
 		});
 	} catch (err) {

@@ -35,7 +35,7 @@ export async function deleteWebringController(req: Request,
 
 		await webringService.deleteWebring(webring.ringId!);
 
-		res.end();
+		return res.end();
 	} catch (err) {
 		return next(err);
 	}
