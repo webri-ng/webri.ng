@@ -1,15 +1,15 @@
-/user/login
-/user/register
+x /user/login
+x /user/register
 /user/update
 /user/reset-password
 /user/update-password
-/webring (POST)
-/webring/${url} (GET)
-/webring/${url} (DELETE)
-/webring/${url} (PATCH)
-/webring/${url}/random
-/webring/${url}/next
-/webring/${url}/previous
-/webring/${url}/add-site
+x /webring (POST)
+x /webring/${url} (GET)
+x /webring/${url} (DELETE)
+x /webring/${url} (PATCH)
+x /webring/${url}/random
+x /webring/${url}/next
+x /webring/${url}/previous
+x /webring/${url}/add-site
 /webring/${url}/remove-site
 /webring/${url}/search
