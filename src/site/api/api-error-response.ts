@@ -312,3 +312,10 @@ export const invalidSiteIndexError: ApiErrorResponseDetails = {
 	code: 'err-invalid-site-index',
 	message: 'The specified site index is invalid'
 };
+
+/** Error when a site already exists in a webring. */
+export const siteAlreadyExistsError: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-site-already-exists',
+	message: 'A site with the URL specified already exists in this webring'
+};

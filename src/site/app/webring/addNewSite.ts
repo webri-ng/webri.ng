@@ -1,7 +1,8 @@
 import { getRepository } from 'typeorm';
-import { webringNotFoundError } from '../../api/api-error-response';
+import { webringService } from '..';
+import { siteAlreadyExistsError, webringNotFoundError } from '../../api/api-error-response';
 import { Site, UUID, Webring } from '../../model';
-import { WebringNotFoundError } from '../error';
+import { SiteAlreadyExistsError, WebringNotFoundError } from '../error';
 
 /**
  * Adds a new site to a wbebring.
@@ -37,6 +38,14 @@ export async function addNewSite(webring: Readonly<Webring>,
 	const normalisedName = Site.normaliseName(name);
 	// Validate the normalised site name. Raises an exception on validation failure.
 	Site.validateName(normalisedName);
+
+	const existingSites = await webringService.getWebringSites(webring.ringId);
+	if(existingSites.find(site => {
+		return site.url === normalisedUrl;
+	})) {
+		throw new SiteAlreadyExistsError(siteAlreadyExistsError.message,
+			siteAlreadyExistsError.code, siteAlreadyExistsError.httpStatus);
+	}
 
 	return getRepository(Site).save(new Site(normalisedName, normalisedUrl,
 		webring.ringId, addedBy));

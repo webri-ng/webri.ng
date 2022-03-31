@@ -6,7 +6,7 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { User, Webring } from '../../model';
 import { userService, testUtils } from '../';
 import { createRandomString } from '../util';
-import { InvalidSiteNameError, InvalidSiteUrlError, WebringNotFoundError } from '../error';
+import { InvalidSiteNameError, InvalidSiteUrlError, SiteAlreadyExistsError, WebringNotFoundError } from '../error';
 import { siteConfig } from '../../config';
 import { addNewSite } from './addNewSite';
 import { createRandomWebringUrl } from '../testUtils';
@@ -99,6 +99,20 @@ describe('Add site to webring', function ()
 		expect(dayjs(testSite.dateCreated).isSame(new Date(), 'hour')).to.be.true;
 		expect(dayjs(testSite.dateModified).isSame(new Date(), 'hour')).to.be.true;
 		expect(testSite.dateDeleted).to.be.null;
+	});
+
+
+	it('should raise an exception if a site with the same URL already exists ' +
+		'in this webring', async function()
+	{
+		const name = createRandomString();
+		const url = testUtils.createRandomSiteUrl();
+
+		const testSite = await addNewSite(testWebring,
+			name, url, testUser.userId!);
+
+		return expect(addNewSite(testWebring, testSite.name, testSite.url,
+			testUser.userId!)).to.be.rejectedWith(SiteAlreadyExistsError);
 	});
 
 

@@ -11,3 +11,5 @@ export class RingUrlNotUniqueError extends ApiReturnableError { }
 export class TooManyTagsError extends ApiReturnableError { }
 
 export class InvalidSiteIndexError extends ApiReturnableError { }
+
+export class SiteAlreadyExistsError extends ApiReturnableError { }
