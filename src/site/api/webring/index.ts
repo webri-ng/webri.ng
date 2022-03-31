@@ -3,15 +3,18 @@
  * Webring API.
  */
 
-import { Router, NextFunction, Request, Response } from 'express';
-import { webringService } from '../../app';
-import { GetWebringSearchField } from '../../app/webring';
+import { Router } from 'express';
 import { authenticateSessionController } from '../authenticateSessionController';
 import { genericViewController } from '../genericViewController';
 import { validateRequestBody } from '../validateRequestBody';
 import { addNewSiteController, addNewSiteRequestSchema } from './addNewSite';
+import { addNewSiteViewController } from './addNewSiteView';
 import { createWebringController, createWebringRequestSchema } from './create';
+import { deleteWebringController } from './deleteWebring';
+import { removeSiteController, removeSiteRequestSchema } from './removeSite';
 import { getNewSiteController } from './site';
+import { updateWebringController, updateWebringRequestSchema } from './updateWebring';
+import { webringDetailViewController } from './webringDetailView';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -26,32 +29,27 @@ webringApiRouter.post('/:webringUrl/add',
 	validateRequestBody(addNewSiteRequestSchema),
 	addNewSiteController);
 
+webringApiRouter.post('/:webringUrl/remove',
+	authenticateSessionController,
+	validateRequestBody(removeSiteRequestSchema),
+	removeSiteController);
+
+webringApiRouter.patch('/:webringUrl',
+	authenticateSessionController,
+	validateRequestBody(updateWebringRequestSchema),
+	updateWebringController);
+
+webringApiRouter.delete('/:webringUrl',
+	authenticateSessionController,
+	deleteWebringController);
+
+
 webringViewRouter.get('/new', genericViewController('webring/new'));
 
-webringViewRouter.get('/:webringUrl', webringViewController);
+webringViewRouter.get('/:webringUrl', webringDetailViewController);
+
 webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteController);
 
-
-export async function webringViewController(req: Request,
-	res: Response,
-	next: NextFunction): Promise<void>
-{
-	try {
-		const { user } = res.locals;
-		const { webringUrl } = req.params;
-
-		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
-		if (!webring) {
-			return res.render('webring/notFound', {
-				user
-			});
-		}
-
-		return res.render('webring/webring', {
-			user,
-			webring
-		});
-	} catch (err) {
-		return next(err);
-	}
-}
+webringViewRouter.get('/:webringUrl/add',
+	authenticateSessionController,
+	addNewSiteViewController);

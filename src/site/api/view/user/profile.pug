@@ -1,20 +1,9 @@
 include ../include/page.pug
-h2 Profile
-div 
-	| Hello #{user.username}
+div.body
+	h2 Profile
+	| Hello #{user.username}, welcome back!
 
 	h3 Webrings
-	ul.webring-list
-		each webring in webrings
-			li 
-				a(href='/webring/' + webring.url).webring-name #{webring.name}
-				div #{webring.description}
-
-	if totalPages > 1
-		if currentPage > 1
-			a(href='/user?page=' + previousPageNumber) Previous
-		if currentPage < totalPages
-			a(href='/user?page=' + nextPageNumber) Next
-
+	include ../include/webring_list.pug
 	div
-		button(type='button', onclick="insertRandomWebrings()") Insert
+		button(type='button', onclick="insertRandomWebrings()") Insert Test Webrings

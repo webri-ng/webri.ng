@@ -1,21 +1,19 @@
 header
 	a(href='/')
 		h1 webri.ng
-	
-	if user
-		div#logged-in-as
+
+	div#logged-in-as
+		if user
 			| Logged in as 
 			a(href='/user') #{user.username}
 			| , 
 			a(href='/user/logout') logout?
-	else 
-		a(href='/user/login') Login
-		| |
-		a(href='/user/register') Register
-	hr
+		else 
+			a(href='/user/login') Login
+			| |
+			a(href='/user/register') Register
 	nav
 		if user
 			a(href='/webring/new') New
 		a(href='/about') About
 		a(href='/contact') Contact
-	hr

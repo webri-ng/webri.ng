@@ -1,18 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../app';
-import { SearchWebringsMethod } from '../app/webring';
-import { User, Webring } from '../model';
-
-interface IndexViewData {
-	webrings: Webring[]
-}
-
-export async function getIndexViewData(): Promise<IndexViewData>
-{
-	return {
-		webrings: []
-	};
-}
+import { SearchWebringsSort } from '../app/webring';
 
 /**
  * Index view controller.
@@ -25,16 +13,25 @@ export async function indexViewController(req: Request,
 	res: Response,
 	next: NextFunction): Promise<Response|void>
 {
-	try {
-		const { user } = res.locals;
+	const { user } = res.locals;
+	const { page } = req.query;
 
-		const viewData = await getIndexViewData();
-
-		return res.render('index', {
-			...viewData,
-			user
-		});
-	} catch (err) {
-		return next(err);
+	let pageNumber = 1;
+	if (page) {
+		pageNumber = parseInt(page.toString());
 	}
+
+	const webringIndex = await webringService.browse({
+		page: pageNumber,
+		sortBy: SearchWebringsSort.Modified
+	});
+
+	return res.render('index', {
+		user,
+		currentPage: webringIndex.currentPage,
+		totalPages: webringIndex.totalPages,
+		nextPageNumber: webringIndex.currentPage + 1,
+		previousPageNumber: webringIndex.currentPage - 1,
+		webrings: webringIndex.webrings
+	});
 }

@@ -1,3 +1,9 @@
 include ../include/page.pug
-h2 Webring
-div #{webring.name}
+div.body
+	h2 #{webring.name}
+	if isUserModerator
+		div.webring-controls
+			a(href='/webring/' + webring.url + '/add') Add New Site
+			if isUserOwner
+				a(href='/webring/' + webring.url + '/delete') Delete Webring
+	div.detail-descripion #{webring.description}

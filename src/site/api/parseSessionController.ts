@@ -16,6 +16,8 @@ export async function parseSessionController(req: Request,
 	next: NextFunction): Promise<Response|void>
 {
 	try {
+		// If there is no session cookie set, return without an error to continue processing
+		// the request without setting any session information.
 		if (!req.cookies?.session) {
 			return next(null);
 		}

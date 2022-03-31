@@ -1,0 +1,14 @@
+include ../include/page.pug
+div.body
+	h2 Add Site to Webring
+	form#add-new-site-form
+		input#url(type='hidden' name="webringUrl" value=webring.url)
+		div
+			label(for='name') Site Name: 
+			input#name(type='text' name='name' minlength=2 maxlength=80 required='')
+		div
+			label(for='url') Site URL: 
+			input#url(type='text' name='url' required='')
+		button(type='button', onclick="addNewSite()")
+			| Add Site
+		div#add-new-site-error-message.error-message

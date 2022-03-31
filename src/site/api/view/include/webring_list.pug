@@ -1,0 +1,16 @@
+ul.webring-list
+	each webring in webrings
+		li 
+			a(href='/webring/' + webring.url).webring-name #{webring.name}
+			div.description
+				if webring.description.length > 80
+					| #{webring.description.substring(0, 80)}...
+				else
+					| #{webring.description}
+
+div.webring-list-navigation
+	if totalPages > 1
+		if currentPage > 1
+			a(href='/user?page=' + previousPageNumber) Previous Page
+		if currentPage < totalPages
+			a(href='/user?page=' + nextPageNumber) Next Page
