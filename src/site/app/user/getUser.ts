@@ -46,14 +46,18 @@ export async function getUser(searchField: Readonly<GetUserSearchField>,
 		}
 
 		searchConditions.email = identifier;
-	} else if (searchField === GetUserSearchField.UserId) {
+	}
+
+	if (searchField === GetUserSearchField.UserId) {
 		if (!uuid.validate(identifier)) {
 			throw new InvalidIdentifierError('The provided user id is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
 		}
 
 		searchConditions.userId = identifier;
-	} else if (searchField === GetUserSearchField.Username) {
+	}
+
+	if (searchField === GetUserSearchField.Username) {
 		if (!identifier) {
 			throw new InvalidIdentifierError('The provided username is invalid',
 				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
