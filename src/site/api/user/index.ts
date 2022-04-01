@@ -6,6 +6,7 @@ import { loginController, loginRequestSchema } from './login';
 import { logoutViewController } from './logout';
 import { profileViewController } from './profileView';
 import { registerController, registrationRequestSchema } from './register';
+import { resetPasswordController, resetPasswordRequestSchema } from './resetPassword';
 import { updateUserController, updateUserRequestSchema } from './update';
 import { updatePasswordController, updatePasswordRequestSchema } from './updatePassword';
 
@@ -35,6 +36,10 @@ userApiRouter.post('/update-password',
 	authenticateSessionController,
 	validateRequestBody(updatePasswordRequestSchema),
 	updatePasswordController);
+
+userApiRouter.post('/reset-password',
+	validateRequestBody(resetPasswordRequestSchema),
+	resetPasswordController);
 
 userViewRouter.get('/login', genericViewController('user/login'));
 userViewRouter.get('/logout', logoutViewController);
