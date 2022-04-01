@@ -7,7 +7,7 @@ export let compiledRegistrationEmailTemplate: pug.compileTemplate | undefined;
 
 /**
  * Creates the HTML string containing the compiled registration email content for a new user.
- * @param {User} user - The user to create the registration email content for.
+ * @param {User} user The user to create the registration email content for.
  * @returns The compiled registration email content in string form.
  */
 export async function createRegistrationEmailContent(user: Readonly<User>): Promise<string>

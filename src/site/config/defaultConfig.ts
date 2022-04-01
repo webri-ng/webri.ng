@@ -51,7 +51,7 @@ export const defaultConfig: Config = {
 		password: {
 			minLength: 8,
 			maxLength: 128,
-			tempPasswordExpiryPeriod: [1, 'week'],
+			tempPasswordExpiryPeriod: [1, 'day'],
 			saltRounds: 10,
 			resetTokenValidity: [1, 'hour']
 		},

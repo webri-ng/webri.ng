@@ -6,5 +6,7 @@ import { createRandomString } from '../util';
  */
 export function createRandomPassword(): string
 {
-	return createRandomString();
+	return createRandomString({
+		length: 36
+	});
 }

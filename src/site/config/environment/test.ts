@@ -30,7 +30,7 @@ export const testEnvironmentConfig: Config = {
 		password: {
 			minLength: 8,
 			maxLength: 128,
-			tempPasswordExpiryPeriod: [1, 'week'],
+			tempPasswordExpiryPeriod: [1, 'day'],
 			expiryPeriod: [3, 'months'],
 			saltRounds: 10,
 			resetTokenValidity: [1, 'hour']
