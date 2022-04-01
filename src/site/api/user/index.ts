@@ -7,6 +7,7 @@ import { logoutViewController } from './logout';
 import { profileViewController } from './profileView';
 import { registerController, registrationRequestSchema } from './register';
 import { updateUserController, updateUserRequestSchema } from './update';
+import { updatePasswordController, updatePasswordRequestSchema } from './updatePassword';
 
 /** Express Router for handling REST requests. */
 export const userApiRouter: Router = Router();
@@ -29,6 +30,11 @@ userApiRouter.patch('/',
 userViewRouter.get('/',
 	authenticateSessionController,
 	profileViewController);
+
+userApiRouter.post('/update-password',
+	authenticateSessionController,
+	validateRequestBody(updatePasswordRequestSchema),
+	updatePasswordController);
 
 userViewRouter.get('/login', genericViewController('user/login'));
 userViewRouter.get('/logout', logoutViewController);

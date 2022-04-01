@@ -319,3 +319,11 @@ export const siteAlreadyExistsError: ApiErrorResponseDetails = {
 	code: 'err-site-already-exists',
 	message: 'A site with the URL specified already exists in this webring'
 };
+
+/** Error when a user is changing password and supplies an incorrect existing password. */
+export const invalidExistingPasswordError: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-invalid-existing-password',
+	message: 'The existing password supplied is incorrect'
+};
+
