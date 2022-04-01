@@ -45,7 +45,6 @@ export async function login(email: Readonly<string>,
 
 	// Validate the user and password combination.
 	// Any errors in authentication will raise exceptions from here.
-	// Migration of legacy passwords is initiated here, which will update the user record.
 	const passwordValidity = await validatePassword(password, user.passwordHash);
 	if (!passwordValidity) {
 		// Increment the user's login attempt count.

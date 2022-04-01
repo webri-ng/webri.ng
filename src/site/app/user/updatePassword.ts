@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 import { logger } from '../';
-import { userNotFoundError } from '../../api/api-error-response';
+import { invalidExistingPasswordError, userNotFoundError } from '../../api/api-error-response';
 import { User, UUID } from '../../model';
-import { UserNotFoundError } from '../error';
+import { InvalidUserCredentialsError, UserNotFoundError } from '../error';
 import { getUser, GetUserSearchField } from '.';
-import { hashPassword } from './password';
+import { hashPassword, validatePassword } from './password';
 
 /**
  * Updates an existing user's password.
@@ -16,12 +16,20 @@ import { hashPassword } from './password';
  * @returns The updated user entity.
  */
 export async function updatePassword(userId: Readonly<UUID>,
+	existingPassword: Readonly<string>,
 	newPassword: Readonly<string>): Promise<User>
 {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
 		throw new UserNotFoundError(`User with id '${userId}' cannot be found`,
 			userNotFoundError.code, userNotFoundError.httpStatus);
+	}
+
+	// Validate the user's existing password.
+	const passwordValidity = await validatePassword(existingPassword, user.passwordHash);
+	if (!passwordValidity) {
+		throw new InvalidUserCredentialsError(invalidExistingPasswordError.message,
+			invalidExistingPasswordError.code, invalidExistingPasswordError.httpStatus);
 	}
 
 	// Validate the new password. Raises an exception on validation failure.
