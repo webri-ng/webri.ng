@@ -2,20 +2,21 @@ import { getRepository } from 'typeorm';
 import { getUser, GetUserSearchField } from '..';
 import { logger, testUtils } from '../..';
 import { userNotFoundError } from '../../../api/api-error-response';
-import { User, UUID } from '../../../model';
+import { User } from '../../../model';
 import { UserNotFoundError } from '../../error';
 import { hashPassword } from '../password';
 import { sendResetPaswordEmail } from './sendResetPaswordEmail';
 
 /**
  * Resets a particular user's password, and emails the temporary password to the user.
- * @param {UUID} userId The id of the user whose password to reset.
+ * @param {UUID} email The email of the user whose password to reset.
+ * @throws {UserNotFoundError} If the email provided does not correspond to a real user.
  */
-export async function resetPassword(userId: Readonly<UUID>): Promise<User>
+export async function resetPassword(email: Readonly<string>): Promise<User>
 {
-	const user: User | null = await getUser(GetUserSearchField.UserId, userId);
+	const user: User | null = await getUser(GetUserSearchField.Email, email);
 	if (!user) {
-		throw new UserNotFoundError(`User with id '${userId}' cannot be found`,
+		throw new UserNotFoundError(userNotFoundError.message,
 			userNotFoundError.code, userNotFoundError.httpStatus);
 	}
 

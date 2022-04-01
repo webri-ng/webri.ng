@@ -34,13 +34,6 @@ describe('Reset user password', function ()
 	});
 
 
-	it('should throw an exception when passed an invalid userId', async function ()
-	{
-		return expect(resetPassword(testUtils.invalidUuid))
-			.to.be.rejectedWith(InvalidIdentifierError);
-	});
-
-
 	it('should throw an exception when passed a nonexistent userId', async function ()
 	{
 		return expect(resetPassword(testUtils.dummyUuid))
@@ -50,7 +43,7 @@ describe('Reset user password', function ()
 
 	it("should correctly reset a customer's password", async function ()
 	{
-		testUser = await resetPassword(testUser.userId!);
+		testUser = await resetPassword(testUser.email);
 
 		expect(testUser).to.not.be.null;
 		expect(dayjs(testUser.dateModified).isSame(new Date(), 'hour')).to.be.true;
