@@ -1,0 +1,62 @@
+html {
+  background-color: #738278;
+}
+
+body {
+  background-color: #96A096;
+  box-sizing: border-box;
+  font-family: Arial, "Liberation sans", sans-serif;
+  margin: 0 auto;
+  width: 800px;
+  padding: 0.4rem;
+}
+
+body > header {
+  text-align: center;
+}
+
+body > header h1 {
+  background-color: #818881;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.4rem;
+  letter-spacing: 0.25rem;
+  padding: 0.4rem;
+  border: 1px solid black;
+}
+
+body > header a {
+  text-decoration: none;
+}
+
+body > header a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+body > header a:visited, body > header a:link, body > header a:active {
+  color: inherit;
+}
+
+body > header #logged-in-as {
+  font-size: 0.8rem;
+  margin: 0.4rem 0;
+}
+
+body > header nav {
+  background-color: #818881;
+  padding: 0.4rem;
+  border: 1px solid black;
+  margin: 0.4rem;
+}
+
+body > header nav a {
+  margin-right: 0.5rem;
+}
+
+body .body {
+  padding: 0.4rem;
+  border: 1px solid black;
+  margin: 0.4rem;
+}

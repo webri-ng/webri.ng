@@ -1,9 +1,18 @@
-include ../include/page.pug
-div.body
-	h2 Profile
+include ../include/page
+h2 Profile
+div.content-block
 	| Hello #{user.username}, welcome back!
+	div.user-profile-controls
+		a(href='/') Update Your Details
+		a(href='/') Update Your Password
+h2 Your Webrings
+	if totalPages > 1
+		|  (Page #{currentPage})
 
-	h3 Webrings
-	include ../include/webring_list.pug
-	div
-		button(type='button', onclick="insertRandomWebrings()") Insert Test Webrings
+div.content-block
+	include ../include/webring_list
+
+h2 Test
+div.content-block
+	button(type='button', onclick="insertRandomWebrings()") Insert Test Webrings
+include ../include/footer

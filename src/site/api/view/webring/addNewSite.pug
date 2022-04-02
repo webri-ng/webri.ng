@@ -1,6 +1,6 @@
 include ../include/page.pug
-div.body
-	h2 Add Site to Webring
+h2 Add Site to Webring
+div.content-block
 	form#add-new-site-form
 		input#url(type='hidden' name="webringUrl" value=webring.url)
 		div
@@ -12,3 +12,4 @@ div.body
 		button(type='button', onclick="addNewSite()")
 			| Add Site
 		div#add-new-site-error-message.error-message
+include ../include/footer

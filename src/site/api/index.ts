@@ -6,6 +6,7 @@
 
 import { Router } from 'express';
 import requestErrorHander from './errorHandler';
+import { genericViewController } from './genericViewController';
 import { indexViewController } from './indexViewController';
 import { parseSessionController } from './parseSessionController';
 import { userApiRouter, userViewRouter } from './user';
@@ -38,4 +39,6 @@ viewRouter.use(parseSessionController);
 viewRouter.use('/user', userViewRouter);
 viewRouter.use('/webring', webringViewRouter);
 viewRouter.get('/', indexViewController);
+viewRouter.get('/contact', genericViewController('contact'));
+viewRouter.get('/faq', genericViewController('faq'));
 viewRouter.use(viewErrorHandler);

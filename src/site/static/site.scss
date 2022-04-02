@@ -1,0 +1,182 @@
+$background-color: rgb(72, 72, 72);
+$content-background-color: rgb(120, 120, 120);
+$header-background-color: rgb(90, 90, 90);
+$global-element-padding: 0.4rem;
+$global-element-margin: 0.4rem;
+$global-element-border: 1px solid black;
+
+html {
+	background-color: $background-color;
+	font-size: 10pt;
+}
+
+body {
+	background-color: $content-background-color;
+	box-sizing: border-box;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	margin: 0 auto;
+	width: 800px;
+	padding: 0.8rem;
+
+	& > header {
+		text-align: center;
+		border: $global-element-border;
+		background-color: $header-background-color;
+		padding: $global-element-padding;
+		margin-bottom: $global-element-margin;
+
+		a.title {
+			color: inherit;
+
+			h1 {
+				font-family: Arial, "Liberation sans", sans-serif;
+				text-align: center;
+				font-size: 2rem;
+				font-weight: 700;
+				margin: 0;
+				margin-bottom: 0.25rem;
+				letter-spacing: 0.25rem;
+			}
+
+			&:hover {
+				color: #222;
+				text-decoration: underline;
+			}
+		}
+
+		nav {
+			a {
+				color: inherit;
+
+				&:hover {
+					color: #222;
+				}
+
+				&:not(:last-child) {
+					margin-right: 0.5rem;
+
+					&:after {
+						content: '|';
+						margin-left: 0.5rem;
+					}
+				}
+			}
+		}
+	}
+
+	h2 {
+		background-color: $header-background-color;
+		border: $global-element-border;
+		margin: 0;
+		padding: $global-element-padding;
+		font-size: 1rem;
+
+		&:first-child {
+			border-top: 0;
+		}
+	}
+
+	.content-block {
+		padding: $global-element-padding;
+		border: $global-element-border;
+		border-top: none;
+		margin-bottom: $global-element-margin;
+	}
+}
+
+.webring-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+
+	li {
+		margin-bottom: 0.5rem;
+
+		a.name {
+			color: black;
+			font-weight: bold;
+
+			&:hover {
+				color: #222;
+				text-decoration: underline;
+			}
+		}
+
+		.description {
+			color: #111;
+			font-size: 0.8rem;
+		}
+	}
+}
+
+.webring-controls {
+	margin-bottom: 1rem;
+
+	a {
+		padding: 0.2rem 0.4rem;
+		margin-right: 0.5rem;
+		font-size: 1.2rem;
+		color: black;
+		text-decoration: none;
+	}
+}
+
+.webring-list-navigation {
+	margin-top: 1rem;
+
+	a {
+		color: inherit;
+
+		&:hover {
+			color: #222;
+		}
+
+		&:not(:last-child) {
+			margin-right: 0.5rem;
+
+			&:after {
+				content: '|';
+				margin-left: 0.5rem;
+			}
+		}
+	}
+}
+
+form {
+	.error-message {
+		color: rgb(100, 6, 6);
+	}
+
+	.form-field {
+		margin-bottom: 0.4rem;
+	}
+	
+	.form-field label {
+		display: inline-block;
+		width: 20%;
+	}
+	
+	.form-buttons {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+	
+}
+
+footer {
+	border: $global-element-border;
+	background-color: $header-background-color;
+	margin-top: $global-element-margin;
+	font-size: 0.8rem;
+	text-align: center;
+}
+
+
+div.user-profile-controls {
+	margin-top: 1rem;
+
+	a {
+		color: inherit;
+		display: block;
+	}
+}

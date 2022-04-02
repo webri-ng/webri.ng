@@ -165,7 +165,7 @@ function insertRandomWebrings()
 	for(let i = 0; i < 80; i++) {
 		fetch("/webring", {
 			body: JSON.stringify({
-				name: `test_webring_${createRandomString()}`,
+				name: `Test Webring ${createRandomString()}`,
 				url: createRandomString(),
 				description: testDescription,
 				privateRing: false,

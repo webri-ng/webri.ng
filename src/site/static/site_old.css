@@ -1,0 +1,131 @@
+html {
+	background-color: #738278;
+}
+
+body {
+	background-color: #96A096;
+	box-sizing: border-box;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	margin: 0 auto;
+	width: 800px;
+	padding: 0.4rem;
+}
+
+body > header {
+	text-align: center;
+}
+
+body > header a:visited, a:link, a:active {
+	color: inherit;
+	text-decoration: none;
+}
+
+body > header a:hover {
+	color: inherit;
+	text-decoration: underline;
+}
+
+body > header h1 {
+	background-color: #818881;
+	text-align: center;
+	font-family: Arial, "Liberation sans", sans-serif;
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 0.6rem;
+	letter-spacing: 0.25rem;
+	padding: 0.4rem;
+	border: 1px solid black;
+}
+
+
+
+body > .body {
+	padding: 0.4rem;
+	border: 1px solid black;
+	margin: 0.6rem;
+}
+
+form .error-message {
+	color: red;
+}
+
+.webring-list {
+	list-style: none;
+	padding: 0;
+}
+
+.webring-list li {
+	margin-bottom: 1rem;
+}
+
+.webring-list li a.webring-name {
+	font-weight: bold;
+}
+
+.webring-list li a.webring-name:hover {
+	text-decoration: underline;
+}
+
+.webring-list-navigation {
+	margin-bottom: 1rem;
+}
+
+.webring-list-navigation a {
+	text-decoration: none;
+	margin-right: 0.5rem;
+}
+
+.webring-list-navigation a:hover {
+	text-decoration: underline;
+}
+
+.webring-controls {
+	margin-bottom: 1rem;
+}
+
+.webring-controls a {
+	padding: 0.2rem 0.4rem;
+	background-color: mediumpurple;
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+	color: black;
+	text-decoration: none;
+}
+
+.webring-controls a:hover {
+	text-decoration: underline;
+}
+
+form {
+
+}
+
+form button {
+	border: none;
+	padding: 0.2rem 0.4rem;
+	background-color: mediumpurple;
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+form button:hover {
+	background-color: mediumslateblue;
+	text-decoration: underline;
+}
+
+form .form-field {
+	margin-bottom: 0.4rem;
+}
+
+form .form-field label {
+	display: inline-block;
+	width: 20%;
+}
+
+form .form-buttons {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}

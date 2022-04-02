@@ -21,3 +21,6 @@ mock-services:
 
 mock-services-down:
 	docker-compose --project-name "webri.ng" --file "docker-compose.yml" down
+
+site_style:
+	sassc --style=expanded site/static/site.scss site/static/site.css

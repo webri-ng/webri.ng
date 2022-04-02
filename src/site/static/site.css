@@ -1,108 +1,169 @@
 html {
-	background-color: #777;
+  background-color: #484848;
+  font-size: 10pt;
 }
 
 body {
-	background-color: #EEE;
-	box-sizing: border-box;
-	font-family: Arial, "Liberation sans", sans-serif;
-	margin: 0 auto;
-	width: 800px;
+  background-color: #787878;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0 auto;
+  width: 800px;
+  padding: 0.8rem;
 }
 
 body > header {
-	text-align: center;
+  text-align: center;
+  border: 1px solid black;
+  background-color: #5a5a5a;
+  padding: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
-body > header a:visited, a:link, a:active {
-	color: inherit;
-	text-decoration: none;
+body > header a.title {
+  color: inherit;
 }
 
-body > header a:hover {
-	color: inherit;
-	text-decoration: underline;
+body > header a.title h1 {
+  font-family: Arial, "Liberation sans", sans-serif;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.25rem;
 }
 
-body > header h1 {
-	text-align: center;
-	font-size: 3rem;
-	font-weight: 700;
-	margin: 0.6rem;
-	letter-spacing: 0.25rem;
-	background-color: mediumpurple;
-	display: inline-block;
-	padding: 0.4rem 1rem;
-}
-
-body > header #logged-in-as {
-	font-size: 0.8rem;
-	margin: 0.4rem 0;
-}
-
-body > header nav {
-	padding: 1rem;
-	background-color: gainsboro;
+body > header a.title:hover {
+  color: #222;
+  text-decoration: underline;
 }
 
 body > header nav a {
-	padding: 0.2rem 0.4rem;
-	background-color: mediumpurple;
-	margin-right: 0.5rem;
-	font-size: 1.2rem;
+  color: inherit;
 }
 
-body > .body {
-	padding: 1rem;
+body > header nav a:hover {
+  color: #222;
 }
 
-form .error-message {
-	color: red;
+body > header nav a:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+body > header nav a:not(:last-child):after {
+  content: '|';
+  margin-left: 0.5rem;
+}
+
+body h2 {
+  background-color: #5a5a5a;
+  border: 1px solid black;
+  margin: 0;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+body h2:first-child {
+  border-top: 0;
+}
+
+body .content-block {
+  padding: 0.4rem;
+  border: 1px solid black;
+  border-top: none;
+  margin-bottom: 0.4rem;
 }
 
 .webring-list {
-	list-style: none;
-	padding: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .webring-list li {
-	margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-.webring-list li a.webring-name {
-	font-weight: bold;
+.webring-list li a.name {
+  color: black;
+  font-weight: bold;
 }
 
-.webring-list li a.webring-name:hover {
-	text-decoration: underline;
+.webring-list li a.name:hover {
+  color: #222;
+  text-decoration: underline;
 }
 
-.webring-list-navigation {
-	margin-bottom: 1rem;
-}
-
-.webring-list-navigation a {
-	text-decoration: none;
-	margin-right: 0.5rem;
-}
-
-.webring-list-navigation a:hover {
-	text-decoration: underline;
+.webring-list li .description {
+  color: #111;
+  font-size: 0.8rem;
 }
 
 .webring-controls {
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .webring-controls a {
-	padding: 0.2rem 0.4rem;
-	background-color: mediumpurple;
-	margin-right: 0.5rem;
-	font-size: 1.2rem;
-	color: black;
-	text-decoration: none;
+  padding: 0.2rem 0.4rem;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  color: black;
+  text-decoration: none;
 }
 
-.webring-controls a:hover {
-	text-decoration: underline;
+.webring-list-navigation {
+  margin-top: 1rem;
+}
+
+.webring-list-navigation a {
+  color: inherit;
+}
+
+.webring-list-navigation a:hover {
+  color: #222;
+}
+
+.webring-list-navigation a:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.webring-list-navigation a:not(:last-child):after {
+  content: '|';
+  margin-left: 0.5rem;
+}
+
+form .error-message {
+  color: #640606;
+}
+
+form .form-field {
+  margin-bottom: 0.4rem;
+}
+
+form .form-field label {
+  display: inline-block;
+  width: 20%;
+}
+
+form .form-buttons {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer {
+  border: 1px solid black;
+  background-color: #5a5a5a;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+div.user-profile-controls {
+  margin-top: 1rem;
+}
+
+div.user-profile-controls a {
+  color: inherit;
+  display: block;
 }
