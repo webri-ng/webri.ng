@@ -35,6 +35,14 @@ describe('Is user webring moderator', function ()
 	});
 
 
+	it('should return false when not passed a user entity.',
+		async function ()
+	{
+		const result = await isUserWebringModerator(testWebring, undefined);
+		expect(result).to.be.false;
+	});
+
+
 	it('should return false when passed a user without rights to moderate the webring',
 		async function ()
 	{
