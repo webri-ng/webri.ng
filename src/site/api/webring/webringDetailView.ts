@@ -25,9 +25,24 @@ import { GetWebringSearchField } from '../../app/webring';
 		}
 
 		/** Whether the currently authenticated user is a moderator of this webring. */
-		const isUserModerator = await webringService.isUserWebringModerator(webring, user);
+		let isUserModerator = false;
 		/** Whether the currently authenticated user is the owner of this webring. */
-		const isUserOwner = webring.createdBy === user.userId;
+		let isUserOwner = false;
+
+		if(user) {
+			isUserModerator = await webringService.isUserWebringModerator(webring, user);
+			isUserOwner = webring.createdBy === user.userId;
+		}
+
+		// If this is a private webring, and the user is not authorised, redirect to a
+		// 'not found' page.
+		if (webring.private) {
+			if(!(isUserModerator || isUserOwner)) {
+				return res.status(404).render('webring/notFound', {
+					user
+				});
+			}
+		}
 
 		return res.render('webring/webring', {
 			isUserModerator,
