@@ -170,6 +170,27 @@ describe('Update webring', function ()
 	});
 
 
+	it('should update a webring without changing its URL', async function()
+	{
+		const name = createRandomString();
+		const url = testWebring.url;
+		const description = createRandomString();
+
+		testWebring = await updateWebring(testWebring.ringId!, testUser.userId || '',
+			name, url, description, false, []);
+
+		expect(testWebring.name).to.equal(name);
+		expect(testWebring.url).to.equal(url);
+		expect(testWebring.description).to.equal(description);
+		expect(testWebring.createdBy).to.equal(testUser.userId || '');
+		expect(testWebring.private).to.be.false;
+		expect(dayjs(testWebring.dateCreated).isSame(testWebring.dateCreated)).to.be.true;
+		expect(dayjs(testWebring.dateModified).isSame(new Date(), 'hour')).to.be.true;
+		expect(testWebring.dateDeleted).to.be.null;
+		expect(testWebring.tags).to.have.length(0);
+	});
+
+
 	it('should normalise a webring name', async function()
 	{
 		const name = "    Anthony's webring";

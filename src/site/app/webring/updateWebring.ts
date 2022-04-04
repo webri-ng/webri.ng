@@ -43,8 +43,9 @@ export async function updateWebring(webringId: Readonly<UUID>,
 	Webring.validateUrl(normalisedUrl);
 
 	// If a webring exists with this URL, raise an exception.
+	// Ensure that the matching webring is not the webring being edited.
 	const existingWebring = await getWebring(GetWebringSearchField.Url, normalisedUrl);
-	if (existingWebring) {
+	if (existingWebring && existingWebring.ringId !== webringId) {
 		throw new RingUrlNotUniqueError(invalidRingUrlNotUniqueError.message,
 			invalidRingUrlNotUniqueError.code, invalidRingUrlNotUniqueError.httpStatus);
 	}
