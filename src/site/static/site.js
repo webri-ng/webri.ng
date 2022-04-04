@@ -1,4 +1,127 @@
 /**
+ * Sends a request to add a new site to a webring.
+ */
+function addNewSite()
+{
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById('add-new-site-error-message');
+	const formElement = document.getElementById('add-new-site-form');
+	const formData = new FormData(formElement);
+
+	/** The form data converted to a native Javascript object. */
+	const formFields = Object.fromEntries(formData.entries());
+
+	// Retrieve this hidden field from the form, and then remove it from the formData.
+	const { webringUrl } = formFields;
+	delete formFields.webringUrl;
+
+	fetch('/webring/' + webringUrl + '/add', {
+		body: JSON.stringify(formFields),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+	}).then((response) => {
+		if (!response.ok) {
+			return response.json().then((errorResponse) => {
+				formErrorMessageElement.textContent = errorResponse.error;
+			});
+		}
+
+		// Due to the poor redirect implementation, the server simply returns the URL
+		// in a JSON response body, which is then redirected to.
+		return response.json().then((response) => {
+			window.location.href = response.url;
+		});
+	}).catch((err) => {
+		console.error(err);
+		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+	});
+}
+
+
+/**
+ * Sends a request to create a new webring.
+ */
+function createWebring()
+{
+	const formElement = document.getElementById('create-webring-form');
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById('create-webring-error-message');
+	const formData = new FormData(formElement);
+
+	// const descriptionTextbox = document.getElementById('description');
+	// formData.append('description', descriptionTextbox.value);
+
+	/** The form data converted to a native Javascript object. */
+	const formFields = Object.fromEntries(formData.entries());
+
+	// Set the `privateRing` field of the request body according to whether this checkbox
+	// has been checked.
+	const privateRingCheckbox = document.getElementById('private-ring');
+	formFields.privateRing = privateRingCheckbox.checked;
+
+	const tags = [];
+	formFields.tags = [];
+
+	fetch('/webring', {
+		body: JSON.stringify(formFields),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+	}).then((response) => {
+		if (!response.ok) {
+			return response.json().then((errorResponse) => {
+				formErrorMessageElement.textContent = errorResponse.error;
+			});
+		}
+
+		// Due to the poor redirect implementation, the server simply returns the URL
+		// in a JSON response body, which is then redirected to.
+		return response.json().then((response) => {
+			window.location.href = response.url;
+		});
+	}).catch((err) => {
+		console.error(err);
+		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+	});
+}
+
+
+/**
+ * Sends a request to delete a webring.
+ * @param {string} webringUrl The url of the webring to delete.
+ */
+function deleteWebring(webringUrl)
+{
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById('delete-webring-error-message');
+
+	fetch('/webring/' + webringUrl, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+	}).then((response) => {
+		if (!response.ok) {
+			return response.json().then((errorResponse) => {
+				formErrorMessageElement.textContent = errorResponse.error;
+			});
+		}
+
+		window.location.href = '/user';
+	}).catch((err) => {
+		console.error(err);
+		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+	});
+}
+
+
+/**
  * Send a request to login.
  */
 function login()
@@ -62,99 +185,6 @@ function register()
 
 		// Redirect to the user profile.
 		window.location.replace('/user');
-	}).catch((err) => {
-		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
-	});
-}
-
-
-/**
- * Sends a request to create a new webring.
- */
-function createWebring()
-{
-	const formElement = document.getElementById('create-webring-form');
-	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById('create-webring-error-message');
-	const formData = new FormData(formElement);
-
-	// const descriptionTextbox = document.getElementById('description');
-	// formData.append('description', descriptionTextbox.value);
-
-	/** The form data converted to a native Javascript object. */
-	const formFields = Object.fromEntries(formData.entries());
-
-	// Set the `privateRing` field of the request body according to whether this checkbox
-	// has been checked.
-	const privateRingCheckbox = document.getElementById('private-ring');
-	formFields.privateRing = privateRingCheckbox.value === 'on';
-
-	const tags = [];
-	formFields.tags = [];
-
-	fetch('/webring', {
-		body: JSON.stringify(formFields),
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		},
-	}).then((response) => {
-		if (!response.ok) {
-			return response.json().then((errorResponse) => {
-				formErrorMessageElement.textContent = errorResponse.error;
-			});
-		}
-
-		// Due to the poor redirect implementation, the server simply returns the URL
-		// in a JSON response body, which is then redirected to.
-		return response.json().then((response) => {
-			window.location.href = response.url;
-		});
-	}).catch((err) => {
-		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
-	});
-}
-
-
-/**
- * Sends a request to add a new site to a webring.
- */
-function addNewSite()
-{
-	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById('add-new-site-error-message');
-	const formElement = document.getElementById('add-new-site-form');
-	const formData = new FormData(formElement);
-
-	/** The form data converted to a native Javascript object. */
-	const formFields = Object.fromEntries(formData.entries());
-
-	// Retrieve this hidden field from the form, and then remove it from the formData.
-	const { webringUrl } = formFields;
-	delete formFields.webringUrl;
-
-	fetch('/webring/' + webringUrl + '/add', {
-		body: JSON.stringify(formFields),
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		},
-	}).then((response) => {
-		if (!response.ok) {
-			return response.json().then((errorResponse) => {
-				formErrorMessageElement.textContent = errorResponse.error;
-			});
-		}
-
-		// Due to the poor redirect implementation, the server simply returns the URL
-		// in a JSON response body, which is then redirected to.
-		return response.json().then((response) => {
-			window.location.href = response.url;
-		});
 	}).catch((err) => {
 		console.error(err);
 		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
@@ -230,7 +260,7 @@ function updateWebring()
 	// Set the `privateRing` field of the request body according to whether this checkbox
 	// has been checked.
 	const privateRingCheckbox = document.getElementById('private-ring');
-	formFields.privateRing = privateRingCheckbox.value === 'on';
+	formFields.privateRing = privateRingCheckbox.checked;
 
 	const tags = [];
 	formFields.tags = [];
@@ -254,36 +284,6 @@ function updateWebring()
 		return response.json().then((response) => {
 			window.location.href = response.url;
 		});
-	}).catch((err) => {
-		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
-	});
-}
-
-
-/**
- * Sends a request to delete a webring.
- * @param {string} webringUrl The url of the webring to delete.
- */
-function deleteWebring(webringUrl)
-{
-	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById('delete-webring-error-message');
-
-	fetch('/webring/' + webringUrl, {
-		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		},
-	}).then((response) => {
-		if (!response.ok) {
-			return response.json().then((errorResponse) => {
-				formErrorMessageElement.textContent = errorResponse.error;
-			});
-		}
-
-		window.location.href = '/user';
 	}).catch((err) => {
 		console.error(err);
 		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
