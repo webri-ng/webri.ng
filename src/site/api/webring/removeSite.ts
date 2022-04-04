@@ -51,9 +51,7 @@ export async function removeSiteController(req: Request,
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.
-		return res.json({
-			url: `/webring/${webringUrl}`
-		});
+		return res.end();
 	} catch (err) {
 		return next(err);
 	}

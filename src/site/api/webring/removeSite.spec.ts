@@ -165,14 +165,12 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
-				expect(res.body).to.have.property('url');
-				expect(res.body.url).to.equal(`/webring/${testWebring.url}`);
 				done();
 			});
 	});
 
 
-	it(`should let a webring's moderator add a site to a webring`, function(done) {
+	it(`should let a webring's moderator remove a site from a webring`, function(done) {
 		chai.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUser2Session.sessionId}`)
@@ -182,8 +180,6 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
-				expect(res.body).to.have.property('url');
-				expect(res.body.url).to.equal(`/webring/${testWebring.url}`);
 				done();
 			});
 	});
