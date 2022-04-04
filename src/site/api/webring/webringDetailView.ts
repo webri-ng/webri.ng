@@ -44,10 +44,14 @@ import { GetWebringSearchField } from '../../app/webring';
 			}
 		}
 
+		/** The webring's sites. */
+		const sites = await webringService.getWebringSites(webring.ringId!);
+
 		return res.render('webring/webring', {
 			isUserModerator,
 			isUserOwner,
 			user,
+			sites,
 			webring
 		});
 	} catch (err) {

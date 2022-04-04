@@ -1,16 +1,20 @@
 include ../include/page.pug
 h2 Register
-div.body
+div.content-block
 	form#register-form
-		div
+		div.form-field
 			label(for='username') Username: 
 			input#username(type='text' name='username' minlength=2 maxlength=80 required='')
-		div
+		div.form-field
 			label(for='email') Email: 
 			input#email(type='email' name='email' required='')
-		div
-			label(for='name') Password: 
+		div.form-field
+			label(for='password') Password: 
 			input#password(type='password' name='password' minlength=2 maxlength=128 required='')
+		div.form-field
+			label(for='confirmpassword') Confirm Password: 
+			input#password(type='password' name='confirmpassword' minlength=2 maxlength=128 required='')
 		button(type='button', onclick="register()")
 			| Register
 		div#register-error-message.error-message
+include ../include/footer

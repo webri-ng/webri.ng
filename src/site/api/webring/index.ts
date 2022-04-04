@@ -11,10 +11,12 @@ import { addNewSiteController, addNewSiteRequestSchema } from './addNewSite';
 import { addNewSiteViewController } from './addNewSiteView';
 import { createWebringController, createWebringRequestSchema } from './create';
 import { deleteWebringController } from './deleteWebring';
+import { updateWebringViewController } from './updateWebringView';
 import { removeSiteController, removeSiteRequestSchema } from './removeSite';
 import { getNewSiteController } from './site';
 import { updateWebringController, updateWebringRequestSchema } from './updateWebring';
 import { webringDetailViewController } from './webringDetailView';
+import { deleteWebringViewController } from './deleteWebringView';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -53,3 +55,11 @@ webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteCo
 webringViewRouter.get('/:webringUrl/add',
 	authenticateSessionController,
 	addNewSiteViewController);
+
+webringViewRouter.get('/:webringUrl/update',
+	authenticateSessionController,
+	updateWebringViewController);
+
+webringViewRouter.get('/:webringUrl/delete',
+	authenticateSessionController,
+	deleteWebringViewController);

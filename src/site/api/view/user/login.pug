@@ -1,13 +1,14 @@
 include ../include/page.pug
 h2 Login
-div.body
+div.content-block
 	form#login-form
-		div
+		div.form-field
 			label(for='email') Email: 
 			input#email(type='email' name='email' required='')
-		div
+		div.form-field
 			label(for='name') Password: 
 			input#password(type='password' name='password' required='')
 		button(type='button', onclick="login()")
 			| Login
 		div#login-error-message.error-message
+include ../include/footer

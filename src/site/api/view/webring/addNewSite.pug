@@ -3,10 +3,10 @@ h2 Add Site to Webring
 div.content-block
 	form#add-new-site-form
 		input#url(type='hidden' name="webringUrl" value=webring.url)
-		div
+		div.form-field
 			label(for='name') Site Name: 
 			input#name(type='text' name='name' minlength=2 maxlength=80 required='')
-		div
+		div.form-field
 			label(for='url') Site URL: 
 			input#url(type='text' name='url' required='')
 		button(type='button', onclick="addNewSite()")

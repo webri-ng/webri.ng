@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  background-color: #787878;
+  background-color: #828282;
   box-sizing: border-box;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0 auto;
@@ -15,7 +15,7 @@ body {
 body > header {
   text-align: center;
   border: 1px solid black;
-  background-color: #5a5a5a;
+  background-color: #606060;
   padding: 0.4rem;
   margin-bottom: 0.4rem;
 }
@@ -57,7 +57,7 @@ body > header nav a:not(:last-child):after {
 }
 
 body h2 {
-  background-color: #5a5a5a;
+  background-color: #606060;
   border: 1px solid black;
   margin: 0;
   padding: 0.4rem;
@@ -101,15 +101,12 @@ body .content-block {
 }
 
 .webring-controls {
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .webring-controls a {
-  padding: 0.2rem 0.4rem;
-  margin-right: 0.5rem;
-  font-size: 1.2rem;
-  color: black;
-  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .webring-list-navigation {
@@ -138,12 +135,16 @@ form .error-message {
 }
 
 form .form-field {
-  margin-bottom: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+form .form-field .description {
+  font-size: 0.8rem;
 }
 
 form .form-field label {
-  display: inline-block;
-  width: 20%;
+  display: block;
+  font-weight: bold;
 }
 
 form .form-buttons {
@@ -151,9 +152,14 @@ form .form-buttons {
   margin-bottom: 1rem;
 }
 
+form textarea {
+  resize: none;
+  width: 100%;
+}
+
 footer {
   border: 1px solid black;
-  background-color: #5a5a5a;
+  background-color: #606060;
   margin-top: 0.4rem;
   font-size: 0.8rem;
   text-align: center;
@@ -165,5 +171,31 @@ div.user-profile-controls {
 
 div.user-profile-controls a {
   color: inherit;
+  display: block;
+}
+
+#webring-detail-site-list {
+  margin: 0;
+}
+
+#webring-detail-site-list li {
+  margin-bottom: 0.6rem;
+}
+
+#webring-detail-site-list li .name {
+  display: block;
+  font-weight: bold;
+}
+
+#webring-detail-site-list li .url {
+  color: inherit;
+}
+
+#webring-detail-site-list li .url:hover {
+  color: #222;
+}
+
+#webring-detail-site-list li .site-controls {
+  margin-top: 0.2rem;
   display: block;
 }

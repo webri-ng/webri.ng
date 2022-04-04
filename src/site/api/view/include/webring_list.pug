@@ -3,8 +3,8 @@ ul.webring-list
 		li 
 			a(href='/webring/' + webring.url).name #{webring.name}
 			div.description
-				if webring.description.length > 80
-					| #{webring.description.substring(0, 80)}...
+				if webring.description.length > 100
+					| #{webring.description.substring(0, 100)}...
 				else
 					| #{webring.description}
 

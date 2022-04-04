@@ -1,30 +1,30 @@
 include ../include/page.pug
-h2 Create Webring
+h2 Update
 div.content-block
-	form#create-webring-form
+	form#update-webring-form
+		input#url(type='hidden' name="webringUrl" value=webring.url)
 		div.form-field
 			label(for='name') Webring Name
 			div.description
 				| The webring's name is displayed on the main page index, and in your profile.
-			input#name(type='text' name='name' minlength=2 maxlength=80 required='')
+			input#name(type='text' name='name' minlength=2 maxlength=80 required='' value=webring.name)
 		div.form-field
 			label(for='url') Webring URL
 			div.description
 				| This will be the default URL used to access your webring from the webri.ng site. e.g: <code>https://webri.ng/xyz</code>
-			input#url(type='text' name='url' required='')
+			input#url(type='text' name='url' required='' value=webring.url)
 		div.form-field
 			label(for='description') Description
 			div.description
 				| If this will be a public webring, this will be the short description shown alongside your webring's name.
-			textarea#description(name='description')
+			textarea#description(name='description') #{webring.description}
 		div.form-field
 			label(for='privateRing') Private Webring?
 			div.description
 				| Selecting this checkbox will mean that your webring will not be indexed on the main page, or be visible to unauthorised users.
-			input#private-ring(type='checkbox' name='privateRing')
+			input#private-ring(type='checkbox' name='privateRing' checked=webring.private)
 		div.form-buttons
-			button(type='button', onclick="createWebring()")
-				| Create
-		div#create-webring-error-message.error-message
-
+			button(type='button', onclick="updateWebring()")
+				| Update
+		div#update-webring-error-message.error-message
 include ../include/footer
