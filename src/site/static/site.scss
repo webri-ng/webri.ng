@@ -5,10 +5,12 @@ $global-element-padding: 0.4rem;
 $global-element-margin: 0.4rem;
 $global-element-border: 1px solid black;
 
+
 html {
 	background-color: $background-color;
 	font-size: 10pt;
 }
+
 
 body {
 	background-color: $content-background-color;
@@ -84,6 +86,7 @@ body {
 	}
 }
 
+
 .webring-list {
 	list-style: none;
 	padding: 0;
@@ -109,14 +112,6 @@ body {
 	}
 }
 
-.webring-controls {
-	margin-top: 1rem;
-
-	a {
-		color: inherit;
-		display: block;
-	}
-}
 
 .webring-list-navigation {
 	margin-top: 1rem;
@@ -139,6 +134,17 @@ body {
 	}
 }
 
+
+.controls {
+	margin-top: 1rem;
+
+	a {
+		color: inherit;
+		display: block;
+	}
+}
+
+
 form {
 	.error-message {
 		color: rgb(100, 6, 6);
@@ -146,27 +152,28 @@ form {
 
 	.form-field {
 		margin-bottom: 1rem;
-	}
-	
-	.form-field .description {
-		font-size: 0.8rem;
-	}
 
-	.form-field label {
-		display: block;
-		font-weight: bold;
+		.description {
+			font-size: 0.8rem;
+		}
+
+		label {
+			display: block;
+			font-weight: bold;
+		}
+
+		textarea {
+			resize: none;
+			width: 100%;
+		}
 	}
 	
 	.form-buttons {
 		margin-top: 1rem;
 		margin-bottom: 1rem;
 	}
-
-	textarea {
-		resize: none;
-		width: 100%;
-	}
 }
+
 
 footer {
 	border: $global-element-border;
@@ -176,15 +183,6 @@ footer {
 	text-align: center;
 }
 
-
-div.user-profile-controls {
-	margin-top: 1rem;
-
-	a {
-		color: inherit;
-		display: block;
-	}
-}
 
 #webring-detail-site-list {
 	margin: 0;

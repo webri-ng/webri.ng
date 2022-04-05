@@ -9,7 +9,7 @@ div.content-block
 		div.form-field
 			label(for='url') Site URL: 
 			input#url(type='text' name='url' required='')
-		button(type='button', onclick="addNewSite()")
-			| Add Site
+		div.form-buttons
+			button(type='button', onclick="addNewSite()") Add Site
 		div#add-new-site-error-message.error-message
 include ../include/footer

@@ -100,15 +100,6 @@ body .content-block {
   font-size: 0.8rem;
 }
 
-.webring-controls {
-  margin-top: 1rem;
-}
-
-.webring-controls a {
-  color: inherit;
-  display: block;
-}
-
 .webring-list-navigation {
   margin-top: 1rem;
 }
@@ -128,6 +119,15 @@ body .content-block {
 .webring-list-navigation a:not(:last-child):after {
   content: '|';
   margin-left: 0.5rem;
+}
+
+.controls {
+  margin-top: 1rem;
+}
+
+.controls a {
+  color: inherit;
+  display: block;
 }
 
 form .error-message {
@@ -163,15 +163,6 @@ footer {
   margin-top: 0.4rem;
   font-size: 0.8rem;
   text-align: center;
-}
-
-div.user-profile-controls {
-  margin-top: 1rem;
-}
-
-div.user-profile-controls a {
-  color: inherit;
-  display: block;
 }
 
 #webring-detail-site-list {

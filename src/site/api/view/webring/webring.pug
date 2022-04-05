@@ -3,7 +3,7 @@ h2 #{webring.name}
 div.content-block
 	div.detail-descripion #{webring.description}
 	if isUserModerator
-		div.webring-controls
+		div.controls
 			a(href='/webring/' + webring.url + '/add') Add New Site
 			a(href='/webring/' + webring.url + '/update') Update Webring
 			if isUserOwner

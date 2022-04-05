@@ -8,7 +8,7 @@ div.content-block
 		div.form-field
 			label(for='name') Password: 
 			input#password(type='password' name='password' required='')
-		button(type='button', onclick="login()")
-			| Login
+		div.form-buttons
+			button(type='button', onclick="login()") Login
 		div#login-error-message.error-message
 include ../include/footer

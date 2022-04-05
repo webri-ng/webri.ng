@@ -8,6 +8,7 @@ div.content-block
 		div.form-field
 			label(for='email') Email: 
 			input#email(type='email' name='email' required value=user.email)
-		button(type='button', onclick="updateUser()") Update
+		div.form-buttons
+			button(type='button', onclick="updateUser()") Update
 		div#update-user-error-message.error-message
 include ../include/footer
