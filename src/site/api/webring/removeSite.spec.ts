@@ -10,7 +10,7 @@ import { invalidSiteNameTooLongError, invalidSiteNameTooShortError,
 	requestAuthenticationFailedError, requestAuthorisationFailedError,
 	requestValidationError,
 	siteNotFoundError,
-	webringNotFoundError} from '../api-error-response';
+	webringNotFoundError } from '../api-error-response';
 import { siteConfig } from '../../config';
 import { createRandomSiteUrl } from '../../app/testUtils';
 

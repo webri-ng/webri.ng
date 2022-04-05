@@ -28,7 +28,7 @@ describe('Logout API', function()
 		chai.request(app)
 			.post('/user/reset-password')
 			.send({
-				"email": "nonexistent@nonsense.org"
+				'email': 'nonexistent@nonsense.org'
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -42,7 +42,7 @@ describe('Logout API', function()
 		chai.request(app)
 			.post('/user/reset-password')
 			.send({
-				"email": testUser.email
+				'email': testUser.email
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;

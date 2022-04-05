@@ -15,7 +15,7 @@ import { RingActionNotAuthorisedError } from '../error';
 export async function authoriseWebringModeratorAction(webring: Readonly<Webring>,
 	user: Readonly<User|undefined>): Promise<void>
 {
-	if(!user) {
+	if (!user) {
 		throw new RingActionNotAuthorisedError(requestAuthorisationFailedError.message,
 			requestAuthorisationFailedError.code, requestAuthorisationFailedError.httpStatus);
 	}

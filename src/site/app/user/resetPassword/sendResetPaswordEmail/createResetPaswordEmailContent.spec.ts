@@ -31,7 +31,7 @@ describe('Create reset password email content', function ()
 
 	it('should create the content for a user\'s reset password email', async function ()
 	{
-		const temporaryPassword = "aaaa1234";
+		const temporaryPassword = 'aaaa1234';
 		const emailContent = await createResetPasswordEmailContent(testUser, temporaryPassword);
 		const contentHash = crypto.createHash('md5').update(emailContent).digest('hex');
 

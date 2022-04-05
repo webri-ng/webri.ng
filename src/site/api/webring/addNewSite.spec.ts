@@ -9,7 +9,7 @@ import { app } from '../../index';
 import { invalidSiteNameTooLongError, invalidSiteNameTooShortError,
 	requestAuthenticationFailedError, requestAuthorisationFailedError,
 	requestValidationError,
-	webringNotFoundError} from '../api-error-response';
+	webringNotFoundError } from '../api-error-response';
 import { siteConfig } from '../../config';
 
 chai.use(chaiAsPromised);

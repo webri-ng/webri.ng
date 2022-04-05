@@ -40,7 +40,7 @@ export async function addNewSite(webring: Readonly<Webring>,
 	Site.validateName(normalisedName);
 
 	const existingSites = await webringService.getWebringSites(webring.ringId);
-	if(existingSites.find(site => {
+	if (existingSites.find(site => {
 		return site.url === normalisedUrl;
 	})) {
 		throw new SiteAlreadyExistsError(siteAlreadyExistsError.message,

@@ -10,7 +10,7 @@ import { sessionService, testUtils, userService } from '../../app';
 import { app } from '../../index';
 import { requestAuthenticationFailedError,
 	requestAuthorisationFailedError,
-	webringNotFoundError} from '../api-error-response';
+	webringNotFoundError } from '../api-error-response';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
