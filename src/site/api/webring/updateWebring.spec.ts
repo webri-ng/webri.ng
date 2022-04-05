@@ -1,5 +1,4 @@
 import { getRepository } from 'typeorm';
-import * as dayjs from 'dayjs';
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';

@@ -63,9 +63,6 @@ describe('Get new site', function ()
 
 	it('should raise an exception if a non-serialised webring is provided', async function()
 	{
-		const name = createRandomString();
-		const url = testUtils.createRandomSiteUrl();
-
 		return expect(getNewSite(nonSerialisedWebring,
 			GetNewSiteMethod.Next)).to.be.rejectedWith(InvalidIdentifierError);
 	});

@@ -4,14 +4,10 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import * as chaiAsPromised from 'chai-as-promised';
 import { Session, Site, User, Webring } from '../../model';
-import { createRandomString, sessionService, testUtils, userService } from '../../app';
+import { sessionService, testUtils, userService } from '../../app';
 import { app } from '../../index';
-import { invalidSiteNameTooLongError, invalidSiteNameTooShortError,
-	requestAuthenticationFailedError, requestAuthorisationFailedError,
-	requestValidationError,
-	siteNotFoundError,
-	webringNotFoundError } from '../api-error-response';
-import { siteConfig } from '../../config';
+import { requestAuthenticationFailedError, requestAuthorisationFailedError,
+	requestValidationError, siteNotFoundError, webringNotFoundError } from '../api-error-response';
 import { createRandomSiteUrl } from '../../app/testUtils';
 
 chai.use(chaiAsPromised);
@@ -110,7 +106,8 @@ describe('Remove site API', function ()
 				expect(res.body).to.have.property('code');
 				expect(res.body.code).to.equal(siteNotFoundError.code);
 				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(`Site with url '${url}' cannot be found in this webring`);
+				expect(res.body.error).to.equal(`Site with url '${url}' cannot be ` +
+					'found in this webring');
 				done();
 			});
 	});

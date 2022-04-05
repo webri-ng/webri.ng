@@ -1,5 +1,3 @@
-import { getRepository } from 'typeorm';
-import * as dayjs from 'dayjs';
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -21,7 +19,6 @@ describe('Webring Detail View', function ()
 	let testUser3: User;
 	let testUserSession: Session;
 	let testUser2Session: Session;
-	let testUser3Session: Session;
 	let testWebring: Webring;
 	let testWebring2: Webring;
 
@@ -32,7 +29,6 @@ describe('Webring Detail View', function ()
 		testUser3 = await testUtils.insertTestUser();
 		testUserSession = await sessionService.createSession(testUser);
 		testUser2Session = await sessionService.createSession(testUser2);
-		testUser3Session = await sessionService.createSession(testUser3);
 		testWebring = await testUtils.insertTestWebring(testUser.userId!, {
 			private: true,
 			moderators: [testUser2]
