@@ -8,17 +8,40 @@ div.content-block
 			a(href='/webring/' + webring.url + '/update') Update Webring
 			if isUserOwner
 				a(href='/webring/' + webring.url + '/delete') Delete Webring
+h2 Add this webring to your site
+div.content-block
+	p
+		| Copy the following markup to your website so your visitors can navigate your webring.
+		| Alternatively, get creative and design your own!
+	p
+		| In many cases, simply using the 
+		i random site 
+		| link will suffice!
+	textarea#example-code(rows=10)
+		| <table>
+		| 	<tr>
+		| 		<td colspan="3">This site is a member of #{webring.name}.</td>
+		| 	</tr>
+		| 	<tr>
+		| 		<td><a href="https://webri.ng/webring/#{webring.url}/previous">Previous Site</a></td>
+		| 		<td><a href="https://webri.ng/webring/#{webring.url}/random">Random Site</a></td>
+		| 		<td><a href="https://webri.ng/webring/#{webring.url}/next">Next Site</a></td>
+		| 	</tr>
+		| </table>
+
+
 h2 Sites
 div#webring-detail-sites.content-block
 	if sites.length > 0
 		ol#webring-detail-site-list
-			each site in sites
+			each site, index in sites
 				li(id='site_' + site.url)
 					span.name #{site.name}
 					a.url(href=site.url) #{site.url}
 					if isUserModerator
 						div.site-controls
 							button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
+							button(onclick='getExampleMarkup(' + (index + 1) + ')') Get Example Markup
 	else
 		if isUserModerator
 			| This webring does not have any sites yet. Feel free to add some!

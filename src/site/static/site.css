@@ -147,14 +147,14 @@ form .form-field label {
   font-weight: bold;
 }
 
+form .form-field textarea {
+  resize: none;
+  width: 100%;
+}
+
 form .form-buttons {
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-
-form textarea {
-  resize: none;
-  width: 100%;
 }
 
 footer {
@@ -189,4 +189,14 @@ footer {
 #webring-detail-site-list li .site-controls {
   margin-top: 0.2rem;
   display: block;
+}
+
+#webring-detail-site-list li .site-controls button {
+  margin-right: 0.2rem;
+}
+
+textarea#example-code {
+  margin-top: 1rem;
+  resize: none;
+  width: 100%;
 }

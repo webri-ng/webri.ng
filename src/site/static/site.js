@@ -122,6 +122,22 @@ function deleteWebring(webringUrl)
 
 
 /**
+ * Gets the example markup for a particular site.
+ * This sets the 'Add this webring to your site' example markup to correspond to a
+ * particular site index.
+ */
+function getExampleMarkup(index)
+{
+	const exampleCodeElement = document.getElementById('example-code');
+	let textContent = exampleCodeElement.textContent;
+
+	textContent = textContent.replace(/\/(previous.*)"/, '/previous?index=' + index + '"');
+	textContent = textContent.replace(/\/(next.*)"/, '/next?index=' + index + '"');
+	exampleCodeElement.value = textContent;
+}
+
+
+/**
  * Send a request to login.
  */
 function login()

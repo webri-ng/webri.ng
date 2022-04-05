@@ -206,6 +206,16 @@ footer {
 		.site-controls {
 			margin-top: 0.2rem;
 			display: block;
+
+			button {
+				margin-right: 0.2rem;
+			}
 		}
 	}
+}
+
+textarea#example-code {
+	margin-top: 1rem;
+	resize: none;
+	width: 100%;
 }
