@@ -134,4 +134,42 @@ describe('Update user', function ()
 		expect(dayjs(testUser.dateModified).isSame(new Date(), 'minute')).to.be.true;
 		expect(testUser.dateDeleted).to.be.null;
 	});
+
+
+	it('should correctly update a customer without changing the email', async function ()
+	{
+		const email = testUser.email;
+		const username = createRandomUsername();
+
+		testUser = await updateUser(testUser.userId!, username, email);
+		if (!testUser) {
+			throw new Error('User update failed');
+		}
+
+		expect(testUser).to.not.be.null;
+		expect(testUser.email).to.equal(User.normaliseEmailAddress(email));
+		expect(testUser.username).to.equal(User.normaliseUsername(username));
+		expect(dayjs(testUser.dateCreated).isSame(testUser.dateCreated)).to.be.true;
+		expect(dayjs(testUser.dateModified).isSame(new Date(), 'minute')).to.be.true;
+		expect(testUser.dateDeleted).to.be.null;
+	});
+
+
+	it('should correctly update a customer without changing the username', async function ()
+	{
+		const email = createRandomEmailAddress();
+		const username = testUser.username;
+
+		testUser = await updateUser(testUser.userId!, username, email);
+		if (!testUser) {
+			throw new Error('User update failed');
+		}
+
+		expect(testUser).to.not.be.null;
+		expect(testUser.email).to.equal(User.normaliseEmailAddress(email));
+		expect(testUser.username).to.equal(User.normaliseUsername(username));
+		expect(dayjs(testUser.dateCreated).isSame(testUser.dateCreated)).to.be.true;
+		expect(dayjs(testUser.dateModified).isSame(new Date(), 'minute')).to.be.true;
+		expect(testUser.dateDeleted).to.be.null;
+	});
 });

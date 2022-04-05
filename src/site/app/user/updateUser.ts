@@ -36,7 +36,7 @@ export async function updateUser(userId: Readonly<UUID>,
 
 	// Check whether a user already exists with the same email.
 	let existingUser = await getUser(GetUserSearchField.Email, normalisedEmail);
-	if (existingUser) {
+	if (existingUser && existingUser.userId !== userId) {
 		throw new EmailNotUniqueError(emailNotUniqueError.message, emailNotUniqueError.code,
 			emailNotUniqueError.httpStatus);
 	}
@@ -51,7 +51,7 @@ export async function updateUser(userId: Readonly<UUID>,
 
 	// Check whether a user already exists with the same username.
 	existingUser = await getUser(GetUserSearchField.Username, normalisedUsername);
-	if (existingUser) {
+	if (existingUser && existingUser.userId !== userId) {
 		throw new UsernameNotUniqueError(usernameNotUniqueError.message,
 			usernameNotUniqueError.code, usernameNotUniqueError.httpStatus);
 	}
