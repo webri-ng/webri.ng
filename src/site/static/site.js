@@ -166,8 +166,14 @@ function register()
 
 	/** The form data converted to a native Javascript object. */
 	const formFields = Object.fromEntries(formData.entries());
+
+	if(formFields.confirmPassword != formFields.password) {
+		formErrorMessageElement.textContent = "The passwords provided don't match";
+		return;
+	}
+
 	// Remove this dummy field.
-	delete formFields['confirmpassword'];
+	delete formFields['confirmPassword'];
 
 	fetch('/user/register', {
 		method: 'POST',
@@ -230,6 +236,86 @@ function removeSite(webringUrl, siteUrl)
 			const newTextNode = document.createTextNode('This webring contains no sites.');
 			document.getElementById('webring-detail-sites').appendChild(newTextNode)
 		}
+	}).catch((err) => {
+		console.error(err);
+		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+	});
+}
+
+
+/**
+ * Sends a request to update the currently authenticated user.
+ */
+function updatePassword()
+{
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById('update-password-error-message');
+	const formElement = document.getElementById('update-password-form');
+	const formData = new FormData(formElement);
+
+	/** The form data converted to a native Javascript object. */
+	const formFields = Object.fromEntries(formData.entries());
+
+	if(formFields.confirmPassword != formFields.newPassword) {
+		formErrorMessageElement.textContent = "The passwords provided don't match";
+		return;
+	}
+
+	// Remove this dummy field.
+	delete formFields['confirmPassword'];
+
+	fetch('/user/update-password', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify(formFields),
+	}).then((response) => {
+		if (!response.ok) {
+			return response.json().then((errorResponse) => {
+				formErrorMessageElement.textContent = errorResponse.error;
+			});
+		}
+
+		// Redirect to the user profile.
+		window.location.replace('/user');
+	}).catch((err) => {
+		console.error(err);
+		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+	});
+}
+
+
+/**
+ * Sends a request to update the currently authenticated user.
+ */
+function updateUser()
+{
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById('update-user-error-message');
+	const formElement = document.getElementById('update-user-form');
+	const formData = new FormData(formElement);
+
+	/** The form data converted to a native Javascript object. */
+	const formFields = Object.fromEntries(formData.entries());
+
+	fetch('/user', {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify(formFields),
+	}).then((response) => {
+		if (!response.ok) {
+			return response.json().then((errorResponse) => {
+				formErrorMessageElement.textContent = errorResponse.error;
+			});
+		}
+
+		// Redirect to the user profile.
+		window.location.replace('/user');
 	}).catch((err) => {
 		console.error(err);
 		formErrorMessageElement.textContent = 'An unhandled exception has occurred';

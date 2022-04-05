@@ -1,0 +1,13 @@
+include ../include/page.pug
+h2 Update your details
+div.content-block
+	form#update-user-form
+		div.form-field
+			label(for='username') Username: 
+			input#username(type='text' name='username' minlength=2 maxlength=80 required value=user.username)
+		div.form-field
+			label(for='email') Email: 
+			input#email(type='email' name='email' required value=user.email)
+		button(type='button', onclick="updateUser()") Update
+		div#update-user-error-message.error-message
+include ../include/footer

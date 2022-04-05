@@ -44,3 +44,5 @@ userApiRouter.post('/reset-password',
 userViewRouter.get('/login', genericViewController('user/login'));
 userViewRouter.get('/logout', logoutViewController);
 userViewRouter.get('/register', genericViewController('user/register'));
+userViewRouter.get('/update', genericViewController('user/update'));
+userViewRouter.get('/update-password', genericViewController('user/updatePassword'));

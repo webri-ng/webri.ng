@@ -3,14 +3,17 @@ h2 Profile
 div.content-block
 	| Hello #{user.username}, welcome back!
 	div.user-profile-controls
-		a(href='/') Update Your Details
-		a(href='/') Update Your Password
+		a(href='/user/update') Update Your Details
+		a(href='/user/update-password') Update Your Password
 h2 Your Webrings
 	if totalPages > 1
 		|  (Page #{currentPage})
 
 div.content-block
-	include ../include/webring_list
+	if webrings.length > 0 
+		include ../include/webring_list
+	else
+		| You haven't created any webrings yet. Feel free to create one!
 
 h2 Test
 div.content-block
