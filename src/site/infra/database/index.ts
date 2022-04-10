@@ -24,6 +24,14 @@ export async function initialiseConnection(): Promise<Connection>
 		`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
 		`${databaseConfig.databaseName}\x1b[0m`);
 
+	/** Database SSL configuration */
+	let ssl = undefined;
+	if (databaseConfig.connection.ssl) {
+		ssl = {
+			rejectUnauthorized: false
+		};
+	}
+
 	connection = await createConnection({
 		type: 'postgres',
 		host: databaseConfig.connection.host,
@@ -36,11 +44,7 @@ export async function initialiseConnection(): Promise<Connection>
 		entities: [
 			Session, Site, Tag, User, Webring
 		],
-		extra: {
-			ssl: databaseConfig.connection.ssl,
-			validateConnection: false,
-			trustServerCertificate: true
-		}
+		ssl
 	});
 
 	return connection;
