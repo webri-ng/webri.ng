@@ -22,13 +22,17 @@ export const defaultConfig: Config = {
 		},
 	},
 	email: {
-		from: 'noreply@webri.ng',
+		from: 'admin@webri.ng',
 		bcc: null,
 		transport: {
 			name: process.env.EMAIL_TRANSPORT_NAME || 'fakeSMTP',
 			host: process.env.EMAIL_TRANSPORT_HOST || 'localhost',
 			port: parseInt(process.env.EMAIL_TRANSPORT_PORT || '') || 3725,
-			secure: false
+			secure: process.env.EMAIL_TRANSPORT_SECURE === 'true' || false,
+			auth: {
+				user: process.env.EMAIL_TRANSPORT_AUTH_USER || "user",
+				pass: process.env.EMAIL_TRANSPORT_AUTH_PASS || "pass"
+			}
 		}
 	},
 	global: {
