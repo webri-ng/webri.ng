@@ -38,6 +38,8 @@ export async function initialiseConnection(): Promise<Connection>
 		],
 		extra: {
 			ssl: databaseConfig.connection.ssl,
+			validateConnection: false,
+			trustServerCertificate: true
 		}
 	});
 
