@@ -1,6 +1,15 @@
 html {
   background-color: #484848;
   font-size: 10pt;
+  color: black;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: #222;
 }
 
 body {
@@ -20,10 +29,6 @@ body > header {
   margin-bottom: 0.4rem;
 }
 
-body > header a.title {
-  color: inherit;
-}
-
 body > header a.title h1 {
   font-family: Arial, "Liberation sans", sans-serif;
   text-align: center;
@@ -37,10 +42,6 @@ body > header a.title h1 {
 body > header a.title:hover {
   color: #222;
   text-decoration: underline;
-}
-
-body > header nav a {
-  color: inherit;
 }
 
 body > header nav a:hover {
@@ -104,14 +105,6 @@ body .content-block {
   margin-top: 1rem;
 }
 
-.webring-list-navigation a {
-  color: inherit;
-}
-
-.webring-list-navigation a:hover {
-  color: #222;
-}
-
 .webring-list-navigation a:not(:last-child) {
   margin-right: 0.5rem;
 }
@@ -126,7 +119,6 @@ body .content-block {
 }
 
 .controls a {
-  color: inherit;
   display: block;
 }
 
@@ -176,14 +168,6 @@ footer {
 #webring-detail-site-list li .name {
   display: block;
   font-weight: bold;
-}
-
-#webring-detail-site-list li .url {
-  color: inherit;
-}
-
-#webring-detail-site-list li .url:hover {
-  color: #222;
 }
 
 #webring-detail-site-list li .site-controls {

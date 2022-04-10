@@ -9,6 +9,15 @@ $global-element-border: 1px solid black;
 html {
 	background-color: $background-color;
 	font-size: 10pt;
+	color: black;
+}
+
+a {
+	color: inherit;
+
+	&:hover {
+		color: #222;
+	}
 }
 
 
@@ -28,8 +37,6 @@ body {
 		margin-bottom: $global-element-margin;
 
 		a.title {
-			color: inherit;
-
 			h1 {
 				font-family: Arial, "Liberation sans", sans-serif;
 				text-align: center;
@@ -48,8 +55,6 @@ body {
 
 		nav {
 			a {
-				color: inherit;
-
 				&:hover {
 					color: #222;
 				}
@@ -117,12 +122,6 @@ body {
 	margin-top: 1rem;
 
 	a {
-		color: inherit;
-
-		&:hover {
-			color: #222;
-		}
-
 		&:not(:last-child) {
 			margin-right: 0.5rem;
 
@@ -139,7 +138,6 @@ body {
 	margin-top: 1rem;
 
 	a {
-		color: inherit;
 		display: block;
 	}
 }
@@ -193,14 +191,6 @@ footer {
 		.name {
 			display: block;
 			font-weight: bold;
-		}
-
-		.url {
-			color: inherit;
-
-			&:hover {
-				color: #222;
-			}
 		}
 
 		.site-controls {
