@@ -35,7 +35,10 @@ export async function initialiseConnection(): Promise<Connection>
 		schema: databaseConfig.schema,
 		entities: [
 			Session, Site, Tag, User, Webring
-		]
+		],
+		extra: {
+			ssl: databaseConfig.connection.ssl,
+		}
 	});
 
 	return connection;

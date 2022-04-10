@@ -14,11 +14,12 @@ export const defaultConfig: Config = {
 			user: process.env.DB_USER || 'webring_app',
 			port: parseInt(process.env.DB_PORT || '') || 54327,
 			password: process.env.DB_PASS || 'adventure2022',
+			ssl: process.env.DB_SSL === 'true' || false
 		},
 		pool: {
 			min: 5,
 			max: 10
-		}
+		},
 	},
 	email: {
 		from: 'noreply@webri.ng',

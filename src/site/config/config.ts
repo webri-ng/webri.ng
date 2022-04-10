@@ -18,6 +18,7 @@ export type DatabaseConfig = {
 		user: string;
 		port: number;
 		password: string;
+		ssl: boolean;
 	};
 	pool: {
 		min: number;
