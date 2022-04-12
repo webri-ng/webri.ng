@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "git+"
 	},
-	"main": "./index.js",
+	"main": "./index.ts",
 	"license": "UNLICENSED",
 	"engines": {
 		"node": "14.18.3"

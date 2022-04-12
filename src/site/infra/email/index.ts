@@ -32,11 +32,23 @@ let emailTransport: nodemailer.Transporter<any>;
 /**
  * Initialises the email transport.
  */
-function createTransport(): void
+function createTransport(): Promise<void>
 {
 	logger.debug('Creating email transport');
 
 	emailTransport = nodemailer.createTransport(emailConfig.transport);
+
+	return new Promise((resolve, reject) => {
+		// Verify the SMTP connection is established.
+		emailTransport.verify((err) => {
+			if (err) {
+				logger.error('Error initialising email transport', err);
+				reject(err);
+			}
+
+			resolve();
+		});
+	});
 }
 
 
@@ -55,16 +67,8 @@ export async function sendEmail(to: Readonly<string>,
 	options: Readonly<IEmailOptions> = {}): Promise<void>
 {
 	if (!emailTransport) {
-		createTransport();
+		await createTransport();
 	}
-
-	// Verify the SMTP connection is established.
-	emailTransport.verify((err) => {
-		if (err) {
-			logger.error('Error initialising email transport', err);
-			throw err;
-		}
-	});
 
 	await emailTransport.sendMail({
 		to,
@@ -74,4 +78,6 @@ export async function sendEmail(to: Readonly<string>,
 		html: htmlContent,
 		attachments: options.attachments || []
 	});
+
+	logger.debug(`Sent email '${subject}' to '${to}'`);
 }

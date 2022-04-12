@@ -3,6 +3,8 @@
  * @module config
  */
 
+import SMTPTransport = require("nodemailer/lib/smtp-transport");
+
 /**
  * 'Duration' tuple type which is parseable by momentjs/dayjs as a serialised Duration.
  * Can be used via dayjs().add(...timePeriod);
@@ -34,17 +36,7 @@ export type EmailConfig = {
 	 * Email transport configuration.
 	 * Refer to: https://nodemailer.com/smtp/
 	 */
-	transport: {
-		name: string;
-		host: string;
-		port: number;
-		secure: boolean;
-		authMethod?: string;
-		auth?: {
-			user: string;
-			pass: string;
-		};
-	}
+	transport: SMTPTransport.Options
 }
 
 
