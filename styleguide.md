@@ -23,7 +23,7 @@
 - `.sh` file extension is to be omitted for executables, mandatory for shared libs.
 - Use Shell scripts to initialise and orchestrate secondary processes.
 - Any generally supported scripting language is acceptable in lieu of bash, rule-of-thumb to be used in choosing a scripting language is that it must be supported either natively in Linux/MacOS or be easily installable. Perl/Python are preferred, do not use node.js unless there is a good reason to do so.
-- Only use node.js for support scripts if the script requires you follow the existing implementation in the application. i.e. Orchestrating application tasks. If your tasks could instead be automated through the API, do so. Otherwise, use of node.js is acceptable.
+- Only use node.js for support scripts if the script requires you follow the existing implementation in the application. .e. Orchestrating application tasks. If your tasks could instead be automated through the API, do so. Otherwise, use of node.js is acceptable.
 
 
 ## Typescript
@@ -41,7 +41,7 @@
 - Use module headers on all module index files. Use jsdoc format for headers. Use two line breaks after module headers.
 - Use `camelCase` for variable, function and method names. `PascalCase` for class names.
 - Use two line breaks after the end of a function body before the next symbol.
-- In function declarations, place each parameter on a new line. e.g:
+- In function declarations, place each parameter on a new line. **Reasoning:** This makes function parameters easy to understand at a glance. e.g:
 
 ```typescript
 /**
@@ -102,8 +102,7 @@ function functionWithOptions(arg1:string,
 
 
 ### Testing
-- Be sure to clean up any test data you insert during an individual test during teardown. **Reasoning:** These can interfere with subsequent tests, particularly if they are relying on consistent counts for the number of customers/policies/claims. The same applies to †esting stubs.
-- Don't rely on static seed data during tests. This can greatly complicate schema refactoring. Use the `testUtils` module to create test data.
+- Be sure to clean up any test data you insert during an individual test during teardown. **Reasoning:** These can interfere with subsequent tests, particularly if they are relying on consistent counts for the number of users/webrings. The same applies to †esting stubs.
 - When testing API endpoints for failure cases, you are highly encouraged to test not only the HTTP status code, but the returning result body. **Reasoning:** It is easy for regression errors to sneak by undetected when a failing request in an automated test returns: '400: Request validation error' instead of: '400: Domain specific, meaningful error' without checking the result body explicitly.
 
 
