@@ -13,7 +13,7 @@ BEGIN
 			FROM pg_catalog.pg_roles
 			WHERE rolname = 'webring_app') THEN
 
-			CREATE ROLE webring_app LOGIN PASSWORD 'adventure2022';
+			CREATE ROLE webring_app LOGIN PASSWORD 'change_me';
 	 END IF;
 END
 $do$;
