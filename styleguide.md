@@ -65,6 +65,8 @@ export async function retroEncabulate(foo:number,
 ### Methodology
 Many of the following are picked up automatically by linting or the Typescript compiler, the following rules act as a very general guide to writing clean code in the project.
 
+- Name files after the main exported method. **Reasoning:** This makes it finding the file contianing a particular important function much simpler. Many IDEs support quickly switching to a file based upon its name.
+- Use Node's _'module'_ system to encapsulate functionality. e.g: When a particular service, or function contains lots of intrinstic functionality, split it into separate files and group them within a single directory. The main method can then be exported via `index.ts`. **Reasoning:** This provides a useful form of encapsulation, and logical grouping, while still allowing for easy testing.
 - Always err on the side of native solutions to simple problems. Avoid adding the burden of learning unnecessary dependencies to the burden of understanding the codebase.
 - Opt for `const` correctness wherever possible. If you don't ever intend for a variable to be changed during the course of program execution, declare it as `const`. This helps code-quality by documenting intent, as well as restricting the possibility for unintended side-effects. Be aware this does not ensure immutability for Objects, use `Object.freeze(...)` for this purpose.
 - **Do not**, under _any_ circumstances, write functions that modify by reference. Write pure functions which compute useful values and return them. When passing an object as a parameter, use Typescript's `Readonly<T>` template type as a way to enforce this.
