@@ -4,7 +4,7 @@
 	"description": "Webri.ng site",
 	"repository": {
 		"type": "git",
-		"url": "git+"
+		"url": "git+https://github.com/webri-ng/webri.ng.git"
 	},
 	"main": "./index.ts",
 	"license": "UNLICENSED",
@@ -20,8 +20,8 @@
 		"start:dev": "nodemon",
 		"start": "cd dist && npm install --production && node start.js",
 		"start:initdb": "../database/setup",
-		"test:lint": "eslint './**/*.ts'",
-		"test:lint:fix": "eslint --fix './**/*.ts'",
+		"test:lint": "eslint './src/**/*.ts'",
+		"test:lint:fix": "eslint --fix './src/**/*.ts'",
 		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
 		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts"
 	},
@@ -73,9 +73,7 @@
 		"winston": "^3.3.3"
 	},
 	"devDependencies": {
-		"@types/aws-lambda": "^8.10.61",
 		"@types/bcrypt": "^5.0.0",
-		"@types/bcryptjs": "^2.4.2",
 		"@types/chai": "^4.3.0",
 		"@types/chai-as-promised": "^7.1.4",
 		"@types/compression": "^1.7.2",
