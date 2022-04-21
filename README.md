@@ -14,7 +14,7 @@ The source tree is split into several main directories:
 * `server/model`: Contains all domain model types.
 * `server/infra`: Contains all of the code for interfacing with external infrastructure, such as the database, and email.
 
-Refer to `doc/styleguide.md` for development practices.
+Refer to `styleguide.md` for development practices.
 The main entry point for the built application is `src/site/dist/index.js`.
 
 ### Local development
@@ -27,13 +27,13 @@ In order to run the server setup locally you will need the following application
 #### First-time configuration
 In order to setup the application for local development:
 * Initialise local development mock services by running the `docker-compose.yml` file in the main `/src` directory.
-* Initialise the database schema, application's database credentials and seed data by running the `npm run start:initdb` script. This is a shorthand for running the `setup` script in the `/src/database` directory. This will initialise the database schema, and set up the application user.
+* Initialise the database schema, application's database credentials and seed data by running the `npm run start:initdb` script. This is a shorthand for running the `setup` script in the `src/db` directory. This will initialise the database schema, and set up the application user.
 * From here you should be able to run the server locally using `npm run start:dev`. Refer to `src/site/package.json` for more specific NPM configuration.
 
 ### Environment Variables
 Provided below is a table of the environment variables which can be used to configure the application.
 These are necessary for running a staging/production instance of the application. All required env vars are provided in the default development environment config. 
-For more details refer to modules in the `src/server/config` directory.
+For more details refer to modules in the `src/site/config` directory.
 
 | Key |Description  |
 |--|--|
