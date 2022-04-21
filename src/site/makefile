@@ -9,18 +9,19 @@
 #     Anthony <ajxs [at] panoptic.online>
 #####################################################################
 
-.POSIX:
-.DELETE_ON_ERROR:
-MAKEFLAGS += --warn-undefined-variables
-MAKEFLAGS += --no-builtin-rules
+DIST_DIR := ./dist
 
-.PHONY: mock-services
+.PHONY: clean
 
-mock-services:
-	docker-compose --project-name "webri.ng" --file "docker-compose.yml" up
+all: site_style
+	npm run build && \
+	cp ./package.json ${DIST_DIR} && \
+	cp -r ./static ${DIST_DIR} && \
+	cp -r ./template ${DIST_DIR} && \
+	cp -r ./api/view ${DIST_DIR}/api/view
 
-mock-services-down:
-	docker-compose --project-name "webri.ng" --file "docker-compose.yml" down
+clean:
+	rm -rf ${DIST_DIR}/*
 
-site:
-
+site_style:
+	sassc --style=expanded ./site.scss ./static/site.css
