@@ -17,15 +17,17 @@ div.content-block
 		| In many cases, simply using the 
 		i random site 
 		| link will suffice!
+	p
+		| To get the HTML code for linking a particular site to the webring, use the 
+		i Get Example Markup 
+		| button below it in the list.
 	textarea#example-code(rows=10)
 		| <table>
 		| 	<tr>
 		| 		<td colspan="3">This site is a member of #{webring.name}.</td>
 		| 	</tr>
 		| 	<tr>
-		| 		<td><a href="https://webri.ng/webring/#{webring.url}/previous">Previous Site</a></td>
 		| 		<td><a href="https://webri.ng/webring/#{webring.url}/random">Random Site</a></td>
-		| 		<td><a href="https://webri.ng/webring/#{webring.url}/next">Next Site</a></td>
 		| 	</tr>
 		| </table>
 
@@ -38,10 +40,10 @@ div#webring-detail-sites.content-block
 				li(id='site_' + site.url)
 					span.name #{site.name}
 					a.url(href=site.url) #{site.url}
-					if isUserModerator
-						div.site-controls
+					div.site-controls
+						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',' + (index + 1) + ')') Get Example Markup
+						if isUserModerator
 							button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
-							button(onclick='getExampleMarkup(' + (index + 1) + ')') Get Example Markup
 	else
 		if isUserModerator
 			| This webring does not have any sites yet. Feel free to add some!

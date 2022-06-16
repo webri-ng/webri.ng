@@ -1,6 +1,6 @@
 {
 	"name": "webri.ng",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Webri.ng site",
 	"repository": {
 		"type": "git",
@@ -19,7 +19,6 @@
 		"build": "tsc",
 		"start:dev": "nodemon",
 		"start": "cd dist && npm install --production && node start.js",
-		"start:initdb": "../database/setup",
 		"test:lint": "eslint './src/**/*.ts'",
 		"test:lint:fix": "eslint --fix './src/**/*.ts'",
 		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",

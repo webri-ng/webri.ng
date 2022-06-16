@@ -126,14 +126,19 @@ function deleteWebring(webringUrl)
  * This sets the 'Add this webring to your site' example markup to correspond to a
  * particular site index.
  */
-function getExampleMarkup(index)
+function getExampleMarkup(webringName, webringUrl, index)
 {
 	const exampleCodeElement = document.getElementById('example-code');
-	let textContent = exampleCodeElement.textContent;
-
-	textContent = textContent.replace(/\/(previous.*)"/, '/previous?index=' + index + '"');
-	textContent = textContent.replace(/\/(next.*)"/, '/next?index=' + index + '"');
-	exampleCodeElement.value = textContent;
+	exampleCodeElement.value = `<table>
+	<tr>
+		<td colspan="3">This site is a member of ${webringName}.</td>
+	</tr>
+	<tr>
+		<td><a href="https://webri.ng/webring/${webringUrl}/previous?index=${index}">Previous Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/random">Random Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/next?index=${index}">Next Site</a></td>
+	</tr>
+</table>`;
 }
 
 
