@@ -1,5 +1,6 @@
 import { Config } from './config';
 import { defaultConfig } from './defaultConfig';
+import { productionEnvironmentConfig } from './environment/production';
 import { testEnvironmentConfig } from './environment/test';
 
 /**
@@ -12,7 +13,7 @@ export const applicationEnvironment: string = process.env.NODE_ENV || 'developme
 const environmentConfigs: { [key: string]: Config; } = {
 	test: testEnvironmentConfig,
 	development: defaultConfig,
-	production: defaultConfig,
+	production: productionEnvironmentConfig,
 	staging: defaultConfig,
 };
 
