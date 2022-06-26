@@ -41,7 +41,7 @@ div#webring-detail-sites.content-block
 					span.name #{site.name}
 					a.url(href=site.url) #{site.url}
 					div.site-controls
-						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',' + (index + 1) + ')') Get Example Markup
+						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',' + index + ')') Get Example Markup
 						if isUserModerator
 							button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
 	else
