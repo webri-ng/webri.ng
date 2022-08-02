@@ -13,19 +13,23 @@ export async function indexViewController(req: Request,
 	res: Response,
 	next: NextFunction): Promise<Response|void>
 {
-	const { user } = res.locals;
+	try {
+		const { user } = res.locals;
 
-	const webringIndex = await webringService.browse({
-		page: 1,
-		sortBy: SearchWebringsSort.Modified
-	});
+		const webringIndex = await webringService.browse({
+			page: 1,
+			sortBy: SearchWebringsSort.Modified
+		});
 
-	return res.render('index', {
-		user,
-		currentPage: webringIndex.currentPage,
-		totalPages: 1,
-		nextPageNumber: webringIndex.currentPage + 1,
-		previousPageNumber: webringIndex.currentPage - 1,
-		webrings: webringIndex.webrings.slice(0, 16)
-	});
+		return res.render('index', {
+			user,
+			currentPage: webringIndex.currentPage,
+			totalPages: 1,
+			nextPageNumber: webringIndex.currentPage + 1,
+			previousPageNumber: webringIndex.currentPage - 1,
+			webrings: webringIndex.webrings.slice(0, 16)
+		});
+	} catch(err) {
+		return next(err);
+	}
 }
