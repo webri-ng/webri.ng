@@ -46,3 +46,4 @@ userViewRouter.get('/logout', logoutViewController);
 userViewRouter.get('/register', genericViewController('user/register'));
 userViewRouter.get('/update', genericViewController('user/update'));
 userViewRouter.get('/update-password', genericViewController('user/updatePassword'));
+userViewRouter.get('/forgot-password', genericViewController('user/forgotPassword'));

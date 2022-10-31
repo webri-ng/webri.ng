@@ -1,4 +1,9 @@
 /**
+ * The message to display to the user in the case that an unhandled exception has occurred.
+ */
+const unhandledExceptionMessage = 'An unhandled exception has occurred';
+
+/**
  * Sends a request to add a new site to a webring.
  */
 function addNewSite()
@@ -36,7 +41,7 @@ function addNewSite()
 		});
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -86,7 +91,7 @@ function createWebring()
 		});
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -116,9 +121,44 @@ function deleteWebring(webringUrl)
 		window.location.href = '/user';
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
+
+
+/**
+ * Send a request to reset a user's password.
+ */
+ function forgotPassword()
+ {
+	 /** The form's error message text element. */
+	 const formErrorMessageElement = document.getElementById('reset-password-error-message');
+	 const formElement = document.getElementById('reset-password-form');
+	 const formData = new FormData(formElement);
+
+	 fetch('/user/reset-password', {
+		 method: 'POST',
+		 headers: {
+			 'Content-Type': 'application/json',
+			 'Accept': 'application/json'
+		 },
+		 body: JSON.stringify(Object.fromEntries(formData.entries())),
+	 }).then((response) => {
+		 if (!response.ok) {
+			 return response.json().then((errorResponse) => {
+				 formErrorMessageElement.textContent = errorResponse.error;
+			 });
+		 } else {
+			// Display the confirmation message, and hide the form.
+			const resetPasswordMessage = document.getElementById('reset-password-message');
+			resetPasswordMessage.style.display = 'block';
+			formElement.style.display = 'none';
+		 }
+	 }).catch((err) => {
+		 console.error(err);
+		 formErrorMessageElement.textContent = unhandledExceptionMessage;
+	 });
+ }
 
 
 /**
@@ -170,7 +210,7 @@ function login()
 		window.location.replace('/user');
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -214,7 +254,7 @@ function register()
 		window.location.replace('/user');
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -259,7 +299,7 @@ function removeSite(webringUrl, siteUrl)
 		}
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -303,7 +343,7 @@ function updatePassword()
 		window.location.replace('/user');
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -339,7 +379,7 @@ function updateUser()
 		window.location.replace('/user');
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
 
@@ -393,6 +433,6 @@ function updateWebring()
 		});
 	}).catch((err) => {
 		console.error(err);
-		formErrorMessageElement.textContent = 'An unhandled exception has occurred';
+		formErrorMessageElement.textContent = unhandledExceptionMessage;
 	});
 }
