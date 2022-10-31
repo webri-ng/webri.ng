@@ -14,7 +14,7 @@
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-.PHONY: mock-services
+.PHONY: mock-services mock-services-down database
 
 mock-services:
 	docker-compose --project-name "webri.ng" --file "docker-compose.yml" up
@@ -22,5 +22,5 @@ mock-services:
 mock-services-down:
 	docker-compose --project-name "webri.ng" --file "docker-compose.yml" down
 
-site:
-
+database:
+	./db/setup
