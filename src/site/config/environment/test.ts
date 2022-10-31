@@ -12,4 +12,19 @@ export const testEnvironmentConfig: Config = {
 	server: {
 		port: 3456,
 	},
+	user: {
+		usernameRequirements: {
+			minLength: 2,
+			maxLength: 80
+		},
+		password: {
+			minLength: 8,
+			maxLength: 128,
+			tempPasswordExpiryPeriod: [1, 'day'],
+			expiryPeriod: [3, 'months'],
+			saltRounds: 10,
+			resetTokenValidity: [1, 'hour']
+		},
+		maxUnsuccessfulLoginAttempts: 3,
+	},
 };
