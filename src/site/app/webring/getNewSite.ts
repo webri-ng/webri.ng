@@ -19,8 +19,8 @@ export enum GetNewSiteMethod {
  * @returns The 'new' site.
  */
 export async function getNewSite(webring: Readonly<Webring>,
-	method: Readonly<GetNewSiteMethod>,
-	currentIndex?: Readonly<number>): Promise<Site>
+	method: GetNewSiteMethod,
+	currentIndex?: number): Promise<Site>
 {
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webring.ringId!);

@@ -7,7 +7,7 @@ import { logger } from '..';
  * @param {string} filename - the template filename.
  * @returns The compiled pug template.
  */
-export async function loadTemplate(filename: Readonly<string>): Promise<pug.compileTemplate>
+export async function loadTemplate(filename: string): Promise<pug.compileTemplate>
 {
 	logger.debug(`Loading template: ${filename}`);
 

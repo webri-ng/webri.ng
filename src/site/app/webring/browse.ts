@@ -6,7 +6,7 @@ import { search, SearchWebringsMethod, SearchWebringsOptions, SearchWebringsResu
  * @returns An array of webrings.
  */
 export async function browse(
-	options: Readonly<SearchWebringsOptions> = {}): Promise<SearchWebringsResults>
+	options: SearchWebringsOptions = {}): Promise<SearchWebringsResults>
 {
 	return search(SearchWebringsMethod.All, undefined, options);
 }

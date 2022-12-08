@@ -19,9 +19,9 @@ import { sendRegistrationEmail } from './sendRegistrationEmail';
  * @param {string} password - The user's new password, in plaintext.
  * @returns The newly registered user entity.
  */
-export async function register(username: Readonly<string>,
-	email: Readonly<string>,
-	password: Readonly<string>): Promise<User>
+export async function register(username: string,
+	email: string,
+	password: string): Promise<User>
 {
 	/**
 	 * 'Normalised' email address.

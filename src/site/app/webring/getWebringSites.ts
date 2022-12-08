@@ -21,7 +21,7 @@ export type GetSitesOptions = {
  * @param {GetSitesOptions} options - Additional options for the process.
  * @returns The array of sites attached to the specified webring.
  */
-export async function getWebringSites(webringId: Readonly<UUID>,
+export async function getWebringSites(webringId: UUID,
 	options: Readonly<GetSitesOptions> = {}): Promise<Site[]>
 {
 	if (!webringId) {

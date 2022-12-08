@@ -8,7 +8,7 @@ import { createResetPasswordEmailContent } from './createResetPaswordEmailConten
  * @param {string} temporaryPassword The user's new temporary password.
  */
 export async function sendResetPaswordEmail(user: Readonly<User>,
-	temporaryPassword: Readonly<string>): Promise<void>
+	temporaryPassword: string): Promise<void>
 {
 	const title = 'Your Webri.ng password has been reset';
 	const htmlContent = await createResetPasswordEmailContent(user, temporaryPassword);

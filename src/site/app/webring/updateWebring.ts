@@ -19,13 +19,13 @@ import { GetTagSearchField } from '../tag';
  * @param {Tag[]} tags - The new tags for the webring.
  * @returns The updated webring entity.
  */
-export async function updateWebring(webringId: Readonly<UUID>,
-	editingUserId: Readonly<UUID>,
-	name: Readonly<string>,
-	url: Readonly<string>,
-	description: Readonly<string>,
-	privateRing: Readonly<boolean>,
-	tags: Readonly<string[]>): Promise<Webring>
+export async function updateWebring(webringId: UUID,
+	editingUserId: UUID,
+	name: string,
+	url: string,
+	description: string,
+	privateRing: boolean,
+	tags: string[]): Promise<Webring>
 {
 	// Ensure that the specified webring exists.
 	const webring = await getWebring(GetWebringSearchField.RingId, webringId);

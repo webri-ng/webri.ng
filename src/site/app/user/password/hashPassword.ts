@@ -9,7 +9,7 @@ import { InvalidPasswordError } from '../../error';
  * @param {string} password - The password string to hash.
  * @returns The hashed password in string form.
  */
-export async function hashPassword(password: Readonly<string>): Promise<string>
+export async function hashPassword(password: string): Promise<string>
 {
 	if (!password) {
 		throw new InvalidPasswordError(invalidNewPasswordError.message,

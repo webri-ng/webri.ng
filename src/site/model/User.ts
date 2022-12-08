@@ -104,9 +104,9 @@ export class User
 	})
 	public moderatedWebrings!: Promise<Webring[]>;
 
-	constructor(_username: Readonly<string>,
-		_email: Readonly<string>,
-		_passwordHash: Readonly<string>)
+	constructor(_username: string,
+		_email: string,
+		_passwordHash: string)
 	{
 		this.username = _username;
 		this.email = _email;
@@ -139,7 +139,7 @@ export class User
 	 * @param {Date} fromDate - The date to measure from.
 	 * @returns The new expiry date, or null if no expiry date configured.
 	 */
-	public static getPasswordExpiryDate(fromDate: Readonly<Date> = new Date()): Date | null
+	public static getPasswordExpiryDate(fromDate: Date = new Date()): Date | null
 	{
 		// If an expiry period has been specified in the application config.
 		if (userConfig.password.expiryPeriod) {
@@ -156,7 +156,7 @@ export class User
 	 * @param {Date} fromDate - The date to measure from.
 	 * @returns The expiry date.
 	 */
-	public static getTempPasswordExpiryDate(fromDate: Readonly<Date> = new Date()): Date
+	public static getTempPasswordExpiryDate(fromDate: Date = new Date()): Date
 	{
 		return dayjs(fromDate)
 			.add(...userConfig.password.tempPasswordExpiryPeriod).toDate();
@@ -170,7 +170,7 @@ export class User
 	 * @throws {InvalidPasswordError} - This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateNewPassword(password: Readonly<string>): void
+	public static validateNewPassword(password: string): void
 	{
 		if (!password) {
 			throw new InvalidPasswordError(invalidNewPasswordError.message,
@@ -213,7 +213,7 @@ export class User
 	 * @throws {InvalidEmailError} - This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateEmailAddress(email: Readonly<string>): void
+	public static validateEmailAddress(email: string): void
 	{
 		if (!email) {
 			throw new InvalidEmailError(invalidEmailAddressError.message,
@@ -243,7 +243,7 @@ export class User
 	 * @param {string} email The email address string to normalise.
 	 * @returns The normalised email.
 	 */
-	public static normaliseEmailAddress(email: Readonly<string>): string
+	public static normaliseEmailAddress(email: string): string
 	{
 		if (!email) {
 			throw new InvalidEmailError(invalidEmailAddressError.message,
@@ -261,7 +261,7 @@ export class User
 	 * @throws {InvalidUsernameError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateUsername(username: Readonly<string>): void
+	public static validateUsername(username: string): void
 	{
 		if (!username) {
 			throw new InvalidUsernameError(invalidUsernameError.message,
@@ -295,7 +295,7 @@ export class User
 	 * @throws {InvalidUsernameError} This API returnable exception is raised in the case
 	 * that no username is provided.
 	 */
-	public static normaliseUsername(username: Readonly<string>): string
+	public static normaliseUsername(username: string): string
 	{
 		if (!username) {
 			throw new InvalidUsernameError(invalidUsernameError.message,

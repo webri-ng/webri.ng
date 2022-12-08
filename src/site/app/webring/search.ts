@@ -66,9 +66,9 @@ export type SearchWebringsResults = {
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
-async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>,
-	searchTerm: Readonly<UUID | string | undefined>,
-	options: Readonly<SearchWebringsOptions>): Promise<SearchWebringsResults>
+async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
+	searchTerm: UUID | string | undefined,
+	options: SearchWebringsOptions): Promise<SearchWebringsResults>
 {
 	/** The results to return from the search. */
 	const results: SearchWebringsResults = {
@@ -133,9 +133,9 @@ async function searchTaggedWebrings(searchMethod: Readonly<SearchWebringsMethod>
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
-export async function search(searchMethod: Readonly<SearchWebringsMethod>,
-	searchTerm?: Readonly<UUID | string | undefined>,
-	options: Readonly<SearchWebringsOptions> = {}): Promise<SearchWebringsResults>
+export async function search(searchMethod: SearchWebringsMethod,
+	searchTerm?: UUID | string | undefined,
+	options: SearchWebringsOptions = {}): Promise<SearchWebringsResults>
 {
 	/** The results to return from the search. */
 	const results: SearchWebringsResults = {

@@ -16,9 +16,9 @@ import { getUser, GetUserSearchField } from '.';
  * @param {string} email - The user's email address.
  * @returns The updated user entity.
  */
-export async function updateUser(userId: Readonly<UUID>,
-	username: Readonly<string>,
-	email: Readonly<string>): Promise<User>
+export async function updateUser(userId: UUID,
+	username: string,
+	email: string): Promise<User>
 {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {

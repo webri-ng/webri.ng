@@ -26,8 +26,8 @@ import { validatePassword } from './password';
  * @throws {LoginDisabledDueToAuthFailureError} - If the account is locked due to
  * too many failed login attempts.
  */
-export async function login(email: Readonly<string>,
-	password: Readonly<string>): Promise<User>
+export async function login(email: string,
+	password: string): Promise<User>
 {
 	/** The authenticated user. */
 	let user: User | null = await getUser(GetUserSearchField.Email,

@@ -4,11 +4,11 @@ import { createRandomString } from '../util';
 
 /** Additional options for inserting a test webring. */
 export type InsertTestWebringOptions = {
-	name?: Readonly<string>;
-	description?: Readonly<string>;
-	url?: Readonly<string>
-	private?: Readonly<boolean>,
-	tags?: Tag[],
+	name?: string;
+	description?: string;
+	url?: string;
+	private?: boolean;
+	tags?: Tag[];
 	moderators?: User[];
 	dateCreated?: Date;
 	dateModified?: Date;
@@ -20,7 +20,7 @@ export type InsertTestWebringOptions = {
  * @param {InsertTestWebringOptions} [options] - Options for instantiating the test webring.
  * @returns The Webring entity
  */
-export async function insertTestWebring(createdBy: Readonly<UUID>,
+export async function insertTestWebring(createdBy: UUID,
 	options: InsertTestWebringOptions = {}): Promise<Webring>
 {
 	const name = options.name || Webring.normaliseName(createRandomString());

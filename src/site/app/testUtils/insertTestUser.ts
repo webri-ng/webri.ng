@@ -4,9 +4,9 @@ import { createRandomEmailAddress, createRandomUsername, testPasswordHash } from
 
 /** Additional options for inserting a test user. */
 export type InsertTestUserOptions = {
-	username?: Readonly<string>;
-	email?: Readonly<string>;
-	passwordHash?: Readonly<string>
+	username?: string;
+	email?: string;
+	passwordHash?: string
 }
 
 

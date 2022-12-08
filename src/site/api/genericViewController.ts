@@ -8,7 +8,7 @@ import { NextFunction, Request, Response, RequestHandler } from 'express';
  * @param {string} viewName The view name to render.
  * @returns The render page middleware.
  */
-export function genericViewController(viewName: Readonly<string>): RequestHandler
+export function genericViewController(viewName: string): RequestHandler
 {
 	return function renderGenericView(req: Request,
 		res: Response,

@@ -28,8 +28,8 @@ export type GetTagOptions = {
  * @returns the Tag entity or null if none is found.
  * @throws {InvalidIdentifierError} - If the provided identifier is invalid.
  */
-export async function getTag(searchField: Readonly<GetTagSearchField>,
-	identifier: Readonly<UUID | string>,
+export async function getTag(searchField: GetTagSearchField,
+	identifier: UUID | string,
 	options: GetTagOptions = {}): Promise<Tag | null>
 {
 	/** The search conditions used to get the user entity. */

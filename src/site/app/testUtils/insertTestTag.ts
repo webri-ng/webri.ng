@@ -7,8 +7,8 @@ import { createRandomTagName } from './createRandomTagName';
  * @param {InsertTestTagOptions} [options] - Options for instantiating the test tag.
  * @returns The Tag entity
  */
-export async function insertTestTag(createdBy: Readonly<UUID>,
-	name?: Readonly<string>): Promise<Tag>
+export async function insertTestTag(createdBy: UUID,
+	name?: string): Promise<Tag>
 {
 	let tagName = createRandomTagName();
 	if (name) {

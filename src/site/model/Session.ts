@@ -49,7 +49,7 @@ export class Session
 	})
 	public dateCreated: Date;
 
-	constructor(_userId: Readonly<string>,
+	constructor(_userId: string,
 		expiryDate: Date | null = null)
 	{
 		this.userId = _userId;
@@ -65,7 +65,7 @@ export class Session
 	 * Defaults to the current date.
 	 * @returns The expiry date of a session with this effective date.
 	 */
-	 public static getDefaultExpiryDate(effectiveDate: Readonly<Date> = new Date()): Date {
+	 public static getDefaultExpiryDate(effectiveDate: Date = new Date()): Date {
 		return dayjs(effectiveDate).add(...sessionConfig.validityPeriod).toDate();
 	}
 }

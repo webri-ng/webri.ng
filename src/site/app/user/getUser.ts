@@ -29,8 +29,8 @@ export type GetUserOptions = {
  * @returns the User entity or null if none is found.
  * @throws {InvalidIdentifierError} - If the provided identifier is invalid.
  */
-export async function getUser(searchField: Readonly<GetUserSearchField>,
-	identifier: Readonly<UUID | string>,
+export async function getUser(searchField: GetUserSearchField,
+	identifier: UUID | string,
 	options: GetUserOptions = {}): Promise<User | null>
 {
 	/** The search conditions used to get the user entity. */

@@ -59,10 +59,10 @@ export class Site
 	})
 	public dateModified: Date;
 
-	constructor(_name: Readonly<string>,
-		_url: Readonly<string>,
-		_parentWebringId: Readonly<UUID>,
-		_addedBy: Readonly<UUID>)
+	constructor(_name: string,
+		_url: string,
+		_parentWebringId: UUID,
+		_addedBy: UUID)
 	{
 		this.name = _name;
 		this.url = _url;
@@ -80,7 +80,7 @@ export class Site
 	 * @throws {InvalidSiteNameError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: Readonly<string>): void
+	public static validateName(name: string): void
 	{
 		if (!name) {
 			throw new InvalidSiteNameError(invalidSiteNameError.message,
@@ -108,7 +108,7 @@ export class Site
 	* @throws {InvalidSiteNameError} This API returnable exception is raised in the case
 	* that no site name is provided.
 	*/
-	public static normaliseName(name: Readonly<string>): string
+	public static normaliseName(name: string): string
 	{
 		if (!name) {
 			throw new InvalidSiteNameError(invalidSiteNameError.message,
@@ -124,7 +124,7 @@ export class Site
 	 * @throws {InvalidSiteUrlError} This API returnable exception is raised in the case
 	 * that the provided URL is invalid.
 	 */
-	public static validateUrl(url: Readonly<string>): void
+	public static validateUrl(url: string): void
 	{
 		if (!url) {
 			throw new InvalidSiteUrlError(invalidSiteUrlError.message,
@@ -140,7 +140,7 @@ export class Site
 	* @throws {InvalidSiteNameError} This API returnable exception is raised in the case
 	* that no username is provided.
 	*/
-	public static normaliseUrl(url: Readonly<string>): string
+	public static normaliseUrl(url: string): string
 	{
 		if (!url) {
 			throw new InvalidSiteUrlError(invalidSiteUrlError.message,

@@ -98,11 +98,11 @@ export class Webring
 	})
 	public moderators!: User[];
 
-	constructor(_name: Readonly<string>,
-		_description: Readonly<string>,
-		_url: Readonly<string>,
-		_private: Readonly<boolean>,
-		_createdBy: Readonly<UUID>)
+	constructor(_name: string,
+		_description: string,
+		_url: string,
+		_private: boolean,
+		_createdBy: UUID)
 	{
 		this.name = _name;
 		this.description = _description;
@@ -121,7 +121,7 @@ export class Webring
 	 * @throws {InvalidRingNameError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: Readonly<string>): void
+	public static validateName(name: string): void
 	{
 		if (!name) {
 			throw new InvalidRingNameError(invalidRingNameError.message,
@@ -149,7 +149,7 @@ export class Webring
 	* @throws {InvalidRingNameError} This API returnable exception is raised in the case
 	* that no name is provided.
 	*/
-	public static normaliseName(name: Readonly<string>): string
+	public static normaliseName(name: string): string
 	{
 		if (!name) {
 			throw new InvalidRingNameError(invalidRingNameError.message,
@@ -165,7 +165,7 @@ export class Webring
 	 * @throws {InvalidRingUrlError} This API returnable exception is raised in the case
 	 * that the provided URL is invalid.
 	 */
-	public static validateUrl(url: Readonly<string>): void
+	public static validateUrl(url: string): void
 	{
 		if (!url) {
 			throw new InvalidRingUrlError(invalidRingUrlError.message,
@@ -198,7 +198,7 @@ export class Webring
 	* @throws {InvalidRingNameError} This API returnable exception is raised in the case
 	* that no username is provided.
 	*/
-	public static normaliseUrl(url: Readonly<string>): string
+	public static normaliseUrl(url: string): string
 	{
 		if (!url) {
 			throw new InvalidRingUrlError(invalidRingUrlError.message,

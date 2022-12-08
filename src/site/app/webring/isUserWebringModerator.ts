@@ -9,7 +9,7 @@ import { User, Webring } from '../../model';
  * specified webring.
  */
 export async function isUserWebringModerator(webring: Readonly<Webring>,
-	user: Readonly<User|undefined>): Promise<boolean>
+	user: Readonly<User | undefined>): Promise<boolean>
 {
 	if (!user) {
 		return false;

@@ -1,12 +1,12 @@
 /** Additional options for the process. */
 type CreateRandomStringOptions = {
 	/** The length of the random string to produce. Defaults to 8. */
-	length?: Readonly<number>;
+	length?: number;
 	/**
 	 * Whether the resulting string should be restricted to only alphabetic characters.
 	 * Defaults to 'false'
 	 */
-	charactersOnly?: Readonly<boolean>;
+	charactersOnly?: boolean;
 }
 
 

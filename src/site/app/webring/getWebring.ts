@@ -29,8 +29,8 @@ export type GetWebringOptions = {
  * @returns the User entity or null if none is found.
  * @throws {InvalidIdentifierError} - If the provided identifier is invalid.
  */
-export async function getWebring(searchField: Readonly<GetWebringSearchField>,
-	identifier: Readonly<UUID | string>,
+export async function getWebring(searchField: GetWebringSearchField,
+	identifier: UUID | string,
 	options: GetWebringOptions = {}): Promise<Webring | null>
 {
 	/** The search conditions used to get the entity. */

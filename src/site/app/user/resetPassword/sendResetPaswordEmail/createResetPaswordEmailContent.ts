@@ -12,7 +12,7 @@ export let compiledResetPasswordEmailTemplate: pug.compileTemplate | undefined;
  * @returns The compiled email content in string form.
  */
 export async function createResetPasswordEmailContent(user: Readonly<User>,
-	temporaryPassword: Readonly<string>): Promise<string>
+	temporaryPassword: string): Promise<string>
 {
 	if (!compiledResetPasswordEmailTemplate) {
 		compiledResetPasswordEmailTemplate = await loadTemplate('template/resetPassword.pug');

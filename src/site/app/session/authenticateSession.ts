@@ -16,8 +16,8 @@ import { InvalidSessionError, SessionExpiredError, SessionNotFoundError } from '
  * @throws {SessionExpiredError} If the session is found, but it has expired.
  * @throws {invalidSessionError} If the session is found, but has been invalidated.
  */
-export async function authenticateSession(sessionId: Readonly<UUID>,
-	authenticationDate: Readonly<Date> = new Date()): Promise<Session>
+export async function authenticateSession(sessionId: UUID,
+	authenticationDate: Date = new Date()): Promise<Session>
 {
 	if (!uuid.validate(sessionId)) {
 		throw new SessionNotFoundError();

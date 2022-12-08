@@ -7,8 +7,8 @@ import { compare } from 'bcrypt';
 * @param {string} passwordHash - The password hash to compare against.
 * @returns A boolean indicating whether the password matches the hash.
 */
-export async function validatePassword(password: Readonly<string>,
-	passwordHash: Readonly<string>): Promise<boolean>
+export async function validatePassword(password: string,
+	passwordHash: string): Promise<boolean>
 {
 	if (!password || !passwordHash) {
 		return false;

@@ -14,9 +14,9 @@ import { SiteAlreadyExistsError, WebringNotFoundError } from '../error';
  * @returns The newly created site.
  */
 export async function addNewSite(webring: Readonly<Webring>,
-	name: Readonly<string>,
-	url: Readonly<string>,
-	addedBy: Readonly<UUID>): Promise<Site>
+	name: string,
+	url: string,
+	addedBy: UUID): Promise<Site>
 {
 	if (!webring.ringId) {
 		throw new WebringNotFoundError(`The specified webring has not been serialised`,

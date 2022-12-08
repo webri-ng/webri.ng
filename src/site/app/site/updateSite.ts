@@ -11,9 +11,9 @@ import { SiteNotFoundError } from '../error';
  * @param {string} url - The URL for the new site.
  * @returns The newly created site.
  */
-export async function updateSite(siteId: Readonly<UUID>,
-	name: Readonly<string>,
-	url: Readonly<string>): Promise<Site>
+export async function updateSite(siteId: UUID,
+	name: string,
+	url: string): Promise<Site>
 {
 	const site = await getSite(siteId);
 	if (!site) {

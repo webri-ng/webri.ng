@@ -18,12 +18,12 @@ import { GetWebringSearchField } from './getWebring';
  * @param {Tag[]} tags - The tags for the webring.
  * @returns The created webring entity.
  */
-export async function createWebring(name: Readonly<string>,
-	url: Readonly<string>,
-	description: Readonly<string>,
-	privateRing: Readonly<boolean>,
-	createdBy: Readonly<UUID>,
-	tags: Readonly<string[]>): Promise<Webring>
+export async function createWebring(name: string,
+	url: string,
+	description: string,
+	privateRing: boolean,
+	createdBy: UUID,
+	tags: string[]): Promise<Webring>
 {
 	/**
 	 * 'Normalised' webring URL.

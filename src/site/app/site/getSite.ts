@@ -21,7 +21,7 @@ export type GetSiteOptions = {
  * @returns the Site entity or null if none is found.
  * @throws {InvalidIdentifierError} - If the provided identifier is invalid.
  */
-export async function getSite(siteId: Readonly<UUID>,
+export async function getSite(siteId: UUID,
 	options: GetSiteOptions = {}): Promise<Site | null>
 {
 	if (!uuid.validate(siteId)) {

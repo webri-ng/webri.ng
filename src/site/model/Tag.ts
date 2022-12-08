@@ -61,8 +61,8 @@ export class Tag
 	})
 	public taggedWebrings!: Promise<Webring[]>;
 
-	constructor(_name: Readonly<string>,
-		_createdBy: Readonly<UUID>)
+	constructor(_name: string,
+		_createdBy: UUID)
 	{
 		this.name = _name;
 		this.createdBy = _createdBy;
@@ -78,7 +78,7 @@ export class Tag
 	 * @throws {InvalidTagNameError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: Readonly<string>): void
+	public static validateName(name: string): void
 	{
 		if (!name) {
 			throw new InvalidTagNameError(invalidTagNameError.message,
@@ -112,7 +112,7 @@ export class Tag
 	* @throws {InvalidTagNameError} This API returnable exception is raised in the case
 	* that no username is provided.
 	*/
-	public static normaliseName(name: Readonly<string>): string
+	public static normaliseName(name: string): string
 	{
 		if (!name) {
 			throw new InvalidTagNameError(invalidTagNameError.message,

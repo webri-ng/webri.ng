@@ -17,8 +17,8 @@ export class ApiReturnableError extends Error {
 	 * If an API response is generated as a result of this error, this will be the HTTP
 	 * status for this response. This defaults to '400'.
 	 */
-	constructor(message: Readonly<string>,
-		public readonly code: Readonly<string>,
+	constructor(message: string,
+		public readonly code: string,
 		public readonly httpStatus: number = 400)
 	{
 		super(message);

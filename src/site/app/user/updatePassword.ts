@@ -15,9 +15,9 @@ import { hashPassword, validatePassword } from './password';
  * @param {string} newPassword The user's new password.
  * @returns The updated user entity.
  */
-export async function updatePassword(userId: Readonly<UUID>,
-	existingPassword: Readonly<string>,
-	newPassword: Readonly<string>): Promise<User>
+export async function updatePassword(userId: UUID,
+	existingPassword: string,
+	newPassword: string): Promise<User>
 {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {

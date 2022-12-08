@@ -61,10 +61,10 @@ function createTransport(): Promise<void>
  * @param {string} htmlContent - The html message content of the email.
  * @param {IEmailOptions} [options] - Additional options for the email sending process.
  */
-export async function sendEmail(to: Readonly<string>,
-	subject: Readonly<string>,
-	htmlContent: Readonly<string>,
-	options: Readonly<IEmailOptions> = {}): Promise<void>
+export async function sendEmail(to: string,
+	subject: string,
+	htmlContent: string,
+	options: IEmailOptions = {}): Promise<void>
 {
 	if (!emailTransport) {
 		await createTransport();

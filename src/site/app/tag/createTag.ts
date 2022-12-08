@@ -23,8 +23,8 @@ export type CreateTagOptions = {
  * @returns The newly created tag.
  * @throws {TagNameAlreadyExists} If the specified tag name already exists.
  */
-export async function createTag(name: Readonly<string>,
-	createdBy: Readonly<UUID>,
+export async function createTag(name: string,
+	createdBy: UUID,
 	options: CreateTagOptions = {}): Promise<Tag>
 {
 	/**

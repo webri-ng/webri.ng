@@ -11,7 +11,7 @@ import { getWebringSites } from './getWebringSites';
  * @returns The removed site.
  */
 export async function removeSite(webring: Readonly<Webring>,
-	siteUrl: Readonly<string>): Promise<Site>
+	siteUrl: string): Promise<Site>
 {
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webring.ringId!);

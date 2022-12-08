@@ -12,7 +12,7 @@ import { sendResetPaswordEmail } from './sendResetPaswordEmail';
  * @param {UUID} email The email of the user whose password to reset.
  * @throws {UserNotFoundError} If the email provided does not correspond to a real user.
  */
-export async function resetPassword(email: Readonly<string>): Promise<User>
+export async function resetPassword(email: string): Promise<User>
 {
 	const user: User | null = await getUser(GetUserSearchField.Email, email);
 	if (!user) {

@@ -36,7 +36,7 @@ export type DeleteWebringOptions = {
  * @throws {InvalidIdentifierError} - If the supplied id is invalid.
  * @throws {WebringNotFoundError} - If the specified webring cannot be found.
  */
-export async function deleteWebring(webringId: Readonly<UUID>,
+export async function deleteWebring(webringId: UUID,
 	options: DeleteWebringOptions = {}): Promise<Webring>
 {
 	const webring: Webring | null = await getWebring(GetWebringSearchField.RingId,

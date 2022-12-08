@@ -6,9 +6,9 @@ import { createRandomSiteUrl } from '.';
 
 /** Additional options for inserting a test site. */
 export type InsertTestSiteOptions = {
-	name?: Readonly<string>;
-	url?: Readonly<string>;
-	dateCreated?: Readonly<Date>;
+	name?: string;
+	url?: string;
+	dateCreated?: Date;
 }
 
 
@@ -19,8 +19,8 @@ export type InsertTestSiteOptions = {
  * @param {InsertTestSiteOptions} [options] - Options for instantiating the test webring.
  * @returns The Webring entity
  */
-export async function insertTestSite(webringId: Readonly<UUID>,
-	addedBy: Readonly<UUID>,
+export async function insertTestSite(webringId: UUID,
+	addedBy: UUID,
 	options: InsertTestSiteOptions = {}): Promise<Site>
 {
 	const name = options.name || Site.normaliseName(createRandomString());
