@@ -8,26 +8,20 @@ import { ApiErrorResponseDetails } from '../../api/api-error-response';
  */
 export class ApiReturnableError extends Error {
 	/**
-	 * The API 'error code'.
+	 * Creates an API returnable error instance.
+	 * @param message The error message that will be returned via the API.
+	 * @param code The API 'error code'.
 	 * If an API response is generated as a result of this error, this is the 'code' that
 	 * will be attached to the API error response, together with the error message.
-	 */
-	public code: string;
-
-	/**
-	 * The API response HTTP status.
+	 * @param httpStatus The API response HTTP status.
 	 * If an API response is generated as a result of this error, this will be the HTTP
 	 * status for this response. This defaults to '400'.
 	 */
-	public httpStatus: number;
-
 	constructor(message: Readonly<string>,
-		code: Readonly<string>,
-		httpStatus?: Readonly<number | undefined>)
+		public readonly code: Readonly<string>,
+		public readonly httpStatus: number = 400)
 	{
 		super(message);
-		this.code = code;
-		this.httpStatus = httpStatus || 400;
 	}
 
 	/**
