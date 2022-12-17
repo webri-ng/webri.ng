@@ -31,17 +31,13 @@ export async function authenticateSession(sessionId: UUID,
 		throw new SessionNotFoundError();
 	}
 
-	if (dayjs(authenticationDate).isAfter(session?.expiryDate)) {
-		throw new SessionExpiredError();
-	}
-
-	if (dayjs(authenticationDate).isBefore(session?.dateCreated)) {
-		throw new InvalidSessionError();
-	}
-
 	// If this session has previous been invalidated.
-	if (dayjs(authenticationDate).isAfter(session?.dateEnded)) {
+	if (session.isInvalidated(authenticationDate)) {
 		throw new InvalidSessionError();
+	}
+
+	if (!session.isActive(authenticationDate)) {
+		throw new SessionExpiredError();
 	}
 
 	return session;

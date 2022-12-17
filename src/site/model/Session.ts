@@ -68,4 +68,42 @@ export class Session
 	 public static getDefaultExpiryDate(effectiveDate: Date = new Date()): Date {
 		return dayjs(effectiveDate).add(...sessionConfig.validityPeriod).toDate();
 	}
+
+
+	/**
+	 * The number of seconds remaining in the session.
+	 */
+	public get secondsRemaining(): number {
+		return dayjs(this.expiryDate).diff(new Date(), "seconds");
+	}
+
+
+	/**
+	 * Calculates whether a session has been invalidated, as of an arbitrary effective date.
+	 * @param {Date} [effectiveDate] The effective date of the session to calculate from.
+	 * Defaults to the current date.
+	 * @returns Whether this session has been invalidated.
+	 */
+	public isInvalidated(effectiveDate: Date = new Date()): boolean {
+		return dayjs(effectiveDate).isAfter(this.dateEnded);
+	}
+
+
+	/**
+	 * Calculates whether a session is active, as of an arbitrary effective date.
+	 * @param {Date} [effectiveDate] The effective date of the session to calculate from.
+	 * Defaults to the current date.
+	 * @returns Whether the session is active.
+	 */
+	public isActive(effectiveDate: Date = new Date()): boolean {
+		if (dayjs(effectiveDate).isAfter(this.expiryDate)) {
+			return false;
+		}
+
+		if (dayjs(effectiveDate).isBefore(this.dateCreated)) {
+			return false;
+		}
+
+		return true;
+	}
 }

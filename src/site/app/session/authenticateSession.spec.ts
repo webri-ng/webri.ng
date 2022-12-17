@@ -97,11 +97,12 @@ describe('Authenticate User Session', function()
 		expect(validSession.sessionId).to.equal(expiredSession.sessionId);
 	});
 
+
 	it('should raise an exception when an arbitrary authentication date is before the ' +
 		'creation of the session', async function ()
 	{
 		return expect(authenticateSession(invalidatedSession.sessionId!,
 			dayjs(invalidatedSession.dateCreated).subtract(1, 'hour').toDate()))
-			.to.be.rejectedWith(InvalidSessionError);
+			.to.be.rejectedWith(SessionExpiredError);
 	});
 });
