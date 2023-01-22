@@ -147,6 +147,14 @@ export class Site
 				invalidSiteUrlError.code, invalidSiteUrlError.httpStatus);
 		}
 
-		return url.toLowerCase().trim();
+		let normalisedUrl = url.toLowerCase().trim();
+
+		// If the site URL provided is not prefixed with a valid protocol identifier,
+		// add a HTTP protocol prefix.
+		if(!/^(\w)+?:\/\//.test(normalisedUrl)) {
+			normalisedUrl = `http://${normalisedUrl}`;
+		}
+
+		return normalisedUrl;
 	}
 }

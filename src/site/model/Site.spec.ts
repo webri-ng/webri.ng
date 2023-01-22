@@ -21,6 +21,18 @@ describe('Site Entity', function ()
 			const normalisedUrl: string = Site.normaliseUrl('  http://www.example.org  ');
 			expect(normalisedUrl).to.equal('http://www.example.org');
 		});
+
+		it('should prepend http:// if no protocol identifier is present in the site URL', function ()
+		{
+			const normalisedUrl: string = Site.normaliseUrl('www.example.org  ');
+			expect(normalisedUrl).to.equal('http://www.example.org');
+		});
+
+		it('should not add http:// if a non http protocol identifier is present in the site URL', function ()
+		{
+			const normalisedUrl: string = Site.normaliseUrl('  ftp://www.example.org  ');
+			expect(normalisedUrl).to.equal('ftp://www.example.org');
+		});
 	});
 
 	describe('Validate site URL', function () {
