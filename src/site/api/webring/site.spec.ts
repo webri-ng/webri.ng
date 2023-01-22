@@ -18,6 +18,7 @@ describe('Get new site API', function ()
 
 	let testUser: User;
 	let testWebring: Webring;
+	let testEmptyWebring: Webring;
 	let testSite: Site;
 	let testSite2: Site;
 	let testSite3: Site;
@@ -28,6 +29,7 @@ describe('Get new site API', function ()
 	{
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testEmptyWebring = await testUtils.insertTestWebring(testUser.userId!);
 
 		testSite = await testUtils.insertTestSite(testWebring.ringId!,
 			testUser.userId!, {
@@ -59,7 +61,20 @@ describe('Get new site API', function ()
 	});
 
 
-	it('should return a 404 status when passed a valid site, and an invalid method',
+	it('should return a 404 status when passed webring with no sites added',
+		function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testEmptyWebring?.url}/invalid`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(404);
+				done();
+			});
+	});
+
+	it('should return a 404 status when passed a valid webring, and an invalid method',
 		function (done)
 	{
 		chai.request(app)

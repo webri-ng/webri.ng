@@ -16,14 +16,17 @@ export enum GetNewSiteMethod {
  * @param {GetNewSiteMethod} method - The 'method' to use for selecting the next site.
  * @param {number} [currentIndex] - The user's current index within the webring. This is
  * not required for getting a random site.
- * @returns The 'new' site.
+ * @returns The 'new' site, or null if there is no next site to return.
  */
 export async function getNewSite(webring: Readonly<Webring>,
 	method: GetNewSiteMethod,
-	currentIndex?: number): Promise<Site>
+	currentIndex?: number): Promise<Site|null>
 {
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webring.ringId!);
+	if(!webringSites.length) {
+		return null;
+	}
 
 	// Test that if the index is provided, that it is a valid number.
 	if (currentIndex !== undefined && ((currentIndex < 0) || isNaN(currentIndex))) {

@@ -17,6 +17,7 @@ describe('Get new site', function ()
 
 	let testUser: User;
 	let testWebring: Webring;
+	let testEmptyWebring: Webring;
 	let nonSerialisedWebring: Webring;
 	let testSite: Site;
 	let testSite2: Site;
@@ -28,6 +29,7 @@ describe('Get new site', function ()
 	{
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testEmptyWebring = await testUtils.insertTestWebring(testUser.userId!);
 
 		nonSerialisedWebring = new Webring(createRandomString(), createRandomString(),
 			createRandomWebringUrl(), false, testUser.userId!);
@@ -68,11 +70,19 @@ describe('Get new site', function ()
 	});
 
 
+	it('should return null if the webring has no sites', async function ()
+	{
+		const nextSite = await getNewSite(testEmptyWebring, GetNewSiteMethod.Next);
+		expect(nextSite).to.be.null;
+	});
+
+
+
 	it('should return the first site when not passed an index and the method is next',
 		async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
@@ -80,35 +90,35 @@ describe('Get new site', function ()
 		async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should return the first site when passed a negative index', async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should return the first site when passed an invalid index', async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should return the first site when passed an index that is too high', async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 5);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should return the next site when passed a valid index', async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 3);
-		expect(nextSite.siteId).to.equal(testSite5.siteId);
+		expect(nextSite!.siteId).to.equal(testSite5.siteId);
 	});
 
 
@@ -116,14 +126,14 @@ describe('Get new site', function ()
 		async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 4);
-		expect(nextSite.siteId).to.equal(testSite.siteId);
+		expect(nextSite!.siteId).to.equal(testSite.siteId);
 	});
 
 
 	it('should return the previous site when passed a valid index', async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 3);
-		expect(nextSite.siteId).to.equal(testSite3.siteId);
+		expect(nextSite!.siteId).to.equal(testSite3.siteId);
 	});
 
 
@@ -131,7 +141,7 @@ describe('Get new site', function ()
 		async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 0);
-		expect(nextSite.siteId).to.equal(testSite5.siteId);
+		expect(nextSite!.siteId).to.equal(testSite5.siteId);
 	});
 
 
