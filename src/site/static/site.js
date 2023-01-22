@@ -125,6 +125,15 @@ function deleteWebring(webringUrl)
 	});
 }
 
+/**
+ * Cancels the prompt to delete a webring.
+ * @param {string} webringUrl The url of the webring the delete prompt is for.
+ */
+function cancelDelete(webringUrl)
+{
+	window.location.href = '/webring/' + webringUrl;
+}
+
 
 /**
  * Send a request to reset a user's password.
