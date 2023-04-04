@@ -29,7 +29,7 @@ export async function indexViewController(req: Request,
 			previousPageNumber: webringIndex.currentPage - 1,
 			webrings: webringIndex.webrings.slice(0, 16)
 		});
-	} catch(err) {
+	} catch (err) {
 		return next(err);
 	}
 }

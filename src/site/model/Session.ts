@@ -74,7 +74,7 @@ export class Session
 	 * The number of seconds remaining in the session.
 	 */
 	public get secondsRemaining(): number {
-		return dayjs(this.expiryDate).diff(new Date(), "seconds");
+		return dayjs(this.expiryDate).diff(new Date(), 'seconds');
 	}
 
 

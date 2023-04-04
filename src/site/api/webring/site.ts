@@ -43,7 +43,7 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
 
 		const newSite = await webringService.getNewSite(webring, newSiteMethod, currentIndex);
 		// If the new site cannot be retrieved, redirect to the home page.
-		if(!newSite) {
+		if (!newSite) {
 			throw new SiteNotFoundError('This webring has no sites added',
 				siteNotFoundError.code, siteNotFoundError.httpStatus);
 		}

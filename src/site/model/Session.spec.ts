@@ -11,7 +11,7 @@ describe('Session Entity', function ()
 
 	describe('Validate session active', function ()
 	{
-		const expiryDate = dayjs().add(1, "week").toDate();
+		const expiryDate = dayjs().add(1, 'week').toDate();
 		const session = new Session(dummyUuid, expiryDate);
 		const dateTooEarly = dayjs().subtract(1, 'day').toDate();
 		const dateTooLate = dayjs(session.expiryDate).add(1, 'day').toDate();
@@ -43,7 +43,7 @@ describe('Session Entity', function ()
 	});
 
 	it('should return the number of seconds remaining in the session', function () {
-		const expiryDate = dayjs().add(1, "week").toDate();
+		const expiryDate = dayjs().add(1, 'week').toDate();
 		const session = new Session(dummyUuid, expiryDate);
 		expect(session.secondsRemaining).to.equal(604800);
 	});
@@ -52,22 +52,21 @@ describe('Session Entity', function ()
 		// Set an arbitrary creation date.
 		// In future the functionality may change to validate the creation date when determining
 		// the validity of a session in this manner.
-		const creationDate = dayjs().subtract(1, "day").toDate();
+		const creationDate = dayjs().subtract(1, 'day').toDate();
 		const session = new Session(dummyUuid);
 		session.dateCreated = creationDate;
 
 		it('should correctly return whether a session has been invalidated', function () {
 			expect(session.isInvalidated()).to.be.false;
-			session.dateEnded = dayjs().subtract(1, "minute").toDate();
+			session.dateEnded = dayjs().subtract(1, 'minute').toDate();
 			expect(session.isInvalidated()).to.be.true;
 		});
 
 		it('should correctly return whether a session has been invalidated as of a specific date',
 			function ()
 		{
-			const effectiveDate = dayjs().subtract(1, "hour").toDate();
+			const effectiveDate = dayjs().subtract(1, 'hour').toDate();
 			expect(session.isInvalidated(effectiveDate)).to.be.false;
 		});
-	})
-
+	});
 });

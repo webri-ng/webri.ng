@@ -64,7 +64,7 @@ app.use(cors({
  */
 export function initialise(): Promise<Server>
 {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve, _reject) => {
 		instance = app.listen(serverConfig.port, function handleServerInit() {
 			logger.info(`\x1b[33mServer live @: http://localhost:${serverConfig.port}\x1b[0m`);
 

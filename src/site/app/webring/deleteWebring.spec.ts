@@ -73,7 +73,7 @@ describe('Webring soft-deletion', function() {
 
 			testSite2 = await getRepository(Site).findOneBy({
 				siteId: testSite2?.siteId
-			})
+			});
 			expect(testSite2?.dateDeleted).to.not.be.null;
 			expect(dayjs(testSite2?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 		});

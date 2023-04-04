@@ -151,7 +151,7 @@ export class Site
 
 		// If the site URL provided is not prefixed with a valid protocol identifier,
 		// add a HTTP protocol prefix.
-		if(!/^(\w)+?:\/\//.test(normalisedUrl)) {
+		if (!/^(\w)+?:\/\//.test(normalisedUrl)) {
 			normalisedUrl = `http://${normalisedUrl}`;
 		}
 

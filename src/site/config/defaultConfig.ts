@@ -31,8 +31,8 @@ export const defaultConfig: Config = {
 			secure: process.env.EMAIL_TRANSPORT_SECURE === 'true' || false,
 			ignoreTLS: process.env.EMAIL_TRANSPORT_IGNORE_TLS === 'true' || false,
 			auth: {
-				user: process.env.EMAIL_TRANSPORT_AUTH_USER || "user",
-				pass: process.env.EMAIL_TRANSPORT_AUTH_PASS || "pass"
+				user: process.env.EMAIL_TRANSPORT_AUTH_USER || 'user',
+				pass: process.env.EMAIL_TRANSPORT_AUTH_PASS || 'pass'
 			}
 		}
 	},

@@ -237,7 +237,7 @@ function register()
 	/** The form data converted to a native Javascript object. */
 	const formFields = Object.fromEntries(formData.entries());
 
-	if(formFields.confirmPassword != formFields.password) {
+	if (formFields.confirmPassword != formFields.password) {
 		formErrorMessageElement.textContent = "The passwords provided don't match";
 		return;
 	}
@@ -326,7 +326,7 @@ function updatePassword()
 	/** The form data converted to a native Javascript object. */
 	const formFields = Object.fromEntries(formData.entries());
 
-	if(formFields.confirmPassword != formFields.newPassword) {
+	if (formFields.confirmPassword != formFields.newPassword) {
 		formErrorMessageElement.textContent = "The passwords provided don't match";
 		return;
 	}

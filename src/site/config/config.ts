@@ -3,7 +3,7 @@
  * @module config
  */
 
-import SMTPTransport = require("nodemailer/lib/smtp-transport");
+import SMTPTransport = require('nodemailer/lib/smtp-transport');
 
 /**
  * 'Duration' tuple type which is parseable by momentjs/dayjs as a serialised Duration.

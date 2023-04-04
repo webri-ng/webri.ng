@@ -47,7 +47,7 @@ export class Tag
 	})
 	public dateModified: Date;
 
-	@ManyToMany(type => Webring)
+	@ManyToMany(_type => Webring)
 	@JoinTable({
 		name: 'tagged_ring',
 		joinColumn: {

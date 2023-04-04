@@ -12,7 +12,7 @@ import { SearchWebringsMethod, SearchWebringsSort } from '../../app/webring';
  */
  export async function profileViewController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
+	_next: NextFunction): Promise<void>
 {
 	const { user } = res.locals;
 	const { page } = req.query;

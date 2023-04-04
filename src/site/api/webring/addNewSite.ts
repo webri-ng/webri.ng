@@ -50,7 +50,7 @@ export async function addNewSiteController(req: Request,
 
 		const newSite = await webringService.addNewSite(webring, name, url, user.userId);
 
-		logger.info(`User '${user.userId}' added site '${newSite.url}' to webring '${webring.url}'`);
+		logger.info(`User '${user.userId}' added site '${newSite.url}' to ring '${webring.url}'`);
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.

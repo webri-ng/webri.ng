@@ -90,7 +90,7 @@ export class User
 	})
 	public dateModified: Date;
 
-	@ManyToMany(type => Webring)
+	@ManyToMany(_type => Webring)
 	@JoinTable({
 		name: 'ring_moderator',
 		joinColumn: {

@@ -24,7 +24,7 @@ export async function getNewSite(webring: Readonly<Webring>,
 {
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webring.ringId!);
-	if(!webringSites.length) {
+	if (!webringSites.length) {
 		return null;
 	}
 

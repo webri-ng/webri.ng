@@ -14,9 +14,9 @@ import { removeSessionCookieResponse } from './removeSessionCookieResponse';
  * @returns The rendered view.
  */
 export function viewErrorHandler(err: Error | undefined,
-	req: Request,
+	_req: Request,
 	res: Response,
-	next: NextFunction): Response | void
+	_next: NextFunction): Response | void
 {
 	if (err instanceof NoAuthenticationError) {
 		return res.status(401).render('error', {

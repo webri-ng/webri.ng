@@ -65,7 +65,7 @@ export class Webring
 	})
 	public dateModified: Date;
 
-	@ManyToMany(type => Tag, {
+	@ManyToMany(_type => Tag, {
 		eager: true,
 	})
 	@JoinTable({
@@ -84,7 +84,7 @@ export class Webring
 	/**
 	 * The non-owner moderators of this webring.
 	 */
-	@ManyToMany(type => User)
+	@ManyToMany(_type => User)
 	@JoinTable({
 		name: 'ring_moderator',
 		joinColumn: {
