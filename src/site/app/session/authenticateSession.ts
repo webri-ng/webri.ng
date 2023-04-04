@@ -24,8 +24,10 @@ export async function authenticateSession(sessionId: UUID,
 	}
 
 	const session = await getRepository(Session).findOne({
-		sessionId,
-		dateDeleted: IsNull()
+		where: {
+			sessionId,
+			dateDeleted: IsNull()
+		}
 	});
 	if (!session) {
 		throw new SessionNotFoundError();

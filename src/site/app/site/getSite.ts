@@ -29,23 +29,16 @@ export async function getSite(siteId: UUID,
 			invalidIdentifierError.code, invalidIdentifierError.httpStatus);
 	}
 
-	let site: Site | undefined;
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
-		site = await options.transactionalEntityManager.findOne(Site, {
-			siteId,
-			dateDeleted: IsNull()
-		});
-	} else {
-		site = await getRepository(Site).findOne({
+		return options.transactionalEntityManager.findOneBy(Site, {
 			siteId,
 			dateDeleted: IsNull()
 		});
 	}
 
-	if (!site) {
-		return null;
-	}
-
-	return site;
+	return getRepository(Site).findOneBy({
+		siteId,
+		dateDeleted: IsNull()
+	});
 }

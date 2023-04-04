@@ -138,7 +138,9 @@ describe('Update Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOne(testWebring.ringId!).then(webring => {
+				getRepository(Webring).findOneBy({
+					ringId: testWebring.ringId!
+				}).then(webring => {
 					expect(webring?.name).to.equal(name);
 					expect(webring?.url).to.equal(url);
 					expect(webring?.description).to.equal(description);
@@ -167,7 +169,9 @@ describe('Update Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOne(testWebring2.ringId!).then(webring => {
+				getRepository(Webring).findOneBy({
+					ringId: testWebring2.ringId!
+				}).then(webring => {
 					expect(webring?.name).to.equal(name);
 					expect(webring?.url).to.equal(url);
 					expect(webring?.description).to.equal(description);

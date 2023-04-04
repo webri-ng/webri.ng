@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindConditions, getRepository, IsNull } from 'typeorm';
+import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { UUID, Webring } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -34,7 +35,7 @@ export async function getWebring(searchField: GetWebringSearchField,
 	options: GetWebringOptions = {}): Promise<Webring | null>
 {
 	/** The search conditions used to get the entity. */
-	const searchConditions: FindConditions<Webring> = {
+	const searchConditions: FindOptionsWhere<Webring> = {
 		dateDeleted: IsNull()
 	};
 
@@ -57,17 +58,10 @@ export async function getWebring(searchField: GetWebringSearchField,
 		searchConditions.ringId = identifier;
 	}
 
-	let webring: Webring | undefined;
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
-		webring = await options.transactionalEntityManager.findOne(Webring, searchConditions);
-	} else {
-		webring = await getRepository(Webring).findOne(searchConditions);
+		return options.transactionalEntityManager.findOneBy(Webring, searchConditions);
 	}
 
-	if (!webring) {
-		return null;
-	}
-
-	return webring;
+	return getRepository(Webring).findOneBy(searchConditions);
 }

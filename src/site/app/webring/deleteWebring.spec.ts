@@ -20,8 +20,8 @@ describe('Webring soft-deletion', function() {
 	let testWebring2: Webring;
 	let testWebring3: Webring;
 
-	let testSite: Site | undefined;
-	let testSite2: Site | undefined;
+	let testSite: Site | null;
+	let testSite2: Site | null;
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
@@ -65,11 +65,15 @@ describe('Webring soft-deletion', function() {
 		});
 
 		it('should correctly delete a webring\'s sites', async function() {
-			testSite = await getRepository(Site).findOne(testSite?.siteId);
+			testSite = await getRepository(Site).findOneBy({
+				siteId: testSite?.siteId
+			});
 			expect(testSite?.dateDeleted).to.not.be.null;
 			expect(dayjs(testSite?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 
-			testSite2 = await getRepository(Site).findOne(testSite2?.siteId);
+			testSite2 = await getRepository(Site).findOneBy({
+				siteId: testSite2?.siteId
+			})
 			expect(testSite2?.dateDeleted).to.not.be.null;
 			expect(dayjs(testSite2?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 		});

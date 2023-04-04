@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindConditions, getRepository, IsNull } from 'typeorm';
+import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { Tag, UUID } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -33,8 +34,8 @@ export async function getTag(searchField: GetTagSearchField,
 	options: GetTagOptions = {}): Promise<Tag | null>
 {
 	/** The search conditions used to get the user entity. */
-	const searchConditions: FindConditions<Tag> = {
-		dateDeleted: IsNull()
+	const searchConditions: FindOptionsWhere<Tag> = {
+		dateDeleted: IsNull(),
 	};
 
 	// Set the search criteria based on which search field is selected.
@@ -56,17 +57,10 @@ export async function getTag(searchField: GetTagSearchField,
 		searchConditions.tagId = identifier;
 	}
 
-	let tag: Tag | undefined;
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
-		tag = await options.transactionalEntityManager.findOne(Tag, searchConditions);
-	} else {
-		tag = await getRepository(Tag).findOne(searchConditions);
+		return options.transactionalEntityManager.findOneBy(Tag, searchConditions);
 	}
 
-	if (!tag) {
-		return null;
-	}
-
-	return tag;
+	return getRepository(Tag).findOneBy(searchConditions);
 }

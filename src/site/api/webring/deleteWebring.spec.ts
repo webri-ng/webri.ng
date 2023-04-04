@@ -127,7 +127,9 @@ describe('Delete Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOne(testWebring.ringId!).then(webring => {
+				getRepository(Webring).findOneBy({
+					ringId: testWebring.ringId!
+				}).then(webring => {
 					expect(webring?.dateDeleted).to.not.be.null;
 					expect(dayjs(webring?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 					done();

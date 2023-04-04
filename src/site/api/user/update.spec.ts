@@ -155,7 +155,9 @@ describe('Update user API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOne(testUser.userId!).then((user) => {
+				getRepository(User).findOneBy({
+					userId: testUser.userId!
+				}).then((user) => {
 					expect(user?.username).to.equal(username);
 					expect(user?.email).to.equal(email);
 					done();

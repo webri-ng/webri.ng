@@ -134,7 +134,9 @@ describe('Update user password API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOne(testUser.userId!).then((user) => {
+				getRepository(User).findOneBy({
+					userId: testUser.userId!
+				}).then((user) => {
 					if (!user) {
 						throw new Error('Unable to find user');
 					}

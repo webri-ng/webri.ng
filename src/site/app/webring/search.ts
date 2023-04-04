@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindConditions, FindManyOptions, getRepository, ILike, IsNull } from 'typeorm';
+import { EntityManager, FindManyOptions, getRepository, ILike, IsNull } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { UUID, Webring } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -155,7 +156,7 @@ export async function search(searchMethod: SearchWebringsMethod,
 	const skip = (results.currentPage - 1) * resultsPerPage;
 
 	/** The search conditions used to get the user entity. */
-	const searchConditions: FindConditions<Webring> = {
+	const searchConditions: FindOptionsWhere<Webring> = {
 		dateDeleted: IsNull(),
 		private: false
 	};

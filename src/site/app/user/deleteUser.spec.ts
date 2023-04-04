@@ -73,11 +73,15 @@ describe('User soft-deletion', function() {
 		expect(deletedUser.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedUser.dateDeleted).isSame(deletionDate)).to.be.true;
 
-		let deletedWebring = await getRepository(Webring).findOne(testWebring.ringId);
+		let deletedWebring = await getRepository(Webring).findOneBy({
+			ringId: testWebring.ringId
+		});
 		expect(deletedWebring?.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedWebring?.dateDeleted).isSame(deletionDate)).to.be.true;
 
-		deletedWebring = await getRepository(Webring).findOne(testPrivateWebring.ringId);
+		deletedWebring = await getRepository(Webring).findOneBy({
+			ringId: testPrivateWebring.ringId
+		});
 		expect(deletedWebring?.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedWebring?.dateDeleted).isSame(deletionDate)).to.be.true;
 	});

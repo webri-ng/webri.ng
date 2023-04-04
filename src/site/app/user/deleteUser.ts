@@ -1,5 +1,6 @@
 import { User, UUID, Webring } from '../../model';
-import { getRepository, EntityManager, FindConditions, IsNull } from 'typeorm';
+import { getRepository, EntityManager, IsNull } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { UserNotFoundError } from '../error';
 import { userNotFoundError } from '../../api/api-error-response';
 import { getUser, GetUserSearchField } from './getUser';
@@ -47,16 +48,16 @@ export async function deleteUser(userId: UUID,
 
 	const deletionDate: Date = options.deletionDate || new Date();
 
-	const searchConditions: FindConditions<Webring> = {
+	const searchConditions: FindOptionsWhere<Webring> = {
 		createdBy: userId,
 		dateDeleted: IsNull()
 	};
 
 	let webrings: Webring[];
 	if (options.transactionalEntityManager) {
-		webrings = await options.transactionalEntityManager.find(Webring, searchConditions);
+		webrings = await options.transactionalEntityManager.findBy(Webring, searchConditions);
 	} else {
-		webrings = await getRepository(Webring).find(searchConditions);
+		webrings = await getRepository(Webring).findBy(searchConditions);
 	}
 
 	for (const webring of webrings) {

@@ -212,7 +212,7 @@ describe('Registration API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOne({
+				getRepository(User).findOneBy({
 					email: newRegisteredUserEmail
 				}).then((newUser) => {
 					getRepository(Session).findOne({

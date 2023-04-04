@@ -19,8 +19,8 @@
 		"build": "tsc",
 		"start:dev": "nodemon",
 		"start": "cd dist && npm install --production && NODE_ENV=production node start.js",
-		"test:lint": "eslint './src/**/*.ts'",
-		"test:lint:fix": "eslint --fix './src/**/*.ts'",
+		"test:lint": "eslint './**/*.ts'",
+		"test:lint:fix": "eslint --fix './**/*.ts'",
 		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
 		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts"
 	},
@@ -67,7 +67,7 @@
 		"nodemailer": "^6.7.2",
 		"pg": "^8.7.1",
 		"pug": "^3.0.2",
-		"typeorm": "^0.2.41",
+		"typeorm": "^0.3.12",
 		"uuid": "^8.3.2",
 		"winston": "^3.3.3"
 	},

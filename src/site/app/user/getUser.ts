@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindConditions, getRepository, IsNull } from 'typeorm';
+import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { User, UUID } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -34,7 +35,7 @@ export async function getUser(searchField: GetUserSearchField,
 	options: GetUserOptions = {}): Promise<User | null>
 {
 	/** The search conditions used to get the user entity. */
-	const searchConditions: FindConditions<User> = {
+	const searchConditions: FindOptionsWhere<User> = {
 		dateDeleted: IsNull()
 	};
 
@@ -66,17 +67,10 @@ export async function getUser(searchField: GetUserSearchField,
 		searchConditions.username = identifier;
 	}
 
-	let user: User | undefined;
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
-		user = await options.transactionalEntityManager.findOne(User, searchConditions);
-	} else {
-		user = await getRepository(User).findOne(searchConditions);
+		return options.transactionalEntityManager.findOneBy(User, searchConditions);
 	}
 
-	if (!user) {
-		return null;
-	}
-
-	return user;
+	return getRepository(User).findOneBy(searchConditions);
 }

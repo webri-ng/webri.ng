@@ -13,7 +13,7 @@ export async function getModeratedWebrings(user: Readonly<User>): Promise<Webrin
 	// Filter out any deleted webrings.
 	const moderatedWebrings = allModeratedWebrings.filter((webring) => !webring.dateDeleted);
 
-	const createdWebrings = await getRepository(Webring).find({
+	const createdWebrings = await getRepository(Webring).findBy({
 		createdBy: user.userId,
 		dateDeleted: IsNull()
 	});
