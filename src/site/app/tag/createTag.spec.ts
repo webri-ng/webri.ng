@@ -4,9 +4,9 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import { Tag, User } from '../../model';
 import { userService, testUtils, tagService } from '../';
-import { EntityManager, getManager } from 'typeorm';
 import { createTag } from './createTag';
 import { InvalidTagNameError, TagNameAlreadyExists } from '../error';
+import { appDataSource } from '../../infra/database';
 
 chai.use(chaiAsPromised);
 
@@ -52,7 +52,7 @@ describe('Tag creation', function ()
 
 
 	it('should create a tag within a transaction', async function() {
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const tagName = `testtag${Date.now()}`;
 
 			testTag = await createTag(tagName, testUser.userId!, {

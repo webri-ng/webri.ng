@@ -9,7 +9,7 @@
 	"main": "./index.ts",
 	"license": "UNLICENSED",
 	"engines": {
-		"node": "14.18.3"
+		"node": "16.x"
 	},
 	"contributors": [
 		"Anthony Richardson <anthony@ajxs.me> (https://github.com/ajxs)"
@@ -67,6 +67,7 @@
 		"nodemailer": "^6.7.2",
 		"pg": "^8.7.1",
 		"pug": "^3.0.2",
+		"reflect-metadata": "^0.1.13",
 		"typeorm": "^0.3.12",
 		"uuid": "^8.3.2",
 		"winston": "^3.3.3"

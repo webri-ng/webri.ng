@@ -6,9 +6,9 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 import { siteService, testUtils, userService } from '..';
-import { EntityManager, getManager } from 'typeorm';
 import { getWebringSites } from './getWebringSites';
 import { InvalidIdentifierError } from '../error';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Get Webring Sites', function ()
@@ -98,7 +98,7 @@ describe('Get Webring Sites', function ()
 
 	it('should get a webring\'s sites within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const results = await getWebringSites(testWebring2.ringId!, {
 				transactionalEntityManager
 			});

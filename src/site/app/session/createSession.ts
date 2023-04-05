@@ -1,4 +1,5 @@
-import { EntityManager, getRepository } from 'typeorm';
+import { EntityManager } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 import { Session, User } from '../../model';
 
 /** Additional options for the process. */
@@ -32,5 +33,5 @@ export async function createSession(user: User,
 		return options.transactionalEntityManager.save(Session, newSession);
 	}
 
-	return getRepository(Session).save(newSession);
+	return appDataSource.getRepository(Session).save(newSession);
 }

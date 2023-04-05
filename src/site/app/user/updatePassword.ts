@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
 import { logger } from '../';
 import { invalidExistingPasswordError, userNotFoundError } from '../../api/api-error-response';
 import { User, UUID } from '../../model';
 import { InvalidUserCredentialsError, UserNotFoundError } from '../error';
 import { getUser, GetUserSearchField } from '.';
 import { hashPassword, validatePassword } from './password';
+import { appDataSource } from '../../infra/database';
 
 /**
  * Updates an existing user's password.
@@ -43,5 +43,5 @@ export async function updatePassword(userId: UUID,
 
 	logger.info(`Updating password for user: '${userId}'`);
 
-	return getRepository(User).save(user);
+	return appDataSource.getRepository(User).save(user);
 }

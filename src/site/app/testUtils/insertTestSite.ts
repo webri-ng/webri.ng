@@ -1,7 +1,7 @@
 import { Site, UUID } from '../../model';
-import { getRepository } from 'typeorm';
 import { createRandomString } from '../util';
 import { createRandomSiteUrl } from '.';
+import { appDataSource } from '../../infra/database';
 
 
 /** Additional options for inserting a test site. */
@@ -29,5 +29,5 @@ export async function insertTestSite(webringId: UUID,
 	const newSite = new Site(name, url, webringId, addedBy);
 	newSite.dateCreated = options.dateCreated || new Date();
 
-	return getRepository(Site).save(newSite);
+	return appDataSource.getRepository(Site).save(newSite);
 }

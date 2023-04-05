@@ -34,7 +34,7 @@ export async function initApplication(): Promise<Server>
 	logger.info(`\x1b[33mApplication environment: '${applicationEnvironment}'\x1b[0m`);
 
 	try {
-		await database.initialiseConnection();
+		await database.initialiseAppDataSource();
 	} catch (err) {
 		logger.error('Unable to establish database connection', err);
 		logger.warn('If this error is occurring on a first-run, have you remembered to ' +
@@ -61,6 +61,6 @@ export async function initApplication(): Promise<Server>
  */
 export async function shutdownApplication()
 {
-	await database.closeConnection();
+	await database.destroyAppDataSource();
 	await server.shutdown();
 }

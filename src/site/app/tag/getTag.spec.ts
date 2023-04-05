@@ -9,6 +9,7 @@ import { InvalidIdentifierError } from '../error';
 import { getTag, GetTagSearchField } from '.';
 import { EntityManager, getManager } from 'typeorm';
 import { deleteTag } from './deleteTag';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Get tag', function ()
@@ -38,7 +39,7 @@ describe('Get tag', function ()
 
 	it('should get a tag within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager: EntityManager) => {
 			const result = await getTag(GetTagSearchField.TagId, testTag.tagId!, {
 				transactionalEntityManager
 			});

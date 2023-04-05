@@ -1,10 +1,11 @@
 import { User, UUID, Webring } from '../../model';
-import { getRepository, EntityManager, IsNull } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { UserNotFoundError } from '../error';
 import { userNotFoundError } from '../../api/api-error-response';
 import { getUser, GetUserSearchField } from './getUser';
 import { webringService } from '..';
+import { appDataSource } from '../../infra/database';
 
 
 /**
@@ -57,7 +58,7 @@ export async function deleteUser(userId: UUID,
 	if (options.transactionalEntityManager) {
 		webrings = await options.transactionalEntityManager.findBy(Webring, searchConditions);
 	} else {
-		webrings = await getRepository(Webring).findBy(searchConditions);
+		webrings = await appDataSource.getRepository(Webring).findBy(searchConditions);
 	}
 
 	for (const webring of webrings) {
@@ -74,5 +75,5 @@ export async function deleteUser(userId: UUID,
 		return options.transactionalEntityManager.save(user);
 	}
 
-	return getRepository(User).save(user);
+	return appDataSource.getRepository(User).save(user);
 }

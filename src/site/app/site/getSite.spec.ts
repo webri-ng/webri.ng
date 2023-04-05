@@ -5,9 +5,9 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 import { testUtils, userService } from '../';
+import { appDataSource } from '../../infra/database';
 import { InvalidIdentifierError } from '../error';
 import { getSite } from '.';
-import { EntityManager, getManager } from 'typeorm';
 import { deleteSite } from './deleteSite';
 
 
@@ -59,7 +59,7 @@ describe('Get site', function ()
 
 	it('should get a site within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const result = await getSite(testSite.siteId!, {
 				transactionalEntityManager
 			});

@@ -1,11 +1,12 @@
 import { Site, UUID, Webring } from '../../model';
-import { getRepository, EntityManager } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { WebringNotFoundError as WebringNotFoundError } from '../error';
 import { webringNotFoundError } from '../../api/api-error-response';
 import { getWebring } from '.';
 import { GetWebringSearchField } from './getWebring';
 import { getWebringSites } from './getWebringSites';
 import { siteService } from '..';
+import { appDataSource } from '../../infra/database';
 
 
 /**
@@ -65,5 +66,5 @@ export async function deleteWebring(webringId: UUID,
 		return options.transactionalEntityManager.save(webring);
 	}
 
-	return getRepository(Webring).save(webring);
+	return appDataSource.getRepository(Webring).save(webring);
 }

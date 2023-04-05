@@ -4,21 +4,21 @@
  */
 
 import { logger } from '../../app/logger';
-import { Connection, createConnection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { databaseConfig } from '../../config';
 import { Session, Site, Tag, User, Webring } from '../../model';
+import 'reflect-metadata';
 
-
-/** The database connection instance. */
-let connection: Connection;
+/** The main application's data source. */
+export let appDataSource: DataSource;
 
 /**
  * Initialises the database on the configured port.
  * Registers all TypeORM entities.
  * @async
- * @returns The initialised database connection instance.
+ * @returns The initialised database data source.
  */
-export async function initialiseConnection(): Promise<Connection>
+export async function initialiseAppDataSource(): Promise<DataSource>
 {
 	logger.info(`\x1b[33mConnecting to postgresql://${databaseConfig.connection.user}@` +
 		`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
@@ -32,7 +32,7 @@ export async function initialiseConnection(): Promise<Connection>
 		};
 	}
 
-	connection = await createConnection({
+	appDataSource = new DataSource({
 		type: 'postgres',
 		host: databaseConfig.connection.host,
 		port: databaseConfig.connection.port,
@@ -47,7 +47,7 @@ export async function initialiseConnection(): Promise<Connection>
 		ssl
 	});
 
-	return connection;
+	return appDataSource.initialize();
 }
 
 
@@ -56,14 +56,14 @@ export async function initialiseConnection(): Promise<Connection>
 * @async
 * @returns The closed database connection instance.
 */
-export async function closeConnection(): Promise<Connection>
+export async function destroyAppDataSource(): Promise<DataSource>
 {
-	if (!connection || !connection.isConnected) {
+	if (!appDataSource || !appDataSource.isInitialized) {
 		throw new Error('Database not connected');
 	}
 
-	await connection.close();
+	await appDataSource.destroy();
 	logger.info(`\x1b[33mClosed database connection.\x1b[0m`);
 
-	return connection;
+	return appDataSource;
 }

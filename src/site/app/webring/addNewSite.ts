@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm';
 import { webringService } from '..';
 import { siteAlreadyExistsError, webringNotFoundError } from '../../api/api-error-response';
+import { appDataSource } from '../../infra/database';
 import { Site, UUID, Webring } from '../../model';
 import { SiteAlreadyExistsError, WebringNotFoundError } from '../error';
 
@@ -47,6 +47,6 @@ export async function addNewSite(webring: Readonly<Webring>,
 			siteAlreadyExistsError.code, siteAlreadyExistsError.httpStatus);
 	}
 
-	return getRepository(Site).save(new Site(normalisedName, normalisedUrl,
-		webring.ringId, addedBy));
+	return appDataSource.getRepository(Site).save(new Site(normalisedName,
+		normalisedUrl, webring.ringId, addedBy));
 }

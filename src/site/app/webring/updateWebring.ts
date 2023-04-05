@@ -1,9 +1,9 @@
-import { getRepository } from 'typeorm';
 import { getWebring, GetWebringSearchField } from '.';
 import { tagService } from '..';
 import { invalidRingUrlNotUniqueError, tooManyTagsError,
 	webringNotFoundError } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
+import { appDataSource } from '../../infra/database';
 import { Tag, UUID, Webring } from '../../model';
 import { RingUrlNotUniqueError, TooManyTagsError, WebringNotFoundError } from '../error';
 import { GetTagSearchField } from '../tag';
@@ -92,5 +92,5 @@ export async function updateWebring(webringId: UUID,
 	webring.tags = webringTags;
 	webring.dateModified = new Date();
 
-	return getRepository(Webring).save(webring);
+	return appDataSource.getRepository(Webring).save(webring);
 }

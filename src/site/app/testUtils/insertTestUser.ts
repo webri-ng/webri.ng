@@ -1,6 +1,6 @@
 import { User } from '../../model';
-import { getRepository } from 'typeorm';
 import { createRandomEmailAddress, createRandomUsername, testPasswordHash } from '.';
+import { appDataSource } from '../../infra/database';
 
 /** Additional options for inserting a test user. */
 export type InsertTestUserOptions = {
@@ -22,5 +22,5 @@ export async function insertTestUser(options: InsertTestUserOptions = {}): Promi
 
 	const newUser: User = new User(username, email, options.passwordHash || testPasswordHash);
 
-	return getRepository(User).save(newUser);
+	return appDataSource.getRepository(User).save(newUser);
 }

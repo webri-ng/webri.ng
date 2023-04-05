@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
-import * as dayjs from 'dayjs';
-import { getRepository, IsNull } from 'typeorm';
+import { IsNull } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 import { Session, UUID } from '../../model';
 import { InvalidSessionError, SessionExpiredError, SessionNotFoundError } from '../error';
 
@@ -23,7 +23,7 @@ export async function authenticateSession(sessionId: UUID,
 		throw new SessionNotFoundError();
 	}
 
-	const session = await getRepository(Session).findOne({
+	const session = await appDataSource.getRepository(Session).findOne({
 		where: {
 			sessionId,
 			dateDeleted: IsNull()

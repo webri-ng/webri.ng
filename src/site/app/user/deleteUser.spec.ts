@@ -10,7 +10,7 @@ import { User, Webring } from '../../model';
 
 import { testUtils } from '../';
 import { deleteUser } from './deleteUser';
-import { EntityManager, getManager, getRepository } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 
 
 describe('User soft-deletion', function() {
@@ -73,13 +73,13 @@ describe('User soft-deletion', function() {
 		expect(deletedUser.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedUser.dateDeleted).isSame(deletionDate)).to.be.true;
 
-		let deletedWebring = await getRepository(Webring).findOneBy({
+		let deletedWebring = await appDataSource.getRepository(Webring).findOneBy({
 			ringId: testWebring.ringId
 		});
 		expect(deletedWebring?.dateDeleted).to.not.be.null;
 		expect(dayjs(deletedWebring?.dateDeleted).isSame(deletionDate)).to.be.true;
 
-		deletedWebring = await getRepository(Webring).findOneBy({
+		deletedWebring = await appDataSource.getRepository(Webring).findOneBy({
 			ringId: testPrivateWebring.ringId
 		});
 		expect(deletedWebring?.dateDeleted).to.not.be.null;
@@ -88,7 +88,7 @@ describe('User soft-deletion', function() {
 
 
 	it('should correctly delete a user within a transaction', async function() {
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const deletionDate = new Date();
 			const deletedUser = await deleteUser(testUser4.userId!, {
 				deletionDate,

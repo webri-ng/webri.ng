@@ -5,8 +5,8 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../..';
 import { User, Session } from '../../model';
-import { getRepository } from 'typeorm';
 import { userService, testUtils } from '../../app';
+import { appDataSource } from '../../infra/database';
 import { userConfig } from '../../config';
 import { expiredPasswordError, lockedAccountDueToAuthFailureError,
 	loginAttemptCountExceededError, loginFailedError,
@@ -28,12 +28,12 @@ describe('Login API', function()
 		testUser = await testUtils.insertTestUser();
 
 		testExpiredPasswordCustomer = await testUtils.insertTestUser();
-		await getRepository(User).update(testExpiredPasswordCustomer.userId!, {
+		await appDataSource.getRepository(User).update(testExpiredPasswordCustomer.userId!, {
 			passwordExpiryTime: dayjs().subtract(1, 'day').toDate()
 		});
 
 		testMaxAttemptCountUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testMaxAttemptCountUser.userId!, {
+		await appDataSource.getRepository(User).update(testMaxAttemptCountUser.userId!, {
 			loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
 		});
 	});
@@ -130,7 +130,7 @@ describe('Login API', function()
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(Session).findOne({
+				appDataSource.getRepository(Session).findOne({
 					where: {
 						userId: testUser.userId
 					},
@@ -156,7 +156,7 @@ describe('Login API', function()
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(Session).findOne({
+				appDataSource.getRepository(Session).findOne({
 					where: {
 						userId: testUser.userId
 					},

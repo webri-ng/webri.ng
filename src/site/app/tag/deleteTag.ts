@@ -1,8 +1,9 @@
 import { Tag, UUID } from '../../model';
-import { getRepository, EntityManager } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { tagNotFoundError } from '../../api/api-error-response';
 import { getTag, GetTagSearchField } from './getTag';
 import { TagNotFoundError } from '../error';
+import { appDataSource } from '../../infra/database';
 
 
 /**
@@ -52,5 +53,5 @@ export async function deleteTag(tagId: UUID,
 		return options.transactionalEntityManager.save(tag);
 	}
 
-	return getRepository(Tag).save(tag);
+	return appDataSource.getRepository(Tag).save(tag);
 }

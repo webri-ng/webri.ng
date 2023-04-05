@@ -10,7 +10,7 @@ import { Tag, User } from '../../model';
 
 import { testUtils } from '../';
 import { deleteTag } from '.';
-import { EntityManager, getManager } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Tag soft-deletion', function() {
@@ -59,7 +59,7 @@ describe('Tag soft-deletion', function() {
 
 
 	it('should correctly delete a tag within a transaction', async function() {
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const deletionDate = new Date();
 			const deletedTag = await deleteTag(testTag3.tagId!, {
 				deletionDate,

@@ -1,6 +1,7 @@
 import * as uuid from 'uuid';
-import { EntityManager, FindManyOptions, getRepository, ILike, IsNull } from 'typeorm';
+import { EntityManager, FindManyOptions, ILike, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
+import { appDataSource } from '../../infra/database';
 import { UUID, Webring } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -214,7 +215,8 @@ export async function search(searchMethod: SearchWebringsMethod,
 		results.webrings = webrings;
 	} else {
 		// Get the total count, to compute the total number of pages.
-		const [webrings, totalResults] = await getRepository(Webring).findAndCount(queryOptions);
+		const [webrings, totalResults] = await appDataSource.getRepository(Webring)
+			.findAndCount(queryOptions);
 
 		results.totalResults = totalResults;
 		results.webrings = webrings;

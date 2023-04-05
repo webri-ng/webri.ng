@@ -1,7 +1,7 @@
-import { getRepository } from 'typeorm';
 import { tagService } from '..';
 import { invalidRingUrlNotUniqueError, tooManyTagsError } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
+import { appDataSource } from '../../infra/database';
 import { Tag, UUID, Webring } from '../../model';
 import { RingUrlNotUniqueError, TooManyTagsError } from '../error';
 import { GetTagSearchField } from '../tag';
@@ -81,5 +81,5 @@ export async function createWebring(name: string,
 	// Initialise the webring's moderators.
 	newWebring.moderators = [];
 
-	return getRepository(Webring).save(newWebring);
+	return appDataSource.getRepository(Webring).save(newWebring);
 }

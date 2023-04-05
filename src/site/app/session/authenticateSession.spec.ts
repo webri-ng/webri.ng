@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
+import { appDataSource } from '../../infra/database';
 import { Session, User } from '../../model';
-import { getRepository } from 'typeorm';
 import { userService, testUtils } from '../';
 import { createSession } from './createSession';
 import { authenticateSession } from '.';
@@ -24,7 +24,7 @@ describe('Authenticate User Session', function()
 	let deletedSession: Session;
 
 	before(async function beforeTesting() {
-		const sessionRepository = await getRepository(Session);
+		const sessionRepository = await appDataSource.getRepository(Session);
 		testUser = await testUtils.insertTestUser();
 		userSession = await createSession(testUser);
 

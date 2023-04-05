@@ -1,4 +1,5 @@
-import { getRepository, IsNull } from 'typeorm';
+import { IsNull } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 import { User, Webring } from '../../model';
 
 /**
@@ -13,7 +14,7 @@ export async function getModeratedWebrings(user: Readonly<User>): Promise<Webrin
 	// Filter out any deleted webrings.
 	const moderatedWebrings = allModeratedWebrings.filter((webring) => !webring.dateDeleted);
 
-	const createdWebrings = await getRepository(Webring).findBy({
+	const createdWebrings = await appDataSource.getRepository(Webring).findBy({
 		createdBy: user.userId,
 		dateDeleted: IsNull()
 	});

@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm';
 import { getSite } from '.';
 import { siteNotFoundError } from '../../api/api-error-response';
+import { appDataSource } from '../../infra/database';
 import { Site, UUID } from '../../model';
 import { SiteNotFoundError } from '../error';
 
@@ -41,5 +41,5 @@ export async function updateSite(siteId: UUID,
 	site.url = normalisedUrl;
 	site.dateModified = new Date();
 
-	return getRepository(Site).save(site);
+	return appDataSource.getRepository(Site).save(site);
 }

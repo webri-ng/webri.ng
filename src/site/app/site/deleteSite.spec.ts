@@ -9,8 +9,8 @@ chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 
 import { testUtils, userService } from '../';
+import { appDataSource } from '../../infra/database';
 import { deleteSite } from '.';
-import { EntityManager, getManager } from 'typeorm';
 
 
 describe('Site soft-deletion', function() {
@@ -67,7 +67,7 @@ describe('Site soft-deletion', function() {
 
 
 	it('should correctly delete a site within a transaction', async function() {
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const deletionDate = new Date();
 			const deletedTag = await deleteSite(testSite3.siteId!, {
 				deletionDate,

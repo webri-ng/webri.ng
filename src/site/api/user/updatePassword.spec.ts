@@ -5,10 +5,10 @@ import chaiHttp = require('chai-http');
 import { app } from '../..';
 import { Session, User } from '../../model';
 import { userService, testUtils, sessionService } from '../../app';
+import { appDataSource } from '../../infra/database';
 import { userConfig } from '../../config';
 import { invalidExistingPasswordError, invalidNewPasswordTooLongError,
 	invalidNewPasswordTooShortError, requestAuthenticationFailedError } from '../api-error-response';
-import { getRepository } from 'typeorm';
 import { validatePassword } from '../../app/user/password';
 
 chai.use(chaiHttp);
@@ -134,9 +134,9 @@ describe('Update user password API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOneBy({
+				appDataSource.getRepository(User).findOneBy({
 					userId: testUser.userId!
-				}).then((user) => {
+				}).then((user: User | null) => {
 					if (!user) {
 						throw new Error('Unable to find user');
 					}

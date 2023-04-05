@@ -7,7 +7,7 @@ import { User } from '../../model';
 import { testUtils, userService } from '../';
 import { InvalidIdentifierError } from '../error';
 import { getUser, GetUserSearchField } from './getUser';
-import { EntityManager, getManager } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Get user', function ()
@@ -39,7 +39,7 @@ describe('Get user', function ()
 
 	it('should get a user within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const result = await getUser(GetUserSearchField.UserId, testUser.userId!, {
 				transactionalEntityManager
 			});

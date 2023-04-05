@@ -1,11 +1,11 @@
 import * as dayjs from 'dayjs';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
+import { appDataSource } from '../../infra/database';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { User } from '../../model';
-import { getRepository } from 'typeorm';
 import { userService, testUtils } from '../';
 import { PasswordExpiredError, InvalidUserCredentialsError, UserNotFoundError,
 	InvalidEmailError, LoginAttemptCountExceededError,
@@ -26,12 +26,12 @@ describe('User login', function()
 		testUser = await testUtils.insertTestUser();
 
 		testExpiredPasswordUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testExpiredPasswordUser.userId!, {
+		await appDataSource.getRepository(User).update(testExpiredPasswordUser.userId!, {
 			passwordExpiryTime: dayjs().subtract(1, 'day').toDate()
 		});
 
 		testMaxLoginUser = await testUtils.insertTestUser();
-		await getRepository(User).update(testMaxLoginUser.userId!, {
+		await appDataSource.getRepository(User).update(testMaxLoginUser.userId!, {
 			loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
 		});
 	});

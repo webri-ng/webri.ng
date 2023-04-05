@@ -1,5 +1,5 @@
+import { appDataSource } from '../../infra/database';
 import { Tag, User, UUID, Webring } from '../../model';
-import { getRepository } from 'typeorm';
 import { createRandomString } from '../util';
 
 /** Additional options for inserting a test webring. */
@@ -35,5 +35,5 @@ export async function insertTestWebring(createdBy: UUID,
 	newWebring.tags = options.tags || [];
 	newWebring.moderators = options.moderators || [];
 
-	return getRepository(Webring).save(newWebring);
+	return appDataSource.getRepository(Webring).save(newWebring);
 }

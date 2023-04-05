@@ -5,15 +5,14 @@ import chaiHttp = require('chai-http');
 import { app } from '../..';
 import { Session, User } from '../../model';
 import { userService, testUtils } from '../../app';
+import { appDataSource } from '../../infra/database';
 import { userConfig } from '../../config';
 import { emailNotUniqueError, invalidNewPasswordTooLongError, invalidNewPasswordTooShortError,
 	invalidUsernameTooLongError, invalidUsernameTooShortError, requestValidationError,
 	usernameNotUniqueError } from '../api-error-response';
 import { GetUserSearchField } from '../../app/user';
-import { getRepository } from 'typeorm';
 
 chai.use(chaiHttp);
-
 
 describe('Registration API', function() {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -212,17 +211,17 @@ describe('Registration API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOneBy({
+				appDataSource.getRepository(User).findOneBy({
 					email: newRegisteredUserEmail
-				}).then((newUser) => {
-					getRepository(Session).findOne({
+				}).then((newUser: User | null) => {
+					appDataSource.getRepository(Session).findOne({
 						where: {
 							userId: newUser?.userId
 						},
 						order: {
 							dateCreated: 'DESC'
 						}
-					}).then((userSession) => {
+					}).then((userSession: Session | null) => {
 						expect(res).to.have.cookie('session', userSession?.sessionId);
 						done();
 					});

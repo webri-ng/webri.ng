@@ -1,8 +1,9 @@
 import { Site, UUID } from '../../model';
-import { getRepository, EntityManager } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { siteNotFoundError } from '../../api/api-error-response';
 import { SiteNotFoundError } from '../error';
 import { getSite } from '.';
+import { appDataSource } from '../../infra/database';
 
 
 /**
@@ -52,5 +53,5 @@ export async function deleteSite(siteId: UUID,
 		return options.transactionalEntityManager.save(site);
 	}
 
-	return getRepository(Site).save(site);
+	return appDataSource.getRepository(Site).save(site);
 }

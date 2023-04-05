@@ -1,8 +1,9 @@
 import * as uuid from 'uuid';
-import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 import { Site, UUID } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
+import { appDataSource } from '../../infra/database';
 
 
 /** Additional options for the process. */
@@ -37,7 +38,7 @@ export async function getSite(siteId: UUID,
 		});
 	}
 
-	return getRepository(Site).findOneBy({
+	return appDataSource.getRepository(Site).findOneBy({
 		siteId,
 		dateDeleted: IsNull()
 	});

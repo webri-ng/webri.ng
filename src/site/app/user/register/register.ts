@@ -1,6 +1,6 @@
-import { getRepository } from 'typeorm';
 import { logger } from '../..';
 import { emailNotUniqueError, usernameNotUniqueError } from '../../../api/api-error-response';
+import { appDataSource } from '../../../infra/database';
 import { User } from '../../../model';
 import { EmailNotUniqueError, UsernameNotUniqueError } from '../../error';
 import { getUser, GetUserSearchField } from '../getUser';
@@ -60,7 +60,7 @@ export async function register(username: string,
 	const passwordHash = await hashPassword(password);
 
 	/** The newly created user entity. */
-	const newUser = await getRepository(User).save(new User(normalisedUsername,
+	const newUser = await appDataSource.getRepository(User).save(new User(normalisedUsername,
 		normalisedEmail, passwordHash));
 
 	logger.info(`New user registered: '${username}' / '${email}'`);

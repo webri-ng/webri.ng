@@ -5,8 +5,8 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { Session, User } from '../../model';
-import { EntityManager, getManager } from 'typeorm';
 import { userService, testUtils } from '../';
+import { appDataSource } from '../../infra/database';
 import { createSession } from './createSession';
 
 
@@ -62,7 +62,7 @@ describe('Create User Session', function()
 
 	it('should create a user session within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const newSession = await createSession(testUser, {
 				transactionalEntityManager,
 			});

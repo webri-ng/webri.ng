@@ -1,7 +1,7 @@
-import { getRepository } from 'typeorm';
 import { getUser, GetUserSearchField } from '..';
 import { logger, testUtils } from '../..';
 import { userNotFoundError } from '../../../api/api-error-response';
+import { appDataSource } from '../../../infra/database';
 import { User } from '../../../model';
 import { UserNotFoundError } from '../../error';
 import { hashPassword } from '../password';
@@ -32,5 +32,5 @@ export async function resetPassword(email: string): Promise<User>
 
 	await sendResetPaswordEmail(user, temporaryPassword);
 
-	return getRepository(User).save(user);
+	return appDataSource.getRepository(User).save(user);
 }

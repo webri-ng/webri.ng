@@ -7,8 +7,8 @@ import { User, Webring } from '../../model';
 import { testUtils, userService, webringService } from '..';
 import { InvalidIdentifierError } from '../error';
 import { getWebring } from '.';
-import { EntityManager, getManager } from 'typeorm';
 import { GetWebringSearchField } from './getWebring';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Get Webring', function ()
@@ -40,7 +40,7 @@ describe('Get Webring', function ()
 
 	it('should get a webring within a transaction', async function ()
 	{
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const result = await getWebring(GetWebringSearchField.RingId, testWebring.ringId!, {
 				transactionalEntityManager
 			});

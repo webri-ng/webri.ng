@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm';
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -9,6 +8,7 @@ import { createRandomString, sessionService, testUtils, userService } from '../.
 import { app } from '../../index';
 import { requestAuthenticationFailedError, requestAuthorisationFailedError,
 	webringNotFoundError } from '../api-error-response';
+import { appDataSource } from '../../infra/database';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
@@ -138,7 +138,7 @@ describe('Update Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOneBy({
+				appDataSource.getRepository(Webring).findOneBy({
 					ringId: testWebring.ringId!
 				}).then(webring => {
 					expect(webring?.name).to.equal(name);
@@ -169,7 +169,7 @@ describe('Update Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOneBy({
+				appDataSource.getRepository(Webring).findOneBy({
 					ringId: testWebring2.ringId!
 				}).then(webring => {
 					expect(webring?.name).to.equal(name);

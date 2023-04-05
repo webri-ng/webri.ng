@@ -1,9 +1,10 @@
 import * as uuid from 'uuid';
-import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { User, UUID } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
+import { appDataSource } from '../../infra/database';
 
 
 /** Which search field to use when searching for the specified user. */
@@ -72,5 +73,5 @@ export async function getUser(searchField: GetUserSearchField,
 		return options.transactionalEntityManager.findOneBy(User, searchConditions);
 	}
 
-	return getRepository(User).findOneBy(searchConditions);
+	return appDataSource.getRepository(User).findOneBy(searchConditions);
 }

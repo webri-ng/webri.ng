@@ -1,4 +1,5 @@
-import { EntityManager, FindManyOptions, getRepository, IsNull } from 'typeorm';
+import { EntityManager, FindManyOptions, IsNull } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 import { invalidIdentifierError } from '../../api/api-error-response';
 import { Site, UUID } from '../../model';
 import { InvalidIdentifierError } from '../error';
@@ -43,5 +44,5 @@ export async function getWebringSites(webringId: UUID,
 		return options.transactionalEntityManager.find(Site, searchConditions);
 	}
 
-	return getRepository(Site).find(searchConditions);
+	return appDataSource.getRepository(Site).find(searchConditions);
 }

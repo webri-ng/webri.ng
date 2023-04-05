@@ -1,6 +1,6 @@
 import { Tag, UUID } from '../../model';
-import { getRepository } from 'typeorm';
 import { createRandomTagName } from './createRandomTagName';
+import { appDataSource } from '../../infra/database';
 
 /**
  * Inserts a Tag entity suitable for testing.
@@ -15,5 +15,5 @@ export async function insertTestTag(createdBy: UUID,
 		tagName = Tag.normaliseName(name);
 	}
 
-	return getRepository(Tag).save(new Tag(tagName, createdBy));
+	return appDataSource.getRepository(Tag).save(new Tag(tagName, createdBy));
 }

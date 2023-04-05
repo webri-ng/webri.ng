@@ -1,10 +1,10 @@
-import { getRepository } from 'typeorm';
 import { logger } from '../';
 import { emailNotUniqueError, usernameNotUniqueError,
 	userNotFoundError } from '../../api/api-error-response';
 import { User, UUID } from '../../model';
 import { EmailNotUniqueError, UsernameNotUniqueError, UserNotFoundError } from '../error';
 import { getUser, GetUserSearchField } from '.';
+import { appDataSource } from '../../infra/database';
 
 /**
  * Updates an existing user.
@@ -62,5 +62,5 @@ export async function updateUser(userId: UUID,
 
 	logger.info(`Updating user id: '${userId}': '${username}' / '${email}'`);
 
-	return getRepository(User).save(user);
+	return appDataSource.getRepository(User).save(user);
 }

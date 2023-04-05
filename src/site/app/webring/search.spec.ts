@@ -8,9 +8,9 @@ import { testUtils, userService, webringService } from '..';
 import { InvalidIdentifierError } from '../error';
 import { search, SearchWebringsMethod } from './search';
 import { siteConfig } from '../../config';
-import { EntityManager, getManager } from 'typeorm';
 import dayjs = require('dayjs');
 import { SearchWebringsSort } from '.';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Search Webrings', function ()
@@ -293,7 +293,7 @@ describe('Search Webrings', function ()
 
 		it('should correctly search webrings in a transaction', async function ()
 		{
-			await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+			await appDataSource.transaction(async (transactionalEntityManager) => {
 				const results = await search(SearchWebringsMethod.Creator, testUser.userId!, {
 					transactionalEntityManager
 				});

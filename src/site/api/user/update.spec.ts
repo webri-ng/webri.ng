@@ -5,10 +5,10 @@ import chaiHttp = require('chai-http');
 import { app } from '../..';
 import { Session, User } from '../../model';
 import { userService, testUtils, sessionService } from '../../app';
+import { appDataSource } from '../../infra/database';
 import { userConfig } from '../../config';
 import { emailNotUniqueError, invalidUsernameTooLongError, invalidUsernameTooShortError,
 	requestAuthenticationFailedError, usernameNotUniqueError } from '../api-error-response';
-import { getRepository } from 'typeorm';
 
 chai.use(chaiHttp);
 
@@ -155,9 +155,9 @@ describe('Update user API', function() {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
 
-				getRepository(User).findOneBy({
+				appDataSource.getRepository(User).findOneBy({
 					userId: testUser.userId!
-				}).then((user) => {
+				}).then((user: User | null) => {
 					expect(user?.username).to.equal(username);
 					expect(user?.email).to.equal(email);
 					done();

@@ -1,9 +1,10 @@
 import * as uuid from 'uuid';
-import { EntityManager, getRepository, IsNull } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { UUID, Webring } from '../../model';
 import { InvalidIdentifierError } from '../error';
 import { invalidIdentifierError } from '../../api/api-error-response';
+import { appDataSource } from '../../infra/database';
 
 
 /** Which search field to use when searching for the specified webring. */
@@ -63,5 +64,5 @@ export async function getWebring(searchField: GetWebringSearchField,
 		return options.transactionalEntityManager.findOneBy(Webring, searchConditions);
 	}
 
-	return getRepository(Webring).findOneBy(searchConditions);
+	return appDataSource.getRepository(Webring).findOneBy(searchConditions);
 }

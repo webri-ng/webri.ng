@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm';
 import * as dayjs from 'dayjs';
 import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
@@ -7,6 +6,7 @@ import chaiHttp = require('chai-http');
 import * as chaiAsPromised from 'chai-as-promised';
 import { Session, User, Webring } from '../../model';
 import { sessionService, testUtils, userService } from '../../app';
+import { appDataSource } from '../../infra/database';
 import { app } from '../../index';
 import { requestAuthenticationFailedError,
 	requestAuthorisationFailedError,
@@ -127,9 +127,9 @@ describe('Delete Webring API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(200);
 
-				getRepository(Webring).findOneBy({
+				appDataSource.getRepository(Webring).findOneBy({
 					ringId: testWebring.ringId!
-				}).then(webring => {
+				}).then((webring : Webring | null) => {
 					expect(webring?.dateDeleted).to.not.be.null;
 					expect(dayjs(webring?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 					done();

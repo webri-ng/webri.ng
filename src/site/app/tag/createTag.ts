@@ -2,7 +2,8 @@ import { Tag, UUID } from '../../model';
 import { getTag } from '.';
 import { GetTagSearchField } from './getTag';
 import { TagNameAlreadyExists } from '../error';
-import { EntityManager, getRepository } from 'typeorm';
+import { EntityManager } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 
 
 /** Additional options for the process. */
@@ -46,5 +47,5 @@ export async function createTag(name: string,
 		return options.transactionalEntityManager.save(newTag);
 	}
 
-	return getRepository(Tag).save(newTag);
+	return appDataSource.getRepository(Tag).save(newTag);
 }

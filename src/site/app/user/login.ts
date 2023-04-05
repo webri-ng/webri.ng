@@ -1,8 +1,8 @@
-import { getRepository } from 'typeorm';
 import { expiredPasswordError, lockedAccountDueToAuthFailureError,
 	loginAttemptCountExceededError, loginFailedError,
 	userNotFoundError } from '../../api/api-error-response';
 import { userConfig } from '../../config';
+import { appDataSource } from '../../infra/database';
 import { User } from '../../model';
 import { InvalidUserCredentialsError, LoginAttemptCountExceededError,
 	LoginDisabledDueToAuthFailureError, PasswordExpiredError,
@@ -58,13 +58,13 @@ export async function login(email: string,
 				'exceeding allowed login attempt count');
 
 			user.lockedDueToFailedAuth = true;
-			await getRepository(User).save(user);
+			await appDataSource.getRepository(User).save(user);
 
 			throw new LoginAttemptCountExceededError(loginAttemptCountExceededError.message,
 				loginAttemptCountExceededError.code, loginAttemptCountExceededError.httpStatus);
 		}
 
-		user = await getRepository(User).save(user);
+		user = await appDataSource.getRepository(User).save(user);
 
 		throw new InvalidUserCredentialsError(loginFailedError.message, loginFailedError.code,
 			loginFailedError.httpStatus);
@@ -75,7 +75,7 @@ export async function login(email: string,
 	user.dateLastLogin = new Date();
 	user.dateModified = new Date();
 
-	user = await getRepository(User).save(user);
+	user = await appDataSource.getRepository(User).save(user);
 
 	if (user.hasPasswordExpired()) {
 		throw new PasswordExpiredError(expiredPasswordError.message, expiredPasswordError.code,

@@ -9,7 +9,7 @@ chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 import { deleteWebring } from '.';
 import { testUtils, userService } from '..';
-import { EntityManager, getManager, getRepository } from 'typeorm';
+import { appDataSource } from '../../infra/database';
 
 
 describe('Webring soft-deletion', function() {
@@ -65,13 +65,13 @@ describe('Webring soft-deletion', function() {
 		});
 
 		it('should correctly delete a webring\'s sites', async function() {
-			testSite = await getRepository(Site).findOneBy({
+			testSite = await appDataSource.getRepository(Site).findOneBy({
 				siteId: testSite?.siteId
 			});
 			expect(testSite?.dateDeleted).to.not.be.null;
 			expect(dayjs(testSite?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 
-			testSite2 = await getRepository(Site).findOneBy({
+			testSite2 = await appDataSource.getRepository(Site).findOneBy({
 				siteId: testSite2?.siteId
 			});
 			expect(testSite2?.dateDeleted).to.not.be.null;
@@ -92,7 +92,7 @@ describe('Webring soft-deletion', function() {
 
 
 	it('should correctly delete a webring within a transaction', async function() {
-		await getManager().transaction(async (transactionalEntityManager: EntityManager) => {
+		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const deletionDate = new Date();
 			const deletedWebring = await deleteWebring(testWebring3.ringId!, {
 				deletionDate,
