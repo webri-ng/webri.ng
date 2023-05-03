@@ -17,6 +17,8 @@ describe('Get new site', function ()
 
 	let testUser: User;
 	let testWebring: Webring;
+	let testWebringWithOneSite: Webring;
+	let testWebringWithTwoSites: Webring;
 	let testEmptyWebring: Webring;
 	let nonSerialisedWebring: Webring;
 	let testSite: Site;
@@ -24,11 +26,16 @@ describe('Get new site', function ()
 	let testSite3: Site;
 	let testSite4: Site;
 	let testSite5: Site;
+	let testSite6: Site;
+	let testSite7: Site;
+	let testSite8: Site;
 
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testWebringWithOneSite = await testUtils.insertTestWebring(testUser.userId!);
+		testWebringWithTwoSites = await testUtils.insertTestWebring(testUser.userId!);
 		testEmptyWebring = await testUtils.insertTestWebring(testUser.userId!);
 
 		nonSerialisedWebring = new Webring(createRandomString(), createRandomString(),
@@ -51,6 +58,20 @@ describe('Get new site', function ()
 				dateCreated: dayjs().subtract(2, 'days').toDate()
 			});
 		testSite5 = await testUtils.insertTestSite(testWebring.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(1, 'days').toDate()
+			});
+
+		testSite6 = await testUtils.insertTestSite(testWebringWithOneSite.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(1, 'days').toDate()
+			});
+
+		testSite7 = await testUtils.insertTestSite(testWebringWithTwoSites.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(2, 'days').toDate()
+			});
+		testSite8 = await testUtils.insertTestSite(testWebringWithTwoSites.ringId!,
 			testUser.userId!, {
 				dateCreated: dayjs().subtract(1, 'days').toDate()
 			});
@@ -77,12 +98,19 @@ describe('Get new site', function ()
 	});
 
 
-
 	it('should return the first site when not passed an index and the method is next',
 		async function ()
 	{
 		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
 		expect(nextSite!.siteId).to.equal(testSite.siteId);
+	});
+
+
+	it('should return the first site if the webring only has a single site',
+		async function ()
+	{
+		const nextSite = await getNewSite(testWebringWithOneSite, GetNewSiteMethod.Next);
+		expect(nextSite!.siteId).to.equal(testSite6.siteId);
 	});
 
 
@@ -145,9 +173,14 @@ describe('Get new site', function ()
 	});
 
 
-	it('should return a random site', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Random, 0);
-		expect(nextSite).to.not.be.null;
-	});
+	describe('Get a random site', function () {
+		it('should return a different site to the current', async function ()
+		{
+			let nextSite = await getNewSite(testWebringWithTwoSites, GetNewSiteMethod.Random, 0);
+			expect(nextSite?.siteId).to.equal(testSite8.siteId);
+
+			nextSite = await getNewSite(testWebringWithTwoSites, GetNewSiteMethod.Random, 1);
+			expect(nextSite?.siteId).to.equal(testSite7.siteId);
+		});
+	})
 });
