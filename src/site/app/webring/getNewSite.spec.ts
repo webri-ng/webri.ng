@@ -84,7 +84,8 @@ describe('Get new site', function ()
 		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
-	it('should raise an exception if a non-serialised webring is provided', async function()
+	it('should raise an exception if a non-serialised webring is provided',
+		async function()
 	{
 		return expect(getNewSite(nonSerialisedWebring,
 			GetNewSiteMethod.Next)).to.be.rejectedWith(InvalidIdentifierError);
@@ -114,62 +115,129 @@ describe('Get new site', function ()
 	});
 
 
-	it('should return the first site when not passed an index and the method is previous',
+	describe('When passed a site index', function () {
+		it('should return the first site when not passed an index and the method is previous',
 		async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous);
-		expect(nextSite!.siteId).to.equal(testSite.siteId);
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
+
+
+		it('should return the first site when passed a negative index', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, -1);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
+
+
+		it('should return the first site when passed an invalid index', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, NaN);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
+
+
+		it('should return the first site when passed an index that is too high',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 5);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
+
+
+		it('should return the next site when passed a valid index', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 3);
+			expect(nextSite!.siteId).to.equal(testSite5.siteId);
+		});
+
+
+		it('should return the first site when the method is \'next\' and passed the last index',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 4);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
+
+
+		it('should return the previous site when passed a valid index', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 3);
+			expect(nextSite!.siteId).to.equal(testSite3.siteId);
+		});
+
+
+		it('should return the last site when the method is \'previous\' and passed the first index',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 0);
+			expect(nextSite!.siteId).to.equal(testSite5.siteId);
+		});
 	});
 
-
-	it('should return the first site when passed a negative index', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
-		expect(nextSite!.siteId).to.equal(testSite.siteId);
-	});
-
-
-	it('should return the first site when passed an invalid index', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next);
-		expect(nextSite!.siteId).to.equal(testSite.siteId);
-	});
+	describe('When passed a site URL', function () {
+		it('should return the next site when passed a valid URL', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next,
+				undefined, testSite4.url);
+			expect(nextSite!.siteId).to.equal(testSite5.siteId);
+		});
 
 
-	it('should return the first site when passed an index that is too high', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 5);
-		expect(nextSite!.siteId).to.equal(testSite.siteId);
-	});
+		it('should return the first site when the method is \'next\' and passed the last URL',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next,
+				undefined, testSite5.url);
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
 
 
-	it('should return the next site when passed a valid index', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 3);
-		expect(nextSite!.siteId).to.equal(testSite5.siteId);
-	});
+		it('should return the first site when passed a nonexistent URL',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next,
+				undefined, 'fffff');
+			expect(nextSite!.siteId).to.equal(testSite.siteId);
+		});
 
 
-	it('should return the first site when the method is \'next\' and passed the last index',
-		async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next, 4);
-		expect(nextSite!.siteId).to.equal(testSite.siteId);
-	});
+		it('should return the previous site when passed a valid URL', async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous,
+				undefined, testSite4.url);
+			expect(nextSite!.siteId).to.equal(testSite3.siteId);
+		});
 
 
-	it('should return the previous site when passed a valid index', async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 3);
-		expect(nextSite!.siteId).to.equal(testSite3.siteId);
-	});
+		it('should return the correct site when passed a valid URL without the protocol',
+			async function ()
+		{
+			const nonNormalisedUrl = testSite4.url.replace('https://', '');
+
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous,
+				undefined, nonNormalisedUrl);
+			expect(nextSite!.siteId).to.equal(testSite3.siteId);
+		});
 
 
-	it('should return the last site when the method is \'previous\' and passed the first index',
-		async function ()
-	{
-		const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous, 0);
-		expect(nextSite!.siteId).to.equal(testSite5.siteId);
+		it('should return the last site when the method is \'previous\' and passed the first URL',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Previous,
+				undefined, testSite.url);
+			expect(nextSite!.siteId).to.equal(testSite5.siteId);
+		});
+
+
+		it('should override the index when passed a URL',
+			async function ()
+		{
+			const nextSite = await getNewSite(testWebring, GetNewSiteMethod.Next,
+				3, testSite.url);
+			expect(nextSite!.siteId).to.equal(testSite2.siteId);
+		});
 	});
 
 

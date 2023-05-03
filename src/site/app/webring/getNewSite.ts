@@ -83,18 +83,43 @@ function getPreviousSite(currentIndex: number, webringSites: Site[]): Site {
 
 
 /**
+ * Gets the current index into the webring based upon the referring URL.
+ * @param referringUrl - The referring URL to get the index for.
+ * @param webringSites - The array of all the webring's sites.
+ * @returns The index of the site with the specified URL, or undefined if it
+ * doesn't exist.
+ */
+function getIndexFromUrl(referringUrl: string, webringSites: Site[]):number | undefined {
+	const normalisedUrl = Site.normaliseUrl(referringUrl);
+
+	const index = webringSites.findIndex((site) => site.url === normalisedUrl);
+	if (index === -1) {
+		return undefined;
+	}
+
+	return index;
+}
+
+
+/**
  * Gets a 'new' site based upon the current index into the webring.
  * This allows a user to select the 'new' site, or 'previous', or a random site within
  * the webring.
  * @param {string} webring - The url of the parent webring to get the next site of.
  * @param {GetNewSiteMethod} method - The 'method' to use for selecting the next site.
- * @param {number} [currentIndex] - The user's current index within the webring. This is
+ * @param {number} [index] - The user's current index within the webring. This is
  * not required for getting a random site.
+ * @param {string} [referringUrl] - The URL of the 'referring' site. If present
+ * this will be used to determine the current 'index' within the webring.
+ * This parameter will override the `index` parameter. Both parameters are allowed
+ * so as to provide backwards compatibility with the original system of specifying
+ * an index.
  * @returns The 'new' site, or null if there is no next site to return.
  */
 export async function getNewSite(webring: Readonly<Webring>,
 	method: GetNewSiteMethod,
-	currentIndex?: number): Promise<Site|null>
+	index?: number,
+	referringUrl?: string): Promise<Site|null>
 {
 	/** The array of the selected webring's sites. */
 	const webringSites = await getWebringSites(webring.ringId!);
@@ -105,6 +130,14 @@ export async function getNewSite(webring: Readonly<Webring>,
 	// If the webring only has a single site, just return that.
 	if (webringSites.length === 1) {
 		return webringSites[0];
+	}
+
+	let currentIndex: number | undefined = index;
+
+	// If the referring URL is provided, this takes precedence over the specified index
+	// and will be used to determine the current index.
+	if (referringUrl) {
+		currentIndex = getIndexFromUrl(referringUrl, webringSites);
 	}
 
 	if (method === GetNewSiteMethod.Random) {
