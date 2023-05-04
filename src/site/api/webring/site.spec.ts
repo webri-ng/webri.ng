@@ -294,6 +294,23 @@ describe('Get new site API', function ()
 	});
 
 
+	it('should handle being passed a referring url with a \'via\' query parameter',
+		function (done)
+	{
+		const referringUrl = 'https://some-url.com?via=nothing';
+
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?via=${referringUrl}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite.url);
+				done();
+			});
+	});
+
+
 	it('should redirect to the next site when passed a valid url', function (done)
 	{
 		chai.request(app)

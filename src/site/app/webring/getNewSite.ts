@@ -89,7 +89,7 @@ function getPreviousSite(currentIndex: number, webringSites: Site[]): Site {
  * @returns The index of the site with the specified URL, or undefined if it
  * doesn't exist.
  */
-function getIndexFromUrl(referringUrl: string, webringSites: Site[]):number | undefined {
+function getIndexFromUrl(referringUrl: string, webringSites: Site[]): number | undefined {
 	const normalisedUrl = Site.normaliseUrl(referringUrl);
 
 	const index = webringSites.findIndex((site) => site.url === normalisedUrl);
@@ -145,7 +145,7 @@ export async function getNewSite(webring: Readonly<Webring>,
 	}
 
 	// If no index is provided, and the method is not 'random', return the first site.
-	if(currentIndex === undefined) {
+	if (currentIndex === undefined) {
 		return webringSites[0];
 	}
 

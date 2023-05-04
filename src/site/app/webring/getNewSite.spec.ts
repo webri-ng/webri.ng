@@ -250,5 +250,5 @@ describe('Get new site', function ()
 			nextSite = await getNewSite(testWebringWithTwoSites, GetNewSiteMethod.Random, 1);
 			expect(nextSite?.siteId).to.equal(testSite7.siteId);
 		});
-	})
+	});
 });
