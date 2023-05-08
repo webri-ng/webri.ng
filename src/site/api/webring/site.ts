@@ -17,7 +17,7 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
 	next: NextFunction): Promise<void>
 {
 	const { webringUrl, method } = req.params;
-	const { index } = req.query;
+	const { index, via } = req.query;
 
 	let newSiteMethod = GetNewSiteMethod.Next;
 	if (method === 'previous') {
@@ -28,9 +28,22 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
 		newSiteMethod = GetNewSiteMethod.Random;
 	}
 
-	let currentIndex: number|undefined;
+	let currentIndex: number | undefined;
 	if (index) {
-		currentIndex = parseInt(index.toString());
+		if (Array.isArray(index)) {
+			currentIndex = parseInt(index[0].toString());
+		} else {
+			currentIndex = parseInt(index.toString());
+		}
+	}
+
+	let referringUrl: string | undefined;
+	if (via) {
+		if (Array.isArray(via)) {
+			referringUrl = via[0].toString();
+		} else {
+			referringUrl = via.toString();
+		}
 	}
 
 	try {
@@ -41,7 +54,8 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
 				webringNotFoundError.code, webringNotFoundError.httpStatus);
 		}
 
-		const newSite = await webringService.getNewSite(webring, newSiteMethod, currentIndex);
+		const newSite = await webringService.getNewSite(webring, newSiteMethod,
+			currentIndex, referringUrl);
 		// If the new site cannot be retrieved, redirect to the home page.
 		if (!newSite) {
 			throw new SiteNotFoundError('This webring has no sites added',

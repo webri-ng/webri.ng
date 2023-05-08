@@ -8,6 +8,11 @@ div.content-block
 			input#name(type='text' name='name' minlength=2 maxlength=80 required='')
 		div.form-field
 			label(for='url') Site URL: 
+			div
+				i
+					| Please add the correct protocol to the site's URL.
+					| Any protocol is supported by the platform.
+					| If none is provided 'https://' will be added by default.
 			input#url(type='text' name='url' required='')
 		div.form-buttons
 			button(type='button', onclick="addNewSite()") Add Site

@@ -129,7 +129,7 @@ describe('Delete Webring API', function ()
 
 				appDataSource.getRepository(Webring).findOneBy({
 					ringId: testWebring.ringId!
-				}).then((webring : Webring | null) => {
+				}).then((webring: Webring | null) => {
 					expect(webring?.dateDeleted).to.not.be.null;
 					expect(dayjs(webring?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
 					done();

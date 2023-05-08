@@ -264,4 +264,107 @@ describe('Get new site API', function ()
 				done();
 			});
 	});
+
+
+	it('should handle being passed multiple indexes', function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?index=1&index=2`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite.url);
+				done();
+			});
+	});
+
+
+	it('should handle being passed multiple referring urls', function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?via=${testSite2.url}&via=${testSite3.url}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite.url);
+				done();
+			});
+	});
+
+
+	it('should handle being passed a referring url with a \'via\' query parameter',
+		function (done)
+	{
+		const referringUrl = 'https://some-url.com?via=nothing';
+
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?via=${referringUrl}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite.url);
+				done();
+			});
+	});
+
+
+	it('should redirect to the next site when passed a valid url', function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/next?via=${testSite.url}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite2.url);
+				done();
+			});
+	});
+
+
+	it('should redirect to the first site when the method is \'next\' and passed the last url',
+		function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/next?via=${testSite5.url}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite.url);
+				done();
+			});
+	});
+
+
+	it('should return the previous site when passed a valid url', function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?via=${testSite3.url}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite2.url);
+				done();
+			});
+	});
+
+
+	it('should return the last site when the method is \'previous\' and passed the first url',
+		function (done)
+	{
+		chai.request(app)
+			.get(`/webring/${testWebring?.url}/previous?via=${testSite.url}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite5.url);
+				done();
+			});
+	});
 });

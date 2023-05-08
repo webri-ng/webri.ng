@@ -150,9 +150,9 @@ export class Site
 		let normalisedUrl = url.toLowerCase().trim();
 
 		// If the site URL provided is not prefixed with a valid protocol identifier,
-		// add a HTTP protocol prefix.
+		// add a HTTPS protocol prefix.
 		if (!/^(\w)+?:\/\//.test(normalisedUrl)) {
-			normalisedUrl = `http://${normalisedUrl}`;
+			normalisedUrl = `https://${normalisedUrl}`;
 		}
 
 		return normalisedUrl;

@@ -21,6 +21,16 @@ div.content-block
 		| To get the HTML code for linking a particular site to the webring, use the 
 		i Get Example Markup 
 		| button below it in the list.
+
+	p
+		i 
+			| Note: The URL parameter for identifying a website's position in the webring has changed from a 
+			| numerical index, to the site's URL. The old numerical 'index' parameter will still work correctly,
+			| however for new sites the 'via' parameter is recommended.
+			| This helps correct an issue where deleting a site from a webring can cause the numerical index 
+			| to point to the wrong site.
+			| Sites currently using the old markup do not need to upgrade.
+
 	textarea#example-code(rows=10)
 		| <table>
 		| 	<tr>
@@ -41,7 +51,7 @@ div#webring-detail-sites.content-block
 					span.name #{site.name}
 					a.url(href=site.url) #{site.url}
 					div.site-controls
-						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',' + index + ')') Get Example Markup
+						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',\'' + site.url + '\')') Get Example Markup
 						if isUserModerator
 							button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
 	else
