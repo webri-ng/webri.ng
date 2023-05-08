@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+	<channel>
+		<title>Webri.ng Changelog</title>
+		<description>
+			This RSS feed is to keep you updated with important changes to the Webri.ng platform. 
+			Any significant updates will be posted here.
+		</description>
+		<link>https://webri.ng</link>
+		<language>en-us</language>
+		<webMaster>admin@webri.ng</webMaster>
+		<lastBuildDate>Mon, 08 May 2023 19:22:47 +1000</lastBuildDate>
+		<pubDate>Mon, 08 May 2023 19:22:47 +1000</pubDate>
+
+		<item>
+			<title>Webri.ng Site Index Parameter Updated</title>
+			<link>https://webri.ng</link>
+			<pubDate>Mon, 08 May 2023 19:22:47 +1000</pubDate>
+			<description>
+				A very observant Webri.ng user highlighted an issue that can occur when a site is removed from a webring.
+				If a site is removed from a webring, 
+				this can cause the 'previous' link for the next site in the ring to point to itself.
+				To resolve this issue, 
+				we've changed the URL parameter used to identify a site's current position in a webring from its numerical 'index' in the ring, 
+				to passing the current site's URL in the 'via' parameter.
+				This new solution is fully backwards-compatible with the existing system.
+				The old 'index' parameter can still be used by current sites.
+				The 'random' functionality has also been improved so that if the site index is passed
+				the 'random' site function will not select the current site again.
+				If you experience any issues with the new system please contact us at admin@webri.ng
+			</description>
+		</item>
+	</channel>
+</rss>
