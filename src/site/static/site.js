@@ -175,7 +175,7 @@ function cancelDelete(webringUrl)
  * This sets the 'Add this webring to your site' example markup to correspond to a
  * particular site index.
  */
-function getExampleMarkup(webringName, webringUrl, index)
+function getExampleMarkup(webringName, webringUrl, referringSiteUrl)
 {
 	const exampleCodeElement = document.getElementById('example-code');
 	exampleCodeElement.value = `<table>
@@ -183,9 +183,9 @@ function getExampleMarkup(webringName, webringUrl, index)
 		<td colspan="3">This site is a member of ${webringName}.</td>
 	</tr>
 	<tr>
-		<td><a href="https://webri.ng/webring/${webringUrl}/previous?index=${index}">Previous Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/random">Random Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/next?index=${index}">Next Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/previous?via=${referringSiteUrl}">Previous Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/random?via=${referringSiteUrl}">Random Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/next?via=${referringSiteUrl}">Next Site</a></td>
 	</tr>
 </table>`;
 }
