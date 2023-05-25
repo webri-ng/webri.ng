@@ -178,16 +178,14 @@ function cancelDelete(webringUrl)
 function getExampleMarkup(webringName, webringUrl, referringSiteUrl)
 {
 	const exampleCodeElement = document.getElementById('example-code');
-	exampleCodeElement.value = `<table>
-	<tr>
-		<td colspan="3">This site is a member of ${webringName}.</td>
-	</tr>
-	<tr>
-		<td><a href="https://webri.ng/webring/${webringUrl}/previous?via=${referringSiteUrl}">Previous Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/random?via=${referringSiteUrl}">Random Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/next?via=${referringSiteUrl}">Next Site</a></td>
-	</tr>
-</table>`;
+	exampleCodeElement.value = `<div id="webring" style="width: fit-content; border: 2px outset">
+	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of ${webringName}.</p>
+	<div id="webring-nav" style="display: flex">
+		<a style="margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/previous?via=${referringSiteUrl}">Previous Site</a>
+		<a style="margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/random?via=${referringSiteUrl}">Random Site</a>
+		<a style="margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/next?via=${referringSiteUrl}">Next Site</a>
+	</div>
+</div>`;
 }
 
 
