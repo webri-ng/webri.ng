@@ -18,7 +18,7 @@
 		"build:dev": "tsc -w",
 		"build": "tsc",
 		"start:dev": "nodemon",
-		"start": "cd dist && npm install --production && NODE_ENV=production node start.js",
+		"start": "cd dist && npm install --omit=dev && NODE_ENV=production node start.js",
 		"test:lint": "eslint './**/*.ts'",
 		"test:lint:fix": "eslint --fix './**/*.ts'",
 		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
