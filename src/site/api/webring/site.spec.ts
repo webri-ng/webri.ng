@@ -19,17 +19,22 @@ describe('Get new site API', function ()
 	let testUser: User;
 	let testWebring: Webring;
 	let testEmptyWebring: Webring;
+	let testWebringWithEncodedUrls: Webring;
 	let testSite: Site;
 	let testSite2: Site;
 	let testSite3: Site;
 	let testSite4: Site;
 	let testSite5: Site;
+	let testSite6: Site;
+	let testSite7: Site;
+	let testSite8: Site;
 
 	before(async function beforeTesting()
 	{
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 		testEmptyWebring = await testUtils.insertTestWebring(testUser.userId!);
+		testWebringWithEncodedUrls = await testUtils.insertTestWebring(testUser.userId!);
 
 		testSite = await testUtils.insertTestSite(testWebring.ringId!,
 			testUser.userId!, {
@@ -50,6 +55,21 @@ describe('Get new site API', function ()
 		testSite5 = await testUtils.insertTestSite(testWebring.ringId!,
 			testUser.userId!, {
 				dateCreated: dayjs().subtract(1, 'days').toDate()
+			});
+
+		testSite6 = await testUtils.insertTestSite(testWebringWithEncodedUrls.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(2, 'days').toDate(),
+				url: 'https://www.example.org/site-one#about'
+			});
+		testSite7 = await testUtils.insertTestSite(testWebringWithEncodedUrls.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(1, 'days').toDate(),
+				url: 'https://www.example.org/url?query=something_else'
+			});
+		testSite8 = await testUtils.insertTestSite(testWebringWithEncodedUrls.ringId!,
+			testUser.userId!, {
+				dateCreated: dayjs().subtract(1, 'hour').toDate(),
 			});
 	});
 
@@ -364,6 +384,38 @@ describe('Get new site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(303);
 				expect(res.header.location).to.equal(testSite5.url);
+				done();
+			});
+	});
+
+	it('should handle being passed a URL with an encoded anchor',
+		function (done)
+	{
+		const encodedUrl = encodeURIComponent(testSite6.url);
+
+		chai.request(app)
+			.get(`/webring/${testWebringWithEncodedUrls?.url}/next?via=${encodedUrl}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite7.url);
+				done();
+			});
+	});
+
+	it('should handle being passed a URL with an encoded query parameter',
+		function (done)
+	{
+		const encodedUrl = encodeURIComponent(testSite7.url);
+
+		chai.request(app)
+			.get(`/webring/${testWebringWithEncodedUrls?.url}/next?via=${encodedUrl}`)
+			.redirects(0)
+			.end(function (err, res) {
+				expect(err).to.be.null;
+				expect(res.status).to.equal(303);
+				expect(res.header.location).to.equal(testSite8.url);
 				done();
 			});
 	});

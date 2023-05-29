@@ -177,15 +177,19 @@ function cancelDelete(webringUrl)
  */
 function getExampleMarkup(webringName, webringUrl, referringSiteUrl)
 {
+	// The URL is encoded so that URL components like query strings, and anchors
+	// are correctly parsed by the back-end.
+	const encodedReferringSiteUrl = encodeURIComponent(referringSiteUrl);
+
 	const exampleCodeElement = document.getElementById('example-code');
 	exampleCodeElement.value = `<table>
 	<tr>
 		<td colspan="3">This site is a member of ${webringName}.</td>
 	</tr>
 	<tr>
-		<td><a href="https://webri.ng/webring/${webringUrl}/previous?via=${referringSiteUrl}">Previous Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/random?via=${referringSiteUrl}">Random Site</a></td>
-		<td><a href="https://webri.ng/webring/${webringUrl}/next?via=${referringSiteUrl}">Next Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/previous?via=${encodedReferringSiteUrl}">Previous Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/random?via=${encodedReferringSiteUrl}">Random Site</a></td>
+		<td><a href="https://webri.ng/webring/${webringUrl}/next?via=${encodedReferringSiteUrl}">Next Site</a></td>
 	</tr>
 </table>`;
 }
