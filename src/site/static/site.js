@@ -182,12 +182,15 @@ function getExampleMarkup(webringName, webringUrl, referringSiteUrl)
 	const encodedReferringSiteUrl = encodeURIComponent(referringSiteUrl);
 
 	const exampleCodeElement = document.getElementById('example-code');
+	const linkStyling = 'flex: 1; margin: 0; padding: 0.1em; border: 2px inset';
+	const baseWebringUrl = `https://webri.ng/webring/${webringUrl}`;
+
 	exampleCodeElement.value = `<div style="width: fit-content; border: 2px outset; text-align:center">
 	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of ${webringName}.</p>
 	<div style="display: flex">
-		<a style="flex: 1; margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/previous?via=${encodedReferringSiteUrl}">Previous Site</a>
-		<a style="flex: 1; margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/random?via=${encodedReferringSiteUrl}">Random Site</a>
-		<a style="flex: 1; margin: 0; padding: 0.1em; border: 2px inset" href="https://webri.ng/webring/${webringUrl}/next?via=${encodedReferringSiteUrl}">Next Site</a>
+		<a style="${linkStyling}" href="${baseWebringUrl}/previous?via=${encodedReferringSiteUrl}">Previous Site</a>
+		<a style="${linkStyling}" href="${baseWebringUrl}/random?via=${encodedReferringSiteUrl}">Random Site</a>
+		<a style="${linkStyling}" href="${baseWebringUrl}/next?via=${encodedReferringSiteUrl}">Next Site</a>
 	</div>
 </div>`;
 }
