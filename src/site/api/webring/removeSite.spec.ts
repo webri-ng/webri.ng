@@ -62,10 +62,8 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestValidationError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestValidationError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestValidationError.message);
+				expect(res.body).to.have.property('code', requestValidationError.code);
+				expect(res.body).to.have.property('error', requestValidationError.message);
 
 				done();
 			});
@@ -82,10 +80,8 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(webringNotFoundError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(webringNotFoundError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(webringNotFoundError.message);
+				expect(res.body).to.have.property('code', webringNotFoundError.code);
+				expect(res.body).to.have.property('error', webringNotFoundError.message);
 				done();
 			});
 	});
@@ -103,8 +99,7 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(siteNotFoundError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(siteNotFoundError.code);
+				expect(res.body).to.have.property('code', siteNotFoundError.code);
 				expect(res.body).to.have.property('error');
 				expect(res.body.error).to.equal(`Site with url '${url}' cannot be ` +
 					'found in this webring');
@@ -122,10 +117,8 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
 
 				done();
 			});
@@ -142,10 +135,8 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthorisationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthorisationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthorisationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthorisationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthorisationFailedError.message);
 
 				done();
 			});

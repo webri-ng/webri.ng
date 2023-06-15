@@ -56,10 +56,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestValidationError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestValidationError.message);
+				expect(res.body).to.have.property('code', requestValidationError.code);
+				expect(res.body).to.have.property('error', requestValidationError.message);
 				done();
 			});
 	});
@@ -75,10 +73,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(loginFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(loginFailedError.message);
+				expect(res.body).to.have.property('code', loginFailedError.code);
+				expect(res.body).to.have.property('error', loginFailedError.message);
 				done();
 			});
 	});
@@ -93,10 +89,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(loginFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(loginFailedError.message);
+				expect(res.body).to.have.property('code', loginFailedError.code);
+				expect(res.body).to.have.property('error', loginFailedError.message);
 				done();
 			});
 	});
@@ -111,10 +105,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(expiredPasswordError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(expiredPasswordError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(expiredPasswordError.message);
+				expect(res.body).to.have.property('code', expiredPasswordError.code);
+				expect(res.body).to.have.property('error', expiredPasswordError.message);
 				done();
 			});
 	});
@@ -181,10 +173,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginAttemptCountExceededError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(loginAttemptCountExceededError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(loginAttemptCountExceededError.message);
+				expect(res.body).to.have.property('code', loginAttemptCountExceededError.code);
+				expect(res.body).to.have.property('error', loginAttemptCountExceededError.message);
 				done();
 			});
 	});
@@ -201,10 +191,8 @@ describe('Login API', function()
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(lockedAccountDueToAuthFailureError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(lockedAccountDueToAuthFailureError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(lockedAccountDueToAuthFailureError.message);
+				expect(res.body).to.have.property('code', lockedAccountDueToAuthFailureError.code);
+				expect(res.body).to.have.property('error', lockedAccountDueToAuthFailureError.message);
 				done();
 			});
 	});

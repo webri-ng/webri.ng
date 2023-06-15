@@ -45,10 +45,8 @@ describe('Update user password API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
 				done();
 			});
 	});
@@ -66,10 +64,8 @@ describe('Update user password API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidExistingPasswordError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidExistingPasswordError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidExistingPasswordError.message);
+				expect(res.body).to.have.property('code', invalidExistingPasswordError.code);
+				expect(res.body).to.have.property('error', invalidExistingPasswordError.message);
 				done();
 			});
 	});
@@ -90,10 +86,8 @@ describe('Update user password API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidNewPasswordTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidNewPasswordTooShortError.message);
+				expect(res.body).to.have.property('code', invalidNewPasswordTooShortError.code);
+				expect(res.body).to.have.property('error', invalidNewPasswordTooShortError.message);
 				done();
 			});
 	});
@@ -114,10 +108,8 @@ describe('Update user password API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidNewPasswordTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidNewPasswordTooLongError.message);
+				expect(res.body).to.have.property('code', invalidNewPasswordTooLongError.code);
+				expect(res.body).to.have.property('error', invalidNewPasswordTooLongError.message);
 				done();
 			});
 	});

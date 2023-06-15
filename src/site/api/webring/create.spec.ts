@@ -50,10 +50,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
 
 				done();
 			});
@@ -74,10 +72,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlNotUniqueError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidRingUrlNotUniqueError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidRingUrlNotUniqueError.message);
+				expect(res.body).to.have.property('code', invalidRingUrlNotUniqueError.code);
+				expect(res.body).to.have.property('error', invalidRingUrlNotUniqueError.message);
 
 				done();
 			});
@@ -101,10 +97,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingNameTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidRingNameTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidRingNameTooShortError.message);
+				expect(res.body).to.have.property('code', invalidRingNameTooShortError.code);
+				expect(res.body).to.have.property('error', invalidRingNameTooShortError.message);
 
 				done();
 			});
@@ -128,10 +122,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingNameTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidRingNameTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidRingNameTooLongError.message);
+				expect(res.body).to.have.property('code', invalidRingNameTooLongError.code);
+				expect(res.body).to.have.property('error', invalidRingNameTooLongError.message);
 
 				done();
 			});
@@ -155,10 +147,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidRingUrlTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidRingUrlTooShortError.message);
+				expect(res.body).to.have.property('code', invalidRingUrlTooShortError.code);
+				expect(res.body).to.have.property('error', invalidRingUrlTooShortError.message);
 
 				done();
 			});
@@ -182,10 +172,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidRingUrlTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidRingUrlTooLongError.message);
+				expect(res.body).to.have.property('code', invalidRingUrlTooLongError.code);
+				expect(res.body).to.have.property('error', invalidRingUrlTooLongError.message);
 
 				done();
 			});
@@ -210,10 +198,8 @@ describe('Create Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(tooManyTagsError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(tooManyTagsError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(tooManyTagsError.message);
+				expect(res.body).to.have.property('code', tooManyTagsError.code);
+				expect(res.body).to.have.property('error', tooManyTagsError.message);
 
 				done();
 			});

@@ -42,10 +42,8 @@ describe('Update user API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
 				done();
 			});
 	});
@@ -63,10 +61,8 @@ describe('Update user API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(emailNotUniqueError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(emailNotUniqueError.message);
+				expect(res.body).to.have.property('code', emailNotUniqueError.code);
+				expect(res.body).to.have.property('error', emailNotUniqueError.message);
 				done();
 			});
 	});
@@ -84,10 +80,8 @@ describe('Update user API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(usernameNotUniqueError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(usernameNotUniqueError.message);
+				expect(res.body).to.have.property('code', usernameNotUniqueError.code);
+				expect(res.body).to.have.property('error', usernameNotUniqueError.message);
 				done();
 			});
 	});
@@ -108,10 +102,8 @@ describe('Update user API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidUsernameTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidUsernameTooShortError.message);
+				expect(res.body).to.have.property('code', invalidUsernameTooShortError.code);
+				expect(res.body).to.have.property('error', invalidUsernameTooShortError.message);
 				done();
 			});
 	});
@@ -132,10 +124,8 @@ describe('Update user API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidUsernameTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidUsernameTooLongError.message);
+				expect(res.body).to.have.property('code', invalidUsernameTooLongError.code);
+				expect(res.body).to.have.property('error', invalidUsernameTooLongError.message);
 				done();
 			});
 	});

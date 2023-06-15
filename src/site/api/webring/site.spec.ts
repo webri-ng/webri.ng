@@ -81,11 +81,11 @@ describe('Get new site API', function ()
 	});
 
 
-	it('should return a 404 status when passed webring with no sites added',
+	it('should return a 404 status when passed a webring with no sites added',
 		function (done)
 	{
 		chai.request(app)
-			.get(`/webring/${testEmptyWebring?.url}/invalid`)
+			.get(`/webring/${testEmptyWebring?.url}/random`)
 			.redirects(0)
 			.end(function (err, res) {
 				expect(err).to.be.null;

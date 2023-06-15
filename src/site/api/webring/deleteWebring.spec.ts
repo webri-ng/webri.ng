@@ -57,10 +57,8 @@ describe('Delete Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthenticationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
 
 				done();
 			});
@@ -75,10 +73,8 @@ describe('Delete Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(webringNotFoundError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(webringNotFoundError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(webringNotFoundError.message);
+				expect(res.body).to.have.property('code', webringNotFoundError.code);
+				expect(res.body).to.have.property('error', webringNotFoundError.message);
 				done();
 			});
 	});
@@ -92,10 +88,8 @@ describe('Delete Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthorisationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthorisationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthorisationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthorisationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthorisationFailedError.message);
 				done();
 			});
 	});
@@ -109,10 +103,8 @@ describe('Delete Webring API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthorisationFailedError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestAuthorisationFailedError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestAuthorisationFailedError.message);
+				expect(res.body).to.have.property('code', requestAuthorisationFailedError.code);
+				expect(res.body).to.have.property('error', requestAuthorisationFailedError.message);
 				done();
 			});
 	});

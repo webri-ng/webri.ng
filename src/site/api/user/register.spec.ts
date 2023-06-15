@@ -51,10 +51,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(requestValidationError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(requestValidationError.message);
+				expect(res.body).to.have.property('code', requestValidationError.code);
+				expect(res.body).to.have.property('error', requestValidationError.message);
 				done();
 			});
 	});
@@ -72,10 +70,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(emailNotUniqueError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(emailNotUniqueError.message);
+				expect(res.body).to.have.property('code', emailNotUniqueError.code);
+				expect(res.body).to.have.property('error', emailNotUniqueError.message);
 				done();
 			});
 	});
@@ -93,10 +89,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(usernameNotUniqueError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(usernameNotUniqueError.message);
+				expect(res.body).to.have.property('code', usernameNotUniqueError.code);
+				expect(res.body).to.have.property('error', usernameNotUniqueError.message);
 				done();
 			});
 	});
@@ -117,10 +111,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidNewPasswordTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidNewPasswordTooShortError.message);
+				expect(res.body).to.have.property('code', invalidNewPasswordTooShortError.code);
+				expect(res.body).to.have.property('error', invalidNewPasswordTooShortError.message);
 				done();
 			});
 	});
@@ -141,10 +133,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidNewPasswordTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidNewPasswordTooLongError.message);
+				expect(res.body).to.have.property('code', invalidNewPasswordTooLongError.code);
+				expect(res.body).to.have.property('error', invalidNewPasswordTooLongError.message);
 				done();
 			});
 	});
@@ -165,10 +155,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidUsernameTooShortError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidUsernameTooShortError.message);
+				expect(res.body).to.have.property('code', invalidUsernameTooShortError.code);
+				expect(res.body).to.have.property('error', invalidUsernameTooShortError.message);
 				done();
 			});
 	});
@@ -189,10 +177,8 @@ describe('Registration API', function() {
 			}).end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-				expect(res.body).to.have.property('code');
-				expect(res.body.code).to.equal(invalidUsernameTooLongError.code);
-				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(invalidUsernameTooLongError.message);
+				expect(res.body).to.have.property('code', invalidUsernameTooLongError.code);
+				expect(res.body).to.have.property('error', invalidUsernameTooLongError.message);
 				done();
 			});
 	});
