@@ -17,6 +17,7 @@ import { getNewSiteController } from './site';
 import { updateWebringController, updateWebringRequestSchema } from './updateWebring';
 import { webringDetailViewController } from './webringDetailView';
 import { deleteWebringViewController } from './deleteWebringView';
+import { getSitesController } from './getSites';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -51,6 +52,8 @@ webringViewRouter.get('/new', genericViewController('webring/new'));
 webringViewRouter.get('/:webringUrl', webringDetailViewController);
 
 webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteController);
+
+webringViewRouter.get('/:webringUrl/sites', getSitesController);
 
 webringViewRouter.get('/:webringUrl/add',
 	authenticateSessionController,
