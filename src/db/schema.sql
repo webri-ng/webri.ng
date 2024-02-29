@@ -81,4 +81,14 @@ CREATE TABLE webring.tagged_ring (
 	PRIMARY KEY (tag_id, ring_id)
 );
 
+CREATE TABLE webring.news_update (
+	update_id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+	title TEXT NOT NULL,
+	description TEXT,
+	content TEXT NOT NULL,
+	date_created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	date_modified TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+	date_deleted TIMESTAMPTZ
+);
+
 COMMIT;

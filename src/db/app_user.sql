@@ -30,6 +30,7 @@ END$$;
 
 GRANT USAGE ON SCHEMA webring TO webring_app;
 
+GRANT SELECT, INSERT, UPDATE ON webring.news_update TO webring_app;
 GRANT SELECT, INSERT, UPDATE ON webring.ring TO webring_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON webring.ring_moderator TO webring_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON webring.tagged_ring TO webring_app;
