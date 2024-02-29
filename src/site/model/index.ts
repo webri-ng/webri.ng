@@ -4,6 +4,7 @@
  * @module model
  */
 
+export * from './NewsUpdate';
 export * from './RequestSchema';
 export * from './Session';
 export * from './UUID';

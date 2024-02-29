@@ -30,7 +30,7 @@ export default function requestErrorHander(err: Error,
 	res: Response,
 	next: NextFunction): Response
 {
-	// Handle request vlidation errors.
+	// Handle request validation errors.
 	if (err instanceof RequestValidationError) {
 		if (loggingConfig.logRequestValidation) {
 			// If we want to log request validation debug information.

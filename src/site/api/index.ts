@@ -12,6 +12,7 @@ import { parseSessionController } from './parseSessionController';
 import { userApiRouter, userViewRouter } from './user';
 import { viewErrorHandler } from './viewErrorHandler';
 import { webringApiRouter, webringViewRouter } from './webring';
+import { newsUpdateViewController } from './newsUpdateViewController';
 
 export * as requestErrorHander from './errorHandler';
 
@@ -41,4 +42,5 @@ viewRouter.use('/webring', webringViewRouter);
 viewRouter.get('/', indexViewController);
 viewRouter.get('/contact', genericViewController('contact'));
 viewRouter.get('/faq', genericViewController('faq'));
+viewRouter.get('/news/:updateId', newsUpdateViewController);
 viewRouter.use(viewErrorHandler);

@@ -1,5 +1,5 @@
 html {
-  background-color: #484848;
+  background-color: #323232;
   font-size: 10pt;
   color: black;
 }
@@ -32,7 +32,7 @@ body > header {
 body > header a.title h1 {
   font-family: Arial, "Liberation sans", sans-serif;
   text-align: center;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
   margin: 0;
   margin-bottom: 0.25rem;
@@ -183,4 +183,27 @@ textarea#example-code {
   margin-top: 1rem;
   resize: none;
   width: 100%;
+}
+
+#news {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#news li {
+  margin-bottom: 1rem;
+}
+
+#news li .title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+#news li .date {
+  font-size: 0.8rem;
+}
+
+#news-update .date {
+  margin-bottom: 1rem;
 }

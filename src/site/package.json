@@ -6,7 +6,6 @@
 		"type": "git",
 		"url": "git+https://github.com/webri-ng/webri.ng.git"
 	},
-	"main": "./index.ts",
 	"license": "UNLICENSED",
 	"engines": {
 		"node": "16.x"

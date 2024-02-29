@@ -5,6 +5,7 @@
 
 export * as applicationErrors from './error';
 export * as authorisationService from './authorisation';
+export * as newsService from './news';
 export * as sessionService from './session';
 export * as testUtils from './testUtils';
 export * as siteService from './site';

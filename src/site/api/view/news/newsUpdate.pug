@@ -1,0 +1,8 @@
+include ../include/page
+h2= newsUpdate.title
+div.content-block#news-update
+	div.date= newsUpdate.dateCreated
+	div.content
+		| !{newsUpdate.content}
+
+include ../include/footer

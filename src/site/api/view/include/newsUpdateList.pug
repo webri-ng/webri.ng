@@ -1,0 +1,7 @@
+ul#news
+	each newsUpdate in newsUpdates
+		li 
+			a(href=newsUpdate.link)
+				div.title= newsUpdate.title
+				div.date= newsUpdate.dateCreated
+				div.description= newsUpdate.description

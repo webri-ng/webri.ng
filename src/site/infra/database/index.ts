@@ -6,7 +6,7 @@
 import { logger } from '../../app/logger';
 import { DataSource } from 'typeorm';
 import { databaseConfig } from '../../config';
-import { Session, Site, Tag, User, Webring } from '../../model';
+import { NewsUpdate, Session, Site, Tag, User, Webring } from '../../model';
 import 'reflect-metadata';
 
 /** The main application's data source. */
@@ -42,7 +42,7 @@ export async function initialiseAppDataSource(): Promise<DataSource>
 		logging: ['error'],
 		schema: databaseConfig.schema,
 		entities: [
-			Session, Site, Tag, User, Webring
+			NewsUpdate, Session, Site, Tag, User, Webring
 		],
 		ssl
 	});

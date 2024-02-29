@@ -16,7 +16,13 @@ div.content-block
 h2 Recently Updated
 div.content-block
 	if webrings.length > 0 
-		include include/webring_list
+		include include/webringList
 	else
 		| There aren't any webrings here yet. Feel free to create one!
+h2 News
+div.content-block
+	if newsUpdates.length > 0 
+		include include/newsUpdateList
+	else
+		| No news yet.
 include include/footer
