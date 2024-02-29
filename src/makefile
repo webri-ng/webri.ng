@@ -16,11 +16,14 @@ MAKEFLAGS += --no-builtin-rules
 
 .PHONY: mock-services mock-services-down database
 
+DOCKER_COMPOSE_FILE := docker-compose.yml
+DOCKER_PROJECT_NAME := webri_ng
+
 mock-services:
-	docker-compose --project-name "webri.ng" --file "docker-compose.yml" up
+	docker compose --project-name "${DOCKER_PROJECT_NAME}" --file "${DOCKER_COMPOSE_FILE}" up
 
 mock-services-down:
-	docker-compose --project-name "webri.ng" --file "docker-compose.yml" down
+	docker compose --project-name "${DOCKER_PROJECT_NAME}" --file "${DOCKER_COMPOSE_FILE}" down
 
 database:
 	./db/setup

@@ -8,7 +8,17 @@ services:
       - POSTGRES_DB=webring_dev
     ports:
       - '54327:5432'
-  email:
-    build: github.com/Nilhcem/FakeSMTP
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
     ports:
-     - "3725:25"
+      - '5000:80'    # Web interface.
+      - '3725:25'    # SMTP server.
+      - '143:143'    # IMAP server.
+    volumes:
+        - smtp4dev-data:/smtp4dev
+    environment:
+      - ServerOptions__HostName=smtp4dev
+
+volumes:
+  smtp4dev-data:
