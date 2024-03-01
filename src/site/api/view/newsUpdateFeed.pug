@@ -1,0 +1,23 @@
+doctype xml
+//- Adapted from https://stackoverflow.com/a/29932735/5931673
+rss(version="2.0", xmlns:atom='http://www.w3.org/2005/Atom')
+	channel
+		title Webri.ng Updates
+		link= link
+		description
+			| This RSS feed is to keep you updated with important changes to the Webri.ng platform. 
+			| Any significant updates will be posted here.
+		language en
+		lastBuildDate= lastBuildDate
+		pubDate= lastBuildDate
+
+		webMaster admin@webri.ng
+		docs https://www.rssboard.org/rss-specification
+
+		each newsUpdate in newsUpdates
+			item
+				description= newsUpdate.description
+				guid= newsUpdate.guid
+				link= newsUpdate.link
+				pubDate= newsUpdate.pubDate
+				title= newsUpdate.title

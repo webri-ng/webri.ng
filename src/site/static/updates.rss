@@ -5,12 +5,24 @@
 		<description>
 			This RSS feed is to keep you updated with important changes to the Webri.ng platform. 
 			Any significant updates will be posted here.
+			Please note, the Webri.ng RSS feed URL has changed.
+			Please update your RSS reader to use the new URL: https://webri.ng/news/feed
 		</description>
 		<link>https://webri.ng</link>
 		<language>en-us</language>
 		<webMaster>admin@webri.ng</webMaster>
 		<lastBuildDate>Thu, 15 Jun 2023 11:24:30 +1000</lastBuildDate>
 		<pubDate>Thu, 15 Jun 2023 11:24:30 +1000</pubDate>
+
+		<item>
+			<title>Please Update Your Webri.ng RSS Feed URL!</title>
+			<link>https://webri.ng</link>
+			<pubDate>Fri, 01 Mar 2024 05:39:47 +1000</pubDate>
+			<description>
+				We've updated our RSS feed URL!
+				Please update your RSS reader to use the new URL: https://webri.ng/news/feed
+			</description>
+		</item>
 
 		<item>
 			<title>Webri.ng Site Improvements</title>
