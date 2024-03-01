@@ -3,13 +3,14 @@
  * @module config
  */
 
+import { ManipulateType } from 'dayjs';
 import SMTPTransport = require('nodemailer/lib/smtp-transport');
 
 /**
  * 'Duration' tuple type which is parseable by momentjs/dayjs as a serialised Duration.
  * Can be used via dayjs().add(...timePeriod);
  */
-type Duration = [number, string];
+type Duration = [number, ManipulateType];
 
 
 export type DatabaseConfig = {

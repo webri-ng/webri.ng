@@ -8,7 +8,7 @@
 	},
 	"license": "UNLICENSED",
 	"engines": {
-		"node": "16.x"
+		"node": "20.x"
 	},
 	"contributors": [
 		"Anthony Richardson <anthony@ajxs.me> (https://github.com/ajxs)"
