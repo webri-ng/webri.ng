@@ -32,7 +32,7 @@ export const registrationRequestSchema: RequestSchema = {
  */
 export async function registerController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { username, email, password } = req.body;
@@ -42,7 +42,7 @@ export async function registerController(req: Request,
 		// Create an authentication session for the newly created user.
 		const session = await sessionService.createSession(user);
 
-		return createSessionCookieResponse(res, session).send();
+		createSessionCookieResponse(res, session).send();
 	} catch (err) {
 		return next(err);
 	}

@@ -28,14 +28,14 @@ export const updatePasswordRequestSchema: RequestSchema = {
  */
 export async function updatePasswordController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response | void> {
+	next: NextFunction): Promise<void> {
 	try {
 		const { user } = res.locals;
 		const { currentPassword, newPassword } = req.body;
 
 		await userService.updatePassword(user.userId!, currentPassword, newPassword);
 
-		return res.end();
+		res.end();
 	} catch (err) {
 		return next(err);
 	}

@@ -13,7 +13,7 @@ import { GetUserSearchField } from '../app/user';
  */
 export async function parseSessionController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		// If there is no session cookie set, return without an error to continue processing

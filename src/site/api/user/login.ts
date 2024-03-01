@@ -31,7 +31,7 @@ export const loginRequestSchema: RequestSchema = {
  */
 export async function loginController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { email, password } = req.body;
@@ -41,7 +41,7 @@ export async function loginController(req: Request,
 
 		const session = await sessionService.createSession(user);
 
-		return createSessionCookieResponse(res, session).send();
+		createSessionCookieResponse(res, session).send();
 	} catch (err) {
 		// In the case that the user does not exist, return a generic 'login failed' error message.
 		if (err instanceof UserNotFoundError) {

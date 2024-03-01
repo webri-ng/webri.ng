@@ -28,14 +28,14 @@ export const updateUserRequestSchema: RequestSchema = {
  */
 export async function updateUserController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response | void> {
+	next: NextFunction): Promise<void> {
 	try {
 		const { user } = res.locals;
 		const { username, email } = req.body;
 
 		await userService.updateUser(user.userId!, username, email);
 
-		return res.end();
+		res.end();
 	} catch (err) {
 		return next(err);
 	}

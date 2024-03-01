@@ -29,14 +29,14 @@ export const resetPasswordRequestSchema: RequestSchema = {
  */
 export async function resetPasswordController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response | void> {
+	next: NextFunction): Promise<void> {
 
 	const { email } = req.body;
 
 	try {
 		await userService.resetPassword(email);
 
-		return res.status(200).end();
+		res.status(200).end();
 	} catch (err) {
 		// In the case that the user does not exist, return a 200 response.
 		if (err instanceof UserNotFoundError) {
@@ -44,7 +44,8 @@ export async function resetPasswordController(req: Request,
 
 			// Do not leak user information.
 			// Display ambiguous message on front-end.
-			return res.status(200).end();
+			res.status(200).end();
+			return;
 		}
 
 		return next(err);

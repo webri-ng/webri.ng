@@ -32,7 +32,7 @@ describe('Authorise webring owner action', function ()
 	});
 
 
-	it('should raise an exception when passed a user that did not create the webring', async function ()
+	it('should raise an exception when passed a user that did not create the webring', function ()
 	{
 		return expect(() => {
 			authoriseWebringOwnerAction(testWebring, testUser2);
@@ -40,7 +40,7 @@ describe('Authorise webring owner action', function ()
 	});
 
 
-	it('should not raise an exception when passed a user that created the webring', async function ()
+	it('should not raise an exception when passed a user that created the webring', function ()
 	{
 		return expect(() => {
 			authoriseWebringOwnerAction(testWebring, testUser);

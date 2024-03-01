@@ -43,7 +43,7 @@ export const updateWebringRequestSchema: RequestSchema = {
  */
 export async function updateWebringController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { name, url, description, privateRing, tags } = req.body;
@@ -67,7 +67,7 @@ export async function updateWebringController(req: Request,
 
 		// The redirect redirect implementation is problematic. So simply return the new
 		// webring URL, and perform the redirect on the front-end.
-		return res.json({
+		res.json({
 			url: `/webring/${updatedWebring.url}`
 		});
 	} catch (err) {

@@ -33,14 +33,16 @@ export let instance: Server;
 function bodyParserErrorHandler(err: Error | undefined,
 	req: Request,
 	res: Response,
-	next: NextFunction): Response | void
+	next: NextFunction): void
 {
 	if (err) {
 		// Return a specific error in case of any errors decoding the request body.
-		return res.status(badRequestBodyError.httpStatus).json({
+		res.status(badRequestBodyError.httpStatus).json({
 			code: badRequestBodyError.code,
 			error: badRequestBodyError.message
 		});
+
+		return;
 	}
 
 	return next(null);

@@ -35,11 +35,10 @@ export const createWebringRequestSchema: RequestSchema = {
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns A response object to return to the caller.
  */
 export async function createWebringController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { name, url, description, privateRing, tags } = req.body;
@@ -52,7 +51,7 @@ export async function createWebringController(req: Request,
 
 		// The redirect redirect implementation is problematic. So simply return the new
 		// webring URL, and perform the redirect on the front-end.
-		return res.json({
+		res.json({
 			url: `/webring/${newWebring.url}`
 		});
 	} catch (err) {

@@ -10,7 +10,7 @@ import { NoAuthenticationError } from '../app/error';
  */
 export function authenticateSessionController(req: Request,
 	res: Response,
-	next: NextFunction): Response|void
+	next: NextFunction): void
 {
 	if (!res.locals.user) {
 		return next(new NoAuthenticationError());

@@ -10,11 +10,10 @@ import { webringNotFoundError } from '../api-error-response';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns A response object to return to the caller.
  */
 export async function deleteWebringController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { user } = res.locals;
@@ -35,7 +34,7 @@ export async function deleteWebringController(req: Request,
 
 		await webringService.deleteWebring(webring.ringId!);
 
-		return res.end();
+		res.end();
 	} catch (err) {
 		return next(err);
 	}

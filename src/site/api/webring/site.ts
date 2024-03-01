@@ -10,7 +10,6 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns A response object to return to the caller.
  */
  export async function getNewSiteController(req: Request,
 	res: Response,

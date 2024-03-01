@@ -19,15 +19,14 @@ export function transformNewsUpdateToViewFormat(newsUpdate: NewsUpdate) {
 }
 
 /**
- * Index view controller.
+ * News Update view controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns The rendered index view.
  */
 export async function newsUpdateViewController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	const { user } = res.locals;
 	const { updateId } = req.params;

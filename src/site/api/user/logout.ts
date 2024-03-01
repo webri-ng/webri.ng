@@ -8,9 +8,9 @@ import { removeSessionCookieResponse } from '../removeSessionCookieResponse';
  * @param {NextFunction} next Express next middleware handler.
  * @returns A response object to return to the caller.
  */
-export async function logoutViewController(req: Request,
+export function logoutViewController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): void
 {
 	const { session } = res.locals;
 

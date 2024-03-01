@@ -7,7 +7,6 @@ import { GetWebringSearchField } from '../../app/webring';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns Renders the view.
  */
  export async function webringDetailViewController(req: Request,
 	res: Response,

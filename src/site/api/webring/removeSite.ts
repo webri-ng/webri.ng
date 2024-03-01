@@ -24,11 +24,10 @@ export const removeSiteRequestSchema: RequestSchema = {
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns A response object to return to the caller.
  */
 export async function removeSiteController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const { url } = req.body;
@@ -51,7 +50,7 @@ export async function removeSiteController(req: Request,
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.
-		return res.end();
+		res.end();
 	} catch (err) {
 		return next(err);
 	}

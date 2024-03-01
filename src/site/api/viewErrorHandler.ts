@@ -11,12 +11,11 @@ import { removeSessionCookieResponse } from './removeSessionCookieResponse';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns The rendered view.
  */
 export function viewErrorHandler(err: Error | undefined,
 	_req: Request,
 	res: Response,
-	_next: NextFunction): Response | void
+	_next: NextFunction): void
 {
 	if (err instanceof NoAuthenticationError) {
 		return res.status(401).render('error', {

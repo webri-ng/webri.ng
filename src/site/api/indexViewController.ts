@@ -8,11 +8,10 @@ import { transformNewsUpdateToViewFormat } from './newsUpdateViewController';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns The rendered index view.
  */
 export async function indexViewController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	try {
 		const latestUpdatedWebringCount = 16;

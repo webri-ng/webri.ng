@@ -9,11 +9,10 @@ import { webringNotFoundError } from '../api-error-response';
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
- * @returns A response object to return to the caller.
  */
  export async function getSitesController(req: Request,
 	res: Response,
-	next: NextFunction): Promise<Response|void>
+	next: NextFunction): Promise<void>
 {
 	const { webringUrl } = req.params;
 
@@ -27,13 +26,15 @@ import { webringNotFoundError } from '../api-error-response';
 
 		const webringSites = await webringService.getWebringSites(webring.ringId!);
 
-		return res.json(webringSites.map((site) => ({
+		res.json(webringSites.map((site) => ({
 			name: site.name,
 			url: site.url,
 		})));
 	} catch (err) {
 		if (err instanceof WebringNotFoundError) {
-			return res.status(404).end();
+			res.status(404).end();
+
+			return;
 		}
 
 		return next(err);
