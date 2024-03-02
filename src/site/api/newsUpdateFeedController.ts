@@ -26,7 +26,7 @@ export async function newsUpdateFeedController(req: Request,
 		res.type('xml');
 
 		return res.render('newsUpdateFeed', {
-			lastBuildDate: allNewsUpdates[0].dateCreated.toUTCString(),
+			lastBuildDate: new Date().toUTCString(),
 			link: globalConfig.baseDomainUrl,
 			newsUpdates
 		});
