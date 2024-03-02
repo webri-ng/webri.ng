@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Tag, User, UUID } from '.';
-import { invalidRingNameError, invalidRingNameTooLongError, invalidRingNameTooShortError,
+import { invalidRingNameCharacters, invalidRingNameError, invalidRingNameTooLongError, invalidRingNameTooShortError,
 	invalidRingUrlError, invalidRingUrlTooLongError,
 	invalidRingUrlTooShortError } from '../api/api-error-response';
 import { InvalidRingNameError, InvalidRingUrlError } from '../app/error';
@@ -137,6 +137,12 @@ export class Webring
 		if (name.length > webringConfig.nameRequirements.maxLength) {
 			throw new InvalidRingNameError(invalidRingNameTooLongError.message,
 				invalidRingNameTooLongError.code, invalidRingNameTooLongError.httpStatus);
+		}
+
+		// Test for the existence of invalid characters.
+		if (new RegExp(/[<>]/).test(name)) {
+			throw new InvalidRingNameError(invalidRingNameCharacters.message,
+				invalidRingNameCharacters.code, invalidRingNameCharacters.httpStatus);
 		}
 	}
 

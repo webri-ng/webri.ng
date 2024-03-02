@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UUID } from '.';
-import { invalidSiteNameError, invalidSiteNameTooLongError, invalidSiteNameTooShortError,
+import { invalidSiteNameCharacters, invalidSiteNameError, invalidSiteNameTooLongError, invalidSiteNameTooShortError,
 	invalidSiteUrlError } from '../api/api-error-response';
 import { InvalidSiteNameError, InvalidSiteUrlError } from '../app/error';
 import { webringConfig } from '../config';
@@ -96,6 +96,12 @@ export class Site
 		if (name.length > webringConfig.nameRequirements.maxLength) {
 			throw new InvalidSiteNameError(invalidSiteNameTooLongError.message,
 				invalidSiteNameTooLongError.code, invalidSiteNameTooLongError.httpStatus);
+		}
+
+		// Test for the existence of invalid characters.
+		if (new RegExp(/[<>]/).test(name)) {
+			throw new InvalidSiteNameError(invalidSiteNameCharacters.message,
+				invalidSiteNameCharacters.code, invalidSiteNameCharacters.httpStatus);
 		}
 	}
 

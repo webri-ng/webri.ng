@@ -53,6 +53,8 @@ describe('Webring Entity', function ()
 			expect(() => Webring.validateUrl('/something')).to.throw(InvalidRingUrlError);
 			expect(() => Webring.validateUrl('some URL')).to.throw(InvalidRingUrlError);
 			expect(() => Webring.validateUrl('another-url')).to.throw(InvalidRingUrlError);
+			expect(() => Webring.validateUrl("<script>alert('ok')</script>"))
+				.to.throw(InvalidRingUrlError);
 		});
 	});
 
@@ -92,6 +94,14 @@ describe('Webring Entity', function ()
 			const longRingName = Array(webringConfig.nameRequirements.maxLength + 1)
 				.fill('n').join('');
 			expect(() => Webring.validateName(longRingName)).to.throw(InvalidRingNameError);
+		});
+
+
+		it('should throw an exception when passed a name that contains invalid characters',
+			function ()
+		{
+			const invalidRingName = "<script>alert('Hello');</script>";
+			expect(() => Webring.validateName(invalidRingName)).to.throw(InvalidRingNameError);
 		});
 	});
 });

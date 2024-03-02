@@ -79,5 +79,13 @@ describe('Site Entity', function ()
 			.fill('n').join('');
 			expect(() => Site.validateName(longSiteName)).to.throw(InvalidSiteNameError);
 		});
+
+
+		it('should throw an exception when passed a name that contains invalid characters',
+			function ()
+		{
+			const invalidSiteName = "<script>alert('Hello');</script>";
+			expect(() => Site.validateName(invalidSiteName)).to.throw(InvalidSiteNameError);
+		});
 	});
 });

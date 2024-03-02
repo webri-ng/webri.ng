@@ -194,6 +194,13 @@ export const invalidRingNameTooShortError: ApiErrorResponseDetails = {
 	message: 'The webring name provided does not meet minimum length requirements'
 };
 
+/** Error when the ring name contains invalid characters. */
+export const invalidRingNameCharacters: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-ring-name-invalid',
+	message: 'The webring name provided contains invalid characters'
+};
+
 /** Error when the ring name provided is too long. */
 export const invalidRingNameTooLongError: ApiErrorResponseDetails = {
 	httpStatus: 400,
@@ -290,6 +297,13 @@ export const invalidSiteNameTooLongError: ApiErrorResponseDetails = {
 	httpStatus: 400,
 	code: 'err-site-name-invalid',
 	message: 'The site name provided does not meet maximum length requirements'
+};
+
+/** Error when the site name contains invalid characters. */
+export const invalidSiteNameCharacters: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-site-name-invalid',
+	message: 'The site name provided contains invalid characters'
 };
 
 /** Error when an invalid site URL is provided. */

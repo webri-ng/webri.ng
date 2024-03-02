@@ -1,7 +1,7 @@
 ul.webring-list
 	each webring in webrings
 		li 
-			a(href='/webring/' + webring.url).name #{webring.name}
+			a(href='/webring/' + encodeURIComponent(webring.url)).name #{webring.name}
 			div.description
 				if webring.description.length > 100
 					| #{webring.description.substring(0, 100)}...
