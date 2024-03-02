@@ -19,6 +19,13 @@ server.app.use(cookieParser());
 server.app.use(viewRouter);
 server.app.use(apiRouter);
 
+// All requests not explicitly handled by the above routers are handled
+// by the 404 controller.
+server.app.use((req, res, next) => {
+	res.status(404).render('404');
+});
+
+
 // Export for chai-http.
 export const app: Express.Application = server.app;
 
