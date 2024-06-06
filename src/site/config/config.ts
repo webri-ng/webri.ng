@@ -104,7 +104,8 @@ export type SiteConfig = {
 		minLength: number;
 		maxLength: number;
 	};
-	webringSearchPageLength: number;
+	defaultPageLength: number;
+	maximumPageLength: number;
 }
 
 
