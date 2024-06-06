@@ -21,8 +21,9 @@ export enum SearchWebringsMethod {
 
 
 export enum SearchWebringsSort {
-	Modified,
-	Created
+	Alphabetical,
+	Created,
+	Modified
 }
 
 
@@ -100,6 +101,7 @@ async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
 		return results;
 	}
 
+	// Filter out deleted webrings, and private webrings, if selected.
 	const taggedWebrings = allTaggedWebrings.filter((webring) => {
 		if (options.returnPrivateWebrings !== true && webring.private) {
 			return false;
@@ -111,6 +113,10 @@ async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
 
 		return true;
 	});
+
+	if (options.sortBy === SearchWebringsSort.Alphabetical) {
+		taggedWebrings.sort((a, b) => a.name.localeCompare(b.name));
+	}
 
 	if (options.sortBy === SearchWebringsSort.Created) {
 		taggedWebrings.sort((a, b) => dayjs(b.dateCreated).diff(a.dateCreated));
@@ -197,6 +203,10 @@ export async function search(searchMethod: SearchWebringsMethod,
 	};
 
 	queryOptions.order = {};
+	if (options.sortBy === SearchWebringsSort.Alphabetical) {
+		queryOptions.order.name = 'ASC';
+	}
+
 	if (options.sortBy === SearchWebringsSort.Created) {
 		queryOptions.order.dateCreated = 'DESC';
 	}

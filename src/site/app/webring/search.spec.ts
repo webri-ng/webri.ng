@@ -193,6 +193,59 @@ describe('Search Webrings', function ()
 			expect(results.webrings.find((ring) => ring.ringId === testWebring4.ringId))
 				.to.not.be.undefined;
 		});
+
+		it('should correctly sort webrings by alphabetical order', async function () {
+			const results = await search(SearchWebringsMethod.Tag, testTag2.name, {
+				sortBy: SearchWebringsSort.Alphabetical
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(3);
+			expect(results.webrings).to.have.length(3);
+
+			let previousName = '';
+			for (const webring of results.webrings) {
+				const comparisonResult = webring.name.localeCompare(previousName);
+				// According to MDN, the ECMAScript specification only mandates negative and
+				// positive values. Not -1 and 1 specifically.
+				// see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+				expect(comparisonResult).to.be.above(0);
+				previousName = webring.name;
+			}
+		});
+
+		it('should correctly sort results by date created', async function() {
+			const results = await search(SearchWebringsMethod.Tag, testTag2.name, {
+				sortBy: SearchWebringsSort.Created
+			});
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(3);
+			expect(results.webrings).to.have.length(3);
+
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
+		});
+
+		it('should correctly sort results by date modified', async function() {
+			const results = await search(SearchWebringsMethod.Tag, testTag2.name, {
+				sortBy: SearchWebringsSort.Modified
+			});
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(3);
+			expect(results.webrings).to.have.length(3);
+
+			let previousDate: Date = dayjs('2999-01-01').toDate();
+			for (const webring of results.webrings) {
+				expect(dayjs(webring.dateCreated).isBefore(previousDate)).to.be.true;
+				previousDate = webring.dateCreated;
+			}
+		});
 	});
 
 
@@ -554,6 +607,31 @@ describe('Search Webrings', function ()
 					tags: [testTag7],
 					dateCreated
 				});
+			}
+		});
+
+		it('should correctly sort results in alphabetical order', async function() {
+			const results = await search(SearchWebringsMethod.Creator, testUser6.userId!, {
+				sortBy: SearchWebringsSort.Alphabetical
+			});
+
+			expect(results).to.not.be.undefined;
+			expect(results.currentPage).to.equal(1);
+			expect(results.totalResults).to.equal(totalWebrings);
+			expect(results.webrings).to.have.length(totalWebrings);
+
+			let previousName = '';
+			for (const webring of results.webrings) {
+				const comparisonResult = webring.name.localeCompare(previousName, 'en', {
+					// This option is passed here because Node.js' `localeCompare` and PostgreSQL's
+					// alphabetical sort behave differently.
+					// For PostgreSQL, '1iD8htdB' will come before '1_QwCphT', for Node.js the opposite.
+					// This option makes Node behave more like Postgres for the test.
+					ignorePunctuation: true
+				});
+
+				expect(comparisonResult).to.be.above(0);
+				previousName = webring.name;
 			}
 		});
 
