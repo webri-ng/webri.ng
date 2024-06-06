@@ -40,7 +40,8 @@ export default function requestErrorHander(err: Error,
 		// No need to reveal API specs to frontend in case of error.
 		return res.status(requestValidationError.httpStatus).json({
 			code: requestValidationError.code,
-			error: requestValidationError.message
+			error: requestValidationError.message,
+			retryable: false
 		});
 	}
 
@@ -49,6 +50,7 @@ export default function requestErrorHander(err: Error,
 		return res.status(requestAuthenticationFailedError.httpStatus).json({
 			code: requestAuthenticationFailedError.code,
 			error: requestAuthenticationFailedError.message,
+			retryable: false
 		});
 	}
 
@@ -56,6 +58,7 @@ export default function requestErrorHander(err: Error,
 		return res.status(loginExpiredError.httpStatus).json({
 			code: loginExpiredError.code,
 			error: loginExpiredError.message,
+			retryable: false
 		});
 	}
 
@@ -63,7 +66,8 @@ export default function requestErrorHander(err: Error,
 	if (err instanceof ApiReturnableError) {
 		return res.status(err.httpStatus).json({
 			code: err.code,
-			error: err.message
+			error: err.message,
+			retryable: false
 		});
 	}
 

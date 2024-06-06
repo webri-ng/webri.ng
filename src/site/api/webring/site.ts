@@ -34,6 +34,10 @@ import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
 		} else {
 			currentIndex = parseInt(index.toString());
 		}
+
+		if (Number.isNaN(currentIndex)) {
+			currentIndex = undefined;
+		}
 	}
 
 	let referringUrl: string | undefined;

@@ -483,10 +483,10 @@ describe('Search Webrings', function ()
 
 	describe('Pagination', function () {
 		const totalPublicPages = 3;
-		const totalPublicWebrings = siteConfig.webringSearchPageLength * (totalPublicPages - 1) + 3;
+		const totalPublicWebrings = siteConfig.defaultPageLength * (totalPublicPages - 1) + 3;
 
 		const totalPages = totalPublicPages + 1;
-		const totalWebrings = siteConfig.webringSearchPageLength + totalPublicWebrings;
+		const totalWebrings = siteConfig.defaultPageLength + totalPublicWebrings;
 
 		before(async function beforeTesting() {
 			for (let i = 0; i < totalWebrings; i++) {
@@ -506,7 +506,7 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(totalPublicWebrings);
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalPages).to.equal(totalPublicPages);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			results = await search(SearchWebringsMethod.Creator, testUser5.userId!, {
 				page: totalPublicPages
@@ -530,7 +530,7 @@ describe('Search Webrings', function ()
 			expect(results.totalResults).to.equal(totalWebrings);
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalPages).to.equal(totalPages);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			results = await search(SearchWebringsMethod.Creator, testUser5.userId!, {
 				page: totalPages,
@@ -554,7 +554,7 @@ describe('Search Webrings', function ()
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalResults).to.equal(totalPublicWebrings);
 			expect(results.totalPages).to.equal(totalPublicPages);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			results = await search(SearchWebringsMethod.Tag, testTag6.name || '', {
 				page: totalPublicPages
@@ -579,7 +579,7 @@ describe('Search Webrings', function ()
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalPages).to.equal(totalPages);
 			expect(results.totalResults).to.equal(totalWebrings);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			results = await search(SearchWebringsMethod.Tag, testTag6.name || '', {
 				page: totalPages,

@@ -36,6 +36,8 @@ export class ApiReturnableError extends Error {
 	}
 }
 
+export class BadRequestError extends ApiReturnableError { }
+
 export class InvalidIdentifierError extends ApiReturnableError { }
 
 export class InvalidDateError extends ApiReturnableError { }

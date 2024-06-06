@@ -83,7 +83,7 @@ async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
 		searchTerm
 	};
 
-	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
+	const resultsPerPage = options.pageLength || siteConfig.defaultPageLength;
 	const skip = (results.currentPage - 1) * resultsPerPage;
 
 	if (!searchTerm) {
@@ -159,7 +159,7 @@ export async function search(searchMethod: SearchWebringsMethod,
 		return searchTaggedWebrings(searchMethod, searchTerm || '', options);
 	}
 
-	const resultsPerPage = options.pageLength || siteConfig.webringSearchPageLength;
+	const resultsPerPage = options.pageLength || siteConfig.defaultPageLength;
 	const skip = (results.currentPage - 1) * resultsPerPage;
 
 	/** The search conditions used to get the user entity. */

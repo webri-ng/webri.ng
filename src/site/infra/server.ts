@@ -12,7 +12,7 @@ import { Server } from 'net';
 
 import { logger } from '../app/logger';
 import { serverConfig } from '../config';
-import { badRequestBodyError } from '../api/api-error-response';
+import { badRequestError } from '../api/api-error-response';
 
 
 /** The main server application instance. */
@@ -37,9 +37,9 @@ function bodyParserErrorHandler(err: Error | undefined,
 {
 	if (err) {
 		// Return a specific error in case of any errors decoding the request body.
-		res.status(badRequestBodyError.httpStatus).json({
-			code: badRequestBodyError.code,
-			error: badRequestBodyError.message
+		res.status(badRequestError.httpStatus).json({
+			code: badRequestError.code,
+			error: badRequestError.message
 		});
 
 		return;

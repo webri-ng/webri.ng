@@ -19,10 +19,10 @@ describe('Browse Webrings', function ()
 
 	let testDeletedWebring: Webring;
 	const totalPublicPages = 3;
-	const totalPublicWebrings = siteConfig.webringSearchPageLength * (totalPublicPages - 1) + 3;
+	const totalPublicWebrings = siteConfig.defaultPageLength * (totalPublicPages - 1) + 3;
 
 	const totalPages = totalPublicPages + 1;
-	const totalWebrings = siteConfig.webringSearchPageLength + totalPublicWebrings;
+	const totalWebrings = siteConfig.defaultPageLength + totalPublicWebrings;
 
 
 	before(async function beforeTesting()
@@ -58,7 +58,7 @@ describe('Browse Webrings', function ()
 		expect(results.totalResults).to.equal(totalPublicWebrings);
 		expect(results.currentPage).to.equal(1);
 		expect(results.totalPages).to.equal(totalPublicPages);
-		expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+		expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 	});
 
 
@@ -71,7 +71,7 @@ describe('Browse Webrings', function ()
 		expect(results.totalResults).to.equal(totalWebrings);
 		expect(results.currentPage).to.equal(1);
 		expect(results.totalPages).to.equal(totalPages);
-		expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+		expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 	});
 
 
@@ -99,7 +99,7 @@ describe('Browse Webrings', function ()
 		expect(results.totalResults).to.equal(totalPublicWebrings);
 		expect(results.currentPage).to.equal(1);
 		expect(results.totalPages).to.equal(totalPublicPages);
-		expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+		expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 		results = await browse({
 			page: totalPublicPages
@@ -122,7 +122,7 @@ describe('Browse Webrings', function ()
 		expect(results.totalResults).to.equal(totalWebrings);
 		expect(results.currentPage).to.equal(1);
 		expect(results.totalPages).to.equal(totalPages);
-		expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+		expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 		results = await browse({
 			page: totalPages,
@@ -146,7 +146,7 @@ describe('Browse Webrings', function ()
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalResults).to.equal(totalPublicWebrings);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			let previousDate: Date = dayjs('2999-01-01').toDate();
 			for (const webring of results.webrings) {
@@ -163,7 +163,7 @@ describe('Browse Webrings', function ()
 			expect(results).to.not.be.undefined;
 			expect(results.currentPage).to.equal(1);
 			expect(results.totalResults).to.equal(totalPublicWebrings);
-			expect(results.webrings).to.have.length(siteConfig.webringSearchPageLength);
+			expect(results.webrings).to.have.length(siteConfig.defaultPageLength);
 
 			let previousDate: Date = dayjs('2999-01-01').toDate();
 			for (const webring of results.webrings) {

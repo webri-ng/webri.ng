@@ -1,5 +1,5 @@
 /**
- * @module webring/api
+ * @module api/webring
  * Webring API.
  */
 
@@ -18,6 +18,7 @@ import { updateWebringController, updateWebringRequestSchema } from './updateWeb
 import { webringDetailViewController } from './webringDetailView';
 import { deleteWebringViewController } from './deleteWebringView';
 import { getSitesController } from './getSites';
+import { getWebringsController } from './getWebrings';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -46,14 +47,15 @@ webringApiRouter.delete('/:webringUrl',
 	authenticateSessionController,
 	deleteWebringController);
 
+webringApiRouter.get('/:webringUrl/sites', getSitesController);
+
+webringApiRouter.get('/', getWebringsController);
 
 webringViewRouter.get('/new', genericViewController('webring/new'));
 
 webringViewRouter.get('/:webringUrl', webringDetailViewController);
 
 webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteController);
-
-webringViewRouter.get('/:webringUrl/sites', getSitesController);
 
 webringViewRouter.get('/:webringUrl/add',
 	authenticateSessionController,

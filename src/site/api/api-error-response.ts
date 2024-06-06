@@ -33,8 +33,8 @@ export const requestValidationError: ApiErrorResponseDetails = {
 	message: 'Request validation error'
 };
 
-/** Error when a bad request body has been sent to the server. */
-export const badRequestBodyError: ApiErrorResponseDetails = {
+/** Error when a bad request has been sent to the server. */
+export const badRequestError: ApiErrorResponseDetails = {
 	httpStatus: 400,
 	code: 'err-bad-request',
 	message: 'Bad request'
