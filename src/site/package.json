@@ -1,6 +1,6 @@
 {
 	"name": "webri.ng",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Webri.ng site",
 	"repository": {
 		"type": "git",
@@ -11,17 +11,21 @@
 		"node": "20.x"
 	},
 	"contributors": [
-		"Anthony Richardson <anthony@ajxs.me> (https://github.com/ajxs)"
+		"Anthony Richardson <ajxs@panoptic.online> (https://github.com/ajxs)"
 	],
 	"scripts": {
 		"build:dev": "tsc -w",
 		"build": "tsc",
+		"clean": "rm -rf dist",
+		"prestart": "npm run build",
+		"prebuild": "mkdir -p dist && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
 		"start:dev": "nodemon",
-		"start": "cd dist && npm install --omit=dev && NODE_ENV=production node start.js",
+		"start": "node ./dist/start.js",
 		"test:lint": "eslint './**/*.ts'",
 		"test:lint:fix": "eslint --fix './**/*.ts'",
 		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
-		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts"
+		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts",
+		"css": "sassc --style=expanded ./site.scss ./static/site.css"
 	},
 	"nyc": {
 		"include": [
