@@ -1,17 +1,21 @@
-include ../include/page
-h2 Profile
-div.content-block
-	| Hello #{user.username}, welcome back!
-	div.controls
-		a(href='/user/update') Update Your Details
-		a(href='/user/update-password') Update Your Password
-h2 Your Webrings
-	if totalPages > 1
-		|  (Page #{currentPage})
+extends ../layout.pug
 
-div.content-block
-	if webrings.length > 0 
-		include ../include/webringList
-	else
-		| You haven't created any webrings yet. Feel free to create one!
-include ../include/footer
+block title
+	| webri.ng | Profile
+
+block content
+	h2 Profile
+	div.content-block
+		| Hello #{user.username}, welcome back!
+		div.controls
+			a(href='/user/update') Update Your Details
+			a(href='/user/update-password') Update Your Password
+	h2 Your Webrings
+		if totalPages > 1
+			|  (Page #{currentPage})
+
+	div.content-block
+		if webrings.length > 0 
+			include ../include/webringList
+		else
+			| You haven't created any webrings yet. Feel free to create one!

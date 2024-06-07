@@ -1,20 +1,24 @@
-include ../include/page.pug
-h2 Register
-div.content-block
-	form#register-form
-		div.form-field
-			label(for='username') Username: 
-			input#username(type='text' name='username' minlength=2 maxlength=80 required='')
-		div.form-field
-			label(for='email') Email: 
-			input#email(type='email' name='email' required='')
-		div.form-field
-			label(for='password') Password: 
-			input#password(type='password' name='password' minlength=2 maxlength=128 required='')
-		div.form-field
-			label(for='confirmPassword') Confirm Password: 
-			input#password(type='password' name='confirmPassword' minlength=2 maxlength=128 required='')
-		div.form-buttons
-			button(type='button', onclick="register()") Register
-		div#register-error-message.error-message
-include ../include/footer
+extends ../layout.pug
+
+block title
+	| webri.ng | Register
+
+block content
+	h2 Register
+	div.content-block
+		form#register-form
+			div.form-field
+				label(for='username') Username: 
+				input#username(type='text' name='username' minlength=2 maxlength=80 required='')
+			div.form-field
+				label(for='email') Email: 
+				input#email(type='email' name='email' required='')
+			div.form-field
+				label(for='password') Password: 
+				input#password(type='password' name='password' minlength=2 maxlength=128 required='')
+			div.form-field
+				label(for='confirmPassword') Confirm Password: 
+				input#password(type='password' name='confirmPassword' minlength=2 maxlength=128 required='')
+			div.form-buttons
+				button(type='button', onclick="register()") Register
+			div#register-error-message.error-message

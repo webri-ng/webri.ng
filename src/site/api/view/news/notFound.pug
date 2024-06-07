@@ -1,5 +1,9 @@
-include ../include/page.pug
-h2 News
-div.content-block
-	p News update not found!
-include ../include/footer
+extends ../layout.pug
+
+block title
+	| webri.ng | News
+
+block content
+	h2 News Update Not Found
+	div.content-block
+		p News update not found!

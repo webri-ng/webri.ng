@@ -1,8 +1,11 @@
-include ../include/page
-h2= newsUpdate.title
-div.content-block#news-update
-	div.date= newsUpdate.dateCreated
-	div.content
-		| !{newsUpdate.content}
+extends ../layout.pug
 
-include ../include/footer
+block title
+	| webri.ng | #{newsUpdate.title}
+
+block content
+	h2= newsUpdate.title
+	div.content-block#news-update
+		div.date= newsUpdate.dateCreated
+		div.content
+			| !{newsUpdate.content}

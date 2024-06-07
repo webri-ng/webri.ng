@@ -1,62 +1,66 @@
-include ../include/page.pug
-h2 #{webring.name}
-div.content-block
-	div.detail-descripion #{webring.description}
-	if isUserModerator
-		div.controls
-			a(href='/webring/' + webring.url + '/add') Add New Site
-			a(href='/webring/' + webring.url + '/update') Update Webring
-			if isUserOwner
-				a(href='/webring/' + webring.url + '/delete') Delete Webring
-h2 Add this webring to your site
-div.content-block
-	p
-		| Copy the following markup to your website so your visitors can navigate your webring.
-		| Alternatively, get creative and design your own!
-	p
-		| In many cases, simply using the 
-		i random site 
-		| link will suffice!
-	p
-		| To get the HTML code for linking a particular site to the webring, use the 
-		i Get Example Markup 
-		| button below it in the list.
+extends ../layout.pug
 
-	p
-		i 
-			| Note: The URL parameter for identifying a website's position in the webring has changed from a 
-			| numerical index, to the site's URL. The old numerical 'index' parameter will still work correctly,
-			| however for new sites the 'via' parameter is recommended.
-			| This helps correct an issue where deleting a site from a webring can cause the numerical index 
-			| to point to the wrong site.
-			| Sites currently using the old markup do not need to upgrade.
+block title
+	| webri.ng | #{webring.name}
 
-	textarea#example-code(rows=6)
-		| <div style="width: fit-content; border: 2px outset; text-align:center">
-		| 	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of #{webring.name}.</p>
-		| 	<div style="margin: 0; padding: 0.1em; border: 2px inset">
-		| 		<a href="https://webri.ng/webring/#{webring.url}/random">Random Site</a>
-		| 	</div>
-		| </div>
-
-
-h2 Sites
-div#webring-detail-sites.content-block
-	if sites.length > 0
-		ol#webring-detail-site-list
-			each site, index in sites
-				li(id='site_' + site.url)
-					span.name #{site.name}
-					a.url(href=site.url) #{site.url}
-					div.site-controls
-						button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',\'' + site.url + '\')') Get Example Markup
-						if isUserModerator
-							button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
-	else
+block content
+	h2 #{webring.name}
+	div.content-block
+		div.detail-descripion #{webring.description}
 		if isUserModerator
-			| This webring does not have any sites yet. Feel free to add some!
-		else
-			| This webring does not have any sites yet.
+			div.controls
+				a(href='/webring/' + webring.url + '/add') Add New Site
+				a(href='/webring/' + webring.url + '/update') Update Webring
+				if isUserOwner
+					a(href='/webring/' + webring.url + '/delete') Delete Webring
+	h2 Add this webring to your site
+	div.content-block
+		p
+			| Copy the following markup to your website so your visitors can navigate your webring.
+			| Alternatively, get creative and design your own!
+		p
+			| In many cases, simply using the 
+			i random site 
+			| link will suffice!
+		p
+			| To get the HTML code for linking a particular site to the webring, use the 
+			i Get Example Markup 
+			| button below it in the list.
 
-	div#sites-error-message.error-message
-include ../include/footer
+		p
+			i 
+				| Note: The URL parameter for identifying a website's position in the webring has changed from a 
+				| numerical index, to the site's URL. The old numerical 'index' parameter will still work correctly,
+				| however for new sites the 'via' parameter is recommended.
+				| This helps correct an issue where deleting a site from a webring can cause the numerical index 
+				| to point to the wrong site.
+				| Sites currently using the old markup do not need to upgrade.
+
+		textarea#example-code(rows=6)
+			| <div style="width: fit-content; border: 2px outset; text-align:center">
+			| 	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of #{webring.name}.</p>
+			| 	<div style="margin: 0; padding: 0.1em; border: 2px inset">
+			| 		<a href="https://webri.ng/webring/#{webring.url}/random">Random Site</a>
+			| 	</div>
+			| </div>
+
+
+	h2 Sites
+	div#webring-detail-sites.content-block
+		if sites.length > 0
+			ol#webring-detail-site-list
+				each site, index in sites
+					li(id='site_' + site.url)
+						span.name #{site.name}
+						a.url(href=site.url) #{site.url}
+						div.site-controls
+							button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',\'' + site.url + '\')') Get Example Markup
+							if isUserModerator
+								button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
+		else
+			if isUserModerator
+				| This webring does not have any sites yet. Feel free to add some!
+			else
+				| This webring does not have any sites yet.
+
+		div#sites-error-message.error-message

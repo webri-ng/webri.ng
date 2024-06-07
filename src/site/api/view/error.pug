@@ -1,6 +1,6 @@
-include include/page
-h2 #{pageHeading}
-div.content-block
-	| A terrible server error has occurred: #{errorMessage}
+extends layout.pug
 
-include include/footer
+block content
+	h2 #{pageHeading}
+	div.content-block
+		| A terrible server error has occurred: #{errorMessage}
