@@ -34,7 +34,14 @@ export default function requestErrorHander(err: Error,
 	if (err instanceof RequestValidationError) {
 		if (loggingConfig.logRequestValidation) {
 			// If we want to log request validation debug information.
-			logger.debug(`Request validation error: ${err.message}`);
+			logger.debug(
+				`Request validation error: ${err.message}`,
+				{
+					path: req.path,
+					body: req.body,
+					ip: req.ip
+				}
+			);
 		}
 
 		// No need to reveal API specs to frontend in case of error.

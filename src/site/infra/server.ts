@@ -68,7 +68,7 @@ export function initialise(): Promise<Server>
 {
 	return new Promise((resolve, _reject) => {
 		instance = app.listen(serverConfig.port, function handleServerInit() {
-			logger.info(`\x1b[33mServer live @: http://localhost:${serverConfig.port}\x1b[0m`);
+			logger.info(`Server live @: http://localhost:${serverConfig.port}`);
 
 			resolve(instance);
 		});
@@ -91,7 +91,7 @@ export function shutdown(): Promise<Server>
 				return reject(err);
 			}
 
-			logger.info(`\x1b[33mServer closed\x1b[0m`);
+			logger.info(`Server closed`);
 
 			return resolve(instance);
 		});

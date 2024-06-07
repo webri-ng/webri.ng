@@ -38,7 +38,7 @@ export const app: Express.Application = server.app;
  */
 export async function initApplication(): Promise<Server>
 {
-	logger.info(`\x1b[33mApplication environment: '${applicationEnvironment}'\x1b[0m`);
+	logger.info(`Application environment: '${applicationEnvironment}'`);
 
 	try {
 		await database.initialiseAppDataSource();

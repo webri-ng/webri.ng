@@ -20,9 +20,9 @@ export let appDataSource: DataSource;
  */
 export async function initialiseAppDataSource(): Promise<DataSource>
 {
-	logger.info(`\x1b[33mConnecting to postgresql://${databaseConfig.connection.user}@` +
+	logger.info(`Connecting to postgresql://${databaseConfig.connection.user}@` +
 		`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
-		`${databaseConfig.databaseName}\x1b[0m`);
+		`${databaseConfig.databaseName}`);
 
 	/** Database SSL configuration */
 	let ssl = undefined;
@@ -63,7 +63,7 @@ export async function destroyAppDataSource(): Promise<DataSource>
 	}
 
 	await appDataSource.destroy();
-	logger.info(`\x1b[33mClosed database connection.\x1b[0m`);
+	logger.info(`Closed database connection.`);
 
 	return appDataSource;
 }

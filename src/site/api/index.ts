@@ -34,7 +34,14 @@ const rateLimiter = rateLimit({
 	legacyHeaders: false,
 	message: (req: Request, res: Response) => {
 		if (loggingConfig.logRateLimiting) {
-			logger.debug(`Rate limit exceeded for IP: ${req.ip}`);
+			logger.debug(
+				`Rate limit exceeded for IP: ${req.ip}`,
+				{
+					path: req.path,
+					body: req.body,
+					ip: req.ip
+				}
+			);
 		}
 
 		res.status(429).json({
