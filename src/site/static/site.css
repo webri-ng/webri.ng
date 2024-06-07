@@ -1,5 +1,5 @@
 html {
-  background-color: #323232;
+  background-color: rgb(50, 50, 50);
   font-size: 10pt;
   color: black;
 }
@@ -7,28 +7,25 @@ html {
 a {
   color: inherit;
 }
-
 a:hover {
   color: #222;
 }
 
 body {
-  background-color: #828282;
+  background-color: rgb(130, 130, 130);
   box-sizing: border-box;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0 auto;
   max-width: 800px;
   padding: 0.8rem;
 }
-
 body > header {
   text-align: center;
   border: 1px solid black;
-  background-color: #606060;
+  background-color: rgb(96, 96, 96);
   padding: 0.4rem;
   margin-bottom: 0.4rem;
 }
-
 body > header a.title h1 {
   font-family: Arial, "Liberation sans", sans-serif;
   text-align: center;
@@ -38,37 +35,30 @@ body > header a.title h1 {
   margin-bottom: 0.25rem;
   letter-spacing: 0.25rem;
 }
-
 body > header a.title:hover {
   color: #222;
   text-decoration: underline;
 }
-
 body > header nav a:hover {
   color: #222;
 }
-
 body > header nav a:not(:last-child) {
   margin-right: 0.5rem;
 }
-
 body > header nav a:not(:last-child):after {
-  content: '|';
+  content: "|";
   margin-left: 0.5rem;
 }
-
 body h2 {
-  background-color: #606060;
+  background-color: rgb(96, 96, 96);
   border: 1px solid black;
   margin: 0;
   padding: 0.4rem;
   font-size: 1rem;
 }
-
 body h2:first-child {
   border-top: 0;
 }
-
 body .content-block {
   padding: 0.4rem;
   border: 1px solid black;
@@ -81,21 +71,17 @@ body .content-block {
   padding: 0;
   margin: 0;
 }
-
 .webring-list li {
   margin-bottom: 0.5rem;
 }
-
 .webring-list li a.name {
   color: black;
   font-weight: bold;
 }
-
 .webring-list li a.name:hover {
   color: #222;
   text-decoration: underline;
 }
-
 .webring-list li .description {
   color: #111;
   font-size: 0.8rem;
@@ -104,46 +90,38 @@ body .content-block {
 .webring-list-navigation {
   margin-top: 1rem;
 }
-
 .webring-list-navigation a:not(:last-child) {
   margin-right: 0.5rem;
 }
-
 .webring-list-navigation a:not(:last-child):after {
-  content: '|';
+  content: "|";
   margin-left: 0.5rem;
 }
 
 .controls {
   margin-top: 1rem;
 }
-
 .controls a {
   display: block;
 }
 
 form .error-message {
-  color: #640606;
+  color: rgb(100, 6, 6);
 }
-
 form .form-field {
   margin-bottom: 1rem;
 }
-
 form .form-field .description {
   font-size: 0.8rem;
 }
-
 form .form-field label {
   display: block;
   font-weight: bold;
 }
-
 form .form-field textarea {
   resize: none;
   width: 100%;
 }
-
 form .form-buttons {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -151,7 +129,7 @@ form .form-buttons {
 
 footer {
   border: 1px solid black;
-  background-color: #606060;
+  background-color: rgb(96, 96, 96);
   margin-top: 0.4rem;
   font-size: 0.8rem;
   text-align: center;
@@ -160,21 +138,17 @@ footer {
 #webring-detail-site-list {
   margin: 0;
 }
-
 #webring-detail-site-list li {
   margin-bottom: 0.6rem;
 }
-
 #webring-detail-site-list li .name {
   display: block;
   font-weight: bold;
 }
-
 #webring-detail-site-list li .site-controls {
   margin-top: 0.2rem;
   display: block;
 }
-
 #webring-detail-site-list li .site-controls button {
   margin-right: 0.2rem;
 }
@@ -190,16 +164,13 @@ textarea#example-code {
   margin: 0;
   padding: 0;
 }
-
 #news li {
   margin-bottom: 1rem;
 }
-
 #news li .title {
   font-weight: bold;
   font-size: 1.2rem;
 }
-
 #news li .date {
   font-size: 0.8rem;
 }
@@ -211,12 +182,10 @@ textarea#example-code {
 .donation-option {
   margin-bottom: 2rem;
 }
-
 .donation-option .logo {
   max-height: 1.25rem;
   margin-right: 0.5rem;
 }
-
 .donation-option a {
   display: block;
 }

@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "git+https://github.com/webri-ng/webri.ng.git"
 	},
-	"license": "UNLICENSED",
+	"license": "GPL-3.0-or-later",
 	"engines": {
 		"node": "20.x"
 	},
@@ -18,19 +18,16 @@
 		"build": "tsc",
 		"clean": "rm -rf dist",
 		"prestart": "npm run build",
-		"prebuild": "mkdir -p dist/api/view && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
+		"prebuild": "npm run css && mkdir -p dist/api/view && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
 		"start:dev": "nodemon",
 		"start": "node ./dist/start.js",
 		"test:lint": "eslint './**/*.ts'",
 		"test:lint:fix": "eslint --fix './**/*.ts'",
-		"test": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts '**/*.spec.ts'",
+		"test": "npm run test:single '**/*.spec.ts'",
 		"test:single": "npm run build && NODE_ENV=test nyc mocha --require ./test-setup.ts",
-		"css": "sassc --style=expanded ./site.scss ./static/site.css"
+		"css": "sass --style=expanded  --no-source-map ./site.scss ./static/site.css"
 	},
 	"nyc": {
-		"include": [
-			"**/*.ts"
-		],
 		"exclude": [
 			"**/*.d.ts",
 			"**/*.spec.ts"
@@ -50,14 +47,11 @@
 		"instrument": true
 	},
 	"nodemonConfig": {
-		"watch": [
-			"./**/*.ts"
-		],
-		"ext": "ts",
+		"ext": "ts,scss",
 		"ignore": [
 			"./**/*.spec.ts"
 		],
-		"exec": "ts-node ./start.ts"
+		"exec": "npm run css && ts-node ./start.ts"
 	},
 	"dependencies": {
 		"ajv": "^8.12.0",
@@ -97,8 +91,9 @@
 		"chai-http": "^4.3.0",
 		"eslint": "^8.37.0",
 		"mocha": "^9.1.3",
-		"nodemon": "^2.0.15",
+		"nodemon": "2.0.15",
 		"nyc": "^15.1.0",
+		"sass": "^1.77.4",
 		"sinon": "^12.0.1",
 		"ts-node": "^10.4.0",
 		"typescript": "^4.5.4"

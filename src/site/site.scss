@@ -1,4 +1,4 @@
-$background-color: rgb(72, 72, 72);
+$background-color: rgb(50, 50, 50);
 $content-background-color: rgb(130, 130, 130);
 $header-background-color: rgb(96, 96, 96);
 $global-element-padding: 0.4rem;
@@ -26,7 +26,7 @@ body {
 	box-sizing: border-box;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	margin: 0 auto;
-	width: 800px;
+	max-width: 800px;
 	padding: 0.8rem;
 
 	& > header {
@@ -40,7 +40,7 @@ body {
 			h1 {
 				font-family: Arial, "Liberation sans", sans-serif;
 				text-align: center;
-				font-size: 2rem;
+				font-size: 3rem;
 				font-weight: 700;
 				margin: 0;
 				margin-bottom: 0.25rem;
@@ -208,4 +208,42 @@ textarea#example-code {
 	margin-top: 1rem;
 	resize: none;
 	width: 100%;
+}
+
+#news {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+
+	li {
+		margin-bottom: 1rem;
+
+		.title {
+			font-weight: bold;
+			font-size: 1.2rem;
+		}
+
+		.date {
+			font-size: 0.8rem;
+		}
+	}
+}
+
+#news-update {
+	.date {
+		margin-bottom: 1rem;
+	}
+}
+
+.donation-option {
+	margin-bottom: 2rem;
+
+	.logo {
+		max-height: 1.25rem;
+		margin-right: 0.5rem;
+	}
+
+	a {
+		display: block;
+	}
 }
