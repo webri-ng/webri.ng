@@ -1,4 +1,4 @@
-import { Site } from "../../model";
+import { Site } from '../../model';
 
 export type SiteApiResult = {
 	name: string;

@@ -1,4 +1,4 @@
-import { QueryParameter } from ".";
+import { QueryParameter } from '.';
 
 /**
  * Parses a 'page number' query parameter, returning a default value of '1' in
@@ -13,7 +13,7 @@ export function parsePageNumberQueryParameter(
 		return 1;
 	}
 
-	let parsedQueryParameter: number = 1;
+	let parsedQueryParameter = 1;
 
 	if (Array.isArray(pageNumberQueryParameter)) {
 		parsedQueryParameter = parseInt(pageNumberQueryParameter[0].toString());

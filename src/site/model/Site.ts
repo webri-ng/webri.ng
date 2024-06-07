@@ -1,7 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UUID } from '.';
-import { invalidSiteNameCharacters, invalidSiteNameError, invalidSiteNameTooLongError, invalidSiteNameTooShortError,
-	invalidSiteUrlError } from '../api/api-error-response';
+import {
+	invalidSiteNameCharacters, invalidSiteNameError, invalidSiteNameTooLongError,
+	invalidSiteNameTooShortError, invalidSiteUrlError
+} from '../api/api-error-response';
 import { InvalidSiteNameError, InvalidSiteUrlError } from '../app/error';
 import { webringConfig } from '../config';
 

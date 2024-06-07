@@ -1,8 +1,10 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Tag, User, UUID } from '.';
-import { invalidRingNameCharacters, invalidRingNameError, invalidRingNameTooLongError, invalidRingNameTooShortError,
-	invalidRingUrlError, invalidRingUrlTooLongError,
-	invalidRingUrlTooShortError } from '../api/api-error-response';
+import {
+	invalidRingNameCharacters, invalidRingNameError,
+	invalidRingNameTooLongError, invalidRingNameTooShortError, invalidRingUrlError,
+	invalidRingUrlTooLongError, invalidRingUrlTooShortError
+} from '../api/api-error-response';
 import { InvalidRingNameError, InvalidRingUrlError } from '../app/error';
 import { webringConfig } from '../config';
 

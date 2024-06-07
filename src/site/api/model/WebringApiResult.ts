@@ -1,4 +1,4 @@
-import { Webring } from "../../model";
+import { Webring } from '../../model';
 
 export type WebringApiResult = {
 	name: string;

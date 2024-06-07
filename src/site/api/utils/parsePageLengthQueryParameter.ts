@@ -1,5 +1,5 @@
-import { QueryParameter } from ".";
-import { siteConfig } from "../../config";
+import { QueryParameter } from '.';
+import { siteConfig } from '../../config';
 
 /**
  * Parses a 'page length' query parameter, returning the default value in
@@ -14,7 +14,7 @@ export function parsePageLengthQueryParameter(
 		return siteConfig.defaultPageLength;
 	}
 
-	let parsedQueryParameter: number = siteConfig.defaultPageLength;
+	let parsedQueryParameter = siteConfig.defaultPageLength;
 
 	if (Array.isArray(pageLengthQueryParameter)) {
 		parsedQueryParameter = parseInt(pageLengthQueryParameter[0].toString());
