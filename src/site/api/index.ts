@@ -42,6 +42,7 @@ viewRouter.use('/user', userViewRouter);
 viewRouter.use('/webring', webringViewRouter);
 viewRouter.get('/', indexViewController);
 viewRouter.get('/contact', genericViewController('contact'));
+viewRouter.get('/donate', genericViewController('donate'));
 viewRouter.get('/faq', genericViewController('faq'));
 viewRouter.get('/news/feed', newsUpdateFeedController);
 viewRouter.get('/news/:updateId', newsUpdateViewController);

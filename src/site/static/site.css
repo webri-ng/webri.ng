@@ -207,3 +207,16 @@ textarea#example-code {
 #news-update .date {
   margin-bottom: 1rem;
 }
+
+.donation-option {
+  margin-bottom: 2rem;
+}
+
+.donation-option .logo {
+  max-height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.donation-option a {
+  display: block;
+}
