@@ -4,7 +4,9 @@
  * @module api
  */
 
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
+import { logger } from '../app';
+import { rateLimit } from 'express-rate-limit';
 import requestErrorHander from './errorHandler';
 import { genericViewController } from './genericViewController';
 import { indexViewController } from './indexViewController';
@@ -14,6 +16,8 @@ import { viewErrorHandler } from './viewErrorHandler';
 import { webringApiRouter, webringViewRouter } from './webring';
 import { newsUpdateViewController } from './newsUpdateViewController';
 import { newsUpdateFeedController } from './newsUpdateFeedController';
+import { requestRateLimitedError } from './api-error-response';
+import { loggingConfig, serverConfig } from '../config';
 
 export * as requestErrorHander from './errorHandler';
 
@@ -22,7 +26,29 @@ export const apiRouter = Router();
 /** Express router for serving views. */
 export const viewRouter = Router();
 
-// This middleware is included in all request, this is where the user's session is
+const rateLimiter = rateLimit({
+	limit: serverConfig.rateLimit,
+	// Refers to the IETF proposed rate limit standard headers.
+	// See: https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+	message: (req: Request, res: Response) => {
+		if (loggingConfig.logRateLimiting) {
+			logger.debug(`Rate limit exceeded for IP: ${req.ip}`);
+		}
+
+		res.status(429).json({
+			code: requestRateLimitedError.code,
+			error: requestRateLimitedError.message,
+			retryable: true
+		});
+	}
+});
+
+// Rate limiting middleware applied to all API requests.
+apiRouter.use(rateLimiter);
+
+// This middleware is included in all requests. This is where the user's session is
 // validated, and where the `user` response local variable is populated.
 apiRouter.use(parseSessionController);
 

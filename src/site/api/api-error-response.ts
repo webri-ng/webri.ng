@@ -341,3 +341,8 @@ export const invalidExistingPasswordError: ApiErrorResponseDetails = {
 	message: 'The existing password supplied is incorrect'
 };
 
+export const requestRateLimitedError: ApiErrorResponseDetails = {
+	httpStatus: 429,
+	code: 'err-rate-limited',
+	message: 'Too many requests, please try again later.'
+};

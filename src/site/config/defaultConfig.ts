@@ -42,6 +42,7 @@ export const defaultConfig: Config = {
 	logging: {
 		loggingLevel: LoggingLevel.Debug,
 		logRequestValidation: true,
+		logRateLimiting: true
 	},
 	tag: {
 		nameRequirements: {
@@ -65,6 +66,7 @@ export const defaultConfig: Config = {
 	},
 	server: {
 		port: parseInt(process.env.PORT || '') || 3000,
+		rateLimit: 100
 	},
 	session: {
 		validityPeriod: [1, 'week'],

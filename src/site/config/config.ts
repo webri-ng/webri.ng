@@ -65,6 +65,7 @@ export enum LoggingLevel {
 export type LoggingConfig = {
 	loggingLevel: LoggingLevel;
 	logRequestValidation: boolean;
+	logRateLimiting: boolean;
 }
 
 
@@ -133,6 +134,11 @@ export type ServerConfig = {
 	 */
 	// tslint:disable-next-line
 	corsWhitelist?: RegExp|boolean|RegExp[]|string[];
+	/**
+	 * The rate limit for requests to the API.
+	 * The rate limiter has a fixed-window of 1 minute.
+	 */
+	rateLimit: number;
 }
 
 
