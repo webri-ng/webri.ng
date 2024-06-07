@@ -1,12 +1,18 @@
-head
-	title
-		block title
-			| webri.ng
-	link(rel='stylesheet' type='text/css' href='/static/site.css')
-	script(src='/static/site.js')
-	meta(name='viewport', content='width=device-width, initial-scale=1')
-body
-	include include/header.pug
-	block content
+doctype html
+html(lang="en")
+	head
+		title
+			block title
+				| webri.ng
+		link(rel='stylesheet' type='text/css' href='/static/site.css')
+		link(rel='alternate', type='application/rss+xml', title='RSS', href='/news/feed')
+		script(src='/static/site.js')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		meta(name='description', content='Webri.ng is a platform where people can host webrings without the need to manage their own infrastructure.')
+		meta(name='keywords', content='webring, webrings, webri.ng, web ring, web rings, web, ring, rings, webri, ng, webri.ng, web ring, web rings, web, ring, rings, webri.ng, small web, The small web')
+		meta(name='robots', content='index, follow')
+	body
+		include include/header.pug
+		block content
 
-	include include/footer
+		include include/footer
