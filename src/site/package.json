@@ -18,7 +18,6 @@
 		"build": "tsc",
 		"build:digitalocean": "npm install --production=false && npm run build && npm ci",
 		"clean": "rm -rf dist",
-		"prestart": "npm run build",
 		"prebuild": "mkdir -p dist/api/view && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
 		"start:dev": "nodemon",
 		"start": "node ./dist/start.js",
