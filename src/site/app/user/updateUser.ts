@@ -12,13 +12,13 @@ import { appDataSource } from '../../infra/database';
  * propagated upwards to the caller.
  * @async
  * @param {string} userId - The id of the user to update.
- * @param {string} username - The user's selected username.
- * @param {string} email - The user's email address.
+ * @param {string} newUsername - The user's new username.
+ * @param {string} newEmail - The user's new email address.
  * @returns The updated user entity.
  */
 export async function updateUser(userId: UUID,
-	username: string,
-	email: string): Promise<User>
+	newUsername: string,
+	newEmail: string): Promise<User>
 {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
@@ -30,7 +30,7 @@ export async function updateUser(userId: UUID,
 	 * 'Normalised' email address.
 	 * This ensures that the email address is stored in a valid format.
 	 */
-	const normalisedEmail = User.normaliseEmailAddress(email);
+	const normalisedEmail = User.normaliseEmailAddress(newEmail);
 	// Validate the normalised email address. Raises an exception on validation failure.
 	User.validateEmailAddress(normalisedEmail);
 
@@ -45,7 +45,7 @@ export async function updateUser(userId: UUID,
 	 * 'Normalised' username.
 	 * This ensures that the username is stored in a valid format.
 	 */
-	const normalisedUsername = User.normaliseUsername(username);
+	const normalisedUsername = User.normaliseUsername(newUsername);
 	// Validate user name. Raises an exception on validation failure.
 	User.validateUsername(normalisedUsername);
 
@@ -56,11 +56,17 @@ export async function updateUser(userId: UUID,
 			usernameNotUniqueError.code, usernameNotUniqueError.httpStatus);
 	}
 
+	logger.info(`Updating user'`, {
+		userId,
+		email: user.email,
+		username: user.username,
+		newUsername,
+		newEmail,
+	});
+
 	user.username = normalisedUsername;
 	user.email = normalisedEmail;
 	user.dateModified = new Date();
-
-	logger.info(`Updating user id: '${userId}': '${username}' / '${email}'`);
 
 	return appDataSource.getRepository(User).save(user);
 }
