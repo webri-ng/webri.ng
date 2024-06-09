@@ -55,11 +55,6 @@ const rateLimiter = rateLimit({
 // Rate limiting middleware applied to all API requests.
 apiRouter.use(rateLimiter);
 
-apiRouter.get('/x-forwarded-for', (request, response) => response.json({
-	'ip': request.ip,
-	'x-forwarded-for': request.headers['x-forwarded-for'] || null
-}));
-
 // This middleware is included in all requests. This is where the user's session is
 // validated, and where the `user` response local variable is populated.
 apiRouter.use(parseSessionController);
