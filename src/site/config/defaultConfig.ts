@@ -67,7 +67,7 @@ export const defaultConfig: Config = {
 	server: {
 		port: parseInt(process.env.PORT || '') || 3000,
 		rateLimit: 100,
-		trustProxy: false
+		trustProxy: parseInt(process.env.TRUST_PROXY_COUNT || '') || false,
 	},
 	session: {
 		validityPeriod: [1, 'week'],
