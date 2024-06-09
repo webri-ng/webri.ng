@@ -139,6 +139,7 @@ export type ServerConfig = {
 	 * The rate limiter has a fixed-window of 1 minute.
 	 */
 	rateLimit: number;
+	trustProxy: boolean|string|number;
 }
 
 

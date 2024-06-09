@@ -11,7 +11,8 @@ export const testEnvironmentConfig: Config = {
 	},
 	server: {
 		port: 3456,
-		rateLimit: 9999
+		rateLimit: 9999,
+		trustProxy: false
 	},
 	user: {
 		usernameRequirements: {

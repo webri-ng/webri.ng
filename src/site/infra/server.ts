@@ -48,6 +48,11 @@ function bodyParserErrorHandler(err: Error | undefined,
 	return next(null);
 }
 
+// Some platforms proxy incoming connections, and require some configuration to
+// correctly determine the originating IP address for the purposes of rate limiting.
+// Refer to: https://github.com/express-rate-limit/express-rate-limit/wiki/Troubleshooting-Proxy-Issues
+app.set('trust proxy', serverConfig.trustProxy);
+
 app.use(bodyParser.json());
 app.use(bodyParserErrorHandler);
 
