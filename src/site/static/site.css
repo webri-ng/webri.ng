@@ -26,7 +26,8 @@ body > header {
   padding: 0.4rem;
   margin-bottom: 0.4rem;
 }
-body > header a.title h1 {
+body > header a.title {
+  display: block;
   font-family: Arial, "Liberation sans", sans-serif;
   text-align: center;
   font-size: 3rem;
@@ -49,21 +50,27 @@ body > header nav a:not(:last-child):after {
   content: "|";
   margin-left: 0.5rem;
 }
-body h2 {
-  background-color: rgb(96, 96, 96);
-  border: 1px solid black;
-  margin: 0;
-  padding: 0.4rem;
-  font-size: 1rem;
-}
-body h2:first-child {
-  border-top: 0;
-}
 body .content-block {
   padding: 0.4rem;
+  padding-top: 0;
   border: 1px solid black;
-  border-top: none;
   margin-bottom: 0.4rem;
+}
+body .content-block h1 {
+  background-color: rgb(96, 96, 96);
+  border-top: 0;
+  border-bottom: 1px solid black;
+  margin: 0 -0.4rem 0.4rem -0.4rem;
+  padding: 0.4rem;
+  font-size: 1.25rem;
+}
+body .content-block h2 {
+  background-color: rgb(96, 96, 96);
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin: 0.8rem -0.4rem 0.4rem -0.4rem;
+  padding: 0.4rem;
+  font-size: 1rem;
 }
 
 .webring-list {
@@ -157,6 +164,7 @@ textarea#example-code {
   margin-top: 1rem;
   resize: none;
   width: 100%;
+  box-sizing: border-box;
 }
 
 #news {
@@ -188,4 +196,12 @@ textarea#example-code {
 }
 .donation-option a {
   display: block;
+}
+
+#faq h2 {
+  background: none;
+  border: none;
+  margin: 1.25rem 0;
+  padding: 0;
+  font-size: 1.25rem;
 }

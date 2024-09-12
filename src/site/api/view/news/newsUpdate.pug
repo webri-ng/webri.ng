@@ -4,8 +4,8 @@ block title
 	| webri.ng | #{newsUpdate.title}
 
 block content
-	h2= newsUpdate.title
-	div.content-block#news-update
+	h1= newsUpdate.title
+	div#news-update
 		div.date= newsUpdate.dateCreated
 		div.content
 			| !{newsUpdate.content}

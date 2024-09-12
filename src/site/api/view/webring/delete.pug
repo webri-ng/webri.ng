@@ -4,10 +4,9 @@ block title
 	| webri.ng | Delete Webring
 
 block content
-	h2 Delete
-	div.content-block
-		| Are you sure you want to delete this webring?
-		div
-			button(onclick='deleteWebring(\'' + webring.url + '\')') Delete Webring!
-			button(onclick='cancelDelete(\'' + webring.url + '\')') No! Take me back!
-		div#delete-webring-error-message.error-message
+	h1 Delete
+	p Are you sure you want to delete this webring?
+	div
+		button(onclick='deleteWebring(\'' + webring.url + '\')') Delete Webring!
+		button(onclick='cancelDelete(\'' + webring.url + '\')') No! Take me back!
+	div#delete-webring-error-message.error-message

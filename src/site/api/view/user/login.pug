@@ -4,17 +4,16 @@ block title
 	| webri.ng | Login
 
 block content
-	h2 Login
-	div.content-block
-		form#login-form
-			div.form-field
-				label(for='email') Email: 
-				input#email(type='email' name='email' required='')
-			div.form-field
-				label(for='name') Password: 
-				input#password(type='password' name='password' required='')
-			div.form-buttons
-				button(type='button', onclick="login()") Login
-			div#login-error-message.error-message
-		p
-			a(href='/user/forgot-password') Forgotten Your Password?
+	h1 Login
+	form#login-form
+		div.form-field
+			label(for='email') Email: 
+			input#email(type='email' name='email' required='')
+		div.form-field
+			label(for='name') Password: 
+			input#password(type='password' name='password' required='')
+		div.form-buttons
+			button(type='button', onclick="login()") Login
+		div#login-error-message.error-message
+	p
+		a(href='/user/forgot-password') Forgotten Your Password?

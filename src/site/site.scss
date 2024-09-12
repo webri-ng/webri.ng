@@ -37,15 +37,14 @@ body {
 		margin-bottom: $global-element-margin;
 
 		a.title {
-			h1 {
-				font-family: Arial, "Liberation sans", sans-serif;
-				text-align: center;
-				font-size: 3rem;
-				font-weight: 700;
-				margin: 0;
-				margin-bottom: 0.25rem;
-				letter-spacing: 0.25rem;
-			}
+			display: block;
+			font-family: Arial, "Liberation sans", sans-serif;
+			text-align: center;
+			font-size: 3rem;
+			font-weight: 700;
+			margin: 0;
+			margin-bottom: 0.25rem;
+			letter-spacing: 0.25rem;
 
 			&:hover {
 				color: #222;
@@ -71,23 +70,29 @@ body {
 		}
 	}
 
-	h2 {
-		background-color: $header-background-color;
-		border: $global-element-border;
-		margin: 0;
-		padding: $global-element-padding;
-		font-size: 1rem;
-
-		&:first-child {
-			border-top: 0;
-		}
-	}
-
 	.content-block {
 		padding: $global-element-padding;
+		padding-top: 0;
 		border: $global-element-border;
-		border-top: none;
 		margin-bottom: $global-element-margin;
+
+		h1 {
+			background-color: $header-background-color;
+			border-top: 0;
+			border-bottom: $global-element-border;
+			margin: 0 -0.4rem $global-element-margin -0.4rem;
+			padding: $global-element-padding;
+			font-size: 1.25rem;
+		}
+
+		h2 {
+			background-color: $header-background-color;
+			border-top: $global-element-border;
+			border-bottom: $global-element-border;
+			margin: 0.8rem -0.4rem $global-element-margin -0.4rem;
+			padding: 0.4rem;
+			font-size: 1rem;
+		}
 	}
 }
 
@@ -208,6 +213,7 @@ textarea#example-code {
 	margin-top: 1rem;
 	resize: none;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 #news {
@@ -245,5 +251,15 @@ textarea#example-code {
 
 	a {
 		display: block;
+	}
+}
+
+#faq {
+	h2 {
+		background: none;
+		border: none;
+		margin: 1.25rem 0;
+		padding: 0;
+		font-size: 1.25rem;
 	}
 }

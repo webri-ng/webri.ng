@@ -4,29 +4,28 @@ block title
 	| webri.ng | Create Webring
 
 block content
-	h2 Create Webring
-	div.content-block
-		form#create-webring-form
-			div.form-field
-				label(for='name') Webring Name
-				div.description
-					| The webring's name is displayed on the main page index, and in your profile.
-				input#name(type='text' name='name' minlength=2 maxlength=80 required='')
-			div.form-field
-				label(for='url') Webring Shortname
-				div.description
-					| This will be the shortname used for your webring's URL on the webri.ng platform. e.g: <code>https://webri.ng/webring/yourshortnamehere</code>
-				input#url(type='text' name='url' required='')
-			div.form-field
-				label(for='description') Description
-				div.description
-					| If this will be a public webring, this will be the short description shown alongside your webring's name.
-				textarea#description(name='description')
-			div.form-field
-				label(for='privateRing') Private Webring?
-				div.description
-					| Selecting this checkbox will mean that your webring will not be indexed on the main page, or be visible to unauthorised users.
-				input#private-ring(type='checkbox' name='privateRing')
-			div.form-buttons
-				button(type='button', onclick="createWebring()") Create
-			div#create-webring-error-message.error-message
+	h1 Create Webring
+	form#create-webring-form
+		div.form-field
+			label(for='name') Webring Name
+			div.description
+				| The webring's name is displayed on the main page index, and in your profile.
+			input#name(type='text' name='name' minlength=2 maxlength=80 required='')
+		div.form-field
+			label(for='url') Webring Shortname
+			div.description
+				| This will be the shortname used for your webring's URL on the webri.ng platform. e.g: <code>https://webri.ng/webring/yourshortnamehere</code>
+			input#url(type='text' name='url' required='')
+		div.form-field
+			label(for='description') Description
+			div.description
+				| If this will be a public webring, this will be the short description shown alongside your webring's name.
+			textarea#description(name='description')
+		div.form-field
+			label(for='privateRing') Private Webring?
+			div.description
+				| Selecting this checkbox will mean that your webring will not be indexed on the main page, or be visible to unauthorised users.
+			input#private-ring(type='checkbox' name='privateRing')
+		div.form-buttons
+			button(type='button', onclick="createWebring()") Create
+		div#create-webring-error-message.error-message

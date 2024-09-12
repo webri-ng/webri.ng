@@ -4,17 +4,17 @@ block title
 	| webri.ng | #{webring.name}
 
 block content
-	h2 #{webring.name}
-	div.content-block
-		div.detail-descripion #{webring.description}
-		if isUserModerator
-			div.controls
-				a(href='/webring/' + webring.url + '/add') Add New Site
-				a(href='/webring/' + webring.url + '/update') Update Webring
-				if isUserOwner
-					a(href='/webring/' + webring.url + '/delete') Delete Webring
+	h1 #{webring.name}
+	div.detail-descripion #{webring.description}
+	if isUserModerator
+		div.controls
+			a(href='/webring/' + webring.url + '/add') Add New Site
+			a(href='/webring/' + webring.url + '/update') Update Webring
+			if isUserOwner
+				a(href='/webring/' + webring.url + '/delete') Delete Webring
+
 	h2 Add this webring to your site
-	div.content-block
+	div
 		p
 			| Copy the following markup to your website so your visitors can navigate your webring.
 			| Alternatively, get creative and design your own!
@@ -44,9 +44,8 @@ block content
 			| 	</div>
 			| </div>
 
-
 	h2 Sites
-	div#webring-detail-sites.content-block
+	div#webring-detail-sites
 		if sites.length > 0
 			ol#webring-detail-site-list
 				each site, index in sites
@@ -59,8 +58,8 @@ block content
 								button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
 		else
 			if isUserModerator
-				| This webring does not have any sites yet. Feel free to add some!
+				p This webring does not have any sites yet. Feel free to add some!
 			else
-				| This webring does not have any sites yet.
+				p This webring does not have any sites yet.
 
 		div#sites-error-message.error-message
