@@ -1,18 +1,18 @@
 html {
-  background-color: rgb(50, 50, 50);
+  background-color: hsl(140, 5%, 40%);
   font-size: 10pt;
-  color: black;
+  color: hsl(140, 8%, 15%);
 }
 
 a {
   color: inherit;
 }
 a:hover {
-  color: #222;
+  color: hsl(140, 8%, 10%);
 }
 
 body {
-  background-color: rgb(130, 130, 130);
+  background-color: hsl(140, 10%, 80%);
   box-sizing: border-box;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 0 auto;
@@ -21,8 +21,8 @@ body {
 }
 body > header {
   text-align: center;
-  border: 1px solid black;
-  background-color: rgb(96, 96, 96);
+  border: 1px solid hsl(140, 8%, 25%);
+  background-color: hsl(140, 8%, 60%);
   padding: 0.4rem;
   margin-bottom: 0.4rem;
 }
@@ -36,13 +36,6 @@ body > header a.title {
   margin-bottom: 0.25rem;
   letter-spacing: 0.25rem;
 }
-body > header a.title:hover {
-  color: #222;
-  text-decoration: underline;
-}
-body > header nav a:hover {
-  color: #222;
-}
 body > header nav a:not(:last-child) {
   margin-right: 0.5rem;
 }
@@ -53,21 +46,21 @@ body > header nav a:not(:last-child):after {
 body .content-block {
   padding: 0.4rem;
   padding-top: 0;
-  border: 1px solid black;
+  border: 1px solid hsl(140, 8%, 25%);
   margin-bottom: 0.4rem;
 }
 body .content-block h1 {
-  background-color: rgb(96, 96, 96);
+  background-color: hsl(140, 8%, 60%);
   border-top: 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid hsl(140, 8%, 25%);
   margin: 0 -0.4rem 0.4rem -0.4rem;
   padding: 0.4rem;
   font-size: 1.25rem;
 }
 body .content-block h2 {
-  background-color: rgb(96, 96, 96);
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  background-color: hsl(140, 8%, 60%);
+  border-top: 1px solid hsl(140, 8%, 25%);
+  border-bottom: 1px solid hsl(140, 8%, 25%);
   margin: 0.8rem -0.4rem 0.4rem -0.4rem;
   padding: 0.4rem;
   font-size: 1rem;
@@ -82,15 +75,10 @@ body .content-block h2 {
   margin-bottom: 0.5rem;
 }
 .webring-list li a.name {
-  color: black;
   font-weight: bold;
 }
-.webring-list li a.name:hover {
-  color: #222;
-  text-decoration: underline;
-}
 .webring-list li .description {
-  color: #111;
+  color: hsl(140, 8%, 18%);
   font-size: 0.8rem;
 }
 
@@ -128,6 +116,7 @@ form .form-field label {
 form .form-field textarea {
   resize: none;
   width: 100%;
+  box-sizing: border-box;
 }
 form .form-buttons {
   margin-top: 1rem;
@@ -135,8 +124,8 @@ form .form-buttons {
 }
 
 footer {
-  border: 1px solid black;
-  background-color: rgb(96, 96, 96);
+  border: 1px solid hsl(140, 8%, 25%);
+  background-color: hsl(140, 8%, 60%);
   margin-top: 0.4rem;
   font-size: 0.8rem;
   text-align: center;
@@ -204,4 +193,28 @@ textarea#example-code {
   margin: 1.25rem 0;
   padding: 0;
   font-size: 1.25rem;
+}
+
+button {
+  background-color: hsl(140, 8%, 65%);
+  border: 1px solid hsl(140, 8%, 25%);
+  border-radius: 0;
+  font-size: 10pt;
+  margin-right: 0.4rem;
+  color: hsl(140, 8%, 15%);
+  padding: 2px 6px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: hsl(140, 8%, 72%);
+  color: hsl(140, 8%, 10%);
+}
+button:disabled {
+  background-color: hsl(140, 8%, 60%);
+  border: 1px solid hsl(140, 8%, 32%);
+  border-radius: 0;
+  font-size: 10pt;
+  margin-right: 0.4rem;
+  color: hsl(140, 8%, 30%);
+  cursor: not-allowed;
 }
