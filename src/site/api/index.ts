@@ -18,6 +18,7 @@ import { newsUpdateViewController } from './newsUpdateViewController';
 import { newsUpdateFeedController } from './newsUpdateFeedController';
 import { requestRateLimitedError } from './api-error-response';
 import { loggingConfig, serverConfig } from '../config';
+import { healthCheckController } from './healthCheck';
 
 export * as requestErrorHander from './errorHandler';
 
@@ -34,22 +35,19 @@ const rateLimiter = rateLimit({
 	legacyHeaders: false,
 	message: (req: Request, res: Response) => {
 		if (loggingConfig.logRateLimiting) {
-			logger.debug(
-				`Rate limit exceeded for IP: ${req.ip}`,
-				{
-					path: req.path,
-					body: req.body,
-					ip: req.ip
-				}
-			);
+			logger.debug(`Rate limit exceeded for IP: ${req.ip}`, {
+				path: req.path,
+				body: req.body,
+				ip: req.ip,
+			});
 		}
 
 		res.status(429).json({
 			code: requestRateLimitedError.code,
 			error: requestRateLimitedError.message,
-			retryable: true
+			retryable: true,
 		});
-	}
+	},
 });
 
 // Rate limiting middleware applied to all API requests.
@@ -62,11 +60,12 @@ apiRouter.use(parseSessionController);
 apiRouter.use('/user', userApiRouter);
 apiRouter.use('/webring', webringApiRouter);
 
+apiRouter.get('/health', healthCheckController);
+
 // This is the main request error handling middleware.
 // All API handleable exceptions are caught by this middleware, and the response sent
 // to the client.
 apiRouter.use(requestErrorHander);
-
 
 // This middleware is included in all request, this is where the user's session is
 // validated, and where the `user` response local variable is populated.
