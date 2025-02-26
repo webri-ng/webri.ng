@@ -18,17 +18,18 @@ export let appDataSource: DataSource;
  * @async
  * @returns The initialised database data source.
  */
-export async function initialiseAppDataSource(): Promise<DataSource>
-{
-	logger.info(`Connecting to postgresql://${databaseConfig.connection.user}@` +
-		`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
-		`${databaseConfig.databaseName}`);
+export async function initialiseAppDataSource(): Promise<DataSource> {
+	logger.debug(
+		`Connecting to postgresql://${databaseConfig.connection.user}@` +
+			`${databaseConfig.connection.host}:${databaseConfig.connection.port}/` +
+			`${databaseConfig.databaseName}`,
+	);
 
 	/** Database SSL configuration */
 	let ssl = undefined;
 	if (databaseConfig.connection.ssl) {
 		ssl = {
-			rejectUnauthorized: false
+			rejectUnauthorized: false,
 		};
 	}
 
@@ -41,29 +42,25 @@ export async function initialiseAppDataSource(): Promise<DataSource>
 		database: databaseConfig.databaseName,
 		logging: ['error'],
 		schema: databaseConfig.schema,
-		entities: [
-			NewsUpdate, Session, Site, Tag, User, Webring
-		],
-		ssl
+		entities: [NewsUpdate, Session, Site, Tag, User, Webring],
+		ssl,
 	});
 
 	return appDataSource.initialize();
 }
 
-
 /**
-* Closes the database connection.
-* @async
-* @returns The closed database connection instance.
-*/
-export async function destroyAppDataSource(): Promise<DataSource>
-{
+ * Closes the database connection.
+ * @async
+ * @returns The closed database connection instance.
+ */
+export async function destroyAppDataSource(): Promise<DataSource> {
 	if (!appDataSource || !appDataSource.isInitialized) {
 		throw new Error('Database not connected');
 	}
 
 	await appDataSource.destroy();
-	logger.info(`Closed database connection.`);
+	logger.debug(`Closed database connection.`);
 
 	return appDataSource;
 }

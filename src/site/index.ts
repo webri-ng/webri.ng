@@ -25,7 +25,6 @@ server.app.use((req, res, next) => {
 	res.status(404).render('404');
 });
 
-
 // Export for chai-http.
 export const app: Express.Application = server.app;
 
@@ -36,16 +35,18 @@ export const app: Express.Application = server.app;
  * @async
  * @returns The initialised server instance.
  */
-export async function initApplication(): Promise<Server>
-{
-	logger.info(`Application environment: '${applicationEnvironment}'`);
+export async function initApplication(): Promise<Server> {
+	logger.debug(`Application environment: '${applicationEnvironment}'`);
 
 	try {
 		await database.initialiseAppDataSource();
+		logger.debug('Database connection initialised');
 	} catch (err) {
 		logger.error('Unable to establish database connection', err);
-		logger.warn('If this error is occurring on a first-run, have you remembered to ' +
-			'initialise the seed data and application user?');
+		logger.warn(
+			'If this error is occurring on a first-run, have you remembered to ' +
+				'initialise the seed data and application user?',
+		);
 
 		process.exit(1);
 	}
@@ -59,15 +60,13 @@ export async function initApplication(): Promise<Server>
 	}
 }
 
-
 /**
  * Closes all connections to the server and shuts down the application.
  * Required for testing purposes.
  * @async
  * @returns The shudown server instance.
  */
-export async function shutdownApplication()
-{
+export async function shutdownApplication() {
 	await database.destroyAppDataSource();
 	await server.shutdown();
 }
