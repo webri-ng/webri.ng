@@ -1,6 +1,9 @@
 import { logger } from '../';
-import { invalidExistingPasswordError, userNotFoundError } from '../../api/api-error-response';
-import { User, UUID } from '../../model';
+import {
+	invalidExistingPasswordError,
+	userNotFoundError
+} from '../../api/api-error-response';
+import { RequestMetadata, User, UUID } from '../../model';
 import { InvalidUserCredentialsError, UserNotFoundError } from '../error';
 import { getUser, GetUserSearchField } from '.';
 import { hashPassword, validatePassword } from './password';
@@ -13,23 +16,44 @@ import { appDataSource } from '../../infra/database';
  * @async
  * @param {UUID} userId The id of the user to update the password for.
  * @param {string} newPassword The user's new password.
+ * @param options Additional options for the request.
  * @returns The updated user entity.
  */
-export async function updatePassword(userId: UUID,
+export async function updatePassword(
+	userId: UUID,
 	existingPassword: string,
-	newPassword: string): Promise<User>
-{
+	newPassword: string,
+	options?: Partial<{
+		requestMetadata: RequestMetadata;
+	}>
+): Promise<User> {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
-		throw new UserNotFoundError(`User with id '${userId}' cannot be found`,
-			userNotFoundError.code, userNotFoundError.httpStatus);
+		throw new UserNotFoundError(
+			`User with id '${userId}' cannot be found`,
+			userNotFoundError.code,
+			userNotFoundError.httpStatus
+		);
 	}
 
 	// Validate the user's existing password.
-	const passwordValidity = await validatePassword(existingPassword, user.passwordHash);
+	const passwordValidity = await validatePassword(
+		existingPassword,
+		user.passwordHash
+	);
 	if (!passwordValidity) {
-		throw new InvalidUserCredentialsError(invalidExistingPasswordError.message,
-			invalidExistingPasswordError.code, invalidExistingPasswordError.httpStatus);
+		logger.debug('Invalid attempt to change user password', {
+			userId: user.userId,
+			username: user.username,
+			email: user.email,
+			...(options?.requestMetadata ?? {})
+		});
+
+		throw new InvalidUserCredentialsError(
+			invalidExistingPasswordError.message,
+			invalidExistingPasswordError.code,
+			invalidExistingPasswordError.httpStatus
+		);
 	}
 
 	// Validate the new password. Raises an exception on validation failure.
@@ -41,7 +65,12 @@ export async function updatePassword(userId: UUID,
 	user.passwordSetTime = new Date();
 	user.passwordExpiryTime = User.getPasswordExpiryDate();
 
-	logger.info(`Updating password for user: '${userId}'`);
+	logger.info('Updating user password', {
+		userId: user.userId,
+		username: user.username,
+		email: user.email,
+		...(options?.requestMetadata ?? {})
+	});
 
 	return appDataSource.getRepository(User).save(user);
 }

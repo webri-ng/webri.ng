@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger, webringService } from '../../app';
+import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
 import { WebringNotFoundError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { RequestSchema } from '../../model';
 import { webringNotFoundError } from '../api-error-response';
+import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update Webring request schema. */
 export const updateWebringRequestSchema: RequestSchema = {
@@ -24,9 +25,9 @@ export const updateWebringRequestSchema: RequestSchema = {
 			type: 'boolean'
 		},
 		tags: {
-			'type': 'array',
-			'items': {
-				'type': 'string'
+			type: 'array',
+			items: {
+				type: 'string'
 			}
 		}
 	},
@@ -40,29 +41,46 @@ export const updateWebringRequestSchema: RequestSchema = {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function updateWebringController(req: Request,
+export async function updateWebringController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	try {
 		const { name, url, description, privateRing, tags } = req.body;
 		const { webringUrl } = req.params;
 		const { user } = res.locals;
 
-		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
+		const requestMetadata = getRequestMetadata(req, res);
+
+		const webring = await webringService.getWebring(
+			GetWebringSearchField.Url,
+			webringUrl
+		);
 		if (!webring) {
-			throw new WebringNotFoundError(webringNotFoundError.message,
-				webringNotFoundError.code, webringNotFoundError.httpStatus);
+			throw new WebringNotFoundError(
+				webringNotFoundError.message,
+				webringNotFoundError.code,
+				webringNotFoundError.httpStatus
+			);
 		}
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringModeratorAction(webring, user);
+		await authoriseWebringModeratorAction(webring, user, { requestMetadata });
 
-		const updatedWebring = await webringService.updateWebring(webring.ringId!, user.userId,
-			name, url, description, privateRing, tags);
-
-		logger.info(`User '${user.userId}' updated webring: '${webringUrl}'`);
+		const updatedWebring = await webringService.updateWebring(
+			webring.ringId!,
+			user.userId,
+			name,
+			url,
+			description,
+			privateRing,
+			tags,
+			{
+				requestMetadata
+			}
+		);
 
 		// The redirect redirect implementation is problematic. So simply return the new
 		// webring URL, and perform the redirect on the front-end.

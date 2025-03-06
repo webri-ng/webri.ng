@@ -1,11 +1,18 @@
 import { getWebring, GetWebringSearchField } from '.';
-import { tagService } from '..';
-import { invalidRingUrlNotUniqueError, tooManyTagsError,
-	webringNotFoundError } from '../../api/api-error-response';
+import { logger, tagService } from '..';
+import {
+	invalidRingUrlNotUniqueError,
+	tooManyTagsError,
+	webringNotFoundError
+} from '../../api/api-error-response';
 import { webringConfig } from '../../config';
 import { appDataSource } from '../../infra/database';
-import { Tag, UUID, Webring } from '../../model';
-import { RingUrlNotUniqueError, TooManyTagsError, WebringNotFoundError } from '../error';
+import { RequestMetadata, Tag, UUID, Webring } from '../../model';
+import {
+	RingUrlNotUniqueError,
+	TooManyTagsError,
+	WebringNotFoundError
+} from '../error';
 import { GetTagSearchField } from '../tag';
 
 /**
@@ -17,21 +24,29 @@ import { GetTagSearchField } from '../tag';
  * @param {string} description - The new description for the webring.
  * @param {boolean} privateRing - Whether the ring should be considered 'private'.
  * @param {Tag[]} tags - The new tags for the webring.
+ * @param options - Additional options for the request
  * @returns The updated webring entity.
  */
-export async function updateWebring(webringId: UUID,
+export async function updateWebring(
+	webringId: UUID,
 	editingUserId: UUID,
 	name: string,
 	url: string,
 	description: string,
 	privateRing: boolean,
-	tags: string[]): Promise<Webring>
-{
+	tags: string[],
+	options?: Partial<{
+		requestMetadata: RequestMetadata;
+	}>
+): Promise<Webring> {
 	// Ensure that the specified webring exists.
 	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
 	if (!webring) {
-		throw new WebringNotFoundError(`Webring with id '${webringId}' cannot be found.`,
-			webringNotFoundError.code, webringNotFoundError.httpStatus);
+		throw new WebringNotFoundError(
+			`Webring with id '${webringId}' cannot be found.`,
+			webringNotFoundError.code,
+			webringNotFoundError.httpStatus
+		);
 	}
 
 	/**
@@ -44,10 +59,16 @@ export async function updateWebring(webringId: UUID,
 
 	// If a webring exists with this URL, raise an exception.
 	// Ensure that the matching webring is not the webring being edited.
-	const existingWebring = await getWebring(GetWebringSearchField.Url, normalisedUrl);
+	const existingWebring = await getWebring(
+		GetWebringSearchField.Url,
+		normalisedUrl
+	);
 	if (existingWebring && existingWebring.ringId !== webringId) {
-		throw new RingUrlNotUniqueError(invalidRingUrlNotUniqueError.message,
-			invalidRingUrlNotUniqueError.code, invalidRingUrlNotUniqueError.httpStatus);
+		throw new RingUrlNotUniqueError(
+			invalidRingUrlNotUniqueError.message,
+			invalidRingUrlNotUniqueError.code,
+			invalidRingUrlNotUniqueError.httpStatus
+		);
 	}
 
 	/**
@@ -60,8 +81,11 @@ export async function updateWebring(webringId: UUID,
 
 	// Validate the number of tags is acceptable.
 	if (tags.length > webringConfig.maxTagCount) {
-		throw new TooManyTagsError(tooManyTagsError.message, tooManyTagsError.code,
-			tooManyTagsError.httpStatus);
+		throw new TooManyTagsError(
+			tooManyTagsError.message,
+			tooManyTagsError.code,
+			tooManyTagsError.httpStatus
+		);
 	}
 
 	// Set the webring's tags.
@@ -76,7 +100,10 @@ export async function updateWebring(webringId: UUID,
 		const normalisedTagName = Tag.normaliseName(tagName);
 
 		/** The specified tag to add to the new webring. */
-		let tag = await tagService.getTag(GetTagSearchField.Name, normalisedTagName);
+		let tag = await tagService.getTag(
+			GetTagSearchField.Name,
+			normalisedTagName
+		);
 		// If the tag does not already exist, create it.
 		if (!tag) {
 			tag = await tagService.createTag(normalisedTagName, editingUserId);
@@ -91,6 +118,13 @@ export async function updateWebring(webringId: UUID,
 	webring.private = privateRing;
 	webring.tags = webringTags;
 	webring.dateModified = new Date();
+
+	logger.info('Updating webring', {
+		webringUrl: webring.url,
+		webringId: webring.ringId,
+		userId: editingUserId,
+		...(options?.requestMetadata ?? {})
+	});
 
 	return appDataSource.getRepository(Webring).save(webring);
 }

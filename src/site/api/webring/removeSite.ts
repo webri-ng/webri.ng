@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger, webringService } from '../../app';
+import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
 import { WebringNotFoundError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { RequestSchema } from '../../model';
 import { webringNotFoundError } from '../api-error-response';
+import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Remove Webring request schema. */
 export const removeSiteRequestSchema: RequestSchema = {
@@ -25,28 +26,35 @@ export const removeSiteRequestSchema: RequestSchema = {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function removeSiteController(req: Request,
+export async function removeSiteController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	try {
 		const { url } = req.body;
 		const { webringUrl } = req.params;
 		const { user } = res.locals;
 
-		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
+		const requestMetadata = getRequestMetadata(req, res);
+
+		const webring = await webringService.getWebring(
+			GetWebringSearchField.Url,
+			webringUrl
+		);
 		if (!webring) {
-			throw new WebringNotFoundError(webringNotFoundError.message,
-				webringNotFoundError.code, webringNotFoundError.httpStatus);
+			throw new WebringNotFoundError(
+				webringNotFoundError.message,
+				webringNotFoundError.code,
+				webringNotFoundError.httpStatus
+			);
 		}
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringModeratorAction(webring, user);
+		await authoriseWebringModeratorAction(webring, user, { requestMetadata });
 
-		await webringService.removeSite(webring, url);
-
-		logger.info(`User '${user.userId}' removed site '${url}' from webring '${webringUrl}'`);
+		await webringService.removeSite(webring, url, { requestMetadata });
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.

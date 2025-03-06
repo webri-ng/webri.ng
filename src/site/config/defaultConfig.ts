@@ -19,7 +19,7 @@ export const defaultConfig: Config = {
 		pool: {
 			min: 5,
 			max: 10
-		},
+		}
 	},
 	email: {
 		from: 'admin@webri.ng',
@@ -42,13 +42,14 @@ export const defaultConfig: Config = {
 	logging: {
 		loggingLevel: LoggingLevel.Debug,
 		logRequestValidation: true,
+		logIncomingRequests: true,
 		logRateLimiting: true
 	},
 	tag: {
 		nameRequirements: {
 			minLength: 2,
 			maxLength: 20
-		},
+		}
 	},
 	user: {
 		usernameRequirements: {
@@ -62,15 +63,15 @@ export const defaultConfig: Config = {
 			saltRounds: 10,
 			resetTokenValidity: [1, 'hour']
 		},
-		maxUnsuccessfulLoginAttempts: 3,
+		maxUnsuccessfulLoginAttempts: 3
 	},
 	server: {
 		port: parseInt(process.env.PORT || '') || 3000,
 		rateLimit: 100,
-		trustProxy: parseInt(process.env.TRUST_PROXY_COUNT || '') || false,
+		trustProxy: parseInt(process.env.TRUST_PROXY_COUNT || '') || false
 	},
 	session: {
-		validityPeriod: [1, 'week'],
+		validityPeriod: [1, 'week']
 	},
 	site: {
 		nameRequirements: {
@@ -90,5 +91,5 @@ export const defaultConfig: Config = {
 			maxLength: 24
 		},
 		maxTagCount: 6
-	},
+	}
 };

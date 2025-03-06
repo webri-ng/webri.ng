@@ -6,6 +6,7 @@
 
 export * from './NewsUpdate';
 export * from './RequestSchema';
+export * from './RequestMetadata';
 export * from './Session';
 export * from './UUID';
 export * from './Site';

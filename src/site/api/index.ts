@@ -19,6 +19,7 @@ import { newsUpdateFeedController } from './newsUpdateFeedController';
 import { requestRateLimitedError } from './api-error-response';
 import { loggingConfig, serverConfig } from '../config';
 import { healthCheckController } from './healthCheck';
+import { requestIdController } from './requestIdController';
 
 export * as requestErrorHander from './errorHandler';
 
@@ -38,20 +39,22 @@ const rateLimiter = rateLimit({
 			logger.debug(`Rate limit exceeded for IP: ${req.ip}`, {
 				path: req.path,
 				body: req.body,
-				ip: req.ip,
+				ip: req.ip
 			});
 		}
 
 		res.status(429).json({
 			code: requestRateLimitedError.code,
 			error: requestRateLimitedError.message,
-			retryable: true,
+			retryable: true
 		});
-	},
+	}
 });
 
 // Rate limiting middleware applied to all API requests.
 apiRouter.use(rateLimiter);
+
+apiRouter.use(requestIdController);
 
 // This middleware is included in all requests. This is where the user's session is
 // validated, and where the `user` response local variable is populated.

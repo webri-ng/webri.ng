@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger, webringService } from '../../app';
 import { RequestSchema } from '../../model';
+import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Create Webring request schema. */
 export const createWebringRequestSchema: RequestSchema = {
@@ -20,9 +21,9 @@ export const createWebringRequestSchema: RequestSchema = {
 			type: 'boolean'
 		},
 		tags: {
-			'type': 'array',
-			'items': {
-				'type': 'string'
+			type: 'array',
+			items: {
+				type: 'string'
 			}
 		}
 	},
@@ -36,18 +37,28 @@ export const createWebringRequestSchema: RequestSchema = {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function createWebringController(req: Request,
+export async function createWebringController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	try {
 		const { name, url, description, privateRing, tags } = req.body;
 		const { userId } = res.locals.user;
 
-		const newWebring = await webringService.createWebring(name, url, description,
-			privateRing, userId, tags);
+		const requestMetadata = getRequestMetadata(req, res);
 
-		logger.info(`Created new webring: '${newWebring.url}/${newWebring.ringId}'`);
+		const newWebring = await webringService.createWebring(
+			name,
+			url,
+			description,
+			privateRing,
+			userId,
+			tags,
+			{
+				requestMetadata
+			}
+		);
 
 		// The redirect redirect implementation is problematic. So simply return the new
 		// webring URL, and perform the redirect on the front-end.

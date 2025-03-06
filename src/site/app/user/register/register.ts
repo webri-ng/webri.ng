@@ -1,7 +1,10 @@
 import { logger } from '../..';
-import { emailNotUniqueError, usernameNotUniqueError } from '../../../api/api-error-response';
+import {
+	emailNotUniqueError,
+	usernameNotUniqueError
+} from '../../../api/api-error-response';
 import { appDataSource } from '../../../infra/database';
-import { User } from '../../../model';
+import { RequestMetadata, User } from '../../../model';
 import { EmailNotUniqueError, UsernameNotUniqueError } from '../../error';
 import { getUser, GetUserSearchField } from '../getUser';
 import { hashPassword } from '../password';
@@ -17,12 +20,17 @@ import { sendRegistrationEmail } from './sendRegistrationEmail';
  * @param {string} username - The user's selected username.
  * @param {string} email - The user's email address.
  * @param {string} password - The user's new password, in plaintext.
+ * @param options Additional options for the request.
  * @returns The newly registered user entity.
  */
-export async function register(username: string,
+export async function register(
+	username: string,
 	email: string,
-	password: string): Promise<User>
-{
+	password: string,
+	options?: Partial<{
+		requestMetadata: RequestMetadata;
+	}>
+): Promise<User> {
 	/**
 	 * 'Normalised' email address.
 	 * This ensures that the email address is stored in a valid format.
@@ -34,8 +42,11 @@ export async function register(username: string,
 	// Check whether a user already exists with the same email.
 	let existingUser = await getUser(GetUserSearchField.Email, normalisedEmail);
 	if (existingUser) {
-		throw new EmailNotUniqueError(emailNotUniqueError.message, emailNotUniqueError.code,
-			emailNotUniqueError.httpStatus);
+		throw new EmailNotUniqueError(
+			emailNotUniqueError.message,
+			emailNotUniqueError.code,
+			emailNotUniqueError.httpStatus
+		);
 	}
 
 	/**
@@ -49,8 +60,11 @@ export async function register(username: string,
 	// Check whether a user already exists with the same username.
 	existingUser = await getUser(GetUserSearchField.Username, normalisedUsername);
 	if (existingUser) {
-		throw new UsernameNotUniqueError(usernameNotUniqueError.message,
-			usernameNotUniqueError.code, usernameNotUniqueError.httpStatus);
+		throw new UsernameNotUniqueError(
+			usernameNotUniqueError.message,
+			usernameNotUniqueError.code,
+			usernameNotUniqueError.httpStatus
+		);
 	}
 
 	// Validate new password. Raises an exception on validation failure.
@@ -60,10 +74,15 @@ export async function register(username: string,
 	const passwordHash = await hashPassword(password);
 
 	/** The newly created user entity. */
-	const newUser = await appDataSource.getRepository(User).save(new User(normalisedUsername,
-		normalisedEmail, passwordHash));
+	const newUser = await appDataSource
+		.getRepository(User)
+		.save(new User(normalisedUsername, normalisedEmail, passwordHash));
 
-	logger.info(`New user registered: '${username}' / '${email}'`);
+	logger.info('New user registered', {
+		username: newUser.username,
+		email: newUser.email,
+		...(options?.requestMetadata ?? {})
+	});
 
 	await sendRegistrationEmail(newUser);
 

@@ -67,7 +67,7 @@
 		"pug": "^3.0.2",
 		"reflect-metadata": "^0.2.1",
 		"typeorm": "^0.3.12",
-		"uuid": "^9.0.1",
+		"uuid": "^11.1.0",
 		"winston": "^3.11.0"
 	},
 	"devDependencies": {
@@ -83,7 +83,6 @@
 		"@types/nodemailer": "^6.4.4",
 		"@types/pug": "^2.0.6",
 		"@types/sinon": "^10.0.8",
-		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^5.57.1",
 		"@typescript-eslint/parser": "^5.57.1",
 		"chai": "^4.3.4",

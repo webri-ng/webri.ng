@@ -8,12 +8,20 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { logger, createErrorReference } from '../app';
-import { loginExpiredError, requestAuthenticationFailedError, requestValidationError,
-	unhandledExceptionError } from '../api/api-error-response';
+import {
+	loginExpiredError,
+	requestAuthenticationFailedError,
+	requestValidationError,
+	unhandledExceptionError
+} from '../api/api-error-response';
 import { loggingConfig } from '../config';
-import { ApiReturnableError, AuthenticationFailedError, RequestValidationError,
-	SessionExpiredError } from '../app/error';
-
+import {
+	ApiReturnableError,
+	AuthenticationFailedError,
+	RequestValidationError,
+	SessionExpiredError
+} from '../app/error';
+import { getRequestMetadata } from './getRequestMetadata';
 
 /**
  * Request error handling middleware.
@@ -25,23 +33,23 @@ import { ApiReturnableError, AuthenticationFailedError, RequestValidationError,
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export default function requestErrorHander(err: Error,
+export default function requestErrorHander(
+	err: Error,
 	req: Request,
 	res: Response,
-	next: NextFunction): Response
-{
+	next: NextFunction
+): Response {
+	const requestMetadata = getRequestMetadata(req, res);
+
 	// Handle request validation errors.
 	if (err instanceof RequestValidationError) {
 		if (loggingConfig.logRequestValidation) {
 			// If we want to log request validation debug information.
-			logger.debug(
-				`Request validation error: ${err.message}`,
-				{
-					path: req.path,
-					body: req.body,
-					ip: req.ip
-				}
-			);
+			logger.debug(`Request validation error: ${err.message}`, {
+				path: req.path,
+				body: req.body,
+				...requestMetadata
+			});
 		}
 
 		// No need to reveal API specs to frontend in case of error.
@@ -90,11 +98,17 @@ export default function requestErrorHander(err: Error,
 
 	console.error(err);
 
-	logger.error(`Unhandled error '${errorReference}'`, err);
+	logger.error(`Unhandled error '${errorReference}'`, {
+		body: req.body,
+		err,
+		errorReference,
+		...requestMetadata
+	});
 
 	return res.status(unhandledExceptionError.httpStatus).json({
 		code: unhandledExceptionError.code,
-		error: 'An unhandled server error has occurred. ' +
+		error:
+			'An unhandled server error has occurred. ' +
 			'If this error persists, please contact support and quote error ' +
 			`reference '${errorReference}'`,
 		reference: errorReference

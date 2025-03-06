@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { userService } from '../../app';
 import { RequestSchema } from '../../model';
+import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update password request schema. */
 export const updatePasswordRequestSchema: RequestSchema = {
@@ -18,21 +19,31 @@ export const updatePasswordRequestSchema: RequestSchema = {
 	additionalProperties: false
 };
 
-
 /**
  * Update password API controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function updatePasswordController(req: Request,
+export async function updatePasswordController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void> {
+	next: NextFunction
+): Promise<void> {
 	try {
 		const { user } = res.locals;
 		const { currentPassword, newPassword } = req.body;
 
-		await userService.updatePassword(user.userId!, currentPassword, newPassword);
+		const requestMetadata = getRequestMetadata(req, res);
+
+		await userService.updatePassword(
+			user.userId!,
+			currentPassword,
+			newPassword,
+			{
+				requestMetadata
+			}
+		);
 
 		res.end();
 	} catch (err) {

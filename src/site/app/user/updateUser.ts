@@ -1,8 +1,15 @@
 import { logger } from '../';
-import { emailNotUniqueError, usernameNotUniqueError,
-	userNotFoundError } from '../../api/api-error-response';
-import { User, UUID } from '../../model';
-import { EmailNotUniqueError, UsernameNotUniqueError, UserNotFoundError } from '../error';
+import {
+	emailNotUniqueError,
+	usernameNotUniqueError,
+	userNotFoundError
+} from '../../api/api-error-response';
+import { RequestMetadata, User, UUID } from '../../model';
+import {
+	EmailNotUniqueError,
+	UsernameNotUniqueError,
+	UserNotFoundError
+} from '../error';
 import { getUser, GetUserSearchField } from '.';
 import { appDataSource } from '../../infra/database';
 
@@ -16,14 +23,21 @@ import { appDataSource } from '../../infra/database';
  * @param {string} newEmail - The user's new email address.
  * @returns The updated user entity.
  */
-export async function updateUser(userId: UUID,
+export async function updateUser(
+	userId: UUID,
 	newUsername: string,
-	newEmail: string): Promise<User>
-{
+	newEmail: string,
+	options?: Partial<{
+		requestMetadata: RequestMetadata;
+	}>
+): Promise<User> {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
-		throw new UserNotFoundError(`User with id '${userId}' cannot be found`,
-			userNotFoundError.code, userNotFoundError.httpStatus);
+		throw new UserNotFoundError(
+			`User with id '${userId}' cannot be found`,
+			userNotFoundError.code,
+			userNotFoundError.httpStatus
+		);
 	}
 
 	/**
@@ -37,8 +51,11 @@ export async function updateUser(userId: UUID,
 	// Check whether a user already exists with the same email.
 	let existingUser = await getUser(GetUserSearchField.Email, normalisedEmail);
 	if (existingUser && existingUser.userId !== userId) {
-		throw new EmailNotUniqueError(emailNotUniqueError.message, emailNotUniqueError.code,
-			emailNotUniqueError.httpStatus);
+		throw new EmailNotUniqueError(
+			emailNotUniqueError.message,
+			emailNotUniqueError.code,
+			emailNotUniqueError.httpStatus
+		);
 	}
 
 	/**
@@ -52,8 +69,11 @@ export async function updateUser(userId: UUID,
 	// Check whether a user already exists with the same username.
 	existingUser = await getUser(GetUserSearchField.Username, normalisedUsername);
 	if (existingUser && existingUser.userId !== userId) {
-		throw new UsernameNotUniqueError(usernameNotUniqueError.message,
-			usernameNotUniqueError.code, usernameNotUniqueError.httpStatus);
+		throw new UsernameNotUniqueError(
+			usernameNotUniqueError.message,
+			usernameNotUniqueError.code,
+			usernameNotUniqueError.httpStatus
+		);
 	}
 
 	logger.info(`Updating user'`, {
@@ -62,6 +82,7 @@ export async function updateUser(userId: UUID,
 		username: user.username,
 		newUsername,
 		newEmail,
+		...(options?.requestMetadata ?? {})
 	});
 
 	user.username = normalisedUsername;

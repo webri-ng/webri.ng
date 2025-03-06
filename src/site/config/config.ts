@@ -12,7 +12,6 @@ import SMTPTransport = require('nodemailer/lib/smtp-transport');
  */
 type Duration = [number, ManipulateType];
 
-
 export type DatabaseConfig = {
 	schema: string;
 	databaseName: string;
@@ -27,8 +26,7 @@ export type DatabaseConfig = {
 		min: number;
 		max: number;
 	};
-}
-
+};
 
 export type EmailConfig = {
 	from: string;
@@ -37,9 +35,8 @@ export type EmailConfig = {
 	 * Email transport configuration.
 	 * Refer to: https://nodemailer.com/smtp/
 	 */
-	transport: SMTPTransport.Options
-}
-
+	transport: SMTPTransport.Options;
+};
 
 export type GlobalConfig = {
 	/**
@@ -48,8 +45,7 @@ export type GlobalConfig = {
 	 * and unservable, the server will redirect back to the base site.
 	 */
 	baseDomainUrl: string;
-}
-
+};
 
 /**
  * The logging level passed to Winston.
@@ -65,17 +61,16 @@ export enum LoggingLevel {
 export type LoggingConfig = {
 	loggingLevel: LoggingLevel;
 	logRequestValidation: boolean;
+	logIncomingRequests: boolean;
 	logRateLimiting: boolean;
-}
-
+};
 
 export type TagConfig = {
 	nameRequirements: {
 		minLength: number;
 		maxLength: number;
 	};
-}
-
+};
 
 export type UserConfig = {
 	usernameRequirements: {
@@ -92,13 +87,11 @@ export type UserConfig = {
 	};
 	/** The number of unsuccessful login attempts before a user's account is locked. */
 	maxUnsuccessfulLoginAttempts: number;
-}
-
+};
 
 export type SessionConfig = {
 	validityPeriod: Duration;
-}
-
+};
 
 export type SiteConfig = {
 	nameRequirements: {
@@ -107,8 +100,7 @@ export type SiteConfig = {
 	};
 	defaultPageLength: number;
 	maximumPageLength: number;
-}
-
+};
 
 export type WebringConfig = {
 	nameRequirements: {
@@ -121,8 +113,7 @@ export type WebringConfig = {
 	};
 	/** The maximum number of tags that can be applied to a webring. */
 	maxTagCount: number;
-}
-
+};
 
 export type ServerConfig = {
 	port: number;
@@ -133,15 +124,14 @@ export type ServerConfig = {
 	 * will whitelist all requests.
 	 */
 	// tslint:disable-next-line
-	corsWhitelist?: RegExp|boolean|RegExp[]|string[];
+	corsWhitelist?: RegExp | boolean | RegExp[] | string[];
 	/**
 	 * The rate limit for requests to the API.
 	 * The rate limiter has a fixed-window of 1 minute.
 	 */
 	rateLimit: number;
-	trustProxy: boolean|string|number;
-}
-
+	trustProxy: boolean | string | number;
+};
 
 export type Config = {
 	database: DatabaseConfig;
@@ -154,4 +144,4 @@ export type Config = {
 	tag: TagConfig;
 	user: UserConfig;
 	webring: WebringConfig;
-}
+};
