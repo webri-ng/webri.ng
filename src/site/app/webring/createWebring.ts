@@ -10,38 +10,7 @@ import { RingUrlNotUniqueError, TooManyTagsError } from '../error';
 import { GetTagSearchField } from '../tag';
 import { getWebring } from '.';
 import { GetWebringSearchField } from './getWebring';
-
-/**
- * Creates the specified array of tags for a new webring.
- * This fetches any existing tags, and creates any nonexistent tags.
- */
-async function createTags(createdBy: UUID, tagNames: string[]): Promise<Tag[]> {
-	// Initialise the new webring's tag array.
-	// @typeORM: Even though it's best not to initialise relation properties, e.g:
-	// https://typeorm.io/#/relations-faq/avoid-relation-property-initializers
-	// This won't cause any issues.
-	const tags = [];
-
-	// Parse the tag array, creating each tag if it doesn't already exist.
-	for (const tagName of tagNames) {
-		/** The 'normalised' version of the tag name. */
-		const normalisedTagName = Tag.normaliseName(tagName);
-
-		/** The specified tag to add to the new webring. */
-		let tag = await tagService.getTag(
-			GetTagSearchField.Name,
-			normalisedTagName
-		);
-		// If the tag does not already exist, create it.
-		if (!tag) {
-			tag = await tagService.createTag(normalisedTagName, createdBy);
-		}
-
-		tags.push(tag);
-	}
-
-	return tags;
-}
+import { getOrCreateWebringTags } from './getOrCreateWebringTags';
 
 /**
  * Creates a new webring.
@@ -112,7 +81,11 @@ export async function createWebring(
 		createdBy
 	);
 
-	newWebring.tags = await createTags(createdBy, tags);
+	// Set the webring's tags.
+	// @typeORM: Even though it's best not to initialise relation properties, e.g:
+	// https://typeorm.io/#/relations-faq/avoid-relation-property-initializers
+	// This won't cause any issues.
+	newWebring.tags = await getOrCreateWebringTags(createdBy, tags);
 
 	// Initialise the webring's moderators.
 	newWebring.moderators = [];

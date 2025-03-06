@@ -14,6 +14,7 @@ import {
 	WebringNotFoundError
 } from '../error';
 import { GetTagSearchField } from '../tag';
+import { getOrCreateWebringTags } from './getOrCreateWebringTags';
 
 /**
  * Updates an already existing webring.
@@ -92,25 +93,7 @@ export async function updateWebring(
 	// @typeORM: Even though it's best not to initialise relation properties, e.g:
 	// https://typeorm.io/#/relations-faq/avoid-relation-property-initializers
 	// This won't cause any issues.
-	const webringTags: Tag[] = [];
-
-	// Parse the tag array, creating each tag if it doesn't already exist.
-	for (const tagName of tags) {
-		/** The 'normalised' version of the tag name. */
-		const normalisedTagName = Tag.normaliseName(tagName);
-
-		/** The specified tag to add to the new webring. */
-		let tag = await tagService.getTag(
-			GetTagSearchField.Name,
-			normalisedTagName
-		);
-		// If the tag does not already exist, create it.
-		if (!tag) {
-			tag = await tagService.createTag(normalisedTagName, editingUserId);
-		}
-
-		webringTags.push(tag);
-	}
+	const webringTags = await getOrCreateWebringTags(editingUserId, tags);
 
 	webring.name = normalisedName;
 	webring.description = description;
