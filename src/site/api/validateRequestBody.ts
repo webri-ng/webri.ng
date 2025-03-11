@@ -6,6 +6,32 @@ import { logger } from '../app';
 import { loggingConfig } from '../config';
 import { getRequestMetadata } from './getRequestMetadata';
 
+type RequestBody = Record<string, unknown>;
+
+export function maskSensitiveFieldsInRequestBody(
+	body: RequestBody
+): RequestBody {
+	if (body.password) {
+		return {
+			...body,
+			password: '******'
+		};
+	}
+
+	return body;
+}
+
+function logRequestBody(req: Request, res: Response): void {
+	const requestMetadata = getRequestMetadata(req, res);
+
+	logger.debug('Incoming request', {
+		path: req.path,
+		method: req.method,
+		body: maskSensitiveFieldsInRequestBody(req.body),
+		...requestMetadata
+	});
+}
+
 /**
  * Sets up and returns the Express validation middleware.
  * Validates a request body against a specific request schema.
@@ -18,15 +44,8 @@ export function validateRequestBody(
 	const ajv = new Ajv();
 
 	return function validate(req: Request, res: Response, next: NextFunction) {
-		const requestMetadata = getRequestMetadata(req, res);
-
 		if (req.body && loggingConfig.logIncomingRequests) {
-			logger.debug('Incoming request', {
-				path: req.path,
-				method: req.method,
-				body: req.body,
-				...requestMetadata
-			});
+			logRequestBody(req, res);
 		}
 
 		try {
