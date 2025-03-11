@@ -40,6 +40,7 @@ export async function resetPassword(
 	user.dateModified = new Date();
 	user.passwordSetTime = new Date();
 	user.passwordExpiryTime = User.getTempPasswordExpiryDate();
+	user.lockedDueToFailedAuth = false;
 
 	logger.info('Reset user password', {
 		userId: user.userId,
