@@ -14,7 +14,6 @@ import { logger } from '../app/logger';
 import { serverConfig } from '../config';
 import { badRequestError } from '../api/api-error-response';
 
-
 /** The main server application instance. */
 export const app: Express.Application = Express();
 
@@ -30,12 +29,18 @@ export let instance: Server;
  * @param {NextFunction} next Express next middleware handler.
  * @returns The express response.
  */
-function bodyParserErrorHandler(err: Error | undefined,
+function bodyParserErrorHandler(
+	err: Error | undefined,
 	req: Request,
 	res: Response,
-	next: NextFunction): void
-{
+	next: NextFunction
+): void {
 	if (err) {
+		logger.debug('Error validating request body', {
+			errorMessage: err.message,
+			...(res.locals.requestMetadata || {})
+		});
+
 		// Return a specific error in case of any errors decoding the request body.
 		res.status(badRequestError.httpStatus).json({
 			code: badRequestError.code,
@@ -54,23 +59,23 @@ function bodyParserErrorHandler(err: Error | undefined,
 app.set('trust proxy', serverConfig.trustProxy);
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParserErrorHandler);
 
-
 app.use(compression());
-app.use(cors({
-	// tslint:disable-next-line
-	origin: serverConfig.corsWhitelist || true
-}));
-
+app.use(
+	cors({
+		// tslint:disable-next-line
+		origin: serverConfig.corsWhitelist || true
+	})
+);
 
 /**
  * Initialises the server on the configured port.
  * @async
  * @returns The initialised server instance.
  */
-export function initialise(): Promise<Server>
-{
+export function initialise(): Promise<Server> {
 	return new Promise((resolve, _reject) => {
 		instance = app.listen(serverConfig.port, function handleServerInit() {
 			logger.info(`Server live @: http://localhost:${serverConfig.port}`);
@@ -80,14 +85,12 @@ export function initialise(): Promise<Server>
 	});
 }
 
-
 /**
  * Closes all connections to the server.
  * @async
  * @returns The shudown server instance.
  */
-export function shutdown(): Promise<Server>
-{
+export function shutdown(): Promise<Server> {
 	return new Promise((resolve, reject) => {
 		instance?.close(function handleServerShutdown(err?: Error) {
 			if (err) {
@@ -102,4 +105,3 @@ export function shutdown(): Promise<Server>
 		});
 	});
 }
-

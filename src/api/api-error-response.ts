@@ -82,6 +82,13 @@ export const invalidNewPasswordError: ApiErrorResponseDetails = {
 	message: 'The password provided is invalid'
 };
 
+/** Error when an invalid password is provided during a password update operation. */
+export const newPasswordNotConfirmedCorrectlyError: ApiErrorResponseDetails = {
+	httpStatus: 400,
+	code: 'err-new-password-not-confirmed-correctly',
+	message: "The passwords provided don't match"
+};
+
 /** Error when the password is provided during a password update operation is too short. */
 export const invalidNewPasswordTooShortError: ApiErrorResponseDetails = {
 	httpStatus: 400,

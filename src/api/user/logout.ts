@@ -22,5 +22,13 @@ export function logoutViewController(
 		...(res.locals.requestMetadata ?? {})
 	});
 
-	return removeSessionCookieResponse(res, session).redirect(302, '/');
+	// Clear the user variable from the response state, so that when the success
+	// page is rendered, it doesn't show any logged-in menu items.
+	res.locals.user = undefined;
+
+	return removeSessionCookieResponse(res, session).render('success', {
+		pageTitle: 'Logout',
+		contentTitle: 'You have successfully logged out',
+		redirectLink: '/'
+	});
 }

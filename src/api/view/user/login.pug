@@ -5,15 +5,15 @@ block title
 
 block content
 	h1 Login
-	form#login-form
+	form(action='/user/login/form', method='post')#login-form
 		div.form-field
-			label(for='email') Email: 
+			label(for='email') Email:
 			input#email(type='email' name='email' required='')
 		div.form-field
-			label(for='name') Password: 
+			label(for='name') Password:
 			input#password(type='password' name='password' required='')
 		div.form-buttons
-			button(type='button', onclick="login()") Login
-		div#login-error-message.error-message
+			button(type='submit') Login
+		div#login-error-message.error-message #{errorMessage}
 	p
 		a(href='/user/forgot-password') Forgotten Your Password?

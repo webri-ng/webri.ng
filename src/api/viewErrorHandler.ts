@@ -3,10 +3,12 @@ import { logger, createErrorReference } from '../app';
 import {
 	NoAuthenticationError,
 	SessionExpiredError,
-	SessionNotFoundError,
-	ApiReturnableError
+	ApiReturnableError,
+	AuthenticationFailedError,
+	RequestValidationError
 } from '../app/error';
 import {
+	badRequestError,
 	requestAuthorisationFailedError,
 	unhandledExceptionError,
 	userNotFoundError
@@ -22,10 +24,16 @@ import { removeSessionCookieResponse } from './removeSessionCookieResponse';
  */
 export function viewErrorHandler(
 	err: Error | undefined,
-	_req: Request,
+	req: Request,
 	res: Response,
 	_next: NextFunction
 ): void {
+	if (err instanceof RequestValidationError) {
+		return res.status(badRequestError.httpStatus).render('error', {
+			errorMessage: badRequestError.message
+		});
+	}
+
 	if (
 		err instanceof NoAuthenticationError ||
 		(err instanceof ApiReturnableError &&
@@ -38,7 +46,7 @@ export function viewErrorHandler(
 	}
 
 	if (
-		err instanceof SessionNotFoundError ||
+		err instanceof AuthenticationFailedError ||
 		(err instanceof ApiReturnableError && err.code === userNotFoundError.code)
 	) {
 		const { session } = res.locals;
@@ -47,8 +55,7 @@ export function viewErrorHandler(
 		return removeSessionCookieResponse(res, session)
 			.status(401)
 			.render('error', {
-				pageHeading: 'Error',
-				errorMessage: 'Invalid Session!'
+				errorMessage: 'You are not authorised to access this page!'
 			});
 	}
 
@@ -58,14 +65,24 @@ export function viewErrorHandler(
 		return removeSessionCookieResponse(res, session).redirect('/');
 	}
 
+	// All other unhandled errors.
+
 	/**
 	 * The error 'reference' code to return to the frontend.
-	 * This provides a code which can be referenced when talking with support. This makes
-	 * finding an error in the logs easier.
+	 * This provides a code which can be referenced when talking with support.
+	 * This makes finding an error in the logs easier.
 	 */
 	const errorReference: string = createErrorReference();
 
-	logger.error(`Unhandled error '${errorReference}'`, err);
+	// Log stack trace.
+	console.error(err);
+
+	logger.error(`Unhandled error '${errorReference}'`, {
+		body: req.body,
+		err,
+		errorReference,
+		...(res.locals.session ?? {})
+	});
 
 	return res.status(unhandledExceptionError.httpStatus).render('error', {
 		pageHeading: 'Something terrible has happened',

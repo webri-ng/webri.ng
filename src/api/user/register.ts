@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { sessionService, userService } from '../../app';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
+import { RequestMetadata, Session } from '../../model';
 
 /** Register user request schema. */
 export const registrationRequestSchema: Schema = {
@@ -22,6 +23,24 @@ export const registrationRequestSchema: Schema = {
 	additionalProperties: false
 };
 
+export async function registerUserAndCreateNewSession(
+	username: string,
+	email: string,
+	password: string,
+	requestMetadata: RequestMetadata
+): Promise<Readonly<Session>> {
+	/** The newly created user entity. */
+	const user = await userService.register(username, email, password, {
+		requestMetadata
+	});
+	// Create an authentication session for the newly created user.
+	const session = await sessionService.createSession(user, {
+		requestMetadata
+	});
+
+	return session;
+}
+
 /**
  * User registration API controller.
  * @param {Request} req Express request body.
@@ -36,14 +55,13 @@ export async function registerController(
 	try {
 		const { username, email, password } = req.body;
 
-		/** The newly created user entity. */
-		const user = await userService.register(username, email, password, {
-			requestMetadata: res.locals.requestMetadata
-		});
-		// Create an authentication session for the newly created user.
-		const session = await sessionService.createSession(user, {
-			requestMetadata: res.locals.requestMetadata
-		});
+		// Create the new user, and a new login session for them.
+		const session = await registerUserAndCreateNewSession(
+			username,
+			email,
+			password,
+			res.locals.requestMetadata
+		);
 
 		createSessionCookieResponse(res, session).send();
 	} catch (err) {

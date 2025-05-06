@@ -84,7 +84,6 @@ export default function requestErrorHander(
 	}
 
 	// All other unhandled errors.
-	// Log stack trace.
 
 	/**
 	 * The error 'reference' code to return to the frontend.
@@ -93,6 +92,7 @@ export default function requestErrorHander(
 	 */
 	const errorReference: string = createErrorReference();
 
+	// Log stack trace.
 	console.error(err);
 
 	logger.error(`Unhandled error '${errorReference}'`, {

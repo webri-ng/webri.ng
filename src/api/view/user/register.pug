@@ -5,19 +5,19 @@ block title
 
 block content
 	h1 Register
-	form#register-form
+	form(action='/user/register/form', method='post')#register-form
 		div.form-field
-			label(for='username') Username: 
+			label(for='username') Username:
 			input#username(type='text' name='username' minlength=2 maxlength=80 required='')
 		div.form-field
-			label(for='email') Email: 
+			label(for='email') Email:
 			input#email(type='email' name='email' required='')
 		div.form-field
-			label(for='password') Password: 
+			label(for='password') Password:
 			input#password(type='password' name='password' minlength=2 maxlength=128 required='')
 		div.form-field
-			label(for='confirmPassword') Confirm Password: 
-			input#password(type='password' name='confirmPassword' minlength=2 maxlength=128 required='')
+			label(for='confirmPassword') Confirm Password:
+			input#confirm-password(type='password' name='confirmPassword' required='')
 		div.form-buttons
-			button(type='button', onclick="register()") Register
-		div#register-error-message.error-message
+			button(type='submit') Register
+		div#register-error-message.error-message #{errorMessage}
