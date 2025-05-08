@@ -14,57 +14,90 @@ import { deleteWebringController } from './deleteWebring';
 import { updateWebringViewController } from './updateWebringView';
 import { removeSiteController, removeSiteRequestSchema } from './removeSite';
 import { getNewSiteController } from './site';
-import { updateWebringController, updateWebringRequestSchema } from './updateWebring';
+import {
+	updateWebringController,
+	updateWebringRequestSchema
+} from './updateWebring';
 import { webringDetailViewController } from './webringDetailView';
 import { deleteWebringViewController } from './deleteWebringView';
 import { getSitesController } from './getSites';
 import { getWebringsController } from './getWebrings';
+import {
+	createWebringFormController,
+	createWebringFormRequestSchema
+} from './createForm';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
 
-webringApiRouter.post('/',
+webringApiRouter.post(
+	'/',
 	authenticateSessionController,
 	validateRequestBody(createWebringRequestSchema),
-	createWebringController);
+	createWebringController
+);
 
-webringApiRouter.post('/:webringUrl/add',
+webringApiRouter.post(
+	'/:webringUrl/add',
 	authenticateSessionController,
 	validateRequestBody(addNewSiteRequestSchema),
-	addNewSiteController);
+	addNewSiteController
+);
 
-webringApiRouter.post('/:webringUrl/remove',
+webringApiRouter.post(
+	'/:webringUrl/remove',
 	authenticateSessionController,
 	validateRequestBody(removeSiteRequestSchema),
-	removeSiteController);
+	removeSiteController
+);
 
-webringApiRouter.patch('/:webringUrl',
+webringApiRouter.patch(
+	'/:webringUrl',
 	authenticateSessionController,
 	validateRequestBody(updateWebringRequestSchema),
-	updateWebringController);
+	updateWebringController
+);
 
-webringApiRouter.delete('/:webringUrl',
+webringApiRouter.delete(
+	'/:webringUrl',
 	authenticateSessionController,
-	deleteWebringController);
+	deleteWebringController
+);
 
 webringApiRouter.get('/:webringUrl/sites', getSitesController);
 
 webringApiRouter.get('/', getWebringsController);
 
+webringViewRouter.post(
+	'/form',
+	authenticateSessionController,
+	validateRequestBody(createWebringFormRequestSchema),
+	createWebringFormController
+);
+
 webringViewRouter.get('/new', genericViewController('webring/new'));
 
 webringViewRouter.get('/:webringUrl', webringDetailViewController);
 
-webringViewRouter.get('/:webringUrl/:method(previous|next|random)', getNewSiteController);
+webringViewRouter.get(
+	'/:webringUrl/:method(previous|next|random)',
+	getNewSiteController
+);
 
-webringViewRouter.get('/:webringUrl/add',
+webringViewRouter.get(
+	'/:webringUrl/add',
 	authenticateSessionController,
-	addNewSiteViewController);
+	addNewSiteViewController
+);
 
-webringViewRouter.get('/:webringUrl/update',
+webringViewRouter.get(
+	'/:webringUrl/update',
 	authenticateSessionController,
-	updateWebringViewController);
+	updateWebringViewController
+);
 
-webringViewRouter.get('/:webringUrl/delete',
+webringViewRouter.get(
+	'/:webringUrl/delete',
 	authenticateSessionController,
-	deleteWebringViewController);
+	deleteWebringViewController
+);

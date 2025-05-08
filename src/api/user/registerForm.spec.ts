@@ -23,7 +23,7 @@ import { GetUserSearchField } from '../../app/user';
 
 chai.use(chaiHttp);
 
-describe('Registration Form Controller', function () {
+describe('Registration Form', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testExistingUser: User;

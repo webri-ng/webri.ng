@@ -5,7 +5,7 @@ block title
 
 block content
 	h1 Create Webring
-	form#create-webring-form
+	form(action='/webring/form', method='post' onsubmit="return validateCreateWebringFormSubmission(event)")#create-webring-form
 		div.form-field
 			label(for='name') Webring Name
 			div.description
@@ -27,5 +27,5 @@ block content
 				| Selecting this checkbox will mean that your webring will not be indexed on the main page, or be visible to unauthorised users.
 			input#private-ring(type='checkbox' name='privateRing')
 		div.form-buttons
-			button(type='button', onclick="createWebring()") Create
-		div#create-webring-error-message.error-message
+			button(type='submit') Create
+		div#create-webring-error-message.error-message #{errorMessage}

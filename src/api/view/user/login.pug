@@ -5,7 +5,7 @@ block title
 
 block content
 	h1 Login
-	form(action='/user/login/form', method='post')#login-form
+	form(action='/user/login/form', method='post', onsubmit="return validateLoginFormSubmission(event)")#login-form
 		div.form-field
 			label(for='email') Email:
 			input#email(type='email' name='email' required='')

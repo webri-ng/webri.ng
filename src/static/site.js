@@ -496,24 +496,6 @@ function updateWebring() {
 		});
 }
 
-/**
- * Adds listeners for form validation.
- */
-function initialise() {
-	const registerFormElement = document.getElementById('register-form');
-	if (registerFormElement) {
-		registerFormElement.addEventListener(
-			'submit',
-			validateRegisterFormSubmission
-		);
-	}
-
-	const loginFormElement = document.getElementById('login-form');
-	if (loginFormElement) {
-		loginFormElement.addEventListener('submit', validateLoginFormSubmission);
-	}
-}
-
 /** Validates a login form submission. */
 function validateLoginFormSubmission(event) {
 	/** The form's error message text element. */
@@ -564,6 +546,29 @@ function validateRegisterFormSubmission(event) {
 
 	if (confirmPassword != password) {
 		formErrorMessageElement.textContent = "The passwords provided don't match";
+		event.preventDefault();
+		return;
+	}
+}
+
+function validateCreateWebringFormSubmission(event) {
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById(
+		'create-webring-error-message'
+	);
+
+	const formElement = document.getElementById('create-webring-form');
+	if (!formElement) {
+		event.preventDefault();
+		return;
+	}
+
+	const formData = new FormData(formElement);
+
+	const { name, url } = Object.fromEntries(formData.entries());
+
+	if (!name || !url) {
+		formErrorMessageElement.textContent = emptyFormFieldsErrorMessage;
 		event.preventDefault();
 		return;
 	}

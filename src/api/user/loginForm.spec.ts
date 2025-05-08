@@ -20,7 +20,7 @@ import {
 
 chai.use(chaiHttp);
 
-describe('Login Form Controller', function () {
+describe('Login Form', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;

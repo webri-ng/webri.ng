@@ -5,7 +5,7 @@ block title
 
 block content
 	h1 Register
-	form(action='/user/register/form', method='post')#register-form
+	form(action='/user/register/form', method='post', onsubmit="return validateRegisterFormSubmission(event)")#register-form
 		div.form-field
 			label(for='username') Username:
 			input#username(type='text' name='username' minlength=2 maxlength=80 required='')
