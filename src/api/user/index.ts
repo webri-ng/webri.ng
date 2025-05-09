@@ -20,6 +20,7 @@ import {
 	registerFormController,
 	registerHtmlFormRequestSchema
 } from './registerForm';
+import { updateUserFormController } from './updateForm';
 
 /** Express Router for handling REST requests. */
 export const userApiRouter: Router = Router();
@@ -72,6 +73,14 @@ userViewRouter.post(
 	'/register/form',
 	validateRequestBody(registerHtmlFormRequestSchema),
 	registerFormController
+);
+
+// Register endpoint for the front-end pure HTML form.
+userViewRouter.post(
+	'/form',
+	authenticateSessionController,
+	validateRequestBody(updateUserRequestSchema),
+	updateUserFormController
 );
 
 userViewRouter.get('/login', genericViewController('user/login'));
