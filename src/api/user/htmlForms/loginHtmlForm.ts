@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { ApiReturnableError } from '../../app/error';
-import { loginFailedError, userNotFoundError } from '../api-error-response';
-import { createSessionCookieResponse } from '../createSessionCookieResponse';
-import { sessionService, userService } from '../../app';
+import { ApiReturnableError } from '../../../app/error';
+import { loginFailedError, userNotFoundError } from '../../api-error-response';
+import { createSessionCookieResponse } from '../../createSessionCookieResponse';
+import { sessionService, userService } from '../../../app';
 
 /**
  * User login controller for the front-end HTML form.
@@ -10,7 +10,7 @@ import { sessionService, userService } from '../../app';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function loginFormController(
+export async function loginHtmlFormController(
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -27,14 +27,13 @@ export async function loginFormController(
 			requestMetadata: res.locals.requestMetadata
 		});
 
-		// Set the user variable in the response state, so that the rendering of
-		// the success page includes the correct navigation links.
-		res.locals.user = user;
-
 		createSessionCookieResponse(res, session).render('success', {
 			pageTitle: 'Login',
 			contentTitle: 'Login Successful!',
-			redirectLink: '/user'
+			redirectLink: '/user',
+			// Set the user variable in the response state, so that the rendering of
+			// the success page includes the correct navigation links.
+			user
 		});
 	} catch (error) {
 		// If the specified user doesn't exist, return a generic 'login failed' error.

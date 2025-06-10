@@ -1,9 +1,9 @@
 import { Schema } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
-import { createSessionCookieResponse } from '../createSessionCookieResponse';
-import { ApiReturnableError } from '../../app/error';
-import { registerUserAndCreateNewSession } from './register';
-import { newPasswordNotConfirmedCorrectlyError } from '../api-error-response';
+import { createSessionCookieResponse } from '../../createSessionCookieResponse';
+import { ApiReturnableError } from '../../../app/error';
+import { registerUserAndCreateNewSession } from '../register';
+import { newPasswordNotConfirmedCorrectlyError } from '../../api-error-response';
 
 export const registerHtmlFormRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
@@ -32,7 +32,7 @@ export const registerHtmlFormRequestSchema: Schema = {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function registerFormController(
+export async function registerHtmlFormController(
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -47,7 +47,7 @@ export async function registerFormController(
 		}
 
 		// Create the new user, and a new login session for them.
-		const session = await registerUserAndCreateNewSession(
+		const { user, session } = await registerUserAndCreateNewSession(
 			username,
 			email,
 			password,
@@ -57,7 +57,10 @@ export async function registerFormController(
 		createSessionCookieResponse(res, session).render('success', {
 			pageTitle: 'Register',
 			contentTitle: 'Welcome to Webri.ng!',
-			redirectLink: '/user'
+			redirectLink: '/user',
+			// Set the user variable in the response state, so that the rendering of
+			// the success page includes the correct navigation links.
+			user
 		});
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.

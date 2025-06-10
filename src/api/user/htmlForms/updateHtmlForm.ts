@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { userService } from '../../app';
-import { ApiReturnableError } from '../../app/error';
+import { userService } from '../../../app';
+import { ApiReturnableError } from '../../../app/error';
 
 /**
  * Update user controller for the front-end HTML form.
@@ -8,7 +8,7 @@ import { ApiReturnableError } from '../../app/error';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function updateUserFormController(
+export async function updateUserHtmlFormController(
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -25,6 +25,8 @@ export async function updateUserFormController(
 			pageTitle: 'Update',
 			contentTitle: 'Your profile has been updated successfully!',
 			redirectLink: '/user'
+			// The 'user' variable is already set in the view by the session
+			// validation middleware.
 		});
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.

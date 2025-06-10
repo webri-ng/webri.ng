@@ -15,12 +15,17 @@ import {
 	updatePasswordController,
 	updatePasswordRequestSchema
 } from './updatePassword';
-import { loginFormController } from './loginForm';
+import { loginHtmlFormController } from './htmlForms/loginHtmlForm';
 import {
-	registerFormController,
+	registerHtmlFormController,
 	registerHtmlFormRequestSchema
-} from './registerForm';
-import { updateUserFormController } from './updateForm';
+} from './htmlForms/registerHtmlForm';
+import { updateUserHtmlFormController } from './htmlForms/updateHtmlForm';
+import {
+	updatePasswordHtmlFormController,
+	updatePasswordHtmlFormRequestSchema
+} from './htmlForms/updatePasswordHtmlForm';
+import { resetPasswordHtmlFormController } from './htmlForms/resetPasswordHtmlForm';
 
 /** Express Router for handling REST requests. */
 export const userApiRouter: Router = Router();
@@ -61,34 +66,58 @@ userApiRouter.post(
 	resetPasswordController
 );
 
+// Forgot password endpoint for the front-end pure HTML form.
+userViewRouter.post(
+	'/reset-password/form',
+	validateRequestBody(resetPasswordRequestSchema),
+	resetPasswordHtmlFormController
+);
+
 // Login endpoint for the front-end pure HTML form.
 userViewRouter.post(
 	'/login/form',
 	validateRequestBody(loginRequestSchema),
-	loginFormController
+	loginHtmlFormController
 );
 
 // Register endpoint for the front-end pure HTML form.
 userViewRouter.post(
 	'/register/form',
 	validateRequestBody(registerHtmlFormRequestSchema),
-	registerFormController
+	registerHtmlFormController
 );
 
-// Register endpoint for the front-end pure HTML form.
+// Update user endpoint for the front-end pure HTML form.
 userViewRouter.post(
 	'/form',
 	authenticateSessionController,
 	validateRequestBody(updateUserRequestSchema),
-	updateUserFormController
+	updateUserHtmlFormController
+);
+
+// Update password endpoint for the front-end pure HTML form.
+userViewRouter.post(
+	'/update-password/form',
+	authenticateSessionController,
+	validateRequestBody(updatePasswordHtmlFormRequestSchema),
+	updatePasswordHtmlFormController
 );
 
 userViewRouter.get('/login', genericViewController('user/login'));
-userViewRouter.get('/logout', logoutViewController);
+userViewRouter.get(
+	'/logout',
+	authenticateSessionController,
+	logoutViewController
+);
 userViewRouter.get('/register', genericViewController('user/register'));
-userViewRouter.get('/update', genericViewController('user/update'));
+userViewRouter.get(
+	'/update',
+	authenticateSessionController,
+	genericViewController('user/update')
+);
 userViewRouter.get(
 	'/update-password',
+	authenticateSessionController,
 	genericViewController('user/updatePassword')
 );
 userViewRouter.get(

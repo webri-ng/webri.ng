@@ -4,11 +4,11 @@ import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { app } from '../..';
-import { User, Session } from '../../model';
-import { userService, testUtils } from '../../app';
-import { appDataSource } from '../../infra/database';
-import { userConfig } from '../../config';
+import { app } from '../../../';
+import { User, Session } from '../../../model';
+import { userService, testUtils } from '../../../app';
+import { appDataSource } from '../../../infra/database';
+import { userConfig } from '../../../config';
 import {
 	badRequestError,
 	expiredPasswordError,
@@ -16,11 +16,11 @@ import {
 	loginAttemptCountExceededError,
 	loginFailedError,
 	requestValidationError
-} from '../api-error-response';
+} from '../../api-error-response';
 
 chai.use(chaiHttp);
 
-describe('Login Form', function () {
+describe('Login HTML Form', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -88,9 +88,8 @@ describe('Login Form', function () {
 				expect(res).to.have.status(loginFailedError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement = dom.window.document.getElementById(
-					'login-error-message'
-				);
+				const loginErrorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(loginErrorMessageElement?.innerHTML).to.equal(
 					loginFailedError.message
 				);
@@ -112,9 +111,8 @@ describe('Login Form', function () {
 				expect(res).to.have.status(loginFailedError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement = dom.window.document.getElementById(
-					'login-error-message'
-				);
+				const loginErrorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(loginErrorMessageElement?.innerHTML).to.equal(
 					loginFailedError.message
 				);
@@ -136,9 +134,8 @@ describe('Login Form', function () {
 				expect(res).to.have.status(expiredPasswordError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement = dom.window.document.getElementById(
-					'login-error-message'
-				);
+				const loginErrorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(loginErrorMessageElement?.innerHTML).to.equal(
 					expiredPasswordError.message
 				);
@@ -218,9 +215,8 @@ describe('Login Form', function () {
 				expect(res).to.have.status(loginAttemptCountExceededError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement = dom.window.document.getElementById(
-					'login-error-message'
-				);
+				const loginErrorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(loginErrorMessageElement?.innerHTML).to.equal(
 					loginAttemptCountExceededError.message
 				);
@@ -247,9 +243,8 @@ describe('Login Form', function () {
 					);
 
 					const dom = new JSDOM(res.text);
-					const loginErrorMessageElement = dom.window.document.getElementById(
-						'login-error-message'
-					);
+					const loginErrorMessageElement =
+						dom.window.document.getElementById('error-message');
 					expect(loginErrorMessageElement?.innerHTML).to.equal(
 						lockedAccountDueToAuthFailureError.message
 					);

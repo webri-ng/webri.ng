@@ -150,9 +150,7 @@ function cancelDelete(webringUrl) {
  */
 function forgotPassword() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'reset-password-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('reset-password-form');
 	const formData = new FormData(formElement);
 
@@ -496,35 +494,10 @@ function updateWebring() {
 		});
 }
 
-/** Validates a login form submission. */
-function validateLoginFormSubmission(event) {
-	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'login-error-message'
-	);
-	const formElement = document.getElementById('login-form');
-	if (!formElement) {
-		event.preventDefault();
-		return;
-	}
-
-	const formData = new FormData(formElement);
-
-	const { email, password } = Object.fromEntries(formData.entries());
-
-	if (!email || !password) {
-		formErrorMessageElement.textContent = emptyFormFieldsErrorMessage;
-		event.preventDefault();
-		return;
-	}
-}
-
 /** Validates the register form submission. */
 function validateRegisterFormSubmission(event) {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'register-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 
 	const formElement = document.getElementById('register-form');
 	if (!formElement) {
@@ -551,13 +524,12 @@ function validateRegisterFormSubmission(event) {
 	}
 }
 
-function validateCreateWebringFormSubmission(event) {
+/** Validates the update password form submission. */
+function validateUpdatePasswordFormSubmission(event) {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'create-webring-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 
-	const formElement = document.getElementById('create-webring-form');
+	const formElement = document.getElementById('update-password-form');
 	if (!formElement) {
 		event.preventDefault();
 		return;
@@ -565,10 +537,18 @@ function validateCreateWebringFormSubmission(event) {
 
 	const formData = new FormData(formElement);
 
-	const { name, url } = Object.fromEntries(formData.entries());
+	const { currentPassword, newPassword, confirmPassword } = Object.fromEntries(
+		formData.entries()
+	);
 
-	if (!name || !url) {
+	if (!currentPassword || !newPassword || !confirmPassword) {
 		formErrorMessageElement.textContent = emptyFormFieldsErrorMessage;
+		event.preventDefault();
+		return;
+	}
+
+	if (confirmPassword != newPassword) {
+		formErrorMessageElement.textContent = "The passwords provided don't match";
 		event.preventDefault();
 		return;
 	}

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { sessionService, userService } from '../../app';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
-import { RequestMetadata, Session } from '../../model';
+import { RequestMetadata, Session, User } from '../../model';
 
 /** Register user request schema. */
 export const registrationRequestSchema: Schema = {
@@ -28,7 +28,12 @@ export async function registerUserAndCreateNewSession(
 	email: string,
 	password: string,
 	requestMetadata: RequestMetadata
-): Promise<Readonly<Session>> {
+): Promise<
+	Readonly<{
+		user: User;
+		session: Session;
+	}>
+> {
 	/** The newly created user entity. */
 	const user = await userService.register(username, email, password, {
 		requestMetadata
@@ -38,7 +43,10 @@ export async function registerUserAndCreateNewSession(
 		requestMetadata
 	});
 
-	return session;
+	return {
+		user,
+		session
+	};
 }
 
 /**
@@ -56,7 +64,7 @@ export async function registerController(
 		const { username, email, password } = req.body;
 
 		// Create the new user, and a new login session for them.
-		const session = await registerUserAndCreateNewSession(
+		const { session } = await registerUserAndCreateNewSession(
 			username,
 			email,
 			password,

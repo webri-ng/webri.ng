@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { webringService } from '../../app';
-import { ApiReturnableError } from '../../app/error';
+import { webringService } from '../../../app';
+import { ApiReturnableError } from '../../../app/error';
 import { Schema } from 'ajv';
 
 /** Create Webring request schema. */
-export const createWebringFormRequestSchema: Schema = {
+export const createWebringHtmlFormRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {
@@ -31,7 +31,7 @@ export const createWebringFormRequestSchema: Schema = {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function createWebringFormController(
+export async function createWebringHtmlFormController(
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -60,7 +60,7 @@ export async function createWebringFormController(
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('webring/new', {
+			return res.status(error.httpStatus).render('webring/create', {
 				errorMessage: error.message
 			});
 		}

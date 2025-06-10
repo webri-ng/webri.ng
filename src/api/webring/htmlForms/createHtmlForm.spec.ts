@@ -3,14 +3,14 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import * as chaiAsPromised from 'chai-as-promised';
-import { Session, User, Webring } from '../../model';
+import { Session, User, Webring } from '../../../model';
 import {
 	createRandomString,
 	sessionService,
 	testUtils,
 	userService
-} from '../../app';
-import { app } from '../../index';
+} from '../../../app';
+import { app } from '../../../index';
 import {
 	badRequestError,
 	invalidRingNameTooLongError,
@@ -20,14 +20,14 @@ import {
 	invalidRingUrlTooShortError,
 	requestAuthenticationFailedError,
 	requestValidationError
-} from '../api-error-response';
-import { webringConfig } from '../../config';
+} from '../../api-error-response';
 import { JSDOM } from 'jsdom';
+import { webringConfig } from '../../../config';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
-describe('Create Webring Form', function () {
+describe('Create Webring HTML Form', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -112,9 +112,8 @@ describe('Create Webring Form', function () {
 				expect(res.status).to.equal(invalidRingUrlNotUniqueError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const errorMessageElement = dom.window.document.getElementById(
-					'create-webring-error-message'
-				);
+				const errorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(errorMessageElement?.innerHTML).to.equal(
 					invalidRingUrlNotUniqueError.message
 				);
@@ -143,9 +142,8 @@ describe('Create Webring Form', function () {
 				expect(res.status).to.equal(invalidRingNameTooShortError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const errorMessageElement = dom.window.document.getElementById(
-					'create-webring-error-message'
-				);
+				const errorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(errorMessageElement?.innerHTML).to.equal(
 					invalidRingNameTooShortError.message
 				);
@@ -174,9 +172,8 @@ describe('Create Webring Form', function () {
 				expect(res.status).to.equal(invalidRingNameTooLongError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const errorMessageElement = dom.window.document.getElementById(
-					'create-webring-error-message'
-				);
+				const errorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(errorMessageElement?.innerHTML).to.equal(
 					invalidRingNameTooLongError.message
 				);
@@ -205,9 +202,8 @@ describe('Create Webring Form', function () {
 				expect(res.status).to.equal(invalidRingUrlTooShortError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const errorMessageElement = dom.window.document.getElementById(
-					'create-webring-error-message'
-				);
+				const errorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(errorMessageElement?.innerHTML).to.equal(
 					invalidRingUrlTooShortError.message
 				);
@@ -236,9 +232,8 @@ describe('Create Webring Form', function () {
 				expect(res.status).to.equal(invalidRingUrlTooLongError.httpStatus);
 
 				const dom = new JSDOM(res.text);
-				const errorMessageElement = dom.window.document.getElementById(
-					'create-webring-error-message'
-				);
+				const errorMessageElement =
+					dom.window.document.getElementById('error-message');
 				expect(errorMessageElement?.innerHTML).to.equal(
 					invalidRingUrlTooLongError.message
 				);

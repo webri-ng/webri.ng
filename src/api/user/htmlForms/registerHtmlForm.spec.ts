@@ -3,11 +3,11 @@ import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { app } from '../..';
-import { Session, User } from '../../model';
-import { userService, testUtils } from '../../app';
-import { appDataSource } from '../../infra/database';
-import { userConfig } from '../../config';
+import { app } from '../../../';
+import { Session, User } from '../../../model';
+import { userService, testUtils } from '../../../app';
+import { appDataSource } from '../../../infra/database';
+import { userConfig } from '../../../config';
 import {
 	badRequestError,
 	emailNotUniqueError,
@@ -18,12 +18,12 @@ import {
 	newPasswordNotConfirmedCorrectlyError,
 	requestValidationError,
 	usernameNotUniqueError
-} from '../api-error-response';
-import { GetUserSearchField } from '../../app/user';
+} from '../../api-error-response';
+import { GetUserSearchField } from '../../../app/user';
 
 chai.use(chaiHttp);
 
-describe('Registration Form', function () {
+describe('Registration HTML Form', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testExistingUser: User;
@@ -97,7 +97,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					newPasswordNotConfirmedCorrectlyError.message
 				);
@@ -124,7 +124,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					emailNotUniqueError.message
 				);
@@ -151,7 +151,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					usernameNotUniqueError.message
 				);
@@ -180,7 +180,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					invalidNewPasswordTooShortError.message
 				);
@@ -209,7 +209,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					invalidNewPasswordTooLongError.message
 				);
@@ -240,7 +240,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					invalidUsernameTooShortError.message
 				);
@@ -271,7 +271,7 @@ describe('Registration Form', function () {
 
 				const dom = new JSDOM(res.text);
 				const registrationErrorMessageElement =
-					dom.window.document.getElementById('register-error-message');
+					dom.window.document.getElementById('error-message');
 				expect(registrationErrorMessageElement?.innerHTML).to.equal(
 					invalidUsernameTooLongError.message
 				);
