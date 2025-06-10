@@ -23,9 +23,11 @@ import { deleteWebringViewController } from './deleteWebringView';
 import { getSitesController } from './getSites';
 import { getWebringsController } from './getWebrings';
 import {
+	addNewSiteHtmlFormController,
+	addNewSiteHtmlFormRequestSchema,
 	createWebringHtmlFormController,
 	createWebringHtmlFormRequestSchema
-} from './htmlForms/createHtmlForm';
+} from './htmlForms';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
@@ -73,6 +75,13 @@ webringViewRouter.post(
 	authenticateSessionController,
 	validateRequestBody(createWebringHtmlFormRequestSchema),
 	createWebringHtmlFormController
+);
+
+webringViewRouter.post(
+	'/:webringUrl/add/form',
+	authenticateSessionController,
+	validateRequestBody(addNewSiteHtmlFormRequestSchema),
+	addNewSiteHtmlFormController
 );
 
 webringViewRouter.get('/new', genericViewController('webring/create'));

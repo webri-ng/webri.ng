@@ -16,9 +16,7 @@ const standardRequestHeaders = {
  */
 function addNewSite() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'add-new-site-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('add-new-site-form');
 	const formData = new FormData(formElement);
 
@@ -62,9 +60,7 @@ function addNewSite() {
 function createWebring() {
 	const formElement = document.getElementById('create-webring-form');
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'create-webring-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formData = new FormData(formElement);
 
 	const { name, description, privateRing, url } = Object.fromEntries(

@@ -5,7 +5,7 @@ block title
 
 block content
 	h1 Add Site to Webring
-	form#add-new-site-form
+	form(action='/webring/' + webring.url + '/add/form', method='post')#add-new-site-form
 		input#url(type='hidden' name="webringUrl" value=webring.url)
 		div.form-field
 			label(for='name') Site Name: 
@@ -19,5 +19,5 @@ block content
 					| If none is provided 'https://' will be added by default.
 			input#url(type='text' name='url' required='')
 		div.form-buttons
-			button(type='button', onclick="addNewSite()") Add Site
-		div#add-new-site-error-message.error-message
+			button(type='submit') Add Site
+		div#error-message.error-message #{errorMessage}

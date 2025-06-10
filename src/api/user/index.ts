@@ -15,17 +15,15 @@ import {
 	updatePasswordController,
 	updatePasswordRequestSchema
 } from './updatePassword';
-import { loginHtmlFormController } from './htmlForms/loginHtmlForm';
 import {
+	loginHtmlFormController,
 	registerHtmlFormController,
-	registerHtmlFormRequestSchema
-} from './htmlForms/registerHtmlForm';
-import { updateUserHtmlFormController } from './htmlForms/updateHtmlForm';
-import {
+	registerHtmlFormRequestSchema,
+	resetPasswordHtmlFormController,
 	updatePasswordHtmlFormController,
-	updatePasswordHtmlFormRequestSchema
-} from './htmlForms/updatePasswordHtmlForm';
-import { resetPasswordHtmlFormController } from './htmlForms/resetPasswordHtmlForm';
+	updatePasswordHtmlFormRequestSchema,
+	updateUserHtmlFormController
+} from './htmlForms';
 
 /** Express Router for handling REST requests. */
 export const userApiRouter: Router = Router();
