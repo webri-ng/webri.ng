@@ -8,3 +8,7 @@ dist
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+# package directories
+node_modules
+coverage
+dist
