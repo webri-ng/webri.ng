@@ -4,8 +4,9 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import { User, Webring } from '../../model';
 import { userService, testUtils } from '..';
-import { RingActionNotAuthorisedError } from '../error';
+import { ApiReturnableError } from '../error';
 import { authoriseWebringModeratorAction } from './authoriseWebringModeratorAction';
+import { requestAuthorisationFailedError } from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -32,15 +33,15 @@ describe('Authorise webring moderator action', function () {
 	});
 
 	it('should raise an exception when passed an undefined user', async function () {
-		return expect(
-			authoriseWebringModeratorAction(testWebring, undefined)
-		).to.be.rejectedWith(RingActionNotAuthorisedError);
+		return expect(authoriseWebringModeratorAction(testWebring, undefined))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', requestAuthorisationFailedError.code);
 	});
 
 	it('should raise an exception when passed a user without rights to moderate the webring', async function () {
-		return expect(
-			authoriseWebringModeratorAction(testWebring, testUser2)
-		).to.be.rejectedWith(RingActionNotAuthorisedError);
+		return expect(authoriseWebringModeratorAction(testWebring, testUser2))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', requestAuthorisationFailedError.code);
 	});
 
 	it('should not raise an exception when passed a user that created the webring', async function () {

@@ -4,8 +4,9 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import { User, Webring } from '../../model';
 import { userService, testUtils } from '..';
-import { RingActionNotAuthorisedError } from '../error';
+import { ApiReturnableError } from '../error';
 import { authoriseWebringOwnerAction } from './authoriseWebringOwnerAction';
+import { requestAuthorisationFailedError } from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -30,7 +31,9 @@ describe('Authorise webring owner action', function () {
 	it('should raise an exception when passed a user that did not create the webring', function () {
 		return expect(() => {
 			authoriseWebringOwnerAction(testWebring, testUser2);
-		}).to.throw(RingActionNotAuthorisedError);
+		})
+			.to.throw(ApiReturnableError)
+			.has.property('code', requestAuthorisationFailedError.code);
 	});
 
 	it('should not raise an exception when passed a user that created the webring', function () {

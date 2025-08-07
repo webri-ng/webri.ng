@@ -1,6 +1,6 @@
 import { requestAuthorisationFailedError } from '../../api/api-error-response';
 import { RequestMetadata, User, Webring } from '../../model';
-import { RingActionNotAuthorisedError } from '../error';
+import { ApiReturnableError } from '../error';
 import { logger } from '../logger';
 
 /**
@@ -11,7 +11,7 @@ import { logger } from '../logger';
  * @param webring The webring that the owner action is being performed upon.
  * @param user The user acting upon the webring.
  * @param options Additional options for the request
- * @throws {RingActionNotAuthorisedError} If the action is not authorised.
+ * @throws {ApiReturnableError} If the action is not authorised.
  */
 export function authoriseWebringOwnerAction(
 	webring: Readonly<Webring>,
@@ -27,10 +27,8 @@ export function authoriseWebringOwnerAction(
 	});
 
 	if (webring.createdBy !== user.userId) {
-		throw new RingActionNotAuthorisedError(
-			requestAuthorisationFailedError.message,
-			requestAuthorisationFailedError.code,
-			requestAuthorisationFailedError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			requestAuthorisationFailedError
 		);
 	}
 }
