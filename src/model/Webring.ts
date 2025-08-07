@@ -1,16 +1,25 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	PrimaryGeneratedColumn
+} from 'typeorm';
 import { Tag, User, UUID } from '.';
 import {
-	invalidRingNameCharacters, invalidRingNameError,
-	invalidRingNameTooLongError, invalidRingNameTooShortError, invalidRingUrlError,
-	invalidRingUrlTooLongError, invalidRingUrlTooShortError
+	invalidRingNameCharacters,
+	invalidRingNameError,
+	invalidRingNameTooLongError,
+	invalidRingNameTooShortError,
+	invalidRingUrlError,
+	invalidRingUrlTooLongError,
+	invalidRingUrlTooShortError
 } from '../api/api-error-response';
-import { InvalidRingNameError, InvalidRingUrlError } from '../app/error';
 import { webringConfig } from '../config';
+import { ApiReturnableError } from '../app/error';
 
 @Entity('ring')
-export class Webring
-{
+export class Webring {
 	@PrimaryGeneratedColumn('uuid', {
 		name: 'ring_id'
 	})
@@ -67,8 +76,8 @@ export class Webring
 	})
 	public dateModified: Date;
 
-	@ManyToMany(_type => Tag, {
-		eager: true,
+	@ManyToMany((_type) => Tag, {
+		eager: true
 	})
 	@JoinTable({
 		name: 'tagged_ring',
@@ -86,7 +95,7 @@ export class Webring
 	/**
 	 * The non-owner moderators of this webring.
 	 */
-	@ManyToMany(_type => User)
+	@ManyToMany((_type) => User)
 	@JoinTable({
 		name: 'ring_moderator',
 		joinColumn: {
@@ -100,12 +109,13 @@ export class Webring
 	})
 	public moderators!: User[];
 
-	constructor(_name: string,
+	constructor(
+		_name: string,
 		_description: string,
 		_url: string,
 		_private: boolean,
-		_createdBy: UUID)
-	{
+		_createdBy: UUID
+	) {
 		this.name = _name;
 		this.description = _description;
 		this.url = _url;
@@ -120,48 +130,50 @@ export class Webring
 	 * Validates a webring name.
 	 * Throws a descriptive exception in case of validation failure.
 	 * @param {string} name - The name to validate.
-	 * @throws {InvalidRingNameError} This API returnable exception is raised with a
+	 * @throws {ApiReturnableError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: string): void
-	{
+	public static validateName(name: string): void {
 		if (!name) {
-			throw new InvalidRingNameError(invalidRingNameError.message,
-				invalidRingNameError.code, invalidRingNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingNameError
+			);
 		}
 
 		// Check name length.
 		if (name.length < webringConfig.nameRequirements.minLength) {
-			throw new InvalidRingNameError(invalidRingNameTooShortError.message,
-				invalidRingNameTooShortError.code, invalidRingNameTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingNameTooShortError
+			);
 		}
 
 		if (name.length > webringConfig.nameRequirements.maxLength) {
-			throw new InvalidRingNameError(invalidRingNameTooLongError.message,
-				invalidRingNameTooLongError.code, invalidRingNameTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingNameTooLongError
+			);
 		}
 
 		// Test for the existence of invalid characters.
 		if (new RegExp(/[<>]/).test(name)) {
-			throw new InvalidRingNameError(invalidRingNameCharacters.message,
-				invalidRingNameCharacters.code, invalidRingNameCharacters.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingNameCharacters
+			);
 		}
 	}
 
-
 	/**
-	* Normalises a supplied webring name.
-	* Ensures that a webring name is stored in a suitable format.
-	* @param {string} name - The webring name to normalise.
-	* @returns The normalised webring name.
-	* @throws {InvalidRingNameError} This API returnable exception is raised in the case
-	* that no name is provided.
-	*/
-	public static normaliseName(name: string): string
-	{
+	 * Normalises a supplied webring name.
+	 * Ensures that a webring name is stored in a suitable format.
+	 * @param {string} name - The webring name to normalise.
+	 * @returns The normalised webring name.
+	 * @throws {ApiReturnableError} This API returnable exception is raised in the case
+	 * that no name is provided.
+	 */
+	public static normaliseName(name: string): string {
 		if (!name) {
-			throw new InvalidRingNameError(invalidRingNameError.message,
-				invalidRingNameError.code, invalidRingNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingNameError
+			);
 		}
 
 		return name.trim();
@@ -170,47 +182,44 @@ export class Webring
 	/**
 	 * Validates a ring's URL.
 	 * @param {string} name - The webring URL to validate.
-	 * @throws {InvalidRingUrlError} This API returnable exception is raised in the case
+	 * @throws {ApiReturnableError} This API returnable exception is raised in the case
 	 * that the provided URL is invalid.
 	 */
-	public static validateUrl(url: string): void
-	{
+	public static validateUrl(url: string): void {
 		if (!url) {
-			throw new InvalidRingUrlError(invalidRingUrlError.message,
-				invalidRingUrlError.code, invalidRingUrlError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidRingUrlError);
 		}
 
 		// Check for the existence of invalid characters.
 		if (new RegExp(/([^a-z_0-9])/g).test(url)) {
-			throw new InvalidRingUrlError(invalidRingUrlError.message,
-				invalidRingUrlError.code, invalidRingUrlError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidRingUrlError);
 		}
 
 		// Check URL length.
 		if (url.length < webringConfig.urlRequirements.minLength) {
-			throw new InvalidRingUrlError(invalidRingUrlTooShortError.message,
-				invalidRingUrlTooShortError.code, invalidRingUrlTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingUrlTooShortError
+			);
 		}
 
 		if (url.length > webringConfig.urlRequirements.maxLength) {
-			throw new InvalidRingUrlError(invalidRingUrlTooLongError.message,
-				invalidRingUrlTooLongError.code, invalidRingUrlTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidRingUrlTooLongError
+			);
 		}
 	}
 
 	/**
-	* Normalises a supplied webring URL.
-	* Ensures that a webring URL is stored in a suitable format.
-	* @param {string} url - The webring URL to normalise.
-	* @returns The normalised webring URL.
-	* @throws {InvalidRingNameError} This API returnable exception is raised in the case
-	* that no username is provided.
-	*/
-	public static normaliseUrl(url: string): string
-	{
+	 * Normalises a supplied webring URL.
+	 * Ensures that a webring URL is stored in a suitable format.
+	 * @param {string} url - The webring URL to normalise.
+	 * @returns The normalised webring URL.
+	 * @throws {InvalidRingNameError} This API returnable exception is raised in the case
+	 * that no username is provided.
+	 */
+	public static normaliseUrl(url: string): string {
 		if (!url) {
-			throw new InvalidRingUrlError(invalidRingUrlError.message,
-				invalidRingUrlError.code, invalidRingUrlError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidRingUrlError);
 		}
 
 		return url.toLowerCase().trim();

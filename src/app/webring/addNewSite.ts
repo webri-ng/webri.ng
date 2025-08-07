@@ -1,14 +1,15 @@
 import { logger, webringService } from '..';
 import {
 	siteAlreadyExistsError,
-	webringNotFoundError
+	webringNotFoundError,
+	webringNotSerialisedErrorMessage
 } from '../../api/api-error-response';
 import { appDataSource } from '../../infra/database';
 import { RequestMetadata, Site, UUID, Webring } from '../../model';
-import { SiteAlreadyExistsError, WebringNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 
 /**
- * Adds a new site to a wbebring.
+ * Adds a new site to a webring.
  * This is where Site entities are created.
  * @param {Webring} webring - The webring to add the site to.
  * @param {string} name - The name for the new site.
@@ -27,8 +28,8 @@ export async function addNewSite(
 	}>
 ): Promise<Site> {
 	if (!webring.ringId) {
-		throw new WebringNotFoundError(
-			`The specified webring has not been serialised`,
+		throw new ApiReturnableError(
+			webringNotSerialisedErrorMessage,
 			webringNotFoundError.code,
 			webringNotFoundError.httpStatus
 		);
@@ -56,10 +57,8 @@ export async function addNewSite(
 			return site.url === normalisedUrl;
 		})
 	) {
-		throw new SiteAlreadyExistsError(
-			siteAlreadyExistsError.message,
-			siteAlreadyExistsError.code,
-			siteAlreadyExistsError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			siteAlreadyExistsError
 		);
 	}
 

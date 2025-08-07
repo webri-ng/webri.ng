@@ -3,16 +3,19 @@ import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { InvalidIdentifierError, WebringNotFoundError } from '../error';
 chai.use(chaiAsPromised);
 
 import { Site, User, Webring } from '../../model';
 import { deleteWebring } from '.';
 import { testUtils, userService } from '..';
 import { appDataSource } from '../../infra/database';
+import { ApiReturnableError } from '../error';
+import {
+	invalidWebringIdErrorMessage,
+	webringNotFoundError
+} from '../../api/api-error-response';
 
-
-describe('Webring soft-deletion', function() {
+describe('Webring soft-deletion', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -29,42 +32,51 @@ describe('Webring soft-deletion', function() {
 		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
 		testWebring3 = await testUtils.insertTestWebring(testUser.userId!);
 
-		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
+		testSite = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!
+		);
+		testSite2 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!
+		);
 	});
 
-
-	after(async function afterTesting()
-	{
+	after(async function afterTesting() {
 		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
-
-	it('should throw an exception when passed an empty ringId', async function() {
-		return expect(deleteWebring('')).to.be.rejectedWith(InvalidIdentifierError);
+	it('should throw an exception when passed an empty ringId', async function () {
+		return expect(deleteWebring('')).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidWebringIdErrorMessage
+		);
 	});
 
-
-	it('should throw an exception when passed an invalid ringId', async function() {
-		return expect(deleteWebring(testUtils.invalidUuid))
-			.to.be.rejectedWith(InvalidIdentifierError);
+	it('should throw an exception when passed an invalid ringId', async function () {
+		return expect(deleteWebring(testUtils.invalidUuid)).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidWebringIdErrorMessage
+		);
 	});
 
-
-	it('should throw an exception when passed a nonexistent ringId', async function() {
-		return expect(deleteWebring(testUtils.dummyUuid)).to.be.rejectedWith(WebringNotFoundError);
+	it('should throw an exception when passed a nonexistent ringId', async function () {
+		return expect(deleteWebring(testUtils.dummyUuid)).to.be.rejectedWith(
+			ApiReturnableError,
+			webringNotFoundError.message
+		);
 	});
 
-
-	describe('should correctly delete a webring', function() {
-		it('should correctly delete the webring entity', async function() {
+	describe('should correctly delete a webring', function () {
+		it('should correctly delete the webring entity', async function () {
 			const deletedWebring = await deleteWebring(testWebring.ringId!);
 
 			expect(deletedWebring.dateDeleted).to.not.be.null;
-			expect(dayjs(deletedWebring.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
+			expect(dayjs(deletedWebring.dateDeleted).isSame(dayjs(), 'minute')).to.be
+				.true;
 		});
 
-		it('should correctly delete a webring\'s sites', async function() {
+		it("should correctly delete a webring's sites", async function () {
 			testSite = await appDataSource.getRepository(Site).findOneBy({
 				siteId: testSite?.siteId
 			});
@@ -75,12 +87,12 @@ describe('Webring soft-deletion', function() {
 				siteId: testSite2?.siteId
 			});
 			expect(testSite2?.dateDeleted).to.not.be.null;
-			expect(dayjs(testSite2?.dateDeleted).isSame(dayjs(), 'minute')).to.be.true;
+			expect(dayjs(testSite2?.dateDeleted).isSame(dayjs(), 'minute')).to.be
+				.true;
 		});
 	});
 
-
-	it('should correctly delete a webring at an arbitrary date', async function() {
+	it('should correctly delete a webring at an arbitrary date', async function () {
 		const deletionDate = new Date();
 		const deletedWebring = await deleteWebring(testWebring2.ringId!, {
 			deletionDate
@@ -90,8 +102,7 @@ describe('Webring soft-deletion', function() {
 		expect(dayjs(deletedWebring.dateDeleted).isSame(deletionDate)).to.be.true;
 	});
 
-
-	it('should correctly delete a webring within a transaction', async function() {
+	it('should correctly delete a webring within a transaction', async function () {
 		await appDataSource.transaction(async (transactionalEntityManager) => {
 			const deletionDate = new Date();
 			const deletedWebring = await deleteWebring(testWebring3.ringId!, {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger, webringService } from '../../app';
+import { webringService } from '../../app';
 import { authoriseWebringOwnerAction } from '../../app/authorisation';
-import { WebringNotFoundError } from '../../app/error';
+import { ApiReturnableError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { webringNotFoundError } from '../api-error-response';
 import { getRequestMetadata } from '../getRequestMetadata';
@@ -28,10 +28,8 @@ export async function deleteWebringController(
 			webringUrl
 		);
 		if (!webring) {
-			throw new WebringNotFoundError(
-				webringNotFoundError.message,
-				webringNotFoundError.code,
-				webringNotFoundError.httpStatus
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				webringNotFoundError
 			);
 		}
 

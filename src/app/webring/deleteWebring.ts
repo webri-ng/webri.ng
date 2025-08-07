@@ -1,6 +1,6 @@
 import { RequestMetadata, Site, UUID, Webring } from '../../model';
 import { EntityManager } from 'typeorm';
-import { WebringNotFoundError as WebringNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 import { webringNotFoundError } from '../../api/api-error-response';
 import { getWebring } from '.';
 import { GetWebringSearchField } from './getWebring';
@@ -15,8 +15,8 @@ import { appDataSource } from '../../infra/database';
  * @param {UUID} webringId - The id of the webring to delete.
  * @param {DeleteWebringOptions} [options] - Additional options for the process.
  * @returns The deleted webring.
- * @throws {InvalidIdentifierError} - If the supplied id is invalid.
- * @throws {WebringNotFoundError} - If the specified webring cannot be found.
+ * @throws {ApiReturnableError} - If the supplied id is invalid.
+ * @throws {ApiReturnableError} - If the specified webring cannot be found.
  */
 export async function deleteWebring(
 	webringId: UUID,
@@ -43,11 +43,7 @@ export async function deleteWebring(
 		}
 	);
 	if (!webring) {
-		throw new WebringNotFoundError(
-			`Webring with id '${webringId}' cannot be found.`,
-			webringNotFoundError.code,
-			webringNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
 	}
 
 	const deletionDate: Date = options?.deletionDate ?? new Date();

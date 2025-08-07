@@ -6,15 +6,18 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { User, Webring } from '../../model';
 import { userService, testUtils } from '..';
 import { createRandomString } from '../util';
-import {
-	InvalidSiteNameError,
-	InvalidSiteUrlError,
-	SiteAlreadyExistsError,
-	WebringNotFoundError
-} from '../error';
 import { siteConfig } from '../../config';
 import { addNewSite } from './addNewSite';
 import { createRandomWebringUrl } from '../testUtils';
+import { ApiReturnableError } from '../error';
+import {
+	invalidSiteNameError,
+	invalidSiteNameTooLongError,
+	invalidSiteNameTooShortError,
+	invalidSiteUrlError,
+	siteAlreadyExistsError,
+	webringNotSerialisedErrorMessage
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -47,7 +50,7 @@ describe('Add site to webring', function () {
 
 		return expect(
 			addNewSite(nonSerialisedWebring, name, url, testUser.userId!)
-		).to.be.rejectedWith(WebringNotFoundError);
+		).to.be.rejectedWith(ApiReturnableError, webringNotSerialisedErrorMessage);
 	});
 
 	it('should raise an exception if an invalid name is provided', async function () {
@@ -56,7 +59,7 @@ describe('Add site to webring', function () {
 
 		return expect(
 			addNewSite(testWebring, name, url, testUser.userId!)
-		).to.be.rejectedWith(InvalidSiteNameError);
+		).to.be.rejectedWith(ApiReturnableError, invalidSiteNameError.message);
 	});
 
 	it('should raise an exception when passed a name that is too short', async function () {
@@ -67,7 +70,10 @@ describe('Add site to webring', function () {
 
 		return expect(
 			addNewSite(testWebring, name, url, testUser.userId!)
-		).to.be.rejectedWith(InvalidSiteNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidSiteNameTooShortError.message
+		);
 	});
 
 	it('should raise an exception when passed a name that is too long', async function () {
@@ -78,7 +84,10 @@ describe('Add site to webring', function () {
 
 		return expect(
 			addNewSite(testWebring, name, url, testUser.userId!)
-		).to.be.rejectedWith(InvalidSiteNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidSiteNameTooLongError.message
+		);
 	});
 
 	it('should raise an exception if an invalid URL is provided', async function () {
@@ -87,7 +96,7 @@ describe('Add site to webring', function () {
 
 		return expect(
 			addNewSite(testWebring, name, url, testUser.userId!)
-		).to.be.rejectedWith(InvalidSiteUrlError);
+		).to.be.rejectedWith(ApiReturnableError, invalidSiteUrlError.message);
 	});
 
 	it('should add a site to a webring', async function () {
@@ -120,7 +129,7 @@ describe('Add site to webring', function () {
 
 			return expect(
 				addNewSite(testWebring, testSite.name, testSite.url, testUser.userId!)
-			).to.be.rejectedWith(SiteAlreadyExistsError);
+			).to.be.rejectedWith(ApiReturnableError, siteAlreadyExistsError.message);
 		}
 	);
 

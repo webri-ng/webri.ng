@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
-import { WebringNotFoundError } from '../../app/error';
+import { ApiReturnableError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { webringNotFoundError } from '../api-error-response';
 import { createSiteApiResult } from '../model/SiteApiResult';
@@ -11,9 +11,11 @@ import { createSiteApiResult } from '../model/SiteApiResult';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function getSitesController(req: Request,
+export async function getSitesController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void> {
+	next: NextFunction
+): Promise<void> {
 	const { webringUrl } = req.params;
 
 	try {
@@ -23,15 +25,19 @@ export async function getSitesController(req: Request,
 			webringUrl
 		);
 		if (!webring) {
-			throw new WebringNotFoundError(`Webring with url '${webringUrl}' cannot be found.`,
-				webringNotFoundError.code, webringNotFoundError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				webringNotFoundError
+			);
 		}
 
 		const webringSites = await webringService.getWebringSites(webring.ringId!);
 
 		res.json(webringSites.map(createSiteApiResult));
 	} catch (err) {
-		if (err instanceof WebringNotFoundError) {
+		if (
+			err instanceof ApiReturnableError &&
+			err.code === webringNotFoundError.code
+		) {
 			res.status(404).end();
 
 			return;

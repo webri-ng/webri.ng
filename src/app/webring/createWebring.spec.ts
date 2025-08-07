@@ -7,13 +7,18 @@ import { Tag, User, Webring } from '../../model';
 import { userService, testUtils } from '..';
 import { createWebring } from './createWebring';
 import { createRandomString } from '../util';
-import {
-	InvalidRingNameError,
-	InvalidRingUrlError,
-	RingUrlNotUniqueError,
-	TooManyTagsError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { webringConfig } from '../../config';
+import {
+	invalidRingNameError,
+	invalidRingNameTooLongError,
+	invalidRingNameTooShortError,
+	invalidRingUrlError,
+	invalidRingUrlNotUniqueError,
+	invalidRingUrlTooLongError,
+	invalidRingUrlTooShortError,
+	tooManyTagsError
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -41,7 +46,7 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(ApiReturnableError, invalidRingNameError.message);
 	});
 
 	it('should raise an exception when passed a name that is too short', async function () {
@@ -52,7 +57,10 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingNameTooShortError.message
+		);
 	});
 
 	it('should raise an exception when passed a name that is too long', async function () {
@@ -63,7 +71,10 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingNameTooLongError.message
+		);
 	});
 
 	it('should raise an exception if an existing webring URL is provided', async function () {
@@ -72,7 +83,10 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(RingUrlNotUniqueError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlNotUniqueError.message
+		);
 	});
 
 	it('should raise an exception when passed a URL that is too short', async function () {
@@ -83,7 +97,10 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlTooShortError.message
+		);
 	});
 
 	it('should raise an exception when passed a URL that is too long', async function () {
@@ -94,7 +111,10 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlTooLongError.message
+		);
 	});
 
 	it('should raise an exception if an invalid URL is provided', async function () {
@@ -103,7 +123,7 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, [])
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(ApiReturnableError, invalidRingUrlError.message);
 	});
 
 	it('should raise an exception if more tags than the maximum allowed number is specified', async function () {
@@ -115,7 +135,7 @@ describe('Create new webring', function () {
 
 		return expect(
 			createWebring(name, url, 'description', false, testUser.userId!, tags)
-		).to.be.rejectedWith(TooManyTagsError);
+		).to.be.rejectedWith(ApiReturnableError, tooManyTagsError.message);
 	});
 
 	it('should create a webring', async function () {

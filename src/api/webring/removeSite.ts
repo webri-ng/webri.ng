@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
-import { WebringNotFoundError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { RequestSchema } from '../../model';
 import { webringNotFoundError } from '../api-error-response';
 import { getRequestMetadata } from '../getRequestMetadata';
+import { ApiReturnableError } from '../../app/error';
 
 /** Remove Webring request schema. */
 export const removeSiteRequestSchema: RequestSchema = {
@@ -43,10 +43,8 @@ export async function removeSiteController(
 			webringUrl
 		);
 		if (!webring) {
-			throw new WebringNotFoundError(
-				webringNotFoundError.message,
-				webringNotFoundError.code,
-				webringNotFoundError.httpStatus
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				webringNotFoundError
 			);
 		}
 

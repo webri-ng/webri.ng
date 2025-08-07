@@ -6,16 +6,22 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { Tag, User, Webring } from '../../model';
 import { userService, testUtils } from '..';
 import { createRandomString } from '../util';
-import {
-	InvalidIdentifierError,
-	InvalidRingNameError,
-	InvalidRingUrlError,
-	RingUrlNotUniqueError,
-	TooManyTagsError,
-	WebringNotFoundError
-} from '../error';
 import { webringConfig } from '../../config';
 import { updateWebring } from './updateWebring';
+import { ApiReturnableError } from '../error';
+import {
+	invalidRingNameError,
+	invalidRingNameTooLongError,
+	invalidRingNameTooShortError,
+	invalidRingUrlError,
+	invalidRingUrlNotUniqueError,
+	invalidRingUrlTooLongError,
+	invalidRingUrlTooShortError,
+	invalidWebringIdErrorMessage,
+	invalidWebringNameErrorMessage,
+	tooManyTagsError,
+	webringNotFoundError
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -52,7 +58,7 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		).to.be.rejectedWith(ApiReturnableError, invalidWebringIdErrorMessage);
 	});
 
 	it('should raise an exception if an invalid webring id is provided', async function () {
@@ -69,7 +75,7 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		).to.be.rejectedWith(ApiReturnableError, invalidWebringIdErrorMessage);
 	});
 
 	it('should raise an exception if a nonexistent webring id is provided', async function () {
@@ -86,7 +92,7 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(WebringNotFoundError);
+		).to.be.rejectedWith(ApiReturnableError, webringNotFoundError.message);
 	});
 
 	it('should raise an exception if an invalid name is provided', async function () {
@@ -103,7 +109,7 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(ApiReturnableError, invalidRingNameError.message);
 	});
 
 	it('should raise an exception when passed a name that is too short', async function () {
@@ -122,7 +128,10 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingNameTooShortError.message
+		);
 	});
 
 	it('should raise an exception when passed a name that is too long', async function () {
@@ -141,7 +150,10 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingNameError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingNameTooLongError.message
+		);
 	});
 
 	it('should raise an exception if an existing webring URL is provided', async function () {
@@ -158,7 +170,10 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(RingUrlNotUniqueError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlNotUniqueError.message
+		);
 	});
 
 	it('should raise an exception when passed a URL that is too short', async function () {
@@ -177,7 +192,10 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlTooShortError.message
+		);
 	});
 
 	it('should raise an exception when passed a URL that is too long', async function () {
@@ -196,7 +214,10 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(
+			ApiReturnableError,
+			invalidRingUrlTooLongError.message
+		);
 	});
 
 	it('should raise an exception if an empty URL is provided', async function () {
@@ -213,7 +234,7 @@ describe('Update webring', function () {
 				false,
 				[]
 			)
-		).to.be.rejectedWith(InvalidRingUrlError);
+		).to.be.rejectedWith(ApiReturnableError, invalidRingUrlError.message);
 	});
 
 	it('should raise an exception if more tags than the maximum allowed number is specified', async function () {
@@ -233,7 +254,7 @@ describe('Update webring', function () {
 				false,
 				tags
 			)
-		).to.be.rejectedWith(TooManyTagsError);
+		).to.be.rejectedWith(ApiReturnableError, tooManyTagsError.message);
 	});
 
 	it('should update a webring', async function () {

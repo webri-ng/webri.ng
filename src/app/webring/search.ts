@@ -3,13 +3,17 @@ import { EntityManager, FindManyOptions, ILike, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { appDataSource } from '../../infra/database';
 import { UUID, Webring } from '../../model';
-import { InvalidIdentifierError } from '../error';
-import { invalidIdentifierError } from '../../api/api-error-response';
+import {
+	invalidIdentifierError,
+	invalidTagErrorMessage,
+	invalidUserIdErrorMessage,
+	invalidWebringNameErrorMessage
+} from '../../api/api-error-response';
 import { tagService } from '..';
 import { GetTagSearchField } from '../tag';
 import { siteConfig } from '../../config';
 import dayjs = require('dayjs');
-
+import { ApiReturnableError } from '../error';
 
 /** Which search field to use when searching for webrings. */
 export enum SearchWebringsMethod {
@@ -19,20 +23,18 @@ export enum SearchWebringsMethod {
 	Tag
 }
 
-
 export enum SearchWebringsSort {
 	Alphabetical,
 	Created,
 	Modified
 }
 
-
 /** Additional options for the process. */
 export type SearchWebringsOptions = {
 	/**
-	* The entity manager managing the transaction the process will be run in.
-	* If this option is specified, then the operation will be run with this manager.
-	*/
+	 * The entity manager managing the transaction the process will be run in.
+	 * If this option is specified, then the operation will be run with this manager.
+	 */
 	transactionalEntityManager?: EntityManager;
 	/** Whether to return private webrings. */
 	returnPrivateWebrings?: boolean;
@@ -41,8 +43,7 @@ export type SearchWebringsOptions = {
 	/** The length of each page. */
 	pageLength?: number;
 	sortBy?: SearchWebringsSort;
-}
-
+};
 
 /**
  * A type to encapsulate the result set returned from a webring search operation.
@@ -54,8 +55,7 @@ export type SearchWebringsResults = {
 	webrings: Webring[];
 	searchMethod: SearchWebringsMethod;
 	searchTerm: UUID | string | undefined;
-}
-
+};
 
 /**
  * Searches the database for webrings tagged with a certain tag.
@@ -69,10 +69,11 @@ export type SearchWebringsResults = {
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
-async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
+async function searchTaggedWebrings(
+	searchMethod: SearchWebringsMethod,
 	searchTerm: UUID | string | undefined,
-	options: SearchWebringsOptions): Promise<SearchWebringsResults>
-{
+	options: SearchWebringsOptions
+): Promise<SearchWebringsResults> {
 	/** The results to return from the search. */
 	const results: SearchWebringsResults = {
 		totalResults: 0,
@@ -87,8 +88,11 @@ async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
 	const skip = (results.currentPage - 1) * resultsPerPage;
 
 	if (!searchTerm) {
-		throw new InvalidIdentifierError('The provided tag is invalid',
-			invalidIdentifierError.code, invalidIdentifierError.httpStatus);
+		throw new ApiReturnableError(
+			invalidTagErrorMessage,
+			invalidIdentifierError.code,
+			invalidIdentifierError.httpStatus
+		);
 	}
 
 	const tag = await tagService.getTag(GetTagSearchField.Name, searchTerm);
@@ -141,10 +145,11 @@ async function searchTaggedWebrings(searchMethod: SearchWebringsMethod,
  * @returns the found webrings, or an empty array if none found.
  * @throws {InvalidIdentifierError} If the provided identifier is invalid.
  */
-export async function search(searchMethod: SearchWebringsMethod,
+export async function search(
+	searchMethod: SearchWebringsMethod,
 	searchTerm?: UUID | string | undefined,
-	options: SearchWebringsOptions = {}): Promise<SearchWebringsResults>
-{
+	options: SearchWebringsOptions = {}
+): Promise<SearchWebringsResults> {
 	/** The results to return from the search. */
 	const results: SearchWebringsResults = {
 		totalResults: 0,
@@ -175,8 +180,11 @@ export async function search(searchMethod: SearchWebringsMethod,
 	// Set the search criteria based on which search field is selected.
 	if (searchMethod === SearchWebringsMethod.Name) {
 		if (!searchTerm) {
-			throw new InvalidIdentifierError('The provided webring name is invalid',
-				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
+			throw new ApiReturnableError(
+				invalidWebringNameErrorMessage,
+				invalidIdentifierError.code,
+				invalidIdentifierError.httpStatus
+			);
 		}
 
 		searchConditions.name = ILike(`%${searchTerm}%`);
@@ -184,8 +192,11 @@ export async function search(searchMethod: SearchWebringsMethod,
 
 	if (searchMethod === SearchWebringsMethod.Creator) {
 		if (!uuid.validate(searchTerm || '')) {
-			throw new InvalidIdentifierError('The provided user id is invalid',
-				invalidIdentifierError.code, invalidIdentifierError.httpStatus);
+			throw new ApiReturnableError(
+				invalidUserIdErrorMessage,
+				invalidIdentifierError.code,
+				invalidIdentifierError.httpStatus
+			);
 		}
 
 		searchConditions.createdBy = searchTerm;
@@ -218,14 +229,18 @@ export async function search(searchMethod: SearchWebringsMethod,
 	// If we have been passed a transaction manager, use this.
 	if (options.transactionalEntityManager) {
 		// Get the total count, to compute the total number of pages.
-		const [webrings, totalResults] = await options.transactionalEntityManager
-			.findAndCount(Webring, queryOptions);
+		const [webrings, totalResults] =
+			await options.transactionalEntityManager.findAndCount(
+				Webring,
+				queryOptions
+			);
 
 		results.totalResults = totalResults;
 		results.webrings = webrings;
 	} else {
 		// Get the total count, to compute the total number of pages.
-		const [webrings, totalResults] = await appDataSource.getRepository(Webring)
+		const [webrings, totalResults] = await appDataSource
+			.getRepository(Webring)
 			.findAndCount(queryOptions);
 
 		results.totalResults = totalResults;

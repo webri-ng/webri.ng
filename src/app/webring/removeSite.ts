@@ -1,7 +1,7 @@
 import { logger, siteService } from '..';
 import { siteNotFoundError } from '../../api/api-error-response';
 import { RequestMetadata, Site, Webring } from '../../model';
-import { SiteNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 import { getWebringSites } from './getWebringSites';
 
 /**
@@ -24,11 +24,7 @@ export async function removeSite(
 	/** The site to be removed, if found. */
 	const siteToRemove = webringSites.find((site) => site.url === siteUrl);
 	if (!siteToRemove) {
-		throw new SiteNotFoundError(
-			`Site with url '${siteUrl}' cannot be found in this webring`,
-			siteNotFoundError.code,
-			siteNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(siteNotFoundError);
 	}
 
 	logger.info('Removing site from webring', {

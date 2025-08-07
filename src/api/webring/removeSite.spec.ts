@@ -6,15 +6,19 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { Session, Site, User, Webring } from '../../model';
 import { sessionService, testUtils, userService } from '../../app';
 import { app } from '../../index';
-import { requestAuthenticationFailedError, requestAuthorisationFailedError,
-	requestValidationError, siteNotFoundError, webringNotFoundError } from '../api-error-response';
+import {
+	requestAuthenticationFailedError,
+	requestAuthorisationFailedError,
+	requestValidationError,
+	siteNotFoundError,
+	webringNotFoundError
+} from '../api-error-response';
 import { createRandomSiteUrl } from '../../app/testUtils';
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
-describe('Remove site API', function ()
-{
+describe('Remove site API', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -27,8 +31,7 @@ describe('Remove site API', function ()
 	let testSite: Site;
 	let testSite2: Site;
 
-	before(async function beforeTesting()
-	{
+	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
 		testUser2 = await testUtils.insertTestUser();
 		testUser3 = await testUtils.insertTestUser();
@@ -38,22 +41,26 @@ describe('Remove site API', function ()
 		testWebring = await testUtils.insertTestWebring(testUser.userId!, {
 			moderators: [testUser2]
 		});
-		testSite = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId!, testUser.userId!);
+		testSite = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!
+		);
+		testSite2 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!
+		);
 	});
 
-
-	after(async function afterTesting()
-	{
+	after(async function afterTesting() {
 		// Cascades to user's webrings.
 		testUser = await userService.deleteUser(testUser.userId!);
 		testUser2 = await userService.deleteUser(testUser2.userId!);
 		testUser3 = await userService.deleteUser(testUser3.userId!);
 	});
 
-
-	it('should reject a bad request body', function(done) {
-		chai.request(app)
+	it('should reject a bad request body', function (done) {
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
@@ -63,15 +70,18 @@ describe('Remove site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestValidationError.httpStatus);
 				expect(res.body).to.have.property('code', requestValidationError.code);
-				expect(res.body).to.have.property('error', requestValidationError.message);
+				expect(res.body).to.have.property(
+					'error',
+					requestValidationError.message
+				);
 
 				done();
 			});
 	});
 
-
-	it('should reject a request with an unknown webring URL', function(done) {
-		chai.request(app)
+	it('should reject a request with an unknown webring URL', function (done) {
+		chai
+			.request(app)
 			.post(`/webring/nonexistenturl/remove`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
@@ -81,16 +91,19 @@ describe('Remove site API', function ()
 				expect(err).to.be.null;
 				expect(res.status).to.equal(webringNotFoundError.httpStatus);
 				expect(res.body).to.have.property('code', webringNotFoundError.code);
-				expect(res.body).to.have.property('error', webringNotFoundError.message);
+				expect(res.body).to.have.property(
+					'error',
+					webringNotFoundError.message
+				);
 				done();
 			});
 	});
 
-
-	it('should reject a request with an unknown site URL', function(done) {
+	it('should reject a request with an unknown site URL', function (done) {
 		const url = createRandomSiteUrl();
 
-		chai.request(app)
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
@@ -101,32 +114,39 @@ describe('Remove site API', function ()
 				expect(res.status).to.equal(siteNotFoundError.httpStatus);
 				expect(res.body).to.have.property('code', siteNotFoundError.code);
 				expect(res.body).to.have.property('error');
-				expect(res.body.error).to.equal(`Site with url '${url}' cannot be ` +
-					'found in this webring');
+				expect(res.body.error).to.equal(siteNotFoundError.message);
 				done();
 			});
 	});
 
-
-	it('should reject an unauthenticated request', function(done) {
-		chai.request(app)
+	it('should reject an unauthenticated request', function (done) {
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.send({
 				url: testSite.url
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(requestAuthenticationFailedError.httpStatus);
-				expect(res.body).to.have.property('code', requestAuthenticationFailedError.code);
-				expect(res.body).to.have.property('error', requestAuthenticationFailedError.message);
+				expect(res.status).to.equal(
+					requestAuthenticationFailedError.httpStatus
+				);
+				expect(res.body).to.have.property(
+					'code',
+					requestAuthenticationFailedError.code
+				);
+				expect(res.body).to.have.property(
+					'error',
+					requestAuthenticationFailedError.message
+				);
 
 				done();
 			});
 	});
 
-
-	it('should reject an unauthorised request', function(done) {
-		chai.request(app)
+	it('should reject an unauthorised request', function (done) {
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUser3Session.sessionId}`)
 			.send({
@@ -135,16 +155,22 @@ describe('Remove site API', function ()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthorisationFailedError.httpStatus);
-				expect(res.body).to.have.property('code', requestAuthorisationFailedError.code);
-				expect(res.body).to.have.property('error', requestAuthorisationFailedError.message);
+				expect(res.body).to.have.property(
+					'code',
+					requestAuthorisationFailedError.code
+				);
+				expect(res.body).to.have.property(
+					'error',
+					requestAuthorisationFailedError.message
+				);
 
 				done();
 			});
 	});
 
-
-	it('should successfully remove a site from a webring', function(done) {
-		chai.request(app)
+	it('should successfully remove a site from a webring', function (done) {
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
@@ -157,9 +183,9 @@ describe('Remove site API', function ()
 			});
 	});
 
-
-	it(`should let a webring's moderator remove a site from a webring`, function(done) {
-		chai.request(app)
+	it(`should let a webring's moderator remove a site from a webring`, function (done) {
+		chai
+			.request(app)
 			.post(`/webring/${testWebring.url}/remove`)
 			.set('Cookie', `session=${testUser2Session.sessionId}`)
 			.send({

@@ -14,7 +14,7 @@ export type ApiErrorResponseDetails = {
 	code: string;
 	/** The API 'error message'. */
 	message: string;
-}
+};
 
 /**
  * Error details associated with an unhandled application exception.
@@ -346,3 +346,14 @@ export const requestRateLimitedError: ApiErrorResponseDetails = {
 	code: 'err-rate-limited',
 	message: 'Too many requests, please try again later.'
 };
+
+export const invalidWebringIdErrorMessage =
+	'The provided webring id is invalid';
+export const invalidWebringUrlErrorMessage =
+	'The provided webring url is invalid';
+export const invalidWebringNameErrorMessage =
+	'The provided webring name is invalid';
+export const webringNotSerialisedErrorMessage =
+	'The specified webring has not been serialised';
+export const invalidTagErrorMessage = 'The provided tag is invalid';
+export const invalidUserIdErrorMessage = 'The provided user id is invalid';

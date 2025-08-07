@@ -1,13 +1,12 @@
-import { logger, tagService } from '..';
+import { logger } from '..';
 import {
 	invalidRingUrlNotUniqueError,
 	tooManyTagsError
 } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
 import { appDataSource } from '../../infra/database';
-import { RequestMetadata, Tag, UUID, Webring } from '../../model';
-import { RingUrlNotUniqueError, TooManyTagsError } from '../error';
-import { GetTagSearchField } from '../tag';
+import { RequestMetadata, UUID, Webring } from '../../model';
+import { ApiReturnableError } from '../error';
 import { getWebring } from '.';
 import { GetWebringSearchField } from './getWebring';
 import { getOrCreateWebringTags } from './getOrCreateWebringTags';
@@ -48,10 +47,8 @@ export async function createWebring(
 		normalisedUrl
 	);
 	if (existingWebring) {
-		throw new RingUrlNotUniqueError(
-			invalidRingUrlNotUniqueError.message,
-			invalidRingUrlNotUniqueError.code,
-			invalidRingUrlNotUniqueError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			invalidRingUrlNotUniqueError
 		);
 	}
 
@@ -65,11 +62,7 @@ export async function createWebring(
 
 	// Validate the number of tags is acceptable.
 	if (tags.length > webringConfig.maxTagCount) {
-		throw new TooManyTagsError(
-			tooManyTagsError.message,
-			tooManyTagsError.code,
-			tooManyTagsError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(tooManyTagsError);
 	}
 
 	/** The newly created webring entity. */

@@ -17,10 +17,11 @@ export class ApiReturnableError extends Error {
 	 * If an API response is generated as a result of this error, this will be the HTTP
 	 * status for this response. This defaults to '400'.
 	 */
-	constructor(message: string,
+	constructor(
+		message: string,
 		public readonly code: string,
-		public readonly httpStatus: number = 400)
-	{
+		public readonly httpStatus: number = 400
+	) {
 		super(message);
 	}
 
@@ -30,21 +31,26 @@ export class ApiReturnableError extends Error {
 	 * @param details - The 'error response details' to create the exception from.
 	 * @returns The API returnable `Error` instance.
 	 */
-	public static fromApiErrorResponseDetails(details: ApiErrorResponseDetails): ApiReturnableError
-	{
-		return new ApiReturnableError(details.message, details.code, details.httpStatus);
+	public static fromApiErrorResponseDetails(
+		details: ApiErrorResponseDetails
+	): ApiReturnableError {
+		return new ApiReturnableError(
+			details.message,
+			details.code,
+			details.httpStatus
+		);
 	}
 }
 
-export class BadRequestError extends ApiReturnableError { }
+export class BadRequestError extends ApiReturnableError {}
 
-export class InvalidIdentifierError extends ApiReturnableError { }
+export class InvalidIdentifierError extends ApiReturnableError {}
 
-export class InvalidDateError extends ApiReturnableError { }
+export class InvalidDateError extends ApiReturnableError {}
 
-export class RequestValidationError extends Error { }
+export class RequestValidationError extends Error {}
 
-export class InvalidSessionError extends Error { }
+export class InvalidSessionError extends Error {}
 
 // These need to be exported _after_ declaring the base `ApiReturnableError` type.
 export * from './authentication';
@@ -53,4 +59,3 @@ export * from './email';
 export * from './site';
 export * from './tag';
 export * from './user';
-export * from './webring';

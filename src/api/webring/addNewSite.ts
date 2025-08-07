@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
-import { WebringNotFoundError } from '../../app/error';
+import { ApiReturnableError } from '../../app/error';
 import { GetWebringSearchField } from '../../app/webring';
 import { RequestSchema } from '../../model';
 import { webringNotFoundError } from '../api-error-response';
@@ -46,10 +46,8 @@ export async function addNewSiteController(
 			webringUrl
 		);
 		if (!webring) {
-			throw new WebringNotFoundError(
-				webringNotFoundError.message,
-				webringNotFoundError.code,
-				webringNotFoundError.httpStatus
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				webringNotFoundError
 			);
 		}
 

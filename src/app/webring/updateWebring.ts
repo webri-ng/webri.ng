@@ -1,5 +1,5 @@
 import { getWebring, GetWebringSearchField } from '.';
-import { logger, tagService } from '..';
+import { logger } from '..';
 import {
 	invalidRingUrlNotUniqueError,
 	tooManyTagsError,
@@ -7,13 +7,8 @@ import {
 } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
 import { appDataSource } from '../../infra/database';
-import { RequestMetadata, Tag, UUID, Webring } from '../../model';
-import {
-	RingUrlNotUniqueError,
-	TooManyTagsError,
-	WebringNotFoundError
-} from '../error';
-import { GetTagSearchField } from '../tag';
+import { RequestMetadata, UUID, Webring } from '../../model';
+import { ApiReturnableError } from '../error';
 import { getOrCreateWebringTags } from './getOrCreateWebringTags';
 
 /**
@@ -43,11 +38,7 @@ export async function updateWebring(
 	// Ensure that the specified webring exists.
 	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
 	if (!webring) {
-		throw new WebringNotFoundError(
-			`Webring with id '${webringId}' cannot be found.`,
-			webringNotFoundError.code,
-			webringNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
 	}
 
 	/**
@@ -65,10 +56,8 @@ export async function updateWebring(
 		normalisedUrl
 	);
 	if (existingWebring && existingWebring.ringId !== webringId) {
-		throw new RingUrlNotUniqueError(
-			invalidRingUrlNotUniqueError.message,
-			invalidRingUrlNotUniqueError.code,
-			invalidRingUrlNotUniqueError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			invalidRingUrlNotUniqueError
 		);
 	}
 
@@ -82,11 +71,7 @@ export async function updateWebring(
 
 	// Validate the number of tags is acceptable.
 	if (tags.length > webringConfig.maxTagCount) {
-		throw new TooManyTagsError(
-			tooManyTagsError.message,
-			tooManyTagsError.code,
-			tooManyTagsError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(tooManyTagsError);
 	}
 
 	// Set the webring's tags.
