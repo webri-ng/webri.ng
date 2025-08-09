@@ -2,8 +2,11 @@ import * as uuid from 'uuid';
 import { IsNull } from 'typeorm';
 import { appDataSource } from '../../infra/database';
 import { Session, UUID } from '../../model';
-import { InvalidSessionError, SessionExpiredError, SessionNotFoundError } from '../error';
-
+import {
+	InvalidSessionError,
+	SessionExpiredError,
+	SessionNotFoundError
+} from '../error';
 
 /**
  * Authenticates an individual session token.
@@ -16,9 +19,10 @@ import { InvalidSessionError, SessionExpiredError, SessionNotFoundError } from '
  * @throws {SessionExpiredError} If the session is found, but it has expired.
  * @throws {invalidSessionError} If the session is found, but has been invalidated.
  */
-export async function authenticateSession(sessionId: UUID,
-	authenticationDate: Date = new Date()): Promise<Session>
-{
+export async function authenticateSession(
+	sessionId: UUID,
+	authenticationDate: Date = new Date()
+): Promise<Session> {
 	if (!uuid.validate(sessionId)) {
 		throw new SessionNotFoundError();
 	}

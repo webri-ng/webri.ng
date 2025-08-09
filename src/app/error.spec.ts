@@ -2,8 +2,8 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { ApiReturnableError } from '.';
-import { requestValidationError } from '../../api/api-error-response';
+import { ApiReturnableError } from './error';
+import { requestValidationError } from '../api/api-error-response';
 chai.use(chaiAsPromised);
 
 describe('API Returnable Error Instance', function () {

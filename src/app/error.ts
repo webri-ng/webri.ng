@@ -1,4 +1,4 @@
-import { ApiErrorResponseDetails } from '../../api/api-error-response';
+import { ApiErrorResponseDetails } from '../api/api-error-response';
 
 /**
  * This class represents an application exception which can be handled by the API.
@@ -42,11 +42,14 @@ export class ApiReturnableError extends Error {
 	}
 }
 
-export class BadRequestError extends ApiReturnableError {}
-
 export class RequestValidationError extends Error {}
 
 export class InvalidSessionError extends Error {}
 
-// These need to be exported _after_ declaring the base `ApiReturnableError` type.
-export * from './authentication';
+export class AuthenticationFailedError extends Error {}
+
+export class NoAuthenticationError extends AuthenticationFailedError {}
+
+export class SessionNotFoundError extends AuthenticationFailedError {}
+
+export class SessionExpiredError extends Error {}

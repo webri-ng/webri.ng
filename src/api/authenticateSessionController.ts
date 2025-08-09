@@ -8,10 +8,11 @@ import { NoAuthenticationError } from '../app/error';
  * @param {Response} res - Express Response.
  * @param {NextFunction} next - Express next middleware handler.
  */
-export function authenticateSessionController(req: Request,
+export function authenticateSessionController(
+	req: Request,
 	res: Response,
-	next: NextFunction): void
-{
+	next: NextFunction
+): void {
 	if (!res.locals.user) {
 		return next(new NoAuthenticationError());
 	}
