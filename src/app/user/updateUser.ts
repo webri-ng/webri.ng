@@ -6,7 +6,7 @@ import {
 } from '../../api/api-error-response';
 import { RequestMetadata, User, UUID } from '../../model';
 import { ApiReturnableError } from '../error';
-import { getUser, GetUserSearchField } from '.';
+import { getUser, getUserByIdOrFail, GetUserSearchField } from '.';
 import { appDataSource } from '../../infra/database';
 
 /**
@@ -27,10 +27,7 @@ export async function updateUser(
 		requestMetadata: RequestMetadata;
 	}>
 ): Promise<User> {
-	const user = await getUser(GetUserSearchField.UserId, userId);
-	if (!user) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
-	}
+	const user = await getUserByIdOrFail(userId);
 
 	/**
 	 * 'Normalised' email address.

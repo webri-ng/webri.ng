@@ -1,11 +1,8 @@
 import { logger } from '..';
-import {
-	invalidExistingPasswordError,
-	userNotFoundError
-} from '../../api/api-error-response';
+import { invalidExistingPasswordError } from '../../api/api-error-response';
 import { RequestMetadata, User, UUID } from '../../model';
 import { ApiReturnableError } from '../error';
-import { getUser, GetUserSearchField } from '.';
+import { getUserByIdOrFail } from '.';
 import { hashPassword, validatePassword } from './password';
 import { appDataSource } from '../../infra/database';
 
@@ -27,10 +24,7 @@ export async function updatePassword(
 		requestMetadata: RequestMetadata;
 	}>
 ): Promise<User> {
-	const user = await getUser(GetUserSearchField.UserId, userId);
-	if (!user) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
-	}
+	const user = await getUserByIdOrFail(userId);
 
 	// Validate the user's existing password.
 	const passwordValidity = await validatePassword(

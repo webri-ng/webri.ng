@@ -1,9 +1,8 @@
-import { getWebring, GetWebringSearchField } from '.';
+import { getWebring, getWebringByIdOrFail, GetWebringSearchField } from '.';
 import { logger } from '..';
 import {
 	invalidRingUrlNotUniqueError,
-	tooManyTagsError,
-	webringNotFoundError
+	tooManyTagsError
 } from '../../api/api-error-response';
 import { webringConfig } from '../../config';
 import { appDataSource } from '../../infra/database';
@@ -35,11 +34,7 @@ export async function updateWebring(
 		requestMetadata: RequestMetadata;
 	}>
 ): Promise<Webring> {
-	// Ensure that the specified webring exists.
-	const webring = await getWebring(GetWebringSearchField.RingId, webringId);
-	if (!webring) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
-	}
+	const webring = await getWebringByIdOrFail(webringId);
 
 	/**
 	 * 'Normalised' webring URL.

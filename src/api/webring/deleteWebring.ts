@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { authoriseWebringOwnerAction } from '../../app/authorisation';
-import { ApiReturnableError } from '../../app/error';
-import { GetWebringSearchField } from '../../app/webring';
-import { webringNotFoundError } from '../api-error-response';
 import { getRequestMetadata } from '../getRequestMetadata';
 
 /**
@@ -23,15 +20,7 @@ export async function deleteWebringController(
 
 		const requestMetadata = getRequestMetadata(req, res);
 
-		const webring = await webringService.getWebring(
-			GetWebringSearchField.Url,
-			webringUrl
-		);
-		if (!webring) {
-			throw ApiReturnableError.fromApiErrorResponseDetails(
-				webringNotFoundError
-			);
-		}
+		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
 		// Check the authorisation for this action. Only the webring's creator is
 		// allowed to delete the webring.

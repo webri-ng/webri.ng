@@ -1,9 +1,6 @@
 import { RequestMetadata, Site, UUID, Webring } from '../../model';
 import { EntityManager } from 'typeorm';
-import { ApiReturnableError } from '../error';
-import { webringNotFoundError } from '../../api/api-error-response';
-import { getWebring } from '.';
-import { GetWebringSearchField } from './getWebring';
+import { getWebringByIdOrFail } from './getWebring';
 import { getWebringSites } from './getWebringSites';
 import { logger, siteService } from '..';
 import { appDataSource } from '../../infra/database';
@@ -35,16 +32,9 @@ export async function deleteWebring(
 		requestMetadata: RequestMetadata;
 	}>
 ): Promise<Webring> {
-	const webring: Webring | null = await getWebring(
-		GetWebringSearchField.RingId,
-		webringId,
-		{
-			transactionalEntityManager: options?.transactionalEntityManager
-		}
-	);
-	if (!webring) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
-	}
+	const webring = await getWebringByIdOrFail(webringId, {
+		transactionalEntityManager: options?.transactionalEntityManager
+	});
 
 	const deletionDate: Date = options?.deletionDate ?? new Date();
 

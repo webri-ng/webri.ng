@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
-import { GetWebringSearchField } from '../../app/webring';
 import { RequestSchema } from '../../model';
-import { webringNotFoundError } from '../api-error-response';
 import { getRequestMetadata } from '../getRequestMetadata';
-import { ApiReturnableError } from '../../app/error';
 
 /** Update Webring request schema. */
 export const updateWebringRequestSchema: RequestSchema = {
@@ -53,15 +50,7 @@ export async function updateWebringController(
 
 		const requestMetadata = getRequestMetadata(req, res);
 
-		const webring = await webringService.getWebring(
-			GetWebringSearchField.Url,
-			webringUrl
-		);
-		if (!webring) {
-			throw ApiReturnableError.fromApiErrorResponseDetails(
-				webringNotFoundError
-			);
-		}
+		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.

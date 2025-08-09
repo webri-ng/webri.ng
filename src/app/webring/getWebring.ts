@@ -6,7 +6,8 @@ import { ApiReturnableError } from '../error';
 import {
 	invalidIdentifierError,
 	invalidWebringIdErrorMessage,
-	invalidWebringUrlErrorMessage
+	invalidWebringUrlErrorMessage,
+	webringNotFoundError
 } from '../../api/api-error-response';
 import { appDataSource } from '../../infra/database';
 
@@ -77,4 +78,36 @@ export async function getWebring(
 	}
 
 	return appDataSource.getRepository(Webring).findOneBy(searchConditions);
+}
+
+export async function getWebringByIdOrFail(
+	webringId: UUID,
+	options?: GetWebringOptions
+): Promise<Webring> {
+	const webring = await getWebring(
+		GetWebringSearchField.RingId,
+		webringId,
+		options
+	);
+	if (!webring) {
+		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
+	}
+
+	return webring;
+}
+
+export async function getWebringByUrlOrFail(
+	webringUrl: string,
+	options?: GetWebringOptions
+): Promise<Webring> {
+	const webring = await getWebring(
+		GetWebringSearchField.Url,
+		webringUrl,
+		options
+	);
+	if (!webring) {
+		throw ApiReturnableError.fromApiErrorResponseDetails(webringNotFoundError);
+	}
+
+	return webring;
 }

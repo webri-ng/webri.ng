@@ -7,7 +7,8 @@ import {
 	invalidEmailErrorMessage,
 	invalidIdentifierError,
 	invalidUserIdErrorMessage,
-	invalidUsernameErrorMessage
+	invalidUsernameErrorMessage,
+	userNotFoundError
 } from '../../api/api-error-response';
 import { appDataSource } from '../../infra/database';
 
@@ -88,4 +89,16 @@ export async function getUser(
 	}
 
 	return appDataSource.getRepository(User).findOneBy(searchConditions);
+}
+
+export async function getUserByIdOrFail(
+	userId: UUID | string,
+	options?: GetUserOptions
+): Promise<User> {
+	const user = await getUser(GetUserSearchField.UserId, userId, options);
+	if (!user) {
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
+	}
+
+	return user;
 }

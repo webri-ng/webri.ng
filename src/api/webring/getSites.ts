@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
 import { ApiReturnableError } from '../../app/error';
-import { GetWebringSearchField } from '../../app/webring';
 import { webringNotFoundError } from '../api-error-response';
 import { createSiteApiResult } from '../model/SiteApiResult';
 
@@ -19,16 +18,7 @@ export async function getSitesController(
 	const { webringUrl } = req.params;
 
 	try {
-		// Ensure that the specified webring exists.
-		const webring = await webringService.getWebring(
-			GetWebringSearchField.Url,
-			webringUrl
-		);
-		if (!webring) {
-			throw ApiReturnableError.fromApiErrorResponseDetails(
-				webringNotFoundError
-			);
-		}
+		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
 		const webringSites = await webringService.getWebringSites(webring.ringId!);
 

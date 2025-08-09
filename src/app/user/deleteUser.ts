@@ -1,9 +1,7 @@
 import { User, UUID, Webring } from '../../model';
 import { EntityManager, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
-import { ApiReturnableError } from '../error';
-import { userNotFoundError } from '../../api/api-error-response';
-import { getUser, GetUserSearchField } from './getUser';
+import { getUserByIdOrFail } from './getUser';
 import { webringService } from '..';
 import { appDataSource } from '../../infra/database';
 
@@ -38,12 +36,9 @@ export async function deleteUser(
 	userId: UUID,
 	options: DeleteUserOptions = {}
 ): Promise<User> {
-	const user: User | null = await getUser(GetUserSearchField.UserId, userId, {
+	const user = await getUserByIdOrFail(userId, {
 		transactionalEntityManager: options.transactionalEntityManager || undefined
 	});
-	if (!user) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
-	}
 
 	const deletionDate: Date = options.deletionDate || new Date();
 

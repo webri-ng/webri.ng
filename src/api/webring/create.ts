@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger, webringService } from '../../app';
+import { webringService } from '../../app';
 import { RequestSchema } from '../../model';
 import { getRequestMetadata } from '../getRequestMetadata';
 
