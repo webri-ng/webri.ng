@@ -2,7 +2,7 @@ import { getSite } from '.';
 import { siteNotFoundError } from '../../api/api-error-response';
 import { appDataSource } from '../../infra/database';
 import { Site, UUID } from '../../model';
-import { SiteNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 
 /**
  * Updates an existing site entity.
@@ -11,14 +11,14 @@ import { SiteNotFoundError } from '../error';
  * @param {string} url - The URL for the new site.
  * @returns The newly created site.
  */
-export async function updateSite(siteId: UUID,
+export async function updateSite(
+	siteId: UUID,
 	name: string,
-	url: string): Promise<Site>
-{
+	url: string
+): Promise<Site> {
 	const site = await getSite(siteId);
 	if (!site) {
-		throw new SiteNotFoundError(`Site with id '${siteId}' cannot be found`,
-			siteNotFoundError.code, siteNotFoundError.httpStatus);
+		throw ApiReturnableError.fromApiErrorResponseDetails(siteNotFoundError);
 	}
 
 	/**

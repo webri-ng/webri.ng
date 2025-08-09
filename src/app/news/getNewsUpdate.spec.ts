@@ -5,50 +5,39 @@ import { appDataSource } from '../../infra/database';
 import { NewsUpdate } from '../../model';
 import { getNewsUpdate } from './getNewsUpdate';
 import { dummyUuid, invalidUuid } from '../testUtils';
-import { InvalidIdentifierError } from '../error';
+import { ApiReturnableError } from '../error';
+import { invalidIdentifierError } from '../../api/api-error-response';
 
-describe('Get news update', function ()
-{
+describe('Get news update', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testNewsUpdate: NewsUpdate;
 
-	before(async function beforeTesting()
-	{
-		testNewsUpdate = await appDataSource.getRepository(NewsUpdate)
-			.save(new NewsUpdate(
-				'Test news update',
-				'Test news update content'
-			));
+	before(async function beforeTesting() {
+		testNewsUpdate = await appDataSource
+			.getRepository(NewsUpdate)
+			.save(new NewsUpdate('Test news update', 'Test news update content'));
 	});
 
-
-	after(async function tearDown()
-	{
+	after(async function tearDown() {
 		testNewsUpdate.dateDeleted = new Date();
 
 		await appDataSource.getRepository(NewsUpdate).save(testNewsUpdate);
 	});
 
-
-	it('should return the specified news update', async function ()
-	{
+	it('should return the specified news update', async function () {
 		const newsUpdate = await getNewsUpdate(testNewsUpdate.updateId!);
 		expect(newsUpdate?.updateId).to.equal(testNewsUpdate.updateId);
 	});
 
-
-	it('should return null when the news update does not exist', async function ()
-	{
+	it('should return null when the news update does not exist', async function () {
 		const newsUpdate = await getNewsUpdate(dummyUuid);
 		expect(newsUpdate).to.be.null;
 	});
 
-
-	it('should raise the appropriate error when an invalid id is specified',
-	async function ()
-	{
-		return expect(getNewsUpdate(invalidUuid)).to.be
-			.rejectedWith(InvalidIdentifierError);
+	it('should raise the appropriate error when an invalid id is specified', async function () {
+		return expect(getNewsUpdate(invalidUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.to.have.property('code', invalidIdentifierError.code);
 	});
 });

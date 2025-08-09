@@ -31,8 +31,8 @@ export type DeleteUserOptions = {
  * @param {UUID} userId - The id of the user to delete.
  * @param {DeleteUserOptions} [options] - Additional options for the process.
  * @returns The deleted user.
- * @throws {InvalidIdentifierError} If the supplied id is invalid.
- * @throws {UserNotFoundError} If the specified user cannot be found.
+ * @throws {ApiReturnableError} If the supplied id is invalid.
+ * @throws {ApiReturnableError} If the specified user cannot be found.
  */
 export async function deleteUser(
 	userId: UUID,

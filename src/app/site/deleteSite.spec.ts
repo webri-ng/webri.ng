@@ -3,7 +3,7 @@ import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { InvalidIdentifierError, SiteNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 chai.use(chaiAsPromised);
 
 import { Site, User, Webring } from '../../model';
@@ -11,6 +11,10 @@ import { Site, User, Webring } from '../../model';
 import { testUtils, userService } from '..';
 import { appDataSource } from '../../infra/database';
 import { deleteSite } from '.';
+import {
+	invalidIdentifierError,
+	siteNotFoundError
+} from '../../api/api-error-response';
 
 describe('Site soft-deletion', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -43,13 +47,15 @@ describe('Site soft-deletion', function () {
 	});
 
 	it('should throw an exception when passed an empty site id', async function () {
-		return expect(deleteSite('')).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(deleteSite(''))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent site id', async function () {
-		return expect(deleteSite(testUtils.dummyUuid)).to.be.rejectedWith(
-			SiteNotFoundError
-		);
+		return expect(deleteSite(testUtils.dummyUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', siteNotFoundError.code);
 	});
 
 	it('should correctly delete a site', async function () {

@@ -2,90 +2,97 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { Site } from '.';
 import { testUtils } from '../app';
-import { InvalidSiteNameError, InvalidSiteUrlError } from '../app/error';
+import { ApiReturnableError } from '../app/error';
 import { siteConfig } from '../config';
+import {
+	invalidSiteNameCharacters,
+	invalidSiteNameError,
+	invalidSiteNameTooLongError,
+	invalidSiteNameTooShortError,
+	invalidSiteUrlError
+} from '../api/api-error-response';
 
-describe('Site Entity', function ()
-{
+describe('Site Entity', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
-	describe('Normalise site URL', function ()
-	{
-		it('should throw an exception if no site URL is provided', function ()
-		{
-			expect(() => Site.normaliseUrl('')).to.throw(InvalidSiteUrlError);
+	describe('Normalise site URL', function () {
+		it('should throw an exception if no site URL is provided', function () {
+			expect(() => Site.normaliseUrl(''))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteUrlError.code);
 		});
 
-		it('should correctly normalise a site URL', function ()
-		{
-			const normalisedUrl: string = Site.normaliseUrl('  http://www.example.org  ');
+		it('should correctly normalise a site URL', function () {
+			const normalisedUrl: string = Site.normaliseUrl(
+				'  http://www.example.org  '
+			);
 			expect(normalisedUrl).to.equal('http://www.example.org');
 		});
 
-		it('should prepend https:// if no protocol identifier is present in the site URL', function ()
-		{
+		it('should prepend https:// if no protocol identifier is present in the site URL', function () {
 			const normalisedUrl: string = Site.normaliseUrl('www.example.org  ');
 			expect(normalisedUrl).to.equal('https://www.example.org');
 		});
 
-		it('should not add https:// if a non http protocol identifier is present in the site URL', function ()
-		{
-			const normalisedUrl: string = Site.normaliseUrl('  ftp://www.example.org  ');
+		it('should not add https:// if a non http protocol identifier is present in the site URL', function () {
+			const normalisedUrl: string = Site.normaliseUrl(
+				'  ftp://www.example.org  '
+			);
 			expect(normalisedUrl).to.equal('ftp://www.example.org');
 		});
 	});
 
 	describe('Validate site URL', function () {
-		it('should throw an exception if no ring URL is provided', function ()
-		{
-			expect(() => Site.validateUrl('')).to.throw(InvalidSiteUrlError);
+		it('should throw an exception if no ring URL is provided', function () {
+			expect(() => Site.validateUrl(''))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteUrlError.code);
 		});
 	});
 
-
-	describe('Normalise site name', function ()
-	{
-		it('should throw an exception if no site name is provided', function ()
-		{
-			expect(() => Site.normaliseName('')).to.throw(InvalidSiteNameError);
+	describe('Normalise site name', function () {
+		it('should throw an exception if no site name is provided', function () {
+			expect(() => Site.normaliseName(''))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteNameError.code);
 		});
 
-		it("should correctly normalise a site's name", function ()
-		{
+		it("should correctly normalise a site's name", function () {
 			const normalisedName: string = Site.normaliseName(` Anthony's Site    `);
 			expect(normalisedName).to.equal(`Anthony's Site`);
 		});
 	});
 
-	describe('Validate site name', function ()
-	{
-		it('should throw an exception if no site name is provided', function ()
-		{
-			expect(() => Site.validateName('')).to.throw(InvalidSiteNameError);
+	describe('Validate site name', function () {
+		it('should throw an exception if no site name is provided', function () {
+			expect(() => Site.validateName(''))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteNameError.code);
 		});
 
-
-		it('should throw an exception when passed a name that is too short', function ()
-		{
+		it('should throw an exception when passed a name that is too short', function () {
 			const shortSiteName = Array(siteConfig.nameRequirements.minLength - 1)
-			.fill('n').join('');
-			expect(() => Site.validateName(shortSiteName)).to.throw(InvalidSiteNameError);
+				.fill('n')
+				.join('');
+			expect(() => Site.validateName(shortSiteName))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteNameTooShortError.code);
 		});
 
-
-		it('should throw an exception when passed a name that is too long', function ()
-		{
+		it('should throw an exception when passed a name that is too long', function () {
 			const longSiteName = Array(siteConfig.nameRequirements.maxLength + 1)
-			.fill('n').join('');
-			expect(() => Site.validateName(longSiteName)).to.throw(InvalidSiteNameError);
+				.fill('n')
+				.join('');
+			expect(() => Site.validateName(longSiteName))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteNameTooLongError.code);
 		});
 
-
-		it('should throw an exception when passed a name that contains invalid characters',
-			function ()
-		{
+		it('should throw an exception when passed a name that contains invalid characters', function () {
 			const invalidSiteName = "<script>alert('Hello');</script>";
-			expect(() => Site.validateName(invalidSiteName)).to.throw(InvalidSiteNameError);
+			expect(() => Site.validateName(invalidSiteName))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidSiteNameCharacters.code);
 		});
 	});
 });

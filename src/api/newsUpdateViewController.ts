@@ -2,7 +2,8 @@ import * as dayjs from 'dayjs';
 import { NextFunction, Request, Response } from 'express';
 import { newsService } from '../app';
 import { NewsUpdate } from '../model';
-import { InvalidIdentifierError } from '../app/error';
+import { ApiReturnableError } from '../app/error';
+import { invalidIdentifierError } from './api-error-response';
 
 /**
  * @param newsUpdate The news update to transform.
@@ -14,7 +15,7 @@ export function transformNewsUpdateToViewFormat(newsUpdate: NewsUpdate) {
 		link: `/news/${newsUpdate.updateId}`,
 		description: newsUpdate.description,
 		content: newsUpdate.content,
-		dateCreated: dayjs(newsUpdate.dateCreated).format('YYYY-MM-DD'),
+		dateCreated: dayjs(newsUpdate.dateCreated).format('YYYY-MM-DD')
 	};
 }
 
@@ -24,10 +25,11 @@ export function transformNewsUpdateToViewFormat(newsUpdate: NewsUpdate) {
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function newsUpdateViewController(req: Request,
+export async function newsUpdateViewController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	const { user } = res.locals;
 	const { updateId } = req.params;
 
@@ -45,7 +47,10 @@ export async function newsUpdateViewController(req: Request,
 		});
 	} catch (err) {
 		// If an invalid id is provided in the URL parameter, return a 404.
-		if (err instanceof InvalidIdentifierError) {
+		if (
+			err instanceof ApiReturnableError &&
+			err.code === invalidIdentifierError.code
+		) {
 			return res.render('news/notFound', {
 				user
 			});

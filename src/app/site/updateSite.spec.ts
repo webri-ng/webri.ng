@@ -6,14 +6,17 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { Site, User, Webring } from '../../model';
 import { userService, testUtils } from '..';
 import { createRandomString } from '../util';
-import {
-	InvalidIdentifierError,
-	InvalidSiteNameError,
-	InvalidSiteUrlError,
-	SiteNotFoundError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { siteConfig } from '../../config';
 import { updateSite } from './updateSite';
+import {
+	invalidIdentifierError,
+	invalidSiteNameError,
+	invalidSiteNameTooLongError,
+	invalidSiteNameTooShortError,
+	invalidSiteUrlError,
+	siteNotFoundError
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -41,36 +44,36 @@ describe('Add site to webring', function () {
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite('', name, url)).to.be.rejectedWith(
-			InvalidIdentifierError
-		);
+		return expect(updateSite('', name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should raise an exception if an invalid site id is provided', async function () {
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(
-			updateSite(testUtils.invalidUuid, name, url)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(updateSite(testUtils.invalidUuid, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should raise an exception if a nonexistent site id is provided', async function () {
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(
-			updateSite(testUtils.dummyUuid, name, url)
-		).to.be.rejectedWith(SiteNotFoundError);
+		return expect(updateSite(testUtils.dummyUuid, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', siteNotFoundError.code);
 	});
 
 	it('should raise an exception if an invalid name is provided', async function () {
 		const name = '';
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId!, name, url)).to.be.rejectedWith(
-			InvalidSiteNameError
-		);
+		return expect(updateSite(testSite.siteId!, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidSiteNameError.code);
 	});
 
 	it('should raise an exception when passed a name that is too short', async function () {
@@ -79,9 +82,9 @@ describe('Add site to webring', function () {
 			.join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId!, name, url)).to.be.rejectedWith(
-			InvalidSiteNameError
-		);
+		return expect(updateSite(testSite.siteId!, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidSiteNameTooShortError.code);
 	});
 
 	it('should raise an exception when passed a name that is too long', async function () {
@@ -90,18 +93,18 @@ describe('Add site to webring', function () {
 			.join('');
 		const url = testUtils.createRandomSiteUrl();
 
-		return expect(updateSite(testSite.siteId!, name, url)).to.be.rejectedWith(
-			InvalidSiteNameError
-		);
+		return expect(updateSite(testSite.siteId!, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidSiteNameTooLongError.code);
 	});
 
 	it('should raise an exception if an invalid URL is provided', async function () {
 		const name = createRandomString();
 		const url = '';
 
-		return expect(updateSite(testSite.siteId!, name, url)).to.be.rejectedWith(
-			InvalidSiteUrlError
-		);
+		return expect(updateSite(testSite.siteId!, name, url))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidSiteUrlError.code);
 	});
 
 	it('should update a site', async function () {

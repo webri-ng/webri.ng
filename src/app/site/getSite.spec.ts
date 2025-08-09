@@ -6,9 +6,10 @@ chai.use(chaiAsPromised);
 import { Site, User, Webring } from '../../model';
 import { testUtils, userService } from '..';
 import { appDataSource } from '../../infra/database';
-import { InvalidIdentifierError } from '../error';
+import { ApiReturnableError } from '../error';
 import { getSite } from '.';
 import { deleteSite } from './deleteSite';
+import { invalidIdentifierError } from '../../api/api-error-response';
 
 describe('Get site', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -37,13 +38,15 @@ describe('Get site', function () {
 	});
 
 	it('should throw an exception when passed an empty site id', async function () {
-		return expect(getSite('')).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(getSite(''))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed an invalid site id', async function () {
-		return expect(getSite(testUtils.invalidUuid)).to.be.rejectedWith(
-			InvalidIdentifierError
-		);
+		return expect(getSite(testUtils.invalidUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should correctly get a site by its id', async function () {

@@ -5,7 +5,7 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { User } from '../../model';
 import { testUtils, userService } from '..';
-import { ApiReturnableError, InvalidIdentifierError } from '../error';
+import { ApiReturnableError } from '../error';
 import { getUser, GetUserSearchField } from './getUser';
 import { appDataSource } from '../../infra/database';
 import { invalidIdentifierError } from '../../api/api-error-response';
@@ -78,9 +78,9 @@ describe('Get user', function () {
 
 	describe('Get user by email', function () {
 		it('should throw an exception when passed an invalid email', async function () {
-			return expect(getUser(GetUserSearchField.Email, '')).to.be.rejectedWith(
-				InvalidIdentifierError
-			);
+			return expect(getUser(GetUserSearchField.Email, ''))
+				.to.eventually.be.rejectedWith(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidIdentifierError.code);
 		});
 
 		it('should correctly get a user by their email', async function () {
@@ -104,9 +104,9 @@ describe('Get user', function () {
 
 	describe('Get user by username', function () {
 		it('should throw an exception when passed an invalid username', async function () {
-			return expect(
-				getUser(GetUserSearchField.Username, '')
-			).to.be.rejectedWith(InvalidIdentifierError);
+			return expect(getUser(GetUserSearchField.Username, ''))
+				.to.eventually.be.rejectedWith(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidIdentifierError.code);
 		});
 
 		it('should correctly get a user by their username', async function () {

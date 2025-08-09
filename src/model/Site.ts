@@ -1,15 +1,17 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { UUID } from '.';
 import {
-	invalidSiteNameCharacters, invalidSiteNameError, invalidSiteNameTooLongError,
-	invalidSiteNameTooShortError, invalidSiteUrlError
+	invalidSiteNameCharacters,
+	invalidSiteNameError,
+	invalidSiteNameTooLongError,
+	invalidSiteNameTooShortError,
+	invalidSiteUrlError
 } from '../api/api-error-response';
-import { InvalidSiteNameError, InvalidSiteUrlError } from '../app/error';
+import { ApiReturnableError } from '../app/error';
 import { webringConfig } from '../config';
 
 @Entity('site')
-export class Site
-{
+export class Site {
 	@PrimaryGeneratedColumn('uuid', {
 		name: 'site_id'
 	})
@@ -61,11 +63,12 @@ export class Site
 	})
 	public dateModified: Date;
 
-	constructor(_name: string,
+	constructor(
+		_name: string,
 		_url: string,
 		_parentWebringId: UUID,
-		_addedBy: UUID)
-	{
+		_addedBy: UUID
+	) {
 		this.name = _name;
 		this.url = _url;
 		this.addedBy = _addedBy;
@@ -82,45 +85,47 @@ export class Site
 	 * @throws {InvalidSiteNameError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: string): void
-	{
+	public static validateName(name: string): void {
 		if (!name) {
-			throw new InvalidSiteNameError(invalidSiteNameError.message,
-				invalidSiteNameError.code, invalidSiteNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidSiteNameError
+			);
 		}
 
 		// Check name length.
 		if (name.length < webringConfig.nameRequirements.minLength) {
-			throw new InvalidSiteNameError(invalidSiteNameTooShortError.message,
-				invalidSiteNameTooShortError.code, invalidSiteNameTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidSiteNameTooShortError
+			);
 		}
 
 		if (name.length > webringConfig.nameRequirements.maxLength) {
-			throw new InvalidSiteNameError(invalidSiteNameTooLongError.message,
-				invalidSiteNameTooLongError.code, invalidSiteNameTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidSiteNameTooLongError
+			);
 		}
 
 		// Test for the existence of invalid characters.
 		if (new RegExp(/[<>]/).test(name)) {
-			throw new InvalidSiteNameError(invalidSiteNameCharacters.message,
-				invalidSiteNameCharacters.code, invalidSiteNameCharacters.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidSiteNameCharacters
+			);
 		}
 	}
 
-
 	/**
-	* Normalises a supplied site name.
-	* Ensures that a site name is stored in a suitable format.
-	* @param {string} name - The site name to normalise.
-	* @returns The normalised site name.
-	* @throws {InvalidSiteNameError} This API returnable exception is raised in the case
-	* that no site name is provided.
-	*/
-	public static normaliseName(name: string): string
-	{
+	 * Normalises a supplied site name.
+	 * Ensures that a site name is stored in a suitable format.
+	 * @param {string} name - The site name to normalise.
+	 * @returns The normalised site name.
+	 * @throws {ApiReturnableError} This API returnable exception is raised in the case
+	 * that no site name is provided.
+	 */
+	public static normaliseName(name: string): string {
 		if (!name) {
-			throw new InvalidSiteNameError(invalidSiteNameError.message,
-				invalidSiteNameError.code, invalidSiteNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidSiteNameError
+			);
 		}
 
 		return name.trim();
@@ -132,27 +137,23 @@ export class Site
 	 * @throws {InvalidSiteUrlError} This API returnable exception is raised in the case
 	 * that the provided URL is invalid.
 	 */
-	public static validateUrl(url: string): void
-	{
+	public static validateUrl(url: string): void {
 		if (!url) {
-			throw new InvalidSiteUrlError(invalidSiteUrlError.message,
-				invalidSiteUrlError.code, invalidSiteUrlError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidSiteUrlError);
 		}
 	}
 
 	/**
-	* Normalises a supplied site URL.
-	* Ensures that a site URL is stored in a suitable format.
-	* @param {string} url - The site URL to normalise.
-	* @returns The normalised site URL.
-	* @throws {InvalidSiteNameError} This API returnable exception is raised in the case
-	* that no username is provided.
-	*/
-	public static normaliseUrl(url: string): string
-	{
+	 * Normalises a supplied site URL.
+	 * Ensures that a site URL is stored in a suitable format.
+	 * @param {string} url - The site URL to normalise.
+	 * @returns The normalised site URL.
+	 * @throws {InvalidSiteNameError} This API returnable exception is raised in the case
+	 * that no username is provided.
+	 */
+	public static normaliseUrl(url: string): string {
 		if (!url) {
-			throw new InvalidSiteUrlError(invalidSiteUrlError.message,
-				invalidSiteUrlError.code, invalidSiteUrlError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidSiteUrlError);
 		}
 
 		let normalisedUrl = url.toLowerCase().trim();

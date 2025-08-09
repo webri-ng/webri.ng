@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { webringService } from '../../app';
-import { ApiReturnableError, SiteNotFoundError } from '../../app/error';
+import { ApiReturnableError } from '../../app/error';
 import { GetNewSiteMethod, GetWebringSearchField } from '../../app/webring';
 import { globalConfig } from '../../config';
-import { siteNotFoundError, webringNotFoundError } from '../api-error-response';
+import {
+	siteNotFoundError,
+	webringHasNoSitesErrorMessage,
+	webringNotFoundError
+} from '../api-error-response';
 
 /**
  * Get next site controller.
@@ -70,8 +74,8 @@ export async function getNewSiteController(
 		);
 		// If the new site cannot be retrieved, redirect to the home page.
 		if (!newSite) {
-			throw new SiteNotFoundError(
-				'This webring has no sites added',
+			throw new ApiReturnableError(
+				webringHasNoSitesErrorMessage,
 				siteNotFoundError.code,
 				siteNotFoundError.httpStatus
 			);

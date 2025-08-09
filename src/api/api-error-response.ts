@@ -356,8 +356,15 @@ export const invalidWebringNameErrorMessage =
 export const webringNotSerialisedErrorMessage =
 	'The specified webring has not been serialised';
 export const invalidTagErrorMessage = 'The provided tag is invalid';
+export const invalidUsernameErrorMessage = 'The provided username is invalid';
 export const invalidUserIdErrorMessage = 'The provided user id is invalid';
+export const invalidEmailErrorMessage = 'The provided email is invalid';
 export const tagNameAlreadyExistsErrorMessage =
 	'The tag name provided already exists';
 export const invalidTagNameErrorMessage = 'The provided tag name is invalid';
 export const invalidTagIdErrorMessage = 'The provided tag id is invalid';
+export const invalidSiteIdErrorMessage = 'The provided site id is invalid';
+export const webringHasNoSitesErrorMessage =
+	'The specified webring has no sites added';
+export const invalidNewsUpdateIdErrorMessage =
+	'The provided news update id is invalid';
