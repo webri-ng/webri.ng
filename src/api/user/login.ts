@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { sessionService, userService } from '../../app';
-import {
-	InvalidUserCredentialsError,
-	UserNotFoundError
-} from '../../app/error';
-import { RequestSchema, User } from '../../model';
-import { loginFailedError } from '../api-error-response';
+import { ApiReturnableError } from '../../app/error';
+import { RequestSchema } from '../../model';
+import { loginFailedError, userNotFoundError } from '../api-error-response';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
 import { getRequestMetadata } from '../getRequestMetadata';
 
@@ -53,13 +50,12 @@ export async function loginController(
 		createSessionCookieResponse(res, session).send();
 	} catch (err) {
 		// In the case that the user does not exist, return a generic 'login failed' error message.
-		if (err instanceof UserNotFoundError) {
+		if (
+			err instanceof ApiReturnableError &&
+			err.code === userNotFoundError.code
+		) {
 			return next(
-				new InvalidUserCredentialsError(
-					loginFailedError.message,
-					loginFailedError.code,
-					loginFailedError.httpStatus
-				)
+				ApiReturnableError.fromApiErrorResponseDetails(loginFailedError)
 			);
 		}
 

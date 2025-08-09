@@ -8,13 +8,7 @@ import {
 import { userConfig } from '../../config';
 import { appDataSource } from '../../infra/database';
 import { RequestMetadata, User } from '../../model';
-import {
-	InvalidUserCredentialsError,
-	LoginAttemptCountExceededError,
-	LoginDisabledDueToAuthFailureError,
-	PasswordExpiredError,
-	UserNotFoundError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { logger } from '../logger';
 import { getUser, GetUserSearchField } from './getUser';
 import { validatePassword } from './password';
@@ -27,12 +21,12 @@ import { validatePassword } from './password';
  * @param {string} password - The user's password.
  * @param options Additional options for the request.
  * @returns The authenticated user.
- * @throws {UserNotFoundError} - If a user with the supplied email cannot be found.
- * @throws {InvalidUserCredentialsError} - If the supplied credentials are invalid.
- * @throws {PasswordExpiredError} - If the supplied password has expired.
- * @throws {LoginAttemptCountExceededError} - If the maximum unsuccessful login attempts
+ * @throws {ApiReturnableError} If a user with the supplied email cannot be found.
+ * @throws {ApiReturnableError} If the supplied credentials are invalid.
+ * @throws {ApiReturnableError} If the supplied password has expired.
+ * @throws {ApiReturnableError} If the maximum unsuccessful login attempts
  * have been exceeded.
- * @throws {LoginDisabledDueToAuthFailureError} - If the account is locked due to
+ * @throws {ApiReturnableError} If the account is locked due to
  * too many failed login attempts.
  */
 export async function login(
@@ -53,11 +47,7 @@ export async function login(
 			...(options?.requestMetadata ?? {})
 		});
 
-		throw new UserNotFoundError(
-			`User with email '${email}' cannot be found`,
-			userNotFoundError.code,
-			userNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
 	// Check if the user is locked due to too many successive failed authentication attempts.
@@ -67,10 +57,8 @@ export async function login(
 			...(options?.requestMetadata ?? {})
 		});
 
-		throw new LoginDisabledDueToAuthFailureError(
-			lockedAccountDueToAuthFailureError.message,
-			lockedAccountDueToAuthFailureError.code,
-			lockedAccountDueToAuthFailureError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			lockedAccountDueToAuthFailureError
 		);
 	}
 
@@ -97,20 +85,14 @@ export async function login(
 			user.lockedDueToFailedAuth = true;
 			await appDataSource.getRepository(User).save(user);
 
-			throw new LoginAttemptCountExceededError(
-				loginAttemptCountExceededError.message,
-				loginAttemptCountExceededError.code,
-				loginAttemptCountExceededError.httpStatus
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				loginAttemptCountExceededError
 			);
 		}
 
 		user = await appDataSource.getRepository(User).save(user);
 
-		throw new InvalidUserCredentialsError(
-			loginFailedError.message,
-			loginFailedError.code,
-			loginFailedError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(loginFailedError);
 	}
 
 	// Set the user's login attempt count to 0 on successful authentication.
@@ -121,11 +103,7 @@ export async function login(
 	user = await appDataSource.getRepository(User).save(user);
 
 	if (user.hasPasswordExpired()) {
-		throw new PasswordExpiredError(
-			expiredPasswordError.message,
-			expiredPasswordError.code,
-			expiredPasswordError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(expiredPasswordError);
 	}
 
 	return user;

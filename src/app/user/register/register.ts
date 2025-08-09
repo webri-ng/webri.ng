@@ -5,7 +5,7 @@ import {
 } from '../../../api/api-error-response';
 import { appDataSource } from '../../../infra/database';
 import { RequestMetadata, User } from '../../../model';
-import { EmailNotUniqueError, UsernameNotUniqueError } from '../../error';
+import { ApiReturnableError } from '../../error';
 import { getUser, GetUserSearchField } from '../getUser';
 import { hashPassword } from '../password';
 import { sendRegistrationEmail } from './sendRegistrationEmail';
@@ -42,11 +42,7 @@ export async function register(
 	// Check whether a user already exists with the same email.
 	let existingUser = await getUser(GetUserSearchField.Email, normalisedEmail);
 	if (existingUser) {
-		throw new EmailNotUniqueError(
-			emailNotUniqueError.message,
-			emailNotUniqueError.code,
-			emailNotUniqueError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(emailNotUniqueError);
 	}
 
 	/**
@@ -60,10 +56,8 @@ export async function register(
 	// Check whether a user already exists with the same username.
 	existingUser = await getUser(GetUserSearchField.Username, normalisedUsername);
 	if (existingUser) {
-		throw new UsernameNotUniqueError(
-			usernameNotUniqueError.message,
-			usernameNotUniqueError.code,
-			usernameNotUniqueError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			usernameNotUniqueError
 		);
 	}
 

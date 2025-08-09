@@ -11,15 +11,18 @@ import {
 	createRandomUsername,
 	testPasswordText
 } from '../../testUtils';
-import {
-	EmailNotUniqueError,
-	InvalidEmailError,
-	InvalidPasswordError,
-	InvalidUsernameError,
-	UsernameNotUniqueError
-} from '../../error';
+import { ApiReturnableError } from '../../error';
 import { userConfig } from '../../../config';
 import { validatePassword } from '../password';
+import {
+	emailNotUniqueError,
+	invalidEmailAddressError,
+	invalidNewPasswordTooLongError,
+	invalidNewPasswordTooShortError,
+	invalidUsernameTooLongError,
+	invalidUsernameTooShortError,
+	usernameNotUniqueError
+} from '../../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -45,7 +48,9 @@ describe('User registration', function () {
 				testExistingUser?.email || '',
 				'password'
 			)
-		).to.be.rejectedWith(EmailNotUniqueError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', emailNotUniqueError.code);
 	});
 
 	it('should throw an exception when passed a non-unique username', async function () {
@@ -55,13 +60,15 @@ describe('User registration', function () {
 				createRandomEmailAddress(),
 				'password'
 			)
-		).to.be.rejectedWith(UsernameNotUniqueError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', usernameNotUniqueError.code);
 	});
 
 	it('should throw an exception when passed an invalid email', async function () {
-		return expect(
-			register(createRandomUsername(), '', 'password')
-		).to.be.rejectedWith(InvalidEmailError);
+		return expect(register(createRandomUsername(), '', 'password'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidEmailAddressError.code);
 	});
 
 	it('should throw an exception when passed an invalid username that is too short', async function () {
@@ -70,9 +77,9 @@ describe('User registration', function () {
 			.fill('n')
 			.join('');
 
-		return expect(register(username, email, 'password')).to.be.rejectedWith(
-			InvalidUsernameError
-		);
+		return expect(register(username, email, 'password'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidUsernameTooShortError.code);
 	});
 
 	it('should throw an exception when passed an invalid username that is too long', async function () {
@@ -81,7 +88,9 @@ describe('User registration', function () {
 			.join('');
 		return expect(
 			register(longUsername, createRandomEmailAddress(), 'password')
-		).to.be.rejectedWith(InvalidUsernameError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidUsernameTooLongError.code);
 	});
 
 	it('should throw an exception when passed a password that is too short', async function () {
@@ -95,7 +104,9 @@ describe('User registration', function () {
 				createRandomEmailAddress(),
 				shortPassword
 			)
-		).to.be.rejectedWith(InvalidPasswordError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidNewPasswordTooShortError.code);
 	});
 
 	it('should throw an exception when passed a password that is too long', async function () {
@@ -104,7 +115,9 @@ describe('User registration', function () {
 			.join('');
 		return expect(
 			register(createRandomUsername(), createRandomEmailAddress(), longPassword)
-		).to.be.rejectedWith(InvalidPasswordError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidNewPasswordTooLongError.code);
 	});
 
 	it('should correctly register a new customer', async function () {

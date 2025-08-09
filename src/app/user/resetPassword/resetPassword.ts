@@ -3,7 +3,7 @@ import { logger, testUtils } from '../..';
 import { userNotFoundError } from '../../../api/api-error-response';
 import { appDataSource } from '../../../infra/database';
 import { RequestMetadata, User } from '../../../model';
-import { UserNotFoundError } from '../../error';
+import { ApiReturnableError } from '../../error';
 import { hashPassword } from '../password';
 import { sendResetPaswordEmail } from './sendResetPaswordEmail';
 
@@ -11,7 +11,7 @@ import { sendResetPaswordEmail } from './sendResetPaswordEmail';
  * Resets a particular user's password, and emails the temporary password to the user.
  * @param {UUID} email The email of the user whose password to reset.
  * @param options Additional options.
- * @throws {UserNotFoundError} If the email provided does not correspond to a real user.
+ * @throws {ApiReturnableError} If the email provided does not correspond to a real user.
  */
 export async function resetPassword(
 	email: string,
@@ -26,11 +26,7 @@ export async function resetPassword(
 			...(options?.requestMetadata ?? {})
 		});
 
-		throw new UserNotFoundError(
-			userNotFoundError.message,
-			userNotFoundError.code,
-			userNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
 	const temporaryPassword = testUtils.createRandomPassword();

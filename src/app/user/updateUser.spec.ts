@@ -6,16 +6,18 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { User } from '../../model';
 import { userService, testUtils } from '..';
 import { createRandomEmailAddress, createRandomUsername } from '../testUtils';
-import {
-	EmailNotUniqueError,
-	InvalidEmailError,
-	InvalidIdentifierError,
-	InvalidUsernameError,
-	UsernameNotUniqueError,
-	UserNotFoundError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { userConfig } from '../../config';
 import { updateUser } from './updateUser';
+import {
+	emailNotUniqueError,
+	invalidEmailAddressError,
+	invalidIdentifierError,
+	invalidUsernameTooLongError,
+	invalidUsernameTooShortError,
+	usernameNotUniqueError,
+	userNotFoundError
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -39,54 +41,54 @@ describe('Update user', function () {
 		const email = createRandomEmailAddress();
 		const username = createRandomUsername();
 
-		return expect(updateUser('', username, email)).to.be.rejectedWith(
-			InvalidIdentifierError
-		);
+		return expect(updateUser('', username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed an invalid userId', async function () {
 		const email = createRandomEmailAddress();
 		const username = createRandomUsername();
 
-		return expect(
-			updateUser(testUtils.invalidUuid, username, email)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(updateUser(testUtils.invalidUuid, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent userId', async function () {
 		const email = createRandomEmailAddress();
 		const username = createRandomUsername();
 
-		return expect(
-			updateUser(testUtils.dummyUuid, username, email)
-		).to.be.rejectedWith(UserNotFoundError);
+		return expect(updateUser(testUtils.dummyUuid, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', userNotFoundError.code);
 	});
 
 	it('should throw an exception when passed a non-unique email', async function () {
 		const email = testExistingUser?.email || '';
 		const username = createRandomUsername();
 
-		return expect(
-			updateUser(testUser.userId!, username, email)
-		).to.be.rejectedWith(EmailNotUniqueError);
+		return expect(updateUser(testUser.userId!, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', emailNotUniqueError.code);
 	});
 
 	it('should throw an exception when passed a non-unique username', async function () {
 		const email = createRandomEmailAddress();
 		const username = testExistingUser?.username || '';
 
-		return expect(
-			updateUser(testUser.userId!, username, email)
-		).to.be.rejectedWith(UsernameNotUniqueError);
+		return expect(updateUser(testUser.userId!, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', usernameNotUniqueError.code);
 	});
 
 	it('should throw an exception when passed an invalid email', async function () {
 		const email = '';
 		const username = testExistingUser?.username || '';
 
-		return expect(
-			updateUser(testUser.userId!, username, email)
-		).to.be.rejectedWith(InvalidEmailError);
+		return expect(updateUser(testUser.userId!, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidEmailAddressError.code);
 	});
 
 	it('should throw an exception when passed an invalid username that is too short', async function () {
@@ -95,9 +97,9 @@ describe('Update user', function () {
 			.fill('n')
 			.join('');
 
-		return expect(
-			updateUser(testUser.userId!, username, email)
-		).to.be.rejectedWith(InvalidUsernameError);
+		return expect(updateUser(testUser.userId!, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidUsernameTooShortError.code);
 	});
 
 	it('should throw an exception when passed an invalid username that is too long', async function () {
@@ -106,9 +108,9 @@ describe('Update user', function () {
 			.fill('n')
 			.join('');
 
-		return expect(
-			updateUser(testUser.userId!, username, email)
-		).to.be.rejectedWith(InvalidUsernameError);
+		return expect(updateUser(testUser.userId!, username, email))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidUsernameTooLongError.code);
 	});
 
 	it('should correctly update a customer', async function () {

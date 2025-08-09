@@ -4,7 +4,7 @@ import {
 	userNotFoundError
 } from '../../api/api-error-response';
 import { RequestMetadata, User, UUID } from '../../model';
-import { InvalidUserCredentialsError, UserNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 import { getUser, GetUserSearchField } from '.';
 import { hashPassword, validatePassword } from './password';
 import { appDataSource } from '../../infra/database';
@@ -29,11 +29,7 @@ export async function updatePassword(
 ): Promise<User> {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
-		throw new UserNotFoundError(
-			`User with id '${userId}' cannot be found`,
-			userNotFoundError.code,
-			userNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
 	// Validate the user's existing password.
@@ -49,10 +45,8 @@ export async function updatePassword(
 			...(options?.requestMetadata ?? {})
 		});
 
-		throw new InvalidUserCredentialsError(
-			invalidExistingPasswordError.message,
-			invalidExistingPasswordError.code,
-			invalidExistingPasswordError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			invalidExistingPasswordError
 		);
 	}
 

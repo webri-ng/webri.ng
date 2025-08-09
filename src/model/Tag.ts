@@ -1,14 +1,22 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { invalidTagNameError, invalidTagNameTooLongError,
-	invalidTagNameTooShortError } from '../api/api-error-response';
-import { InvalidTagNameError } from '../app/error';
+import {
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	PrimaryGeneratedColumn
+} from 'typeorm';
+import {
+	invalidTagNameError,
+	invalidTagNameTooLongError,
+	invalidTagNameTooShortError
+} from '../api/api-error-response';
 import { tagConfig } from '../config';
 import { UUID } from '.';
 import { Webring } from './Webring';
+import { ApiReturnableError } from '../app/error';
 
 @Entity('tag')
-export class Tag
-{
+export class Tag {
 	@PrimaryGeneratedColumn('uuid', {
 		name: 'tag_id'
 	})
@@ -47,7 +55,7 @@ export class Tag
 	})
 	public dateModified: Date;
 
-	@ManyToMany(_type => Webring)
+	@ManyToMany((_type) => Webring)
 	@JoinTable({
 		name: 'tagged_ring',
 		joinColumn: {
@@ -61,9 +69,7 @@ export class Tag
 	})
 	public taggedWebrings!: Promise<Webring[]>;
 
-	constructor(_name: string,
-		_createdBy: UUID)
-	{
+	constructor(_name: string, _createdBy: UUID) {
 		this.name = _name;
 		this.createdBy = _createdBy;
 		this.dateDeleted = null;
@@ -75,48 +81,44 @@ export class Tag
 	 * Validates a tag name.
 	 * Throws a descriptive exception in case of validation failure.
 	 * @param {string} name - The name to validate.
-	 * @throws {InvalidTagNameError} This API returnable exception is raised with a
+	 * @throws {ApiReturnableError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateName(name: string): void
-	{
+	public static validateName(name: string): void {
 		if (!name) {
-			throw new InvalidTagNameError(invalidTagNameError.message,
-				invalidTagNameError.code, invalidTagNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidTagNameError);
 		}
 
 		// Check for the existence of invalid characters.
 		if (new RegExp(/([^a-z_0-9])/g).test(name)) {
-			throw new InvalidTagNameError(invalidTagNameError.message,
-				invalidTagNameError.code, invalidTagNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidTagNameError);
 		}
 
 		// Check name length.
 		if (name.length < tagConfig.nameRequirements.minLength) {
-			throw new InvalidTagNameError(invalidTagNameTooShortError.message,
-				invalidTagNameTooShortError.code, invalidTagNameTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidTagNameTooShortError
+			);
 		}
 
 		if (name.length > tagConfig.nameRequirements.maxLength) {
-			throw new InvalidTagNameError(invalidTagNameTooLongError.message,
-				invalidTagNameTooLongError.code, invalidTagNameTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidTagNameTooLongError
+			);
 		}
 	}
 
-
 	/**
-	* Normalises a supplied webring name.
-	* Ensures that a webring name is stored in a suitable format.
-	* @param {string} name - The webring name to normalise.
-	* @returns The normalised webring name.
-	* @throws {InvalidTagNameError} This API returnable exception is raised in the case
-	* that no username is provided.
-	*/
-	public static normaliseName(name: string): string
-	{
+	 * Normalises a supplied webring name.
+	 * Ensures that a webring name is stored in a suitable format.
+	 * @param {string} name - The webring name to normalise.
+	 * @returns The normalised webring name.
+	 * @throws {ApiReturnableError} This API returnable exception is raised in the case
+	 * that no username is provided.
+	 */
+	public static normaliseName(name: string): string {
 		if (!name) {
-			throw new InvalidTagNameError(invalidTagNameError.message,
-				invalidTagNameError.code, invalidTagNameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(invalidTagNameError);
 		}
 
 		return name.trim();

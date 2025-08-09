@@ -1,20 +1,18 @@
 import { Tag, UUID } from '../../model';
 import { getTag } from '.';
 import { GetTagSearchField } from './getTag';
-import { TagNameAlreadyExists } from '../error';
 import { EntityManager } from 'typeorm';
 import { appDataSource } from '../../infra/database';
-
+import { tagNameAlreadyExistsErrorMessage } from '../../api/api-error-response';
 
 /** Additional options for the process. */
 export type CreateTagOptions = {
 	/**
-	* The entity manager managing the transaction this will be run in.
-	* If this option is specified, then the operation will be run with this manager.
-	*/
+	 * The entity manager managing the transaction this will be run in.
+	 * If this option is specified, then the operation will be run with this manager.
+	 */
 	transactionalEntityManager?: EntityManager;
-}
-
+};
 
 /**
  * Creates a tag entity.
@@ -22,12 +20,13 @@ export type CreateTagOptions = {
  * @param {UUID} createdBy - The id of the creating user.
  * @param {CreateTagOptions} [options] Additional options for the creation process.
  * @returns The newly created tag.
- * @throws {TagNameAlreadyExists} If the specified tag name already exists.
+ * @throws {Error} If the specified tag name already exists.
  */
-export async function createTag(name: string,
+export async function createTag(
+	name: string,
 	createdBy: UUID,
-	options: CreateTagOptions = {}): Promise<Tag>
-{
+	options: CreateTagOptions = {}
+): Promise<Tag> {
 	/**
 	 * 'Normalised' tag name.
 	 * This ensures that the tag name is stored in a valid format.
@@ -38,7 +37,7 @@ export async function createTag(name: string,
 
 	const existingTag = await getTag(GetTagSearchField.Name, normalisedName);
 	if (existingTag) {
-		throw new TagNameAlreadyExists(`Tag name '${normalisedName}' already exists`);
+		throw new Error(tagNameAlreadyExistsErrorMessage);
 	}
 
 	const newTag = new Tag(normalisedName, createdBy);

@@ -1,8 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger, createErrorReference } from '../app';
-import { NoAuthenticationError, SessionExpiredError, SessionNotFoundError,
-	UserNotFoundError } from '../app/error';
-import { unhandledExceptionError } from './api-error-response';
+import {
+	NoAuthenticationError,
+	SessionExpiredError,
+	SessionNotFoundError,
+	ApiReturnableError
+} from '../app/error';
+import {
+	unhandledExceptionError,
+	userNotFoundError
+} from './api-error-response';
 import { removeSessionCookieResponse } from './removeSessionCookieResponse';
 
 /**
@@ -12,11 +19,12 @@ import { removeSessionCookieResponse } from './removeSessionCookieResponse';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export function viewErrorHandler(err: Error | undefined,
+export function viewErrorHandler(
+	err: Error | undefined,
 	_req: Request,
 	res: Response,
-	_next: NextFunction): void
-{
+	_next: NextFunction
+): void {
 	if (err instanceof NoAuthenticationError) {
 		return res.status(401).render('error', {
 			pageHeading: 'Error',
@@ -24,16 +32,19 @@ export function viewErrorHandler(err: Error | undefined,
 		});
 	}
 
-	if (err instanceof SessionNotFoundError ||
-		err instanceof UserNotFoundError)
-	{
+	if (
+		err instanceof SessionNotFoundError ||
+		(err instanceof ApiReturnableError && err.code === userNotFoundError.code)
+	) {
 		const { session } = res.locals;
 
 		// If there is an invalid session, remove the session cookie.
-		return removeSessionCookieResponse(res, session).status(401).render('error', {
-			pageHeading: 'Error',
-			errorMessage: 'Invalid Session!'
-		});
+		return removeSessionCookieResponse(res, session)
+			.status(401)
+			.render('error', {
+				pageHeading: 'Error',
+				errorMessage: 'Invalid Session!'
+			});
 	}
 
 	if (err instanceof SessionExpiredError) {
@@ -53,7 +64,8 @@ export function viewErrorHandler(err: Error | undefined,
 
 	return res.status(unhandledExceptionError.httpStatus).render('error', {
 		pageHeading: 'Something terrible has happened',
-		errorMessage: 'An unhandled server error has occurred. ' +
+		errorMessage:
+			'An unhandled server error has occurred. ' +
 			'If this error persists, please contact support and quote error ' +
 			`reference '${errorReference}'`
 	});

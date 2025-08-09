@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { logger, userService } from '../../app';
-import { UserNotFoundError } from '../../app/error';
+import { userService } from '../../app';
+import { ApiReturnableError } from '../../app/error';
 import { RequestSchema } from '../../model';
 import { getRequestMetadata } from '../getRequestMetadata';
+import { userNotFoundError } from '../api-error-response';
 
 /** Reset password request schema. */
 export const resetPasswordRequestSchema: RequestSchema = {
@@ -43,7 +44,10 @@ export async function resetPasswordController(
 		res.status(200).end();
 	} catch (err) {
 		// In the case that the user does not exist, return a 200 response.
-		if (err instanceof UserNotFoundError) {
+		if (
+			err instanceof ApiReturnableError &&
+			err.code === userNotFoundError.code
+		) {
 			// Do not leak user information.
 			// Display ambiguous message on front-end.
 			res.status(200).end();

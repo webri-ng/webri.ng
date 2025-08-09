@@ -3,7 +3,6 @@ import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { InvalidIdentifierError, TagNotFoundError } from '../error';
 chai.use(chaiAsPromised);
 
 import { Tag, User } from '../../model';
@@ -11,6 +10,11 @@ import { Tag, User } from '../../model';
 import { testUtils } from '..';
 import { deleteTag } from '.';
 import { appDataSource } from '../../infra/database';
+import { ApiReturnableError } from '../error';
+import {
+	invalidIdentifierError,
+	tagNotFoundError
+} from '../../api/api-error-response';
 
 describe('Tag soft-deletion', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -28,13 +32,15 @@ describe('Tag soft-deletion', function () {
 	});
 
 	it('should throw an exception when passed an empty tagId', async function () {
-		return expect(deleteTag('')).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(deleteTag(''))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent tagId', async function () {
-		return expect(deleteTag(testUtils.dummyUuid)).to.be.rejectedWith(
-			TagNotFoundError
-		);
+		return expect(deleteTag(testUtils.dummyUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', tagNotFoundError.code);
 	});
 
 	it('should correctly delete a tag', async function () {

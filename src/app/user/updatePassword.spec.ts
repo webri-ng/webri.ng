@@ -5,15 +5,18 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import { User } from '../../model';
 import { userService, testUtils } from '..';
-import {
-	InvalidIdentifierError,
-	InvalidPasswordError,
-	InvalidUserCredentialsError,
-	UserNotFoundError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { userConfig } from '../../config';
 import { validatePassword } from './password';
 import { updatePassword } from '.';
+import {
+	invalidExistingPasswordError,
+	invalidIdentifierError,
+	invalidNewPasswordError,
+	invalidNewPasswordTooLongError,
+	invalidNewPasswordTooShortError,
+	userNotFoundError
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -32,9 +35,9 @@ describe('Update user password', function () {
 	});
 
 	it('should throw an exception when passed no userId', async function () {
-		return expect(
-			updatePassword('', testUtils.testPasswordText, newPassword)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(updatePassword('', testUtils.testPasswordText, newPassword))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed an invalid userId', async function () {
@@ -44,7 +47,9 @@ describe('Update user password', function () {
 				testUtils.testPasswordText,
 				newPassword
 			)
-		).to.be.rejectedWith(InvalidIdentifierError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent userId', async function () {
@@ -54,7 +59,17 @@ describe('Update user password', function () {
 				testUtils.testPasswordText,
 				newPassword
 			)
-		).to.be.rejectedWith(UserNotFoundError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', userNotFoundError.code);
+	});
+
+	it('should throw an exception when passed no new password', async function () {
+		return expect(
+			updatePassword(testUser.userId!, testUtils.testPasswordText, '')
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidNewPasswordError.code);
 	});
 
 	it('should throw an exception when passed a password that is too short', async function () {
@@ -68,7 +83,9 @@ describe('Update user password', function () {
 				testUtils.testPasswordText,
 				shortPassword
 			)
-		).to.be.rejectedWith(InvalidPasswordError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidNewPasswordTooShortError.code);
 	});
 
 	it('should throw an exception when passed a password that is too long', async function () {
@@ -78,7 +95,9 @@ describe('Update user password', function () {
 
 		return expect(
 			updatePassword(testUser.userId!, testUtils.testPasswordText, longPassword)
-		).to.be.rejectedWith(InvalidPasswordError);
+		)
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidNewPasswordTooLongError.code);
 	});
 
 	it('should throw an exception when passed an incorrect current password', async function () {
@@ -86,9 +105,9 @@ describe('Update user password', function () {
 			.fill('n')
 			.join('');
 
-		return expect(
-			updatePassword(testUser.userId!, 'incorrect', longPassword)
-		).to.be.rejectedWith(InvalidUserCredentialsError);
+		return expect(updatePassword(testUser.userId!, 'incorrect', longPassword))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidExistingPasswordError.code);
 	});
 
 	it("should correctly update a customer's password", async function () {

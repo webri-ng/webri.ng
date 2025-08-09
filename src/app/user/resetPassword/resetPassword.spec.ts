@@ -5,9 +5,13 @@ import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import { User } from '../../../model';
 import { userService, testUtils } from '../..';
-import { InvalidIdentifierError, UserNotFoundError } from '../../error';
+import { ApiReturnableError } from '../../error';
 import { resetPassword } from '.';
 import { appDataSource } from '../../../infra/database';
+import {
+	invalidIdentifierError,
+	userNotFoundError
+} from '../../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -25,13 +29,15 @@ describe('Reset user password', function () {
 	});
 
 	it('should throw an exception when passed no userId', async function () {
-		return expect(resetPassword('')).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(resetPassword(''))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent userId', async function () {
-		return expect(resetPassword(testUtils.dummyUuid)).to.be.rejectedWith(
-			UserNotFoundError
-		);
+		return expect(resetPassword(testUtils.dummyUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', userNotFoundError.code);
 	});
 
 	it("should correctly reset a customer's password", async function () {

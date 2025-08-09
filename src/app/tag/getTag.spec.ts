@@ -5,11 +5,16 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { Tag, User } from '../../model';
 import { testUtils, userService } from '..';
-import { InvalidIdentifierError } from '../error';
+import { ApiReturnableError } from '../error';
 import { getTag, GetTagSearchField } from '.';
-import { EntityManager, getManager } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { deleteTag } from './deleteTag';
 import { appDataSource } from '../../infra/database';
+import {
+	invalidIdentifierError,
+	invalidTagIdErrorMessage,
+	invalidTagNameErrorMessage
+} from '../../api/api-error-response';
 
 describe('Get tag', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -46,15 +51,18 @@ describe('Get tag', function () {
 
 	describe('Get tag by id', function () {
 		it('should throw an exception when passed an empty tag id', async function () {
-			return expect(getTag(GetTagSearchField.TagId, '')).to.be.rejectedWith(
-				InvalidIdentifierError
-			);
+			return expect(getTag(GetTagSearchField.TagId, ''))
+				.to.eventually.be.rejectedWith(
+					ApiReturnableError,
+					invalidTagIdErrorMessage
+				)
+				.has.property('code', invalidIdentifierError.code);
 		});
 
 		it('should throw an exception when passed an invalid tag id', async function () {
-			return expect(
-				getTag(GetTagSearchField.TagId, testUtils.invalidUuid)
-			).to.be.rejectedWith(InvalidIdentifierError);
+			return expect(getTag(GetTagSearchField.TagId, testUtils.invalidUuid))
+				.to.eventually.be.rejectedWith(ApiReturnableError)
+				.has.property('code', invalidIdentifierError.code);
 		});
 
 		it('should correctly get a tag by their id', async function () {
@@ -76,9 +84,12 @@ describe('Get tag', function () {
 
 	describe('Get tag by name', function () {
 		it('should throw an exception when passed an invalid name', async function () {
-			return expect(getTag(GetTagSearchField.Name, '')).to.be.rejectedWith(
-				InvalidIdentifierError
-			);
+			return expect(getTag(GetTagSearchField.Name, ''))
+				.to.eventually.be.rejectedWith(
+					ApiReturnableError,
+					invalidTagNameErrorMessage
+				)
+				.has.property('code', invalidIdentifierError.code);
 		});
 
 		it('should correctly get a tag by its name', async function () {

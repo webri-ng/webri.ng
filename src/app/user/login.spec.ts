@@ -7,16 +7,17 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
 import { User } from '../../model';
 import { userService, testUtils } from '..';
-import {
-	PasswordExpiredError,
-	InvalidUserCredentialsError,
-	UserNotFoundError,
-	InvalidEmailError,
-	LoginAttemptCountExceededError,
-	LoginDisabledDueToAuthFailureError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { userConfig } from '../../config';
 import { login } from './login';
+import {
+	expiredPasswordError,
+	invalidEmailAddressError,
+	lockedAccountDueToAuthFailureError,
+	loginAttemptCountExceededError,
+	loginFailedError,
+	userNotFoundError
+} from '../../api/api-error-response';
 
 describe('User login', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -48,25 +49,27 @@ describe('User login', function () {
 	});
 
 	it('should throw an exception when passed a null email', async function () {
-		return expect(login('', 'password')).to.be.rejectedWith(InvalidEmailError);
+		return expect(login('', 'password'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', invalidEmailAddressError.code);
 	});
 
 	it('should throw an exception when passed an email not associated with a user', async function () {
-		return expect(
-			login('notpresent@nowhere.com', 'password')
-		).to.be.rejectedWith(UserNotFoundError);
+		return expect(login('notpresent@nowhere.com', 'password'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', userNotFoundError.code);
 	});
 
 	it('should throw an exception when passed an invalid password for a valid user', async function () {
-		return expect(
-			login(testUser?.email || '', 'incorrectPassword1')
-		).to.be.rejectedWith(InvalidUserCredentialsError);
+		return expect(login(testUser?.email || '', 'incorrectPassword1'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', loginFailedError.code);
 	});
 
 	it('should throw an exception when passed an expired password for a valid user', async function () {
-		return expect(
-			login(testExpiredPasswordUser?.email || '', 'password1')
-		).to.be.rejectedWith(PasswordExpiredError);
+		return expect(login(testExpiredPasswordUser?.email || '', 'password1'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', expiredPasswordError.code);
 	});
 
 	it('should correctly authenticate a login using an email in an incorrect format', async function () {
@@ -77,18 +80,18 @@ describe('User login', function () {
 	});
 
 	it('should throw an exception when a user exceeds the maximum login attempt count', async function () {
-		return expect(
-			login(testMaxLoginUser?.email || '', 'incorrectpassword1')
-		).to.be.rejectedWith(LoginAttemptCountExceededError);
+		return expect(login(testMaxLoginUser?.email || '', 'incorrectpassword1'))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.have.property('code', loginAttemptCountExceededError.code);
 	});
 
 	it(
 		'should throw an exception when a user who is locked due to exceeding the login ' +
 			'attempt count attempts to login',
 		async function () {
-			return expect(
-				login(testMaxLoginUser?.email || '', 'password1')
-			).to.be.rejectedWith(LoginDisabledDueToAuthFailureError);
+			return expect(login(testMaxLoginUser?.email || '', 'password1'))
+				.to.eventually.be.rejectedWith(ApiReturnableError)
+				.and.have.property('code', lockedAccountDueToAuthFailureError.code);
 		}
 	);
 

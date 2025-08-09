@@ -5,8 +5,12 @@ import * as chaiAsPromised from 'chai-as-promised';
 import { Tag, User } from '../../model';
 import { userService, testUtils, tagService } from '..';
 import { createTag } from './createTag';
-import { InvalidTagNameError, TagNameAlreadyExists } from '../error';
 import { appDataSource } from '../../infra/database';
+import { ApiReturnableError } from '../error';
+import {
+	invalidTagNameError,
+	tagNameAlreadyExistsErrorMessage
+} from '../../api/api-error-response';
 
 chai.use(chaiAsPromised);
 
@@ -30,21 +34,21 @@ describe('Tag creation', function () {
 	});
 
 	it('should raise an exception when no name is provided', async function () {
-		return expect(createTag('', testUser.userId!)).to.be.rejectedWith(
-			InvalidTagNameError
-		);
+		return expect(createTag('', testUser.userId!))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', invalidTagNameError.code);
 	});
 
 	it('should raise an exception when an invalid name is provided', async function () {
-		return expect(createTag('ff ff', testUser.userId!)).to.be.rejectedWith(
-			InvalidTagNameError
-		);
+		return expect(createTag('ff ff', testUser.userId!))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.has.property('code', invalidTagNameError.code);
 	});
 
 	it('should raise an exception when an existing name is provided', async function () {
 		return expect(
 			createTag(testExistingTag.name, testUser.userId!)
-		).to.be.rejectedWith(TagNameAlreadyExists);
+		).to.eventually.be.rejectedWith(tagNameAlreadyExistsErrorMessage);
 	});
 
 	it('should create a tag within a transaction', async function () {

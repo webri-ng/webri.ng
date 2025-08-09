@@ -5,11 +5,7 @@ import {
 	userNotFoundError
 } from '../../api/api-error-response';
 import { RequestMetadata, User, UUID } from '../../model';
-import {
-	EmailNotUniqueError,
-	UsernameNotUniqueError,
-	UserNotFoundError
-} from '../error';
+import { ApiReturnableError } from '../error';
 import { getUser, GetUserSearchField } from '.';
 import { appDataSource } from '../../infra/database';
 
@@ -33,11 +29,7 @@ export async function updateUser(
 ): Promise<User> {
 	const user = await getUser(GetUserSearchField.UserId, userId);
 	if (!user) {
-		throw new UserNotFoundError(
-			`User with id '${userId}' cannot be found`,
-			userNotFoundError.code,
-			userNotFoundError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
 	/**
@@ -51,11 +43,7 @@ export async function updateUser(
 	// Check whether a user already exists with the same email.
 	let existingUser = await getUser(GetUserSearchField.Email, normalisedEmail);
 	if (existingUser && existingUser.userId !== userId) {
-		throw new EmailNotUniqueError(
-			emailNotUniqueError.message,
-			emailNotUniqueError.code,
-			emailNotUniqueError.httpStatus
-		);
+		throw ApiReturnableError.fromApiErrorResponseDetails(emailNotUniqueError);
 	}
 
 	/**
@@ -69,10 +57,8 @@ export async function updateUser(
 	// Check whether a user already exists with the same username.
 	existingUser = await getUser(GetUserSearchField.Username, normalisedUsername);
 	if (existingUser && existingUser.userId !== userId) {
-		throw new UsernameNotUniqueError(
-			usernameNotUniqueError.message,
-			usernameNotUniqueError.code,
-			usernameNotUniqueError.httpStatus
+		throw ApiReturnableError.fromApiErrorResponseDetails(
+			usernameNotUniqueError
 		);
 	}
 

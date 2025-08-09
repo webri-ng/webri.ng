@@ -1,16 +1,27 @@
 import * as dayjs from 'dayjs';
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { InvalidEmailError, InvalidPasswordError, InvalidUsernameError } from '../app/error';
-import { invalidEmailAddressError, invalidNewPasswordTooLongError,
-	invalidNewPasswordTooShortError, invalidNewPasswordError, invalidUsernameError,
-	invalidUsernameTooLongError, invalidUsernameTooShortError, invalidUsernameCharacters
+import {
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	PrimaryGeneratedColumn
+} from 'typeorm';
+import {
+	invalidEmailAddressError,
+	invalidNewPasswordTooLongError,
+	invalidNewPasswordTooShortError,
+	invalidNewPasswordError,
+	invalidUsernameError,
+	invalidUsernameTooLongError,
+	invalidUsernameTooShortError,
+	invalidUsernameCharacters
 } from '../api/api-error-response';
 import { userConfig } from '../config';
 import { UUID, Webring } from '.';
+import { ApiReturnableError } from '../app/error';
 
 @Entity('user_account')
-export class User
-{
+export class User {
 	@PrimaryGeneratedColumn('uuid', {
 		name: 'user_id'
 	})
@@ -57,7 +68,7 @@ export class User
 	/**
 	 * The number of unsuccessful login attempts that this user has made.
 	 */
-	 @Column({
+	@Column({
 		name: 'login_attempt_count',
 		type: 'integer'
 	})
@@ -90,7 +101,7 @@ export class User
 	})
 	public dateModified: Date;
 
-	@ManyToMany(_type => Webring)
+	@ManyToMany((_type) => Webring)
 	@JoinTable({
 		name: 'ring_moderator',
 		joinColumn: {
@@ -104,10 +115,7 @@ export class User
 	})
 	public moderatedWebrings!: Promise<Webring[]>;
 
-	constructor(_username: string,
-		_email: string,
-		_passwordHash: string)
-	{
+	constructor(_username: string, _email: string, _passwordHash: string) {
 		this.username = _username;
 		this.email = _email;
 		this.passwordHash = _passwordHash;
@@ -121,16 +129,13 @@ export class User
 		this.loginAttemptCount = 0;
 	}
 
-
 	/**
 	 * Randomly generates a string suitable for use as a temporary user password.
 	 * @returns The newly generated password string.
 	 */
-	public static generateRandomPassword(): string
-	{
+	public static generateRandomPassword(): string {
 		return Math.random().toString(36).substring(2);
 	}
-
 
 	/**
 	 * Returns the password expiry date for a password set on the specified date.
@@ -139,62 +144,62 @@ export class User
 	 * @param {Date} fromDate - The date to measure from.
 	 * @returns The new expiry date, or null if no expiry date configured.
 	 */
-	public static getPasswordExpiryDate(fromDate: Date = new Date()): Date | null
-	{
+	public static getPasswordExpiryDate(
+		fromDate: Date = new Date()
+	): Date | null {
 		// If an expiry period has been specified in the application config.
 		if (userConfig.password.expiryPeriod) {
 			return dayjs(fromDate)
-				.add(...userConfig.password.expiryPeriod).toDate();
+				.add(...userConfig.password.expiryPeriod)
+				.toDate();
 		}
 
 		return null;
 	}
-
 
 	/**
 	 * Returns the expiry date for a temporary password set on a specified date.
 	 * @param {Date} fromDate - The date to measure from.
 	 * @returns The expiry date.
 	 */
-	public static getTempPasswordExpiryDate(fromDate: Date = new Date()): Date
-	{
+	public static getTempPasswordExpiryDate(fromDate: Date = new Date()): Date {
 		return dayjs(fromDate)
-			.add(...userConfig.password.tempPasswordExpiryPeriod).toDate();
+			.add(...userConfig.password.tempPasswordExpiryPeriod)
+			.toDate();
 	}
-
 
 	/**
 	 * Validates a new password.
 	 * Does not return, throws a descriptive exception in case of validation failure.
 	 * @param {string} password - The password to validate.
-	 * @throws {InvalidPasswordError} - This API returnable exception is raised with a
+	 * @throws {ApiReturnableError} - This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateNewPassword(password: string): void
-	{
+	public static validateNewPassword(password: string): void {
 		if (!password) {
-			throw new InvalidPasswordError(invalidNewPasswordError.message,
-				invalidNewPasswordError.code, invalidNewPasswordError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidNewPasswordError
+			);
 		}
 
 		if (password.length < userConfig.password.minLength) {
-			throw new InvalidPasswordError(invalidNewPasswordTooShortError.message,
-				invalidNewPasswordTooShortError.code, invalidNewPasswordTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidNewPasswordTooShortError
+			);
 		}
 
 		if (password.length > userConfig.password.maxLength) {
-			throw new InvalidPasswordError(invalidNewPasswordTooLongError.message,
-				invalidNewPasswordTooLongError.code, invalidNewPasswordTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidNewPasswordTooLongError
+			);
 		}
 	}
-
 
 	/**
 	 * Tests whether a user's password has expired.
 	 * @returns A boolean indicating whether or not the password has expired.
 	 */
-	public hasPasswordExpired(): boolean
-	{
+	public hasPasswordExpired(): boolean {
 		if (this.passwordExpiryTime) {
 			if (dayjs().isAfter(this.passwordExpiryTime)) {
 				return true;
@@ -204,7 +209,6 @@ export class User
 		return false;
 	}
 
-
 	/**
 	 * Validates an email address.
 	 * Does not return, raises a descriptive exception in case of validation failure.
@@ -213,11 +217,11 @@ export class User
 	 * @throws {InvalidEmailError} - This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateEmailAddress(email: string): void
-	{
+	public static validateEmailAddress(email: string): void {
 		if (!email) {
-			throw new InvalidEmailError(invalidEmailAddressError.message,
-				invalidEmailAddressError.code, invalidEmailAddressError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidEmailAddressError
+			);
 		}
 
 		// Split regex into smaller components which can be joined.
@@ -227,15 +231,15 @@ export class User
 		];
 
 		// Join regex components and compile regex.
-		const regexSource = regexComponents.map(r => r.source).join('');
+		const regexSource = regexComponents.map((r) => r.source).join('');
 		const emailValidator = new RegExp(regexSource);
 
 		if (!emailValidator.test(email)) {
-			throw new InvalidEmailError(invalidEmailAddressError.message,
-				invalidEmailAddressError.code, invalidEmailAddressError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidEmailAddressError
+			);
 		}
 	}
-
 
 	/**
 	 * Normalises a supplied email address.
@@ -243,63 +247,64 @@ export class User
 	 * @param {string} email The email address string to normalise.
 	 * @returns The normalised email.
 	 */
-	public static normaliseEmailAddress(email: string): string
-	{
+	public static normaliseEmailAddress(email: string): string {
 		if (!email) {
-			throw new InvalidEmailError(invalidEmailAddressError.message,
-				invalidEmailAddressError.code, invalidEmailAddressError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidEmailAddressError
+			);
 		}
 
 		return email.trim().toLowerCase();
 	}
 
-
 	/**
 	 * Validates a username.
 	 * Throws a descriptive exception in case of validation failure.
 	 * @param {string} username - The username to validate.
-	 * @throws {InvalidUsernameError} This API returnable exception is raised with a
+	 * @throws {ApiReturnableError} This API returnable exception is raised with a
 	 * detailed error message in the case of a validation failure.
 	 */
-	public static validateUsername(username: string): void
-	{
+	public static validateUsername(username: string): void {
 		if (!username) {
-			throw new InvalidUsernameError(invalidUsernameError.message,
-				invalidUsernameError.code, invalidUsernameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidUsernameError
+			);
 		}
 
 		// Check name length.
 		if (username.length < userConfig.usernameRequirements.minLength) {
-			throw new InvalidUsernameError(invalidUsernameTooShortError.message,
-				invalidUsernameTooShortError.code, invalidUsernameTooShortError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidUsernameTooShortError
+			);
 		}
 
 		if (username.length > userConfig.usernameRequirements.maxLength) {
-			throw new InvalidUsernameError(invalidUsernameTooLongError.message,
-				invalidUsernameTooLongError.code, invalidUsernameTooLongError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidUsernameTooLongError
+			);
 		}
 
 		// Test for the existence of invalid characters.
 		if (!new RegExp(/^[A-z_0-9]+$/).test(username)) {
-			throw new InvalidUsernameError(invalidUsernameCharacters.message,
-				invalidUsernameCharacters.code, invalidUsernameCharacters.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidUsernameCharacters
+			);
 		}
 	}
-
 
 	/**
 	 * Normalises a supplied username.
 	 * Ensures that a username is stored in a suitable format.
 	 * @param {string} username - The username to normalise.
 	 * @returns The normalised username.
-	 * @throws {InvalidUsernameError} This API returnable exception is raised in the case
+	 * @throws {ApiReturnableError} This API returnable exception is raised in the case
 	 * that no username is provided.
 	 */
-	public static normaliseUsername(username: string): string
-	{
+	public static normaliseUsername(username: string): string {
 		if (!username) {
-			throw new InvalidUsernameError(invalidUsernameError.message,
-				invalidUsernameError.code, invalidUsernameError.httpStatus);
+			throw ApiReturnableError.fromApiErrorResponseDetails(
+				invalidUsernameError
+			);
 		}
 
 		return username.toLowerCase().trim();

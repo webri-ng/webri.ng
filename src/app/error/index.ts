@@ -54,7 +54,4 @@ export class InvalidSessionError extends Error {}
 
 // These need to be exported _after_ declaring the base `ApiReturnableError` type.
 export * from './authentication';
-export * from './email';
 export * from './site';
-export * from './tag';
-export * from './user';

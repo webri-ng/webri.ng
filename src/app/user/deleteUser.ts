@@ -1,12 +1,11 @@
 import { User, UUID, Webring } from '../../model';
 import { EntityManager, IsNull } from 'typeorm';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
-import { UserNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 import { userNotFoundError } from '../../api/api-error-response';
 import { getUser, GetUserSearchField } from './getUser';
 import { webringService } from '..';
 import { appDataSource } from '../../infra/database';
-
 
 /**
  * Additional options for the process.
@@ -23,8 +22,7 @@ export type DeleteUserOptions = {
 	 * If this option is specified, then the operation will be run with this manager.
 	 */
 	transactionalEntityManager?: EntityManager;
-}
-
+};
 
 /**
  * Soft-deletes a user.
@@ -36,15 +34,15 @@ export type DeleteUserOptions = {
  * @throws {InvalidIdentifierError} If the supplied id is invalid.
  * @throws {UserNotFoundError} If the specified user cannot be found.
  */
-export async function deleteUser(userId: UUID,
-	options: DeleteUserOptions = {}): Promise<User>
-{
+export async function deleteUser(
+	userId: UUID,
+	options: DeleteUserOptions = {}
+): Promise<User> {
 	const user: User | null = await getUser(GetUserSearchField.UserId, userId, {
 		transactionalEntityManager: options.transactionalEntityManager || undefined
 	});
 	if (!user) {
-		throw new UserNotFoundError(`User with id '${userId}' cannot be found`,
-			userNotFoundError.code, userNotFoundError.httpStatus);
+		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
 	const deletionDate: Date = options.deletionDate || new Date();
@@ -56,9 +54,14 @@ export async function deleteUser(userId: UUID,
 
 	let webrings: Webring[];
 	if (options.transactionalEntityManager) {
-		webrings = await options.transactionalEntityManager.findBy(Webring, searchConditions);
+		webrings = await options.transactionalEntityManager.findBy(
+			Webring,
+			searchConditions
+		);
 	} else {
-		webrings = await appDataSource.getRepository(Webring).findBy(searchConditions);
+		webrings = await appDataSource
+			.getRepository(Webring)
+			.findBy(searchConditions);
 	}
 
 	for (const webring of webrings) {

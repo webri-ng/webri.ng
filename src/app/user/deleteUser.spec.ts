@@ -3,7 +3,7 @@ import { before, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
-import { InvalidIdentifierError, UserNotFoundError } from '../error';
+import { ApiReturnableError } from '../error';
 chai.use(chaiAsPromised);
 
 import { User, Webring } from '../../model';
@@ -11,6 +11,10 @@ import { User, Webring } from '../../model';
 import { testUtils } from '..';
 import { deleteUser } from './deleteUser';
 import { appDataSource } from '../../infra/database';
+import {
+	invalidIdentifierError,
+	userNotFoundError
+} from '../../api/api-error-response';
 
 describe('User soft-deletion', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -34,13 +38,15 @@ describe('User soft-deletion', function () {
 	});
 
 	it('should throw an exception when passed an empty userId', async function () {
-		return expect(deleteUser('')).to.be.rejectedWith(InvalidIdentifierError);
+		return expect(deleteUser(''))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', invalidIdentifierError.code);
 	});
 
 	it('should throw an exception when passed a nonexistent userId', async function () {
-		return expect(deleteUser(testUtils.dummyUuid)).to.be.rejectedWith(
-			UserNotFoundError
-		);
+		return expect(deleteUser(testUtils.dummyUuid))
+			.to.eventually.be.rejectedWith(ApiReturnableError)
+			.and.haveOwnProperty('code', userNotFoundError.code);
 	});
 
 	it('should correctly delete a user', async function () {

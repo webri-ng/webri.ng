@@ -357,3 +357,7 @@ export const webringNotSerialisedErrorMessage =
 	'The specified webring has not been serialised';
 export const invalidTagErrorMessage = 'The provided tag is invalid';
 export const invalidUserIdErrorMessage = 'The provided user id is invalid';
+export const tagNameAlreadyExistsErrorMessage =
+	'The tag name provided already exists';
+export const invalidTagNameErrorMessage = 'The provided tag name is invalid';
+export const invalidTagIdErrorMessage = 'The provided tag id is invalid';
