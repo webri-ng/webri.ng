@@ -9,19 +9,35 @@ import { GetWebringSearchField } from '../../app/webring';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
- export async function addNewSiteViewController(req: Request,
+export async function addNewSiteViewController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	try {
 		const { user } = res.locals;
 		const { webringUrl } = req.params;
 
-		const webring = await webringService.getWebring(GetWebringSearchField.Url, webringUrl);
+		const webring = await webringService.getWebring(
+			GetWebringSearchField.Url,
+			webringUrl
+		);
 		if (!webring) {
-			return res.render('webring/notFound', {
+			return res.status(404).render('webring/notFound', {
 				user
 			});
+		}
+
+		const { isUserModerator, isUserOwner } =
+			await webringService.getUserPermissionsForWebring(webring, user);
+
+		// If it's a private webring, and the user is not authorised, show the 404 page.
+		if (webring.private) {
+			if (!(isUserModerator || isUserOwner)) {
+				return res.status(404).render('webring/notFound', {
+					user
+				});
+			}
 		}
 
 		// Check the authorisation for this action.

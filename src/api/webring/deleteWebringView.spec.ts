@@ -10,7 +10,7 @@ import { app } from '../../index';
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
-describe('Webring Detail View', function () {
+describe('Delete Webring View', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -18,8 +18,9 @@ describe('Webring Detail View', function () {
 	let testUser3: User;
 	let testUserSession: Session;
 	let testUser2Session: Session;
-	let testWebring: Webring;
-	let testWebring2: Webring;
+	let testUser3Session: Session;
+	let testPrivateWebring: Webring;
+	let testPublicWebring: Webring;
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
@@ -27,11 +28,12 @@ describe('Webring Detail View', function () {
 		testUser3 = await testUtils.insertTestUser();
 		testUserSession = await sessionService.createSession(testUser);
 		testUser2Session = await sessionService.createSession(testUser2);
-		testWebring = await testUtils.insertTestWebring(testUser.userId!, {
+		testUser3Session = await sessionService.createSession(testUser3);
+		testPrivateWebring = await testUtils.insertTestWebring(testUser.userId!, {
 			private: true,
 			moderators: [testUser2]
 		});
-		testWebring2 = await testUtils.insertTestWebring(testUser.userId!);
+		testPublicWebring = await testUtils.insertTestWebring(testUser.userId!);
 	});
 
 	after(async function afterTesting() {
@@ -41,10 +43,11 @@ describe('Webring Detail View', function () {
 		testUser3 = await userService.deleteUser(testUser3.userId!);
 	});
 
-	it('should return a 404 status if the webring does not exist', function (done) {
+	it("should return a 404 status when the specified webring doesn't exist", function (done) {
 		chai
 			.request(app)
-			.get(`/webring/${testWebring.url}/ffff`)
+			.get(`/webring/fffffffffffffff/delete`)
+			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send()
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -53,22 +56,27 @@ describe('Webring Detail View', function () {
 			});
 	});
 
-	it('should return a 404 status when the webring is private, and the user is not authneticated', function (done) {
-		chai
-			.request(app)
-			.get(`/webring/${testWebring.url}`)
-			.send()
-			.end(function (err, res) {
-				expect(err).to.be.null;
-				expect(res.status).to.equal(404);
-				done();
-			});
-	});
+	it(
+		'should return a 404 status when the webring is private and the user' +
+			' is not an owner or moderator',
+		function (done) {
+			chai
+				.request(app)
+				.get(`/webring/${testPrivateWebring.url}/delete`)
+				.set('Cookie', `session=${testUser3Session.sessionId}`)
+				.send()
+				.end(function (err, res) {
+					expect(err).to.be.null;
+					expect(res.status).to.equal(404);
+					done();
+				});
+		}
+	);
 
 	it('should return a 200 status when the webring is private, and the user is the owner', function (done) {
 		chai
 			.request(app)
-			.get(`/webring/${testWebring.url}`)
+			.get(`/webring/${testPrivateWebring.url}/delete`)
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send()
 			.end(function (err, res) {
@@ -78,28 +86,15 @@ describe('Webring Detail View', function () {
 			});
 	});
 
-	it('should return a 200 status when the webring is private, and the user is a moderator', function (done) {
+	it('should return a 401 status status when the webring is private, and the user is a moderator', function (done) {
 		chai
 			.request(app)
-			.get(`/webring/${testWebring.url}`)
+			.get(`/webring/${testPrivateWebring.url}/delete`)
 			.set('Cookie', `session=${testUser2Session.sessionId}`)
 			.send()
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(200);
-				done();
-			});
-	});
-
-	it('should unconditionally render a non-private webring', function (done) {
-		chai
-			.request(app)
-			.get(`/webring/${testWebring2.url}`)
-			.set('Cookie', `session=${testUserSession.sessionId}`)
-			.send()
-			.end(function (err, res) {
-				expect(err).to.be.null;
-				expect(res.status).to.equal(200);
+				expect(res.status).to.equal(401);
 				done();
 			});
 	});

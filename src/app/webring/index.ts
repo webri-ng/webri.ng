@@ -14,3 +14,4 @@ export * from './isUserWebringModerator';
 export * from './removeSite';
 export * from './updateWebring';
 export * from './search';
+export * from './getUserPermissionsForWebring';

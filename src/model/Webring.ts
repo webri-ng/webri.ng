@@ -224,4 +224,8 @@ export class Webring {
 
 		return url.toLowerCase().trim();
 	}
+
+	public doesUserOwnThisWebring(user: Readonly<User>): boolean {
+		return this.createdBy === user.userId;
+	}
 }

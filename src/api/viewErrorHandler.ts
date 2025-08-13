@@ -7,6 +7,7 @@ import {
 	ApiReturnableError
 } from '../app/error';
 import {
+	requestAuthorisationFailedError,
 	unhandledExceptionError,
 	userNotFoundError
 } from './api-error-response';
@@ -25,7 +26,11 @@ export function viewErrorHandler(
 	res: Response,
 	_next: NextFunction
 ): void {
-	if (err instanceof NoAuthenticationError) {
+	if (
+		err instanceof NoAuthenticationError ||
+		(err instanceof ApiReturnableError &&
+			err.code === requestAuthorisationFailedError.code)
+	) {
 		return res.status(401).render('error', {
 			pageHeading: 'Error',
 			errorMessage: 'You are not authorised to access this page!'
