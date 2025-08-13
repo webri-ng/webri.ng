@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+import { Schema } from 'ajv';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
-import { RequestSchema } from '../../model';
 import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update Webring request schema. */
-export const updateWebringRequestSchema: RequestSchema = {
+export const updateWebringRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {

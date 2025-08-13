@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+import { Schema } from 'ajv';
 import { sessionService, userService } from '../../app';
-import { RequestSchema, User } from '../../model';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
 import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Register user request schema. */
-export const registrationRequestSchema: RequestSchema = {
+export const registrationRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {

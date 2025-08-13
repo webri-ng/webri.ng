@@ -13,7 +13,7 @@ import { getRequestMetadata } from '../getRequestMetadata';
 export function logoutViewController(
 	req: Request,
 	res: Response,
-	next: NextFunction
+	_next: NextFunction
 ): void {
 	const { session } = res.locals;
 

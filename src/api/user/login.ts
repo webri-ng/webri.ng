@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { sessionService, userService } from '../../app';
+import { Schema } from 'ajv';
 import { ApiReturnableError } from '../../app/error';
-import { RequestSchema } from '../../model';
 import { loginFailedError, userNotFoundError } from '../api-error-response';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
 import { getRequestMetadata } from '../getRequestMetadata';
 
 /** User login request schema. */
-export const loginRequestSchema: RequestSchema = {
+export const loginRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {

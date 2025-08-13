@@ -1,7 +1,6 @@
-import Ajv from 'ajv';
+import Ajv, { Schema } from 'ajv';
 import { NextFunction, Request, Response, RequestHandler } from 'express';
 import { RequestValidationError } from '../app/error';
-import { RequestSchema } from '../model';
 import { logger } from '../app';
 import { loggingConfig } from '../config';
 import { getRequestMetadata } from './getRequestMetadata';
@@ -39,7 +38,7 @@ function logRequestBody(req: Request, res: Response): void {
  * @returns The validation middleware.
  */
 export function validateRequestBody(
-	validationSchema: Readonly<RequestSchema>
+	validationSchema: Readonly<Schema>
 ): RequestHandler {
 	const ajv = new Ajv();
 

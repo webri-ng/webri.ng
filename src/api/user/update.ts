@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { Schema } from 'ajv';
 import { userService } from '../../app';
-import { RequestSchema } from '../../model';
 import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update user request schema. */
-export const updateUserRequestSchema: RequestSchema = {
+export const updateUserRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {

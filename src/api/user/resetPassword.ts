@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
+import { Schema } from 'ajv';
 import { userService } from '../../app';
 import { ApiReturnableError } from '../../app/error';
-import { RequestSchema } from '../../model';
 import { getRequestMetadata } from '../getRequestMetadata';
 import { userNotFoundError } from '../api-error-response';
 
 /** Reset password request schema. */
-export const resetPasswordRequestSchema: RequestSchema = {
+export const resetPasswordRequestSchema: Schema = {
 	$schema: 'http://json-schema.org/draft-07/schema#',
 	type: 'object',
 	properties: {
