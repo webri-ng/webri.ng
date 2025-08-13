@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Remove Webring request schema. */
 export const removeSiteRequestSchema: Schema = {
@@ -33,15 +32,17 @@ export async function removeSiteController(
 		const { webringUrl } = req.params;
 		const { user } = res.locals;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringModeratorAction(webring, user, { requestMetadata });
+		await authoriseWebringModeratorAction(webring, user, {
+			requestMetadata: res.locals.requestMetadata
+		});
 
-		await webringService.removeSite(webring, url, { requestMetadata });
+		await webringService.removeSite(webring, url, {
+			requestMetadata: res.locals.requestMetadata
+		});
 
 		// The redirect redirect implementation is problematic. So simply return the webring
 		// URL, and perform the redirect on the front-end.

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { removeSessionCookieResponse } from '../removeSessionCookieResponse';
 import { logger } from '../../app';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /**
  * User logout view controller.
@@ -17,12 +16,10 @@ export function logoutViewController(
 ): void {
 	const { session } = res.locals;
 
-	const requestMetadata = getRequestMetadata(req, res);
-
 	logger.debug('Logging out user', {
 		userId: session.userId,
 		sessionId: session.sessionId,
-		...(requestMetadata ?? {})
+		...(res.locals.requestMetadata ?? {})
 	});
 
 	return removeSessionCookieResponse(res, session).redirect(302, '/');

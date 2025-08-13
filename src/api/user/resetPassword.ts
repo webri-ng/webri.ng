@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { userService } from '../../app';
 import { ApiReturnableError } from '../../app/error';
-import { getRequestMetadata } from '../getRequestMetadata';
 import { userNotFoundError } from '../api-error-response';
 
 /** Reset password request schema. */
@@ -34,11 +33,9 @@ export async function resetPasswordController(
 ): Promise<void> {
 	const { email } = req.body;
 
-	const requestMetadata = getRequestMetadata(req, res);
-
 	try {
 		await userService.resetPassword(email, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 
 		res.status(200).end();

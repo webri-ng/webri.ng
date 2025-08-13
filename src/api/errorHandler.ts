@@ -21,7 +21,6 @@ import {
 	RequestValidationError,
 	SessionExpiredError
 } from '../app/error';
-import { getRequestMetadata } from './getRequestMetadata';
 
 /**
  * Request error handling middleware.
@@ -37,10 +36,8 @@ export default function requestErrorHander(
 	err: Error,
 	req: Request,
 	res: Response,
-	next: NextFunction
+	_next: NextFunction
 ): Response {
-	const requestMetadata = getRequestMetadata(req, res);
-
 	// Handle request validation errors.
 	if (err instanceof RequestValidationError) {
 		if (loggingConfig.logRequestValidation) {
@@ -48,7 +45,7 @@ export default function requestErrorHander(
 			logger.debug(`Request validation error: ${err.message}`, {
 				path: req.path,
 				body: req.body,
-				...requestMetadata
+				...(res.locals.requestMetadata ?? {})
 			});
 		}
 
@@ -102,7 +99,7 @@ export default function requestErrorHander(
 		body: req.body,
 		err,
 		errorReference,
-		...requestMetadata
+		...(res.locals.requestMetadata ?? {})
 	});
 
 	return res.status(unhandledExceptionError.httpStatus).json({

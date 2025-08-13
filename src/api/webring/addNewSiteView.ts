@@ -42,7 +42,9 @@ export async function addNewSiteViewController(
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringModeratorAction(webring, user);
+		await authoriseWebringModeratorAction(webring, user, {
+			requestMetadata: res.locals.requestMetadata
+		});
 
 		return res.render('webring/addNewSite', {
 			user,

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { userService } from '../../app';
 import { Schema } from 'ajv';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update password request schema. */
 export const updatePasswordRequestSchema: Schema = {
@@ -34,14 +33,12 @@ export async function updatePasswordController(
 		const { user } = res.locals;
 		const { currentPassword, newPassword } = req.body;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		await userService.updatePassword(
 			user.userId!,
 			currentPassword,
 			newPassword,
 			{
-				requestMetadata
+				requestMetadata: res.locals.requestMetadata
 			}
 		);
 

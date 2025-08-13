@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { sessionService, userService } from '../../app';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Register user request schema. */
 export const registrationRequestSchema: Schema = {
@@ -37,15 +36,13 @@ export async function registerController(
 	try {
 		const { username, email, password } = req.body;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		/** The newly created user entity. */
 		const user = await userService.register(username, email, password, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 		// Create an authentication session for the newly created user.
 		const session = await sessionService.createSession(user, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 
 		createSessionCookieResponse(res, session).send();

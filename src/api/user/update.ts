@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { userService } from '../../app';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Update user request schema. */
 export const updateUserRequestSchema: Schema = {
@@ -35,10 +34,8 @@ export async function updateUserController(
 		const { user } = res.locals;
 		const { username, email } = req.body;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		await userService.updateUser(user.userId!, username, email, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 
 		res.end();

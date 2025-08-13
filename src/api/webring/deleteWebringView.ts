@@ -43,7 +43,9 @@ export async function deleteWebringViewController(
 
 		// Check the authorisation for this action.
 		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringOwnerAction(webring, user);
+		await authoriseWebringOwnerAction(webring, user, {
+			requestMetadata: res.locals.requestMetadata
+		});
 
 		return res.render('webring/delete', {
 			user,

@@ -4,7 +4,6 @@ import { Schema } from 'ajv';
 import { ApiReturnableError } from '../../app/error';
 import { loginFailedError, userNotFoundError } from '../api-error-response';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** User login request schema. */
 export const loginRequestSchema: Schema = {
@@ -36,15 +35,13 @@ export async function loginController(
 	try {
 		const { email, password } = req.body;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		/** The authenticated user entity. */
 		const user = await userService.login(email, password, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 
 		const session = await sessionService.createSession(user, {
-			requestMetadata
+			requestMetadata: res.locals.requestMetadata
 		});
 
 		createSessionCookieResponse(res, session).send();

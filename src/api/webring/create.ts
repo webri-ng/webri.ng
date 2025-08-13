@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { webringService } from '../../app';
-import { getRequestMetadata } from '../getRequestMetadata';
 
 /** Create Webring request schema. */
 export const createWebringRequestSchema: Schema = {
@@ -46,8 +45,6 @@ export async function createWebringController(
 		const { name, url, description, privateRing, tags } = req.body;
 		const { userId } = res.locals.user;
 
-		const requestMetadata = getRequestMetadata(req, res);
-
 		const newWebring = await webringService.createWebring(
 			name,
 			url,
@@ -56,7 +53,7 @@ export async function createWebringController(
 			userId,
 			tags,
 			{
-				requestMetadata
+				requestMetadata: res.locals.requestMetadata
 			}
 		);
 
