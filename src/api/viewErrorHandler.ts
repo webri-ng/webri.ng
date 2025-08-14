@@ -9,6 +9,7 @@ import {
 } from '../app/error';
 import {
 	badRequestError,
+	notAuthorisedErrorMessage,
 	requestAuthorisationFailedError,
 	unhandledExceptionError,
 	userNotFoundError
@@ -40,8 +41,7 @@ export function viewErrorHandler(
 			err.code === requestAuthorisationFailedError.code)
 	) {
 		return res.status(401).render('error', {
-			pageHeading: 'Error',
-			errorMessage: 'You are not authorised to access this page!'
+			errorMessage: notAuthorisedErrorMessage
 		});
 	}
 
@@ -55,7 +55,7 @@ export function viewErrorHandler(
 		return removeSessionCookieResponse(res, session)
 			.status(401)
 			.render('error', {
-				errorMessage: 'You are not authorised to access this page!'
+				errorMessage: notAuthorisedErrorMessage
 			});
 	}
 

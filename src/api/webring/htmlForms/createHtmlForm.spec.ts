@@ -18,6 +18,7 @@ import {
 	invalidRingUrlNotUniqueError,
 	invalidRingUrlTooLongError,
 	invalidRingUrlTooShortError,
+	notAuthorisedErrorMessage,
 	requestAuthenticationFailedError,
 	requestValidationError
 } from '../../api-error-response';
@@ -84,7 +85,7 @@ describe('Create Webring HTML Form', function () {
 				);
 
 				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					'You are not authorised to access this page!'
+					notAuthorisedErrorMessage
 				);
 
 				done();

@@ -1,10 +1,9 @@
 import * as dayjs from 'dayjs';
-import { JSDOM } from 'jsdom';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { app } from '../../../';
+import { app } from '../../..';
 import { User, Session } from '../../../model';
 import { userService, testUtils } from '../../../app';
 import { appDataSource } from '../../../infra/database';
@@ -17,6 +16,7 @@ import {
 	loginFailedError,
 	requestValidationError
 } from '../../api-error-response';
+import { getResponseViewErrorMessage } from '../../../app/testUtils';
 
 chai.use(chaiHttp);
 
@@ -64,10 +64,7 @@ describe('Login HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
 
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					badRequestError.message
 				);
 
@@ -86,11 +83,7 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(loginErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					loginFailedError.message
 				);
 
@@ -109,11 +102,7 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(loginErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					loginFailedError.message
 				);
 
@@ -132,11 +121,7 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(expiredPasswordError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(loginErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					expiredPasswordError.message
 				);
 
@@ -213,11 +198,7 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginAttemptCountExceededError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const loginErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(loginErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					loginAttemptCountExceededError.message
 				);
 
@@ -241,11 +222,7 @@ describe('Login HTML Form', function () {
 					expect(res).to.have.status(
 						lockedAccountDueToAuthFailureError.httpStatus
 					);
-
-					const dom = new JSDOM(res.text);
-					const loginErrorMessageElement =
-						dom.window.document.getElementById('error-message');
-					expect(loginErrorMessageElement?.innerHTML).to.equal(
+					expect(getResponseViewErrorMessage(res.text)).to.equal(
 						lockedAccountDueToAuthFailureError.message
 					);
 

@@ -1,9 +1,8 @@
-import { JSDOM } from 'jsdom';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import chaiHttp = require('chai-http');
-import { app } from '../../../';
+import { app } from '../../..';
 import { Session, User } from '../../../model';
 import { userService, testUtils } from '../../../app';
 import { appDataSource } from '../../../infra/database';
@@ -20,6 +19,7 @@ import {
 	usernameNotUniqueError
 } from '../../api-error-response';
 import { GetUserSearchField } from '../../../app/user';
+import { getResponseViewErrorMessage } from '../../../app/testUtils';
 
 chai.use(chaiHttp);
 
@@ -65,13 +65,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-
-				console.log(res.text);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					badRequestError.message
 				);
 
@@ -94,11 +88,7 @@ describe('Registration HTML Form', function () {
 				expect(res).to.have.status(
 					newPasswordNotConfirmedCorrectlyError.httpStatus
 				);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					newPasswordNotConfirmedCorrectlyError.message
 				);
 
@@ -121,11 +111,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					emailNotUniqueError.message
 				);
 
@@ -148,11 +134,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					usernameNotUniqueError.message
 				);
 
@@ -177,11 +159,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooShortError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidNewPasswordTooShortError.message
 				);
 
@@ -206,11 +184,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooLongError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidNewPasswordTooLongError.message
 				);
 
@@ -237,11 +211,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidUsernameTooShortError.message
 				);
 
@@ -268,11 +238,7 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidUsernameTooLongError.message
 				);
 

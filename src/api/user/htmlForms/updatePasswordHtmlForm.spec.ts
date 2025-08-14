@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -12,11 +11,13 @@ import {
 	invalidExistingPasswordError,
 	invalidNewPasswordTooLongError,
 	invalidNewPasswordTooShortError,
+	notAuthorisedErrorMessage,
 	requestAuthenticationFailedError,
 	requestValidationError
 } from '../../api-error-response';
 import { userConfig } from '../../../config';
 import { validatePassword } from '../../../app/user/password';
+import { getResponseViewErrorMessage } from '../../../app/testUtils';
 
 chai.use(chaiHttp);
 
@@ -53,11 +54,7 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					badRequestError.message
 				);
 
@@ -79,12 +76,8 @@ describe('Update User Password HTML Form', function () {
 				expect(res.status).to.equal(
 					requestAuthenticationFailedError.httpStatus
 				);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
-					'You are not authorised to access this page!'
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
+					notAuthorisedErrorMessage
 				);
 
 				done();
@@ -104,11 +97,7 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidExistingPasswordError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidExistingPasswordError.message
 				);
 
@@ -133,11 +122,7 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidNewPasswordTooShortError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidNewPasswordTooShortError.message
 				);
 
@@ -162,11 +147,7 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidNewPasswordTooLongError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidNewPasswordTooLongError.message
 				);
 

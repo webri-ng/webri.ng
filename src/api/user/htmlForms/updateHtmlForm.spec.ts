@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 import { before, after, describe, it } from 'mocha';
 import { expect } from 'chai';
 import * as chai from 'chai';
@@ -12,11 +11,13 @@ import {
 	emailNotUniqueError,
 	invalidUsernameTooLongError,
 	invalidUsernameTooShortError,
+	notAuthorisedErrorMessage,
 	requestAuthenticationFailedError,
 	requestValidationError,
 	usernameNotUniqueError
 } from '../../api-error-response';
 import { userConfig } from '../../../config';
+import { getResponseViewErrorMessage } from '../../../app/testUtils';
 
 chai.use(chaiHttp);
 
@@ -51,11 +52,7 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					badRequestError.message
 				);
 
@@ -77,11 +74,8 @@ describe('Update User HTML Form', function () {
 					requestAuthenticationFailedError.httpStatus
 				);
 
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
-					'You are not authorised to access this page!'
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
+					notAuthorisedErrorMessage
 				);
 
 				done();
@@ -100,11 +94,7 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					emailNotUniqueError.message
 				);
 
@@ -124,11 +114,7 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					usernameNotUniqueError.message
 				);
 
@@ -152,11 +138,7 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidUsernameTooShortError.message
 				);
 
@@ -180,11 +162,7 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const registrationErrorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(registrationErrorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					invalidUsernameTooLongError.message
 				);
 

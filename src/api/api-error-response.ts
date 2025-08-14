@@ -375,3 +375,5 @@ export const webringHasNoSitesErrorMessage =
 	'The specified webring has no sites added';
 export const invalidNewsUpdateIdErrorMessage =
 	'The provided news update id is invalid';
+export const notAuthorisedErrorMessage =
+	'You are not authorised to access this page!';

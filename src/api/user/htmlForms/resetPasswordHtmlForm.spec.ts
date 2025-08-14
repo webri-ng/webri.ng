@@ -9,7 +9,7 @@ import {
 	badRequestError,
 	requestValidationError
 } from '../../api-error-response';
-import { JSDOM } from 'jsdom';
+import { getResponseViewErrorMessage } from '../../../app/testUtils';
 
 chai.use(chaiHttp);
 
@@ -36,11 +36,7 @@ describe('Reset Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(requestValidationError.httpStatus);
-
-				const dom = new JSDOM(res.text);
-				const errorMessageElement =
-					dom.window.document.getElementById('error-message');
-				expect(errorMessageElement?.innerHTML).to.equal(
+				expect(getResponseViewErrorMessage(res.text)).to.equal(
 					badRequestError.message
 				);
 

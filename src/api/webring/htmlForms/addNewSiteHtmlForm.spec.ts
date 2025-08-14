@@ -15,6 +15,7 @@ import {
 	badRequestError,
 	invalidSiteNameTooLongError,
 	invalidSiteNameTooShortError,
+	notAuthorisedErrorMessage,
 	requestAuthenticationFailedError,
 	requestAuthorisationFailedError,
 	requestValidationError,
@@ -114,7 +115,7 @@ describe('Add new site HTML form API', function () {
 					requestAuthenticationFailedError.httpStatus
 				);
 				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					'You are not authorised to access this page!'
+					notAuthorisedErrorMessage
 				);
 
 				done();
