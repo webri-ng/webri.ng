@@ -110,9 +110,7 @@ function createWebring() {
  */
 function deleteWebring(webringUrl) {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'delete-webring-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 
 	fetch('/webring/' + webringUrl, {
 		headers: standardRequestHeaders,
@@ -213,9 +211,7 @@ function getExampleMarkup(webringName, webringUrl, referringSiteUrl) {
  */
 function login() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'login-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('login-form');
 	const formData = new FormData(formElement);
 
@@ -255,9 +251,7 @@ function login() {
  */
 function register() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'register-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('register-form');
 	const formData = new FormData(formElement);
 
@@ -307,9 +301,7 @@ function register() {
  */
 function removeSite(webringUrl, siteUrl) {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'sites-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 
 	fetch('/webring/' + webringUrl + '/remove', {
 		body: JSON.stringify({
@@ -355,9 +347,7 @@ function removeSite(webringUrl, siteUrl) {
  */
 function updatePassword() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'update-password-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('update-password-form');
 	const formData = new FormData(formElement);
 
@@ -404,9 +394,7 @@ function updatePassword() {
  */
 function updateUser() {
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'update-user-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formElement = document.getElementById('update-user-form');
 	const formData = new FormData(formElement);
 
@@ -447,9 +435,7 @@ function updateUser() {
 function updateWebring() {
 	const formElement = document.getElementById('update-webring-form');
 	/** The form's error message text element. */
-	const formErrorMessageElement = document.getElementById(
-		'update-webring-error-message'
-	);
+	const formErrorMessageElement = document.getElementById('error-message');
 	const formData = new FormData(formElement);
 
 	const { name, description, privateRing, url, webringUrl } =
