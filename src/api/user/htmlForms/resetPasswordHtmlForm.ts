@@ -24,7 +24,7 @@ export async function resetPasswordHtmlFormController(
 			requestMetadata: res.locals.requestMetadata
 		});
 
-		res.render('user/forgotPasswordSuccess');
+		res.render('user/htmlForms/forgotPasswordSuccess');
 	} catch (error) {
 		// In the case that the user does not exist, return a 200 response.
 		if (
@@ -33,15 +33,17 @@ export async function resetPasswordHtmlFormController(
 		) {
 			// Do not leak user information.
 			// Display ambiguous message on front-end.
-			res.render('user/forgotPasswordSuccess');
+			res.render('user/htmlForms/forgotPasswordSuccess');
 			return;
 		}
 
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('user/forgotPassword', {
-				errorMessage: error.message
-			});
+			return res
+				.status(error.httpStatus)
+				.render('user/htmlForms/forgotPassword', {
+					errorMessage: error.message
+				});
 		}
 
 		return next(error);

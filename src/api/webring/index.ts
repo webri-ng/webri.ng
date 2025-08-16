@@ -25,12 +25,32 @@ import { getWebringsController } from './getWebrings';
 import {
 	addNewSiteHtmlFormController,
 	addNewSiteHtmlFormRequestSchema,
+	addNewSiteHtmlFormViewController,
 	createWebringHtmlFormController,
 	createWebringHtmlFormRequestSchema
 } from './htmlForms';
+import { siteConfig } from '../../config';
 
 export const webringApiRouter: Router = Router();
 export const webringViewRouter: Router = Router();
+
+if (siteConfig.useHtmlForms) {
+	webringViewRouter.get('/new', genericViewController('webring/htmlForms/new'));
+
+	webringViewRouter.get(
+		'/:webringUrl/add',
+		authenticateSessionController,
+		addNewSiteHtmlFormViewController
+	);
+} else {
+	webringViewRouter.get('/new', genericViewController('webring/new'));
+
+	webringViewRouter.get(
+		'/:webringUrl/add',
+		authenticateSessionController,
+		addNewSiteViewController
+	);
+}
 
 webringApiRouter.post(
 	'/',
@@ -84,19 +104,11 @@ webringViewRouter.post(
 	addNewSiteHtmlFormController
 );
 
-webringViewRouter.get('/new', genericViewController('webring/create'));
-
 webringViewRouter.get('/:webringUrl', webringDetailViewController);
 
 webringViewRouter.get(
 	'/:webringUrl/:method(previous|next|random)',
 	getNewSiteController
-);
-
-webringViewRouter.get(
-	'/:webringUrl/add',
-	authenticateSessionController,
-	addNewSiteViewController
 );
 
 webringViewRouter.get(

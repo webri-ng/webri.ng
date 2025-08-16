@@ -31,7 +31,7 @@ export async function updateUserHtmlFormController(
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('user/update', {
+			return res.status(error.httpStatus).render('user/htmlForms/update', {
 				errorMessage: error.message
 			});
 		}

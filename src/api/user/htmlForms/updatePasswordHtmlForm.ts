@@ -65,9 +65,11 @@ export async function updatePasswordHtmlFormController(
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('user/updatePassword', {
-				errorMessage: error.message
-			});
+			return res
+				.status(error.httpStatus)
+				.render('user/htmlForms/updatePassword', {
+					errorMessage: error.message
+				});
 		}
 
 		return next(error);

@@ -41,14 +41,16 @@ export async function loginHtmlFormController(
 			error instanceof ApiReturnableError &&
 			error.code === userNotFoundError.code
 		) {
-			return res.status(loginFailedError.httpStatus).render('user/login', {
-				errorMessage: loginFailedError.message
-			});
+			return res
+				.status(loginFailedError.httpStatus)
+				.render('user/htmlForms/login', {
+					errorMessage: loginFailedError.message
+				});
 		}
 
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('user/login', {
+			return res.status(error.httpStatus).render('user/htmlForms/login', {
 				errorMessage: error.message
 			});
 		}

@@ -78,14 +78,16 @@ export async function addNewSiteHtmlFormController(
 
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('webring/addNewSite', {
-				errorMessage: error.message,
-				// Even though we don't have the full webring info, just return the URL
-				// here so that the hidden form field will work correctly.
-				webring: {
-					url: req.params.webringUrl
-				}
-			});
+			return res
+				.status(error.httpStatus)
+				.render('webring/htmlForms/addNewSite', {
+					errorMessage: error.message,
+					// Even though we don't have the full webring info, just return the URL
+					// here so that the hidden form field will work correctly.
+					webring: {
+						url: req.params.webringUrl
+					}
+				});
 		}
 
 		return next(error);

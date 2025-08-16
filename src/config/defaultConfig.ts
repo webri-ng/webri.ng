@@ -79,7 +79,8 @@ export const defaultConfig: Config = {
 			maxLength: 80
 		},
 		defaultPageLength: 24,
-		maximumPageLength: 100
+		maximumPageLength: 100,
+		useHtmlForms: false
 	},
 	webring: {
 		nameRequirements: {

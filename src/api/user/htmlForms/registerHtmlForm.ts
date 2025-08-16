@@ -65,7 +65,7 @@ export async function registerHtmlFormController(
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('user/register', {
+			return res.status(error.httpStatus).render('user/htmlForms/register', {
 				errorMessage: error.message
 			});
 		}

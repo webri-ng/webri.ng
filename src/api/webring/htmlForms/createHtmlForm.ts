@@ -60,7 +60,7 @@ export async function createWebringHtmlFormController(
 	} catch (error) {
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
-			return res.status(error.httpStatus).render('webring/create', {
+			return res.status(error.httpStatus).render('webring/htmlForms/new', {
 				errorMessage: error.message
 			});
 		}
