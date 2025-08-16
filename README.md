@@ -1,21 +1,19 @@
 # Webri.ng
 
 This repository contains the source for the webri.ng website, and its supporting database. The website's front, and back-end are both contained within this repository.
-
-## Site
-The `src/site` directory contains the source code for the main server. All source code is written in Typescript. Pug is used for rendering the front-end pages. Database connectivity is implemented using the `pg` module with `TypeORM` as an ORM to interface with a `PostgreSQL` database. Testing is implemented using Mocha and Chai.
+The site's code is written in Typescript. Pug is used for rendering the front-end pages. Database connectivity is implemented using the `pg` module with `TypeORM` as an ORM to interface with a `PostgreSQL` database. Testing is implemented using Mocha and Chai.
 
 
 ### Source tree
 The source tree is split into several main directories:
 * `server/api`: Contains the code for the main server API, as well as request validation schemas.
 * `server/app`: Contains the service layer, which contains the main business logic.
-* `server/config`: Contains the various environment configurations for the server. A default base config file is overwritten with enviroment-specific configurations based upon the current runtime environment.
+* `server/config`: Contains the various environment configurations for the server. A default base config file is overwritten with environment-specific configurations based upon the current runtime environment.
 * `server/model`: Contains all domain model types.
 * `server/infra`: Contains all of the code for interfacing with external infrastructure, such as the database, and email.
 
 Refer to `styleguide.md` for development practices.
-The main entry point for the built application is `src/site/dist/index.js`.
+The main entry point for the built application is `src/dist/index.js`.
 
 ### Local development
 Before you can bootstrap the server locally, you will need to run the local mock services and initialise the database. The database schema, and application user can be created using the `src/db/setup` script.
@@ -28,12 +26,12 @@ In order to run the server setup locally you will need the following application
 In order to setup the application for local development:
 * Initialise local development mock services by running the `docker-compose.yml` file in the main `/src` directory.
 * Initialise the database schema, application's database credentials and seed data by running the `npm run start:initdb` script. This is a shorthand for running the `setup` script in the `src/db` directory. This will initialise the database schema, and set up the application user.
-* From here you should be able to run the server locally using `npm run start:dev`. Refer to `src/site/package.json` for more specific NPM configuration.
+* From here you should be able to run the server locally using `npm run start:dev`. Refer to `src/package.json` for more specific NPM configuration.
 
 ### Environment Variables
 Provided below is a table of the environment variables which can be used to configure the application.
 These are necessary for running a staging/production instance of the application. All required env vars are provided in the default development environment config. 
-For more details refer to modules in the `src/site/config` directory.
+For more details refer to modules in the `src/config` directory.
 
 | Key |Description  |
 |--|--|
@@ -55,7 +53,7 @@ For more details refer to modules in the `src/site/config` directory.
 
 ## First steps
 If you are new to the codebase, the best way to approach debugging any particular issue or understanding any one particular aspect is to trace the flow of control through the application.
-Most functionality within the application is API driven and begins with a HTTP request to the application's main router. The best place to begin looking is the main `express.js` router module, located at `src/site/api/index.ts`. Within this file are declarations for the individual sub-routers for all of the application's exposed APIs. Each API typically exposes two routers: The API, and View routers. The API router implements the application's REST API, and the View router implements the front-end views.
+Most functionality within the application is API driven and begins with a HTTP request to the application's main router. The best place to begin looking is the main `express.js` router module, located at `src/api/index.ts`. Within this file are declarations for the individual sub-routers for all of the application's exposed APIs. Each API typically exposes two routers: The API, and View routers. The API router implements the application's REST API, and the View router implements the front-end views.
 For example:
 
 ```typescript

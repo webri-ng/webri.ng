@@ -4,7 +4,7 @@
 
 ### Syntax
 - Keep lines under ~100 characters in length, except where doing so would cause the code to become more unreadable. **Reasoning:** In split-screen editor layouts, ~100 chars is close to the width of an editor window.
-- Keep function bodies to ~100 lines in length where possible. **Reasoning:** Interpreting the contents of a function is much easier for a new user when the user can fit the entire function onscreen at once.
+- Keep function bodies to ~100 lines in length where possible. **Reasoning:** Interpreting the contents of a function is much easier for a new user when the user can fit the entire function on-screen at once.
 
 ### Methodology
 - "It is easier to optimize correct code than to correct optimized code" - Bill Harlan
@@ -29,44 +29,24 @@
 ## Typescript
 
 ### Syntax
+- Use Prettier to automatically format Typescript files. Certain default rules have been overridden to conform with the style of existing code (single-quote, hard tabs, etc.).
 - Use hard-tabbing in your IDE. Use leading TABS instead of spaces. **Reasoning:** The individual developer can choose for themselves how to render a TAB literal. If you want it visually represented by 4 spaces, any modern editor can handle this easily. Rendering an arbitrary number of spaces as a different width is generally more unreliable.
 - Use JSdoc inline documentation ( http://usejsdoc.org/ ) for functions, and for documenting interface/class members. **Reasoning:** Modern IDE's can interpret these and use them in IntelliSense tooltips.
-- Use one line JSdoc comment blocks /** Comment */ for documenting variables. **Reasoning:** Modern IDE's can interpret these annotations and use them in code hints.
+- Use one line JSdoc comment blocks /** Comment */ for documenting important variables. **Reasoning:** Modern IDE's can interpret these annotations and use them in code hints.
 - Use JSdoc's @throws annotation to document what exceptions can be thrown from a function.
 - If aligning comments on the end of the line, use spaces for padding.
 - Use single-quotes when enclosing string literals. **Reasoning:** Requires slightly less effort than double-quotes, and makes no difference to the interpreter.
 - Always end statements with semicolons. **No exceptions**.
 - Use ES6 template directives wherever appropriate. Use: `string${variable}string`, over: `"string" + variable + "string"`. An exception to this rule is when splitting a string across lines.
 - Use ES6 variable declarations only. eg. `let` and `const` instead of `var`.
-- Use module headers on all module index files. Use jsdoc format for headers. Use two line breaks after module headers.
 - Use `camelCase` for variable, function and method names. `PascalCase` for class names.
-- Use two line breaks after the end of a function body before the next symbol.
-- In function declarations, place each parameter on a new line. **Reasoning:** This makes function parameters easy to understand at a glance. e.g:
-
-```typescript
-/**
- * Encabulates...
- * @async
- * @param {number} foo - foo.
- * @param {string} bar - bar.
- * @param {boolean} baz - baz.
- * @returns The encabulated thingy.
- * @throws {SomeError} - When the thingy cannot be reliably encabulated.
- */
-export async function retroEncabulate(foo:number,
-  bar:string,
-  baz:boolean):Promise<Quux>
-{
-  // ...
-}
-```
 
 
 ### Methodology
 Many of the following are picked up automatically by linting or the Typescript compiler, the following rules act as a very general guide to writing clean code in the project.
 
-- Name files after the main exported method. **Reasoning:** This makes it finding the file contianing a particular important function much simpler. Many IDEs support quickly switching to a file based upon its name.
-- Use Node's _'module'_ system to encapsulate functionality. e.g: When a particular service, or function contains lots of intrinstic functionality, split it into separate files and group them within a single directory. The main method can then be exported via `index.ts`. **Reasoning:** This provides a useful form of encapsulation, and logical grouping, while still allowing for easy testing.
+- Name files after the main exported method. **Reasoning:** This makes it finding the file containing a particular important function much simpler. Many IDEs support quickly switching to a file based upon its name.
+- Use Node's _'module'_ system to encapsulate functionality. e.g: When a particular service, or function contains lots of intrinsic functionality, split it into separate files and group them within a single directory. The main method can then be exported via `index.ts`. **Reasoning:** This provides a useful form of encapsulation, and logical grouping, while still allowing for easy testing.
 - Always err on the side of native solutions to simple problems. Avoid adding the burden of learning unnecessary dependencies to the burden of understanding the codebase.
 - Opt for `const` correctness wherever possible. If you don't ever intend for a variable to be changed during the course of program execution, declare it as `const`. This helps code-quality by documenting intent, as well as restricting the possibility for unintended side-effects. Be aware this does not ensure immutability for Objects, use `Object.freeze(...)` for this purpose.
 - **Do not**, under _any_ circumstances, write functions that modify by reference. Write pure functions which compute useful values and return them. When passing an object as a parameter, use Typescript's `Readonly<T>` template type as a way to enforce this.
@@ -104,14 +84,14 @@ function functionWithOptions(arg1:string,
 
 
 ### Testing
-- Be sure to clean up any test data you insert during an individual test during teardown. **Reasoning:** These can interfere with subsequent tests, particularly if they are relying on consistent counts for the number of users/webrings. The same applies to †esting stubs.
+- Be sure to clean up any test data you insert during an individual test during teardown. **Reasoning:** These can interfere with subsequent tests, particularly if they are relying on consistent counts for the number of users/webrings. The same applies to testing stubs.
 - When testing API endpoints for failure cases, you are highly encouraged to test not only the HTTP status code, but the returning result body. **Reasoning:** It is easy for regression errors to sneak by undetected when a failing request in an automated test returns: '400: Request validation error' instead of: '400: Domain specific, meaningful error' without checking the result body explicitly.
 
 
 ## SQL
 
 ### Syntax
-- Use `snake_case` and singular form for table names to avoid ambiguity. e.g `policy_item` over `policy_items`.
+- Use `snake_case` and singular form for table names to avoid ambiguity. e.g `item` over `items`.
 - Always capitalise SQL keywords e.g. `SELECT` or `JOIN`.
 
 ### Methodology
