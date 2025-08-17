@@ -2,9 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { ApiReturnableError } from '../../../app/error';
 import { webringService } from '../../../app';
 import { authoriseWebringModeratorAction } from '../../../app/authorisation';
-import { webringNotFoundError } from '../../api-error-response';
-import { GetWebringSearchField } from '../../../app/webring';
 import { Schema } from 'ajv';
+import { GetWebringSearchField } from '../../../app/webring';
 
 /** Create Webring HTML form request schema. */
 export const addNewSiteHtmlFormRequestSchema: Schema = {
@@ -46,9 +45,21 @@ export async function addNewSiteHtmlFormController(
 			webringUrl
 		);
 		if (!webring) {
-			throw ApiReturnableError.fromApiErrorResponseDetails(
-				webringNotFoundError
-			);
+			return res.status(404).render('webring/notFound', {
+				user
+			});
+		}
+
+		const { isUserModerator, isUserOwner } =
+			await webringService.getUserPermissionsForWebring(webring, user);
+
+		// If it's a private webring, and the user is not authorised, show the 404 page.
+		if (webring.private) {
+			if (!(isUserModerator || isUserOwner)) {
+				return res.status(404).render('webring/notFound', {
+					user
+				});
+			}
 		}
 
 		// Check the authorisation for this action.
@@ -67,15 +78,6 @@ export async function addNewSiteHtmlFormController(
 			redirectLink: `/webring/${webring.url}`
 		});
 	} catch (error) {
-		// This error can't be handled via the 'addNewSite' view, and needs to be
-		// forwarded to the main error handler.
-		if (
-			error instanceof ApiReturnableError &&
-			error.code === webringNotFoundError.code
-		) {
-			return next(error);
-		}
-
 		// In the case of expected errors, re-render the form with the error message.
 		if (error instanceof ApiReturnableError) {
 			return res

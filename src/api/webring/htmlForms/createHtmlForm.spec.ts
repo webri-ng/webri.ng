@@ -106,9 +106,9 @@ describe('Create Webring HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlNotUniqueError.httpStatus);
 
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidRingUrlNotUniqueError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'create-webring-error-message')
+				).to.equal(invalidRingUrlNotUniqueError.message);
 
 				done();
 			});
@@ -133,9 +133,9 @@ describe('Create Webring HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingNameTooShortError.httpStatus);
 
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidRingNameTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'create-webring-error-message')
+				).to.equal(invalidRingNameTooShortError.message);
 
 				done();
 			});
@@ -160,9 +160,9 @@ describe('Create Webring HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingNameTooLongError.httpStatus);
 
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidRingNameTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'create-webring-error-message')
+				).to.equal(invalidRingNameTooLongError.message);
 
 				done();
 			});
@@ -187,9 +187,9 @@ describe('Create Webring HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlTooShortError.httpStatus);
 
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidRingUrlTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'create-webring-error-message')
+				).to.equal(invalidRingUrlTooShortError.message);
 
 				done();
 			});
@@ -214,9 +214,9 @@ describe('Create Webring HTML Form', function () {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidRingUrlTooLongError.httpStatus);
 
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidRingUrlTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'create-webring-error-message')
+				).to.equal(invalidRingUrlTooLongError.message);
 
 				done();
 			});

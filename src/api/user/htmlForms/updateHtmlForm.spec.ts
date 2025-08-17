@@ -94,9 +94,9 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					emailNotUniqueError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-user-error-message')
+				).to.equal(emailNotUniqueError.message);
 
 				done();
 			});
@@ -114,9 +114,9 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					usernameNotUniqueError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-user-error-message')
+				).to.equal(usernameNotUniqueError.message);
 
 				done();
 			});
@@ -138,9 +138,9 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidUsernameTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-user-error-message')
+				).to.equal(invalidUsernameTooShortError.message);
 
 				done();
 			});
@@ -162,9 +162,9 @@ describe('Update User HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidUsernameTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-user-error-message')
+				).to.equal(invalidUsernameTooLongError.message);
 
 				done();
 			});

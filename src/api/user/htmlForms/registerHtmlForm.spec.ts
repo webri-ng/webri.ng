@@ -88,9 +88,9 @@ describe('Registration HTML Form', function () {
 				expect(res).to.have.status(
 					newPasswordNotConfirmedCorrectlyError.httpStatus
 				);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					newPasswordNotConfirmedCorrectlyError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(newPasswordNotConfirmedCorrectlyError.message);
 
 				done();
 			});
@@ -111,9 +111,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(emailNotUniqueError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					emailNotUniqueError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(emailNotUniqueError.message);
 
 				done();
 			});
@@ -134,9 +134,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(usernameNotUniqueError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					usernameNotUniqueError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(usernameNotUniqueError.message);
 
 				done();
 			});
@@ -159,9 +159,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooShortError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidNewPasswordTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(invalidNewPasswordTooShortError.message);
 
 				done();
 			});
@@ -184,9 +184,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidNewPasswordTooLongError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidNewPasswordTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(invalidNewPasswordTooLongError.message);
 
 				done();
 			});
@@ -211,9 +211,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooShortError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidUsernameTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(invalidUsernameTooShortError.message);
 
 				done();
 			});
@@ -238,9 +238,9 @@ describe('Registration HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(invalidUsernameTooLongError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidUsernameTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'register-error-message')
+				).to.equal(invalidUsernameTooLongError.message);
 
 				done();
 			});

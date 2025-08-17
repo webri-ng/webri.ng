@@ -89,13 +89,7 @@ describe('Add new site HTML form API', function () {
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res.status).to.equal(unhandledExceptionError.httpStatus);
-				expect(
-					getResponseViewErrorMessage(res.text)?.startsWith(
-						'An unhandled server error has occurred.'
-					)
-				).to.be.true;
-
+				expect(res.status).to.equal(404);
 				done();
 			});
 	});
@@ -135,9 +129,9 @@ describe('Add new site HTML form API', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(requestAuthorisationFailedError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					requestAuthorisationFailedError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'add-new-site-error-message')
+				).to.equal(requestAuthorisationFailedError.message);
 
 				done();
 			});
@@ -161,9 +155,9 @@ describe('Add new site HTML form API', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidSiteNameTooShortError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidSiteNameTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'add-new-site-error-message')
+				).to.equal(invalidSiteNameTooShortError.message);
 
 				done();
 			});
@@ -187,9 +181,9 @@ describe('Add new site HTML form API', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidSiteNameTooLongError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidSiteNameTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'add-new-site-error-message')
+				).to.equal(invalidSiteNameTooLongError.message);
 
 				done();
 			});

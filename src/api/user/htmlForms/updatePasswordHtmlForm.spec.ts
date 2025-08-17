@@ -97,9 +97,9 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidExistingPasswordError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidExistingPasswordError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-password-error-message')
+				).to.equal(invalidExistingPasswordError.message);
 
 				done();
 			});
@@ -122,9 +122,9 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidNewPasswordTooShortError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidNewPasswordTooShortError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-password-error-message')
+				).to.equal(invalidNewPasswordTooShortError.message);
 
 				done();
 			});
@@ -147,9 +147,9 @@ describe('Update User Password HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(invalidNewPasswordTooLongError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					invalidNewPasswordTooLongError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'update-password-error-message')
+				).to.equal(invalidNewPasswordTooLongError.message);
 
 				done();
 			});

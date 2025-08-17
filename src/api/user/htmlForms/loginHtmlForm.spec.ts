@@ -83,9 +83,9 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					loginFailedError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'login-error-message')
+				).to.equal(loginFailedError.message);
 
 				done();
 			});
@@ -102,9 +102,9 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginFailedError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					loginFailedError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'login-error-message')
+				).to.equal(loginFailedError.message);
 
 				done();
 			});
@@ -121,9 +121,9 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(expiredPasswordError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					expiredPasswordError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'login-error-message')
+				).to.equal(expiredPasswordError.message);
 
 				done();
 			});
@@ -198,9 +198,9 @@ describe('Login HTML Form', function () {
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(loginAttemptCountExceededError.httpStatus);
-				expect(getResponseViewErrorMessage(res.text)).to.equal(
-					loginAttemptCountExceededError.message
-				);
+				expect(
+					getResponseViewErrorMessage(res.text, 'login-error-message')
+				).to.equal(loginAttemptCountExceededError.message);
 
 				done();
 			});
@@ -222,9 +222,9 @@ describe('Login HTML Form', function () {
 					expect(res).to.have.status(
 						lockedAccountDueToAuthFailureError.httpStatus
 					);
-					expect(getResponseViewErrorMessage(res.text)).to.equal(
-						lockedAccountDueToAuthFailureError.message
-					);
+					expect(
+						getResponseViewErrorMessage(res.text, 'login-error-message')
+					).to.equal(lockedAccountDueToAuthFailureError.message);
 
 					done();
 				});

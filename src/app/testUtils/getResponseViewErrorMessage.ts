@@ -6,11 +6,13 @@ import { JSDOM } from 'jsdom';
  * @returns The error message, or null if it's not present.
  */
 export function getResponseViewErrorMessage(
-	responseText: string
+	responseText: string,
+	errorMessageElementId: string = 'error-message'
 ): string | null {
 	const dom = new JSDOM(responseText);
-	const errorMessageElement =
-		dom.window.document.getElementById('error-message');
+	const errorMessageElement = dom.window.document.getElementById(
+		errorMessageElementId
+	);
 
 	if (!errorMessageElement) {
 		return null;
