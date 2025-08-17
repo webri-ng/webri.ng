@@ -1,5 +1,11 @@
 extends layout.pug
 
 block content
-	h1 #{pageHeading}
-	p A terrible server error has occurred: #{errorMessage}
+	h1
+		if (pageHeading)
+			| #{pageHeading}
+		else
+			| Error
+	p
+		| A terrible server error has occurred:
+		span#error-message #{errorMessage}

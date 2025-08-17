@@ -66,6 +66,12 @@ export async function login(
 	// Any errors in authentication will raise exceptions from here.
 	const passwordValidity = await validatePassword(password, user.passwordHash);
 	if (!passwordValidity) {
+		logger.info('Failed login for user', {
+			userId: user.userId,
+			email: user.email,
+			...(options?.requestMetadata ?? {})
+		});
+
 		// Increment the user's login attempt count.
 		user.loginAttemptCount++;
 		user.dateModified = new Date();

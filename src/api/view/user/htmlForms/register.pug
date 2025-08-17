@@ -1,0 +1,23 @@
+extends ../../layout.pug
+
+block title
+	| webri.ng | Register
+
+block content
+	h1 Register
+	form(action='/user/register/form', method='post', onsubmit="return validateRegisterFormSubmission(event)")#register-form
+		div.form-field
+			label(for='username') Username:
+			input#username(type='text' name='username' minlength=2 maxlength=80 required='')
+		div.form-field
+			label(for='email') Email:
+			input#email(type='email' name='email' required='')
+		div.form-field
+			label(for='password') Password:
+			input#password(type='password' name='password' minlength=2 maxlength=128 required='')
+		div.form-field
+			label(for='confirmPassword') Confirm Password:
+			input#confirm-password(type='password' name='confirmPassword' required='')
+		div.form-buttons
+			button(type='submit') Register
+		div#register-error-message.error-message #{errorMessage}

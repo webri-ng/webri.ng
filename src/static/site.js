@@ -8,7 +8,7 @@ const emptyFormFieldsErrorMessage = 'Form fields cannot be empty';
 
 const standardRequestHeaders = {
 	'Content-Type': 'application/json',
-	Accept: 'application/json',
+	Accept: 'application/json'
 };
 
 /**
@@ -17,7 +17,7 @@ const standardRequestHeaders = {
 function addNewSite() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'add-new-site-error-message',
+		'add-new-site-error-message'
 	);
 	const formElement = document.getElementById('add-new-site-form');
 	const formData = new FormData(formElement);
@@ -32,10 +32,10 @@ function addNewSite() {
 	fetch('/webring/' + webringUrl + '/add', {
 		body: JSON.stringify({
 			name,
-			url,
+			url
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -63,12 +63,12 @@ function createWebring() {
 	const formElement = document.getElementById('create-webring-form');
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'create-webring-error-message',
+		'create-webring-error-message'
 	);
 	const formData = new FormData(formElement);
 
 	const { name, description, privateRing, url } = Object.fromEntries(
-		formData.entries(),
+		formData.entries()
 	);
 
 	if (!name || !url) {
@@ -84,10 +84,10 @@ function createWebring() {
 			// be undefined if not.
 			privateRing: privateRing === 'on',
 			tags: [],
-			url,
+			url
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -115,12 +115,12 @@ function createWebring() {
 function deleteWebring(webringUrl) {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'delete-webring-error-message',
+		'delete-webring-error-message'
 	);
 
 	fetch('/webring/' + webringUrl, {
 		headers: standardRequestHeaders,
-		method: 'DELETE',
+		method: 'DELETE'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -151,7 +151,7 @@ function cancelDelete(webringUrl) {
 function forgotPassword() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'reset-password-error-message',
+		'reset-password-error-message'
 	);
 	const formElement = document.getElementById('reset-password-form');
 	const formData = new FormData(formElement);
@@ -165,10 +165,10 @@ function forgotPassword() {
 
 	fetch('/user/reset-password', {
 		body: JSON.stringify({
-			email,
+			email
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -178,7 +178,7 @@ function forgotPassword() {
 			} else {
 				// Display the confirmation message, and hide the form.
 				const resetPasswordMessage = document.getElementById(
-					'reset-password-message',
+					'reset-password-message'
 				);
 				resetPasswordMessage.style.display = 'block';
 				formElement.style.display = 'none';
@@ -220,7 +220,7 @@ function getExampleMarkup(webringName, webringUrl, referringSiteUrl) {
 function login() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'login-error-message',
+		'login-error-message'
 	);
 	const formElement = document.getElementById('login-form');
 	const formData = new FormData(formElement);
@@ -235,10 +235,10 @@ function login() {
 	fetch('/user/login', {
 		body: JSON.stringify({
 			email,
-			password,
+			password
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -262,13 +262,13 @@ function login() {
 function register() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'register-error-message',
+		'register-error-message'
 	);
 	const formElement = document.getElementById('register-form');
 	const formData = new FormData(formElement);
 
 	const { username, email, password, confirmPassword } = Object.fromEntries(
-		formData.entries(),
+		formData.entries()
 	);
 
 	if (!username || !email || !password) {
@@ -285,10 +285,10 @@ function register() {
 		body: JSON.stringify({
 			email,
 			password,
-			username,
+			username
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -314,15 +314,15 @@ function register() {
 function removeSite(webringUrl, siteUrl) {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'sites-error-message',
+		'sites-error-message'
 	);
 
 	fetch('/webring/' + webringUrl + '/remove', {
 		body: JSON.stringify({
-			url: siteUrl,
+			url: siteUrl
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -337,13 +337,13 @@ function removeSite(webringUrl, siteUrl) {
 
 			// Check whether any further sites exist in this webring.
 			const siteListElement = document.getElementById(
-				'webring-detail-site-list',
+				'webring-detail-site-list'
 			);
 			if (!siteListElement.childNodes.length) {
 				// If no further sites exist, remove the webring list, and add text.
 				siteListElement.remove();
 				const newTextNode = document.createTextNode(
-					'This webring contains no sites.',
+					'This webring contains no sites.'
 				);
 				document
 					.getElementById('webring-detail-sites')
@@ -362,13 +362,13 @@ function removeSite(webringUrl, siteUrl) {
 function updatePassword() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'update-password-error-message',
+		'update-password-error-message'
 	);
 	const formElement = document.getElementById('update-password-form');
 	const formData = new FormData(formElement);
 
 	const { currentPassword, newPassword, confirmPassword } = Object.fromEntries(
-		formData.entries(),
+		formData.entries()
 	);
 
 	if (!currentPassword || !newPassword) {
@@ -384,10 +384,10 @@ function updatePassword() {
 	fetch('/user/update-password', {
 		body: JSON.stringify({
 			currentPassword,
-			newPassword,
+			newPassword
 		}),
 		headers: standardRequestHeaders,
-		method: 'POST',
+		method: 'POST'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -411,7 +411,7 @@ function updatePassword() {
 function updateUser() {
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'update-user-error-message',
+		'update-user-error-message'
 	);
 	const formElement = document.getElementById('update-user-form');
 	const formData = new FormData(formElement);
@@ -426,10 +426,10 @@ function updateUser() {
 	fetch('/user', {
 		body: JSON.stringify({
 			email,
-			username,
+			username
 		}),
 		headers: standardRequestHeaders,
-		method: 'PATCH',
+		method: 'PATCH'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -454,7 +454,7 @@ function updateWebring() {
 	const formElement = document.getElementById('update-webring-form');
 	/** The form's error message text element. */
 	const formErrorMessageElement = document.getElementById(
-		'update-webring-error-message',
+		'update-webring-error-message'
 	);
 	const formData = new FormData(formElement);
 
@@ -472,10 +472,10 @@ function updateWebring() {
 			name,
 			privateRing: privateRing === 'on',
 			tags: [],
-			url,
+			url
 		}),
 		headers: standardRequestHeaders,
-		method: 'PATCH',
+		method: 'PATCH'
 	})
 		.then((response) => {
 			if (!response.ok) {
@@ -494,4 +494,68 @@ function updateWebring() {
 			console.error(err);
 			formErrorMessageElement.textContent = unhandledExceptionMessage;
 		});
+}
+
+/** Validates the register form submission. */
+function validateRegisterFormSubmission(event) {
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById(
+		'register-error-message'
+	);
+
+	const formElement = document.getElementById('register-form');
+	if (!formElement) {
+		event.preventDefault();
+		return;
+	}
+
+	const formData = new FormData(formElement);
+
+	const { username, email, password, confirmPassword } = Object.fromEntries(
+		formData.entries()
+	);
+
+	if (!username || !email || !password || !confirmPassword) {
+		formErrorMessageElement.textContent = emptyFormFieldsErrorMessage;
+		event.preventDefault();
+		return;
+	}
+
+	if (confirmPassword != password) {
+		formErrorMessageElement.textContent = "The passwords provided don't match";
+		event.preventDefault();
+		return;
+	}
+}
+
+/** Validates the update password form submission. */
+function validateUpdatePasswordFormSubmission(event) {
+	/** The form's error message text element. */
+	const formErrorMessageElement = document.getElementById(
+		'update-password-error-message'
+	);
+
+	const formElement = document.getElementById('update-password-form');
+	if (!formElement) {
+		event.preventDefault();
+		return;
+	}
+
+	const formData = new FormData(formElement);
+
+	const { currentPassword, newPassword, confirmPassword } = Object.fromEntries(
+		formData.entries()
+	);
+
+	if (!currentPassword || !newPassword || !confirmPassword) {
+		formErrorMessageElement.textContent = emptyFormFieldsErrorMessage;
+		event.preventDefault();
+		return;
+	}
+
+	if (confirmPassword != newPassword) {
+		formErrorMessageElement.textContent = "The passwords provided don't match";
+		event.preventDefault();
+		return;
+	}
 }

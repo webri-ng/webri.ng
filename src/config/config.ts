@@ -100,6 +100,12 @@ export type SiteConfig = {
 	};
 	defaultPageLength: number;
 	maximumPageLength: number;
+	/**
+	 * Whether to use the HTML-only, no Javascript required implementation of front-end forms.
+	 * These use different views and controllers to the standard API-based forms.
+	 * This is currently an experimental feature, and is not enabled by default.
+	 */
+	useHtmlForms?: boolean;
 };
 
 export type WebringConfig = {

@@ -11,9 +11,12 @@ html(lang="en")
 		meta(name='description', content='Webri.ng is a platform where people can host webrings without the need to manage their own infrastructure.')
 		meta(name='keywords', content='webring, webrings, webri.ng, web ring, web rings, web, ring, rings, webri, ng, webri.ng, web ring, web rings, web, ring, rings, webri.ng, small web, The small web')
 		meta(name='robots', content='index, follow')
+		if redirectLink
+			meta(http-equiv='refresh', content=`3; url=${redirectLink}`)
+
 	body
 		include include/header.pug
-		
+
 		div.content-block
 			block content
 

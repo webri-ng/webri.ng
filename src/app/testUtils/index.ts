@@ -13,12 +13,10 @@ import * as dayjs from 'dayjs';
  */
 export const dummyUuid = 'a90d2103-bc3b-40be-ba29-ffffffffffff';
 
-
 /**
  * An invalid UUID for testing purposes.
  */
 export const invalidUuid = 'ffffffffffff';
-
 
 /**
  * The default maximum timeout for tests.
@@ -38,7 +36,8 @@ export const invalidDate: Date = dayjs('3131-31-31').toDate();
 /** A test password string. */
 export const testPasswordText = 'password1';
 /** The accompanying hash to the test password string. */
-export const testPasswordHash = '$2b$10$WZ85caRdLwlVekySsa/Xdu5lMI7xpywvpb7xcHxE.fv3wwYUYaUoy';
+export const testPasswordHash =
+	'$2b$10$WZ85caRdLwlVekySsa/Xdu5lMI7xpywvpb7xcHxE.fv3wwYUYaUoy';
 
 export * from './createRandomEmailAddress';
 export * from './createRandomPassword';
@@ -46,6 +45,7 @@ export * from './createRandomSiteUrl';
 export * from './createRandomTagName';
 export * from './createRandomUsername';
 export * from './createRandomWebringUrl';
+export * from './getResponseViewErrorMessage';
 export * from './insertTestSite';
 export * from './insertTestTag';
 export * from './insertTestUser';

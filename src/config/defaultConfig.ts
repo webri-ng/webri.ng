@@ -2,7 +2,7 @@ import { Config, LoggingLevel } from './config';
 
 /**
  * The default application configuration.
- * The specific configurations inside this object will be overriden by environment
+ * The specific configurations inside this object will be overridden by environment
  * specific configuration options.
  */
 export const defaultConfig: Config = {
@@ -79,7 +79,8 @@ export const defaultConfig: Config = {
 			maxLength: 80
 		},
 		defaultPageLength: 24,
-		maximumPageLength: 100
+		maximumPageLength: 100,
+		useHtmlForms: false
 	},
 	webring: {
 		nameRequirements: {
