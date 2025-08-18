@@ -1,5 +1,4 @@
-
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 /**
  * Dummy controller.
@@ -7,12 +6,8 @@ import { NextFunction, Request, Response } from 'express';
  * @deprecated
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
- * @param {NextFunction} next Express next middleware handler.
  * @returns Renders the view.
  */
-export function dummyController(req: Request,
-	res: Response,
-	next: NextFunction): Response
-{
+export function dummyController(_req: Request, res: Response): Response {
 	return res.status(404).end('Not implemented');
 }

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { webringService } from '../../app';
 import { authoriseWebringOwnerAction } from '../../app/authorisation';
 
@@ -6,32 +6,26 @@ import { authoriseWebringOwnerAction } from '../../app/authorisation';
  * Delete webring controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
- * @param {NextFunction} next Express next middleware handler.
  */
 export async function deleteWebringController(
 	req: Request,
-	res: Response,
-	next: NextFunction
+	res: Response
 ): Promise<void> {
-	try {
-		const { user } = res.locals;
-		const { webringUrl } = req.params;
+	const { user } = res.locals;
+	const { webringUrl } = req.params;
 
-		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
+	const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
-		// Check the authorisation for this action. Only the webring's creator is
-		// allowed to delete the webring.
-		// Any authorisation failures will raise an exception from inside this function.
-		authoriseWebringOwnerAction(webring, user, {
-			requestMetadata: res.locals.requestMetadata
-		});
+	// Check the authorisation for this action. Only the webring's creator is
+	// allowed to delete the webring.
+	// Any authorisation failures will raise an exception from inside this function.
+	authoriseWebringOwnerAction(webring, user, {
+		requestMetadata: res.locals.requestMetadata
+	});
 
-		await webringService.deleteWebring(webring.ringId!, {
-			requestMetadata: res.locals.requestMetadata
-		});
+	await webringService.deleteWebring(webring.ringId!, {
+		requestMetadata: res.locals.requestMetadata
+	});
 
-		res.end();
-	} catch (err) {
-		return next(err);
-	}
+	res.end();
 }

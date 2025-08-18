@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { webringService } from '../../app';
 import { authoriseWebringModeratorAction } from '../../app/authorisation';
@@ -35,45 +35,39 @@ export const updateWebringRequestSchema: Schema = {
  * Update webring controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
- * @param {NextFunction} next Express next middleware handler.
  */
 export async function updateWebringController(
 	req: Request,
-	res: Response,
-	next: NextFunction
+	res: Response
 ): Promise<void> {
-	try {
-		const { name, url, description, privateRing, tags } = req.body;
-		const { webringUrl } = req.params;
-		const { user } = res.locals;
+	const { name, url, description, privateRing, tags } = req.body;
+	const { webringUrl } = req.params;
+	const { user } = res.locals;
 
-		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
+	const webring = await webringService.getWebringByUrlOrFail(webringUrl);
 
-		// Check the authorisation for this action.
-		// Any authorisation failures will raise an exception from inside this function.
-		await authoriseWebringModeratorAction(webring, user, {
+	// Check the authorisation for this action.
+	// Any authorisation failures will raise an exception from inside this function.
+	await authoriseWebringModeratorAction(webring, user, {
+		requestMetadata: res.locals.requestMetadata
+	});
+
+	const updatedWebring = await webringService.updateWebring(
+		webring.ringId!,
+		user.userId,
+		name,
+		url,
+		description,
+		privateRing,
+		tags,
+		{
 			requestMetadata: res.locals.requestMetadata
-		});
+		}
+	);
 
-		const updatedWebring = await webringService.updateWebring(
-			webring.ringId!,
-			user.userId,
-			name,
-			url,
-			description,
-			privateRing,
-			tags,
-			{
-				requestMetadata: res.locals.requestMetadata
-			}
-		);
-
-		// The redirect redirect implementation is problematic. So simply return the new
-		// webring URL, and perform the redirect on the front-end.
-		res.json({
-			url: `/webring/${updatedWebring.url}`
-		});
-	} catch (err) {
-		return next(err);
-	}
+	// The redirect redirect implementation is problematic. So simply return the new
+	// webring URL, and perform the redirect on the front-end.
+	res.json({
+		url: `/webring/${updatedWebring.url}`
+	});
 }
