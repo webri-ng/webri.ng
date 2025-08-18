@@ -16,7 +16,7 @@
 	"scripts": {
 		"build:dev": "tsc -w",
 		"build": "tsc",
-		"build:digitalocean": "npm install --production=false && npm run build && npm ci",
+		"build:digitalocean": "npm install --omit=dev && npm run build && npm ci",
 		"clean": "rm -rf dist",
 		"prebuild": "mkdir -p dist/api/view && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
 		"start:dev": "nodemon",
@@ -60,7 +60,7 @@
 		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
 		"dayjs": "^1.11.10",
-		"express": "^4.18.3",
+		"express": "^5.1.0",
 		"express-rate-limit": "^7.3.0",
 		"jsdom": "^16.7.0",
 		"nodemailer": "^6.9.11",

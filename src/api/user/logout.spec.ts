@@ -30,7 +30,7 @@ describe('Logout', function () {
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.end(function (err, res) {
 				expect(err).to.be.null;
-				expect(res).to.have.cookie('session', '');
+				expect(res).to.not.have.cookie('session');
 				expect(res).to.have.status(200);
 				done();
 			});

@@ -11,8 +11,7 @@ import { app } from '../../index';
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
 
-describe('Get webring sites API', function ()
-{
+describe('Get webring sites API', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
 	let testUser: User;
@@ -24,47 +23,58 @@ describe('Get webring sites API', function ()
 	let testSite4: Site;
 	let testSite5: Site;
 
-	before(async function beforeTesting()
-	{
+	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
 		testWebring = await testUtils.insertTestWebring(testUser.userId!);
 		testEmptyWebring = await testUtils.insertTestWebring(testUser.userId!);
 
-		testSite = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
+		testSite = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!,
+			{
 				dateCreated: dayjs().subtract(5, 'days').toDate()
-			});
-		testSite2 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
+			}
+		);
+		testSite2 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!,
+			{
 				dateCreated: dayjs().subtract(4, 'days').toDate()
-			});
-		testSite3 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
+			}
+		);
+		testSite3 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!,
+			{
 				dateCreated: dayjs().subtract(3, 'days').toDate()
-			});
-		testSite4 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
+			}
+		);
+		testSite4 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!,
+			{
 				dateCreated: dayjs().subtract(2, 'days').toDate()
-			});
-		testSite5 = await testUtils.insertTestSite(testWebring.ringId!,
-			testUser.userId!, {
+			}
+		);
+		testSite5 = await testUtils.insertTestSite(
+			testWebring.ringId!,
+			testUser.userId!,
+			{
 				dateCreated: dayjs().subtract(1, 'days').toDate()
-			});
+			}
+		);
 	});
 
-
-	after(async function afterTesting()
-	{
+	after(async function afterTesting() {
 		// Cascades to user's webrings.
 		testUser = await userService.deleteUser(testUser.userId!);
 	});
 
-	it('should return a 404 status when passed a nonexistent webring',
-		function (done)
-	{
-		chai.request(app)
+	it('should return a 404 status when passed a nonexistent webring', function (done) {
+		chai
+			.request(app)
 			.get(`/webring/nonexistent/sites`)
-			.redirects(0)
+			.send()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res.status).to.equal(404);
@@ -72,12 +82,11 @@ describe('Get webring sites API', function ()
 			});
 	});
 
-	it('should return an empty array when passed a webring with no sites added',
-		function (done)
-	{
-		chai.request(app)
+	it('should return an empty array when passed a webring with no sites added', function (done) {
+		chai
+			.request(app)
 			.get(`/webring/${testEmptyWebring?.url}/sites`)
-			.redirects(0)
+			.send()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
@@ -87,12 +96,11 @@ describe('Get webring sites API', function ()
 			});
 	});
 
-	it('should return a webring\'s sites',
-		function (done)
-	{
-		chai.request(app)
+	it("should return a webring's sites", function (done) {
+		chai
+			.request(app)
 			.get(`/webring/${testWebring?.url}/sites`)
-			.redirects(0)
+			.send()
 			.end(function (err, res) {
 				expect(err).to.be.null;
 				expect(res).to.have.status(200);
