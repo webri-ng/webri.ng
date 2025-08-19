@@ -21,7 +21,7 @@ server.app.use(apiRouter);
 
 // All requests not explicitly handled by the above routers are handled
 // by the 404 controller.
-server.app.use((req, res, next) => {
+server.app.use((_req, res, _next) => {
 	res.status(404).render('404');
 });
 
@@ -45,7 +45,7 @@ export async function initApplication(): Promise<Server> {
 		logger.error('Unable to establish database connection', err);
 		logger.warn(
 			'If this error is occurring on a first-run, have you remembered to ' +
-				'initialise the seed data and application user?',
+				'initialise the seed data and application user?'
 		);
 
 		process.exit(1);
@@ -64,9 +64,9 @@ export async function initApplication(): Promise<Server> {
  * Closes all connections to the server and shuts down the application.
  * Required for testing purposes.
  * @async
- * @returns The shudown server instance.
+ * @returns The shutdown server instance.
  */
 export async function shutdownApplication() {
 	await database.destroyAppDataSource();
-	await server.shutdown();
+	server.shutdown();
 }

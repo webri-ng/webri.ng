@@ -62,6 +62,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParserErrorHandler);
 
+app.disable('x-powered-by');
+
 app.use(compression());
 app.use(
 	cors({
@@ -72,36 +74,29 @@ app.use(
 
 /**
  * Initialises the server on the configured port.
- * @async
  * @returns The initialised server instance.
  */
-export function initialise(): Promise<Server> {
-	return new Promise((resolve, _reject) => {
-		instance = app.listen(serverConfig.port, function handleServerInit() {
-			logger.info(`Server live @: http://localhost:${serverConfig.port}`);
-
-			resolve(instance);
-		});
+export function initialise(): Server {
+	instance = app.listen(serverConfig.port, function handleServerInit() {
+		logger.info(`Server live @: http://localhost:${serverConfig.port}`);
 	});
+
+	return instance;
 }
 
 /**
  * Closes all connections to the server.
  * @async
- * @returns The shudown server instance.
+ * @returns The shutdown server instance.
  */
-export function shutdown(): Promise<Server> {
-	return new Promise((resolve, reject) => {
-		instance?.close(function handleServerShutdown(err?: Error) {
-			if (err) {
-				logger.error('Error closing server', err);
+export function shutdown(): Server {
+	instance?.close(function handleServerShutdown(err?: Error) {
+		if (err) {
+			logger.error('Error closing server', err);
+		}
 
-				return reject(err);
-			}
-
-			logger.info(`Server closed`);
-
-			return resolve(instance);
-		});
+		logger.info(`Server closed`);
 	});
+
+	return instance;
 }
