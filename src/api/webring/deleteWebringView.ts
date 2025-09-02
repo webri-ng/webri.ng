@@ -33,11 +33,7 @@ export async function deleteWebringViewController(
 
 	// If it's a private webring, and the user is not authorised, show the 404 page.
 	if (webring.private) {
-		console.log('1');
-
 		if (!(isUserModerator || isUserOwner)) {
-			console.log('2');
-
 			return res.status(404).render('webring/notFound', {
 				user
 			});
