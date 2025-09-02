@@ -16,7 +16,7 @@
 	"scripts": {
 		"build:dev": "tsc -w",
 		"build": "tsc",
-		"build:digitalocean": "npm install --omit=dev && npm run build && npm ci",
+		"build:digitalocean": "npm install --production=false && npm run build && npm ci",
 		"clean": "rm -rf dist",
 		"prebuild": "mkdir -p dist/api/view && cp -r static dist && cp -r template dist && cp -r api/view dist/api/view",
 		"start:dev": "nodemon",
@@ -78,7 +78,7 @@
 		"@types/compression": "^1.7.2",
 		"@types/cookie-parser": "^1.4.2",
 		"@types/cors": "^2.8.12",
-		"@types/express": "^4.17.13",
+		"@types/express": "^5.0.3",
 		"@types/jsdom": "^16.2.15",
 		"@types/mocha": "^9.0.0",
 		"@types/node": "^22.5.4",
