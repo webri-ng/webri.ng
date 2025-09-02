@@ -9,28 +9,38 @@ import {
 	webringNotFoundError
 } from '../api-error-response';
 
+export const getNextSiteController = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => getNewSiteController(GetNewSiteMethod.Next, req, res, next);
+
+export const getPreviousSiteController = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => getNewSiteController(GetNewSiteMethod.Previous, req, res, next);
+
+export const getRandomSiteController = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => getNewSiteController(GetNewSiteMethod.Random, req, res, next);
+
 /**
  * Get next site controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function getNewSiteController(
+async function getNewSiteController(
+	newSiteMethod: GetNewSiteMethod,
 	req: Request,
 	res: Response,
 	next: NextFunction
 ): Promise<void> {
-	const { webringUrl, method } = req.params;
+	const { webringUrl } = req.params;
 	const { index, via } = req.query;
-
-	let newSiteMethod = GetNewSiteMethod.Next;
-	if (method === 'previous') {
-		newSiteMethod = GetNewSiteMethod.Previous;
-	}
-
-	if (method === 'random') {
-		newSiteMethod = GetNewSiteMethod.Random;
-	}
 
 	let currentIndex: number | undefined;
 	if (index) {

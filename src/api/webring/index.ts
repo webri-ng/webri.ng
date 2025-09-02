@@ -13,7 +13,11 @@ import { createWebringController, createWebringRequestSchema } from './create';
 import { deleteWebringController } from './deleteWebring';
 import { updateWebringViewController } from './updateWebringView';
 import { removeSiteController, removeSiteRequestSchema } from './removeSite';
-import { getNewSiteController } from './site';
+import {
+	getNextSiteController,
+	getPreviousSiteController,
+	getRandomSiteController
+} from './site';
 import {
 	updateWebringController,
 	updateWebringRequestSchema
@@ -107,11 +111,6 @@ webringViewRouter.post(
 webringViewRouter.get('/:webringUrl', webringDetailViewController);
 
 webringViewRouter.get(
-	'/:webringUrl/:method(previous|next|random)',
-	getNewSiteController
-);
-
-webringViewRouter.get(
 	'/:webringUrl/update',
 	authenticateSessionController,
 	updateWebringViewController
@@ -122,3 +121,7 @@ webringViewRouter.get(
 	authenticateSessionController,
 	deleteWebringViewController
 );
+
+webringViewRouter.get('/:webringUrl/next', getNextSiteController);
+webringViewRouter.get('/:webringUrl/previous', getPreviousSiteController);
+webringViewRouter.get('/:webringUrl/random', getRandomSiteController);

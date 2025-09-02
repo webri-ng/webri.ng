@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Schema } from 'ajv';
 import { sessionService, userService } from '../../app';
 import { createSessionCookieResponse } from '../createSessionCookieResponse';
@@ -53,26 +53,20 @@ export async function registerUserAndCreateNewSession(
  * User registration API controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
- * @param {NextFunction} next Express next middleware handler.
  */
 export async function registerController(
 	req: Request,
-	res: Response,
-	next: NextFunction
+	res: Response
 ): Promise<void> {
-	try {
-		const { username, email, password } = req.body;
+	const { username, email, password } = req.body;
 
-		// Create the new user, and a new login session for them.
-		const { session } = await registerUserAndCreateNewSession(
-			username,
-			email,
-			password,
-			res.locals.requestMetadata
-		);
+	// Create the new user, and a new login session for them.
+	const { session } = await registerUserAndCreateNewSession(
+		username,
+		email,
+		password,
+		res.locals.requestMetadata
+	);
 
-		createSessionCookieResponse(res, session).send();
-	} catch (err) {
-		return next(err);
-	}
+	createSessionCookieResponse(res, session).send();
 }

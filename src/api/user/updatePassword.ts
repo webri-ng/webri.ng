@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { userService } from '../../app';
 import { Schema } from 'ajv';
 
@@ -22,28 +22,17 @@ export const updatePasswordRequestSchema: Schema = {
  * Update password API controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
- * @param {NextFunction} next Express next middleware handler.
  */
 export async function updatePasswordController(
 	req: Request,
-	res: Response,
-	next: NextFunction
+	res: Response
 ): Promise<void> {
-	try {
-		const { user } = res.locals;
-		const { currentPassword, newPassword } = req.body;
+	const { user } = res.locals;
+	const { currentPassword, newPassword } = req.body;
 
-		await userService.updatePassword(
-			user.userId!,
-			currentPassword,
-			newPassword,
-			{
-				requestMetadata: res.locals.requestMetadata
-			}
-		);
+	await userService.updatePassword(user.userId!, currentPassword, newPassword, {
+		requestMetadata: res.locals.requestMetadata
+	});
 
-		res.end();
-	} catch (err) {
-		return next(err);
-	}
+	res.end();
 }

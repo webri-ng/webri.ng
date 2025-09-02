@@ -11,10 +11,11 @@ import { GetUserSearchField } from '../app/user';
  * @param {Response} res Express Response.
  * @param {NextFunction} next Express next middleware handler.
  */
-export async function parseSessionController(req: Request,
+export async function parseSessionController(
+	req: Request,
 	res: Response,
-	next: NextFunction): Promise<void>
-{
+	next: NextFunction
+): Promise<void> {
 	try {
 		// If there is no session cookie set, return without an error to continue processing
 		// the request without setting any session information.
@@ -31,7 +32,10 @@ export async function parseSessionController(req: Request,
 		// Get the user attached to the session.
 		// The result is not checked to improve the test coverage. We can be sure the
 		// data is consistent thanks to the database enforcing referential integrity.
-		const user = await userService.getUser(GetUserSearchField.UserId, session.userId);
+		const user = await userService.getUser(
+			GetUserSearchField.UserId,
+			session.userId
+		);
 
 		// Populate the local `user`, and `session` entries in the Express response.
 		res.locals.user = user;
