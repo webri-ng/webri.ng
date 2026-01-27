@@ -9,6 +9,14 @@ export const testEnvironmentConfig: Config = {
 	global: {
 		baseDomainUrl: 'http://localhost:3456'
 	},
+	logging: {
+		...defaultConfig.logging,
+		logIncomingRequests: false,
+		sentry: {
+			enabled: false,
+			dsn: ''
+		}
+	},
 	server: {
 		port: 3456,
 		rateLimit: 9999,
@@ -27,6 +35,6 @@ export const testEnvironmentConfig: Config = {
 			saltRounds: 10,
 			resetTokenValidity: [1, 'hour']
 		},
-		maxUnsuccessfulLoginAttempts: 3,
-	},
+		maxUnsuccessfulLoginAttempts: 3
+	}
 };
