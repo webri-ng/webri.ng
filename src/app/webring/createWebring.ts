@@ -83,12 +83,16 @@ export async function createWebring(
 	// Initialise the webring's moderators.
 	newWebring.moderators = [];
 
+	const savedWebring = await appDataSource
+		.getRepository(Webring)
+		.save(newWebring);
+
 	logger.info(`Created new webring`, {
-		webringUrl: newWebring.url,
-		webringId: newWebring.ringId,
+		webringUrl: savedWebring.url,
+		webringId: savedWebring.ringId,
 		userId: createdBy,
 		...(options?.requestMetadata ?? {})
 	});
 
-	return appDataSource.getRepository(Webring).save(newWebring);
+	return savedWebring;
 }
