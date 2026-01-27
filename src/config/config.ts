@@ -63,6 +63,10 @@ export type LoggingConfig = {
 	logRequestValidation: boolean;
 	logIncomingRequests: boolean;
 	logRateLimiting: boolean;
+	sentry?: {
+		enabled: boolean;
+		dsn: string;
+	};
 };
 
 export type TagConfig = {

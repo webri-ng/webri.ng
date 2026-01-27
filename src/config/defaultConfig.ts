@@ -43,7 +43,11 @@ export const defaultConfig: Config = {
 		loggingLevel: LoggingLevel.Debug,
 		logRequestValidation: true,
 		logIncomingRequests: true,
-		logRateLimiting: true
+		logRateLimiting: true,
+		sentry: {
+			enabled: false,
+			dsn: ''
+		}
 	},
 	tag: {
 		nameRequirements: {

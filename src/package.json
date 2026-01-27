@@ -54,6 +54,7 @@
 		"exec": "npm run css && ts-node ./start.ts"
 	},
 	"dependencies": {
+		"@sentry/node": "^10.36.0",
 		"ajv": "^8.12.0",
 		"bcrypt": "^5.1.1",
 		"compression": "^1.7.4",
