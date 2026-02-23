@@ -1,8 +1,7 @@
 import { logger } from '..';
 import {
 	emailNotUniqueError,
-	usernameNotUniqueError,
-	userNotFoundError
+	usernameNotUniqueError
 } from '../../api/api-error-response';
 import { RequestMetadata, User, UUID } from '../../model';
 import { ApiReturnableError } from '../error';
@@ -59,7 +58,7 @@ export async function updateUser(
 		);
 	}
 
-	logger.info(`Updating user'`, {
+	logger.info(`Updating user`, {
 		userId,
 		email: user.email,
 		username: user.username,
