@@ -5,6 +5,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../..';
 import { Session, User } from '../../model';
 import { userService, testUtils, sessionService } from '../../app';
+import { appDataSource } from '../../infra/database';
 
 chai.use(chaiHttp);
 
@@ -16,6 +17,9 @@ describe('Logout', function () {
 
 	before(async function beforeTesting() {
 		testUser = await testUtils.insertTestUser();
+	});
+
+	beforeEach(async function () {
 		testUserSession = await sessionService.createSession(testUser);
 	});
 
@@ -32,6 +36,26 @@ describe('Logout', function () {
 				expect(err).to.be.null;
 				expect(res).to.not.have.cookie('session');
 				expect(res).to.have.status(200);
+				done();
+			});
+	});
+
+	it('should invalidate the session', function (done) {
+		chai
+			.request(app)
+			.get('/user/logout')
+			.set('Cookie', `session=${testUserSession.sessionId}`)
+			.end(async function (err, res) {
+				expect(err).to.be.null;
+				expect(res).to.have.status(200);
+
+				const updatedSession = await appDataSource
+					.getRepository(Session)
+					.findOneByOrFail({
+						sessionId: testUserSession.sessionId
+					});
+
+				expect(updatedSession.isInvalidated()).to.be.true;
 				done();
 			});
 	});

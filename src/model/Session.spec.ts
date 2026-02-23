@@ -5,39 +5,35 @@ import { Session } from '.';
 import { testUtils } from '../app';
 import { dummyUuid } from '../app/testUtils';
 
-describe('Session Entity', function ()
-{
+describe('Session Entity', function () {
 	this.timeout(testUtils.defaultTestTimeout);
 
-	describe('Validate session active', function ()
-	{
+	describe('Validate session active', function () {
 		const expiryDate = dayjs().add(1, 'week').toDate();
 		const session = new Session(dummyUuid, expiryDate);
 		const dateTooEarly = dayjs().subtract(1, 'day').toDate();
 		const dateTooLate = dayjs(session.expiryDate).add(1, 'day').toDate();
 		const validDate = dayjs(session.expiryDate).subtract(1, 'minute').toDate();
+		const invalidatedSession = new Session(dummyUuid);
+		invalidatedSession.dateEnded = dayjs().subtract(1, 'minute').toDate();
 
-		it('should return false if the specified date is before the creation', function ()
-		{
+		it('should return false if the session has been invalidated', function () {
+			expect(invalidatedSession.isActive()).to.be.false;
+		});
+
+		it('should return false if the specified date is before the creation', function () {
 			expect(session.isActive(dateTooEarly)).to.be.false;
 		});
 
-
-		it('should return false if the specified date is after the expiry', function ()
-		{
+		it('should return false if the specified date is after the expiry', function () {
 			expect(session.isActive(dateTooLate)).to.be.false;
-
 		});
 
-
-		it('should return true if the specified date is within the valid window', function ()
-		{
+		it('should return true if the specified date is within the valid window', function () {
 			expect(session.isActive(validDate)).to.be.true;
 		});
 
-
-		it('should return true if the current date is within the valid window', function ()
-		{
+		it('should return true if the current date is within the valid window', function () {
 			expect(session.isActive()).to.be.true;
 		});
 	});
@@ -62,9 +58,7 @@ describe('Session Entity', function ()
 			expect(session.isInvalidated()).to.be.true;
 		});
 
-		it('should correctly return whether a session has been invalidated as of a specific date',
-			function ()
-		{
+		it('should correctly return whether a session has been invalidated as of a specific date', function () {
 			const effectiveDate = dayjs().subtract(1, 'hour').toDate();
 			expect(session.isInvalidated(effectiveDate)).to.be.false;
 		});

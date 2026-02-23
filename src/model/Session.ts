@@ -4,8 +4,7 @@ import { sessionConfig } from '../config';
 import { UUID } from '.';
 
 @Entity('user_session')
-export class Session
-{
+export class Session {
 	@PrimaryGeneratedColumn('uuid', {
 		name: 'session_id'
 	})
@@ -49,9 +48,7 @@ export class Session
 	})
 	public dateCreated: Date;
 
-	constructor(_userId: string,
-		expiryDate: Date | null = null)
-	{
+	constructor(_userId: string, expiryDate: Date | null = null) {
 		this.userId = _userId;
 		this.expiryDate = expiryDate || Session.getDefaultExpiryDate();
 		this.dateDeleted = null;
@@ -65,10 +62,11 @@ export class Session
 	 * Defaults to the current date.
 	 * @returns The expiry date of a session with this effective date.
 	 */
-	 public static getDefaultExpiryDate(effectiveDate: Date = new Date()): Date {
-		return dayjs(effectiveDate).add(...sessionConfig.validityPeriod).toDate();
+	public static getDefaultExpiryDate(effectiveDate: Date = new Date()): Date {
+		return dayjs(effectiveDate)
+			.add(...sessionConfig.validityPeriod)
+			.toDate();
 	}
-
 
 	/**
 	 * The number of seconds remaining in the session.
@@ -76,7 +74,6 @@ export class Session
 	public get secondsRemaining(): number {
 		return dayjs(this.expiryDate).diff(new Date(), 'seconds');
 	}
-
 
 	/**
 	 * Calculates whether a session has been invalidated, as of an arbitrary effective date.
@@ -88,7 +85,6 @@ export class Session
 		return dayjs(effectiveDate).isAfter(this.dateEnded);
 	}
 
-
 	/**
 	 * Calculates whether a session is active, as of an arbitrary effective date.
 	 * @param {Date} [effectiveDate] The effective date of the session to calculate from.
@@ -96,6 +92,10 @@ export class Session
 	 * @returns Whether the session is active.
 	 */
 	public isActive(effectiveDate: Date = new Date()): boolean {
+		if (this.isInvalidated(effectiveDate)) {
+			return false;
+		}
+
 		if (dayjs(effectiveDate).isAfter(this.expiryDate)) {
 			return false;
 		}
