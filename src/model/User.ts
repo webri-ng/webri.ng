@@ -19,6 +19,7 @@ import {
 import { userConfig } from '../config';
 import { UUID, Webring } from '.';
 import { ApiReturnableError } from '../app/error';
+import { randomBytes } from 'crypto';
 
 @Entity('user_account')
 export class User {
@@ -134,7 +135,7 @@ export class User {
 	 * @returns The newly generated password string.
 	 */
 	public static generateRandomPassword(): string {
-		return Math.random().toString(36).substring(2);
+		return randomBytes(24).toString('base64url');
 	}
 
 	/**
