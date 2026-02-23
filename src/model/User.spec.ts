@@ -158,20 +158,42 @@ describe('User Entity', function () {
 				.and.haveOwnProperty('code', invalidUsernameError.code);
 		});
 
+		it('should throw an exception when passed a username with uppercase characters', function () {
+			expect(() => User.validateUsername('Anthony'))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidUsernameError.code);
+		});
+
 		it('should throw an exception when passed a username with invalid characters', function () {
 			expect(() => User.validateUsername('Ånthony'))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidUsernameError.code);
+
+			expect(() => User.validateUsername('[anthony]'))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidUsernameError.code);
+
+			expect(() => User.validateUsername('anth-ony'))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidUsernameError.code);
+
+			expect(() => User.validateUsername('<div>anthony</div>'))
+				.to.throw(ApiReturnableError)
+				.and.haveOwnProperty('code', invalidUsernameError.code);
+
+			expect(() => User.validateUsername('anth\\ony'))
 				.to.throw(ApiReturnableError)
 				.and.haveOwnProperty('code', invalidUsernameError.code);
 		});
 
 		it('should throw an exception when passed a username with spaces', function () {
-			expect(() => User.validateUsername('Anthony Admin'))
+			expect(() => User.validateUsername('anthony admin'))
 				.to.throw(ApiReturnableError)
 				.and.haveOwnProperty('code', invalidUsernameError.code);
 		});
 
 		it('should not throw an exception when passed a valid username', function () {
-			expect(() => User.validateUsername('Anthony_Admin')).to.not.throw();
+			expect(() => User.validateUsername('anthony_admin')).to.not.throw();
 		});
 	});
 

@@ -286,7 +286,7 @@ export class User {
 		}
 
 		// Test for the existence of invalid characters.
-		if (!new RegExp(/^[A-z_0-9]+$/).test(username)) {
+		if (!/^[a-z_0-9]+$/.test(username)) {
 			throw ApiReturnableError.fromApiErrorResponseDetails(
 				invalidUsernameCharacters
 			);
