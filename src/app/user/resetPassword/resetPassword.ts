@@ -5,7 +5,7 @@ import { appDataSource } from '../../../infra/database';
 import { RequestMetadata, User } from '../../../model';
 import { ApiReturnableError } from '../../error';
 import { hashPassword } from '../password';
-import { sendResetPaswordEmail } from './sendResetPaswordEmail';
+import { sendResetPasswordEmail } from './sendResetPasswordEmail';
 
 /**
  * Resets a particular user's password, and emails the temporary password to the user.
@@ -45,7 +45,7 @@ export async function resetPassword(
 		...(options?.requestMetadata ?? {})
 	});
 
-	await sendResetPaswordEmail(user, temporaryPassword);
+	await sendResetPasswordEmail(user, temporaryPassword);
 
 	return appDataSource.getRepository(User).save(user);
 }

@@ -4,10 +4,10 @@ import { createResetPasswordEmailContent } from './createResetPasswordEmailConte
 
 /**
  * Sends the reset password email to a user.
- * @param {User} user The new user to send the registration email to.
+ * @param {User} user The user to send the reset password email to.
  * @param {string} temporaryPassword The user's new temporary password.
  */
-export async function sendResetPaswordEmail(
+export async function sendResetPasswordEmail(
 	user: Readonly<User>,
 	temporaryPassword: string
 ): Promise<void> {
