@@ -60,20 +60,27 @@ export class User {
 	public passwordExpiryTime: Date | null;
 
 	@Column({
-		name: 'date_last_login',
+		name: 'date_last_login_success',
 		type: 'timestamptz',
 		nullable: true
 	})
-	public dateLastLogin: Date | null;
+	public dateLastLoginSuccess: Date | null;
+
+	@Column({
+		name: 'date_last_login_attempt',
+		type: 'timestamptz',
+		nullable: true
+	})
+	public dateLastLoginAttempt: Date | null;
 
 	/**
 	 * The number of unsuccessful login attempts that this user has made.
 	 */
 	@Column({
-		name: 'login_attempt_count',
+		name: 'incorrect_password_attempt_count',
 		type: 'integer'
 	})
-	public loginAttemptCount: number;
+	public incorrectPasswordAttemptCount: number;
 
 	@Column({
 		name: 'locked_due_to_failed_auth',
@@ -126,8 +133,9 @@ export class User {
 		this.dateDeleted = null;
 		this.dateCreated = new Date();
 		this.dateModified = new Date();
-		this.dateLastLogin = null;
-		this.loginAttemptCount = 0;
+		this.dateLastLoginSuccess = null;
+		this.dateLastLoginAttempt = null;
+		this.incorrectPasswordAttemptCount = 0;
 	}
 
 	/**

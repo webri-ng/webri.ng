@@ -18,6 +18,7 @@ import {
 	loginFailedError,
 	userNotFoundError
 } from '../../api/api-error-response';
+import { GetUserSearchField } from './getUser';
 
 describe('User login', function () {
 	this.timeout(testUtils.defaultTestTimeout);
@@ -38,7 +39,7 @@ describe('User login', function () {
 
 		testMaxLoginUser = await testUtils.insertTestUser();
 		await appDataSource.getRepository(User).update(testMaxLoginUser.userId!, {
-			loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
+			incorrectPasswordAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
 		});
 	});
 
@@ -77,21 +78,49 @@ describe('User login', function () {
 
 		expect(user).to.be.instanceof(User);
 		expect(user.userId).to.equal(testUser?.userId);
+		expect(dayjs(user?.dateLastLoginAttempt).isSame(dayjs(), 'minute')).to.be
+			.true;
+		expect(dayjs(user?.dateLastLoginSuccess).isSame(dayjs(), 'minute')).to.be
+			.true;
 	});
 
 	it('should throw an exception when a user exceeds the maximum login attempt count', async function () {
-		return expect(login(testMaxLoginUser?.email || '', 'incorrectpassword1'))
+		await expect(login(testMaxLoginUser?.email || '', 'incorrectpassword1'))
 			.to.eventually.be.rejectedWith(ApiReturnableError)
 			.and.have.property('code', loginAttemptCountExceededError.code);
+
+		const testMaxLoginUserReloaded = await userService.getUser(
+			GetUserSearchField.UserId,
+			testMaxLoginUser.userId!
+		);
+		expect(testMaxLoginUserReloaded?.lockedDueToFailedAuth).to.be.true;
+		expect(
+			dayjs(testMaxLoginUserReloaded?.dateLastLoginAttempt).isSame(
+				dayjs(),
+				'minute'
+			)
+		).to.be.true;
 	});
 
 	it(
 		'should throw an exception when a user who is locked due to exceeding the login ' +
 			'attempt count attempts to login',
 		async function () {
-			return expect(login(testMaxLoginUser?.email || '', 'password1'))
+			await expect(login(testMaxLoginUser?.email || '', 'password1'))
 				.to.eventually.be.rejectedWith(ApiReturnableError)
 				.and.have.property('code', lockedAccountDueToAuthFailureError.code);
+
+			const testMaxLoginUserReloaded = await userService.getUser(
+				GetUserSearchField.UserId,
+				testMaxLoginUser.userId!
+			);
+			expect(testMaxLoginUserReloaded?.lockedDueToFailedAuth).to.be.true;
+			expect(
+				dayjs(testMaxLoginUserReloaded?.dateLastLoginAttempt).isSame(
+					dayjs(),
+					'minute'
+				)
+			).to.be.true;
 		}
 	);
 
@@ -103,13 +132,14 @@ describe('User login', function () {
 
 			expect(authenticatedUser).to.be.instanceof(User);
 			expect(authenticatedUser.userId).to.equal(testUser?.userId);
-			expect(authenticatedUser?.dateLastLogin).to.not.be.null;
+			expect(authenticatedUser?.dateLastLoginSuccess).to.not.be.null;
 		});
 
 		it('should correctly set the last login date for a user', function () {
-			expect(authenticatedUser?.dateLastLogin).to.not.be.null;
-			expect(dayjs(authenticatedUser?.dateLastLogin).isSame(dayjs(), 'minute'))
-				.to.be.true;
+			expect(authenticatedUser?.dateLastLoginSuccess).to.not.be.null;
+			expect(
+				dayjs(authenticatedUser?.dateLastLoginSuccess).isSame(dayjs(), 'minute')
+			).to.be.true;
 		});
 	});
 });

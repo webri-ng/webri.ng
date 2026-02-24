@@ -12,13 +12,13 @@ CREATE TABLE webring.user_account (
 	password_hash TEXT NOT NULL,
 	password_set_time TIMESTAMPTZ NOT NULL,
 	password_expiry_time TIMESTAMPTZ,
-	login_attempt_count INTEGER NOT NULL DEFAULT 0,
+	incorrect_password_attempt_count INTEGER NOT NULL DEFAULT 0,
 	locked_due_to_failed_auth BOOLEAN NOT NULL DEFAULT FALSE,
-	date_last_login TIMESTAMPTZ,
 	date_created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	date_modified TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 	date_deleted TIMESTAMPTZ,
-	date_last_logged_in TIMESTAMPTZ
+	date_last_login_success TIMESTAMPTZ,
+	date_last_login_attempt TIMESTAMPTZ
 );
 
 

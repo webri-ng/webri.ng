@@ -41,7 +41,8 @@ describe('Login HTML Form', function () {
 		await appDataSource
 			.getRepository(User)
 			.update(testMaxAttemptCountUser.userId!, {
-				loginAttemptCount: userConfig.maxUnsuccessfulLoginAttempts - 1
+				incorrectPasswordAttemptCount:
+					userConfig.maxUnsuccessfulLoginAttempts - 1
 			});
 	});
 

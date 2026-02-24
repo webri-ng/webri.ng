@@ -1,4 +1,5 @@
 import {
+	ApiErrorResponseDetails,
 	expiredPasswordError,
 	lockedAccountDueToAuthFailureError,
 	loginAttemptCountExceededError,
@@ -12,6 +13,16 @@ import { ApiReturnableError } from '../error';
 import { logger } from '../logger';
 import { getUser, GetUserSearchField } from './getUser';
 import { validatePassword } from './password';
+
+/** Convenience method to save the user entity, and raise an error. */
+async function saveUserEntityAndThrowError(
+	user: User,
+	errorDetails: ApiErrorResponseDetails
+): Promise<never> {
+	await appDataSource.getRepository(User).save(user);
+
+	throw ApiReturnableError.fromApiErrorResponseDetails(errorDetails);
+}
 
 /**
  * Authenticates a user login.
@@ -50,14 +61,18 @@ export async function login(
 		throw ApiReturnableError.fromApiErrorResponseDetails(userNotFoundError);
 	}
 
-	// Check if the user is locked due to too many successive failed authentication attempts.
+	user.dateModified = new Date();
+	user.dateLastLoginAttempt = new Date();
+
+	// Check if the user is locked due to too many successive failed login attempts.
 	if (user.lockedDueToFailedAuth) {
 		logger.info('Login attempt for locked user', {
 			email: User.normaliseEmailAddress(email),
 			...(options?.requestMetadata ?? {})
 		});
 
-		throw ApiReturnableError.fromApiErrorResponseDetails(
+		return saveUserEntityAndThrowError(
+			user,
 			lockedAccountDueToAuthFailureError
 		);
 	}
@@ -73,12 +88,14 @@ export async function login(
 		});
 
 		// Increment the user's login attempt count.
-		user.loginAttemptCount++;
-		user.dateModified = new Date();
+		user.incorrectPasswordAttemptCount++;
 
-		// If the user has exceeded the maximum unsuccessful login attempt count, lock the
-		// account and serialise the user object.
-		if (user.loginAttemptCount >= userConfig.maxUnsuccessfulLoginAttempts) {
+		// If the user has exceeded the maximum unsuccessful login attempt count,
+		// lock the account.
+		if (
+			user.incorrectPasswordAttemptCount >=
+			userConfig.maxUnsuccessfulLoginAttempts
+		) {
 			logger.info(
 				'Account locked due to exceeding allowed login attempt threshold',
 				{
@@ -89,28 +106,22 @@ export async function login(
 			);
 
 			user.lockedDueToFailedAuth = true;
-			await appDataSource.getRepository(User).save(user);
 
-			throw ApiReturnableError.fromApiErrorResponseDetails(
-				loginAttemptCountExceededError
-			);
+			return saveUserEntityAndThrowError(user, loginAttemptCountExceededError);
 		}
 
-		user = await appDataSource.getRepository(User).save(user);
-
-		throw ApiReturnableError.fromApiErrorResponseDetails(loginFailedError);
+		return saveUserEntityAndThrowError(user, loginFailedError);
 	}
 
-	// Set the user's login attempt count to 0 on successful authentication.
-	user.loginAttemptCount = 0;
-	user.dateLastLogin = new Date();
-	user.dateModified = new Date();
-
-	user = await appDataSource.getRepository(User).save(user);
+	// Reset the user's login attempt count on successful authentication,
+	// even if the password has expired.
+	user.incorrectPasswordAttemptCount = 0;
 
 	if (user.hasPasswordExpired()) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(expiredPasswordError);
+		return saveUserEntityAndThrowError(user, expiredPasswordError);
 	}
 
-	return user;
+	user.dateLastLoginSuccess = new Date();
+
+	return appDataSource.getRepository(User).save(user);
 }
