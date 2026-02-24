@@ -53,6 +53,8 @@ describe('Reset user password', function () {
 				'hour'
 			)
 		).to.be.true;
+		expect(testUser.lockedDueToFailedAuth).to.be.false;
+		expect(testUser.incorrectPasswordAttemptCount).to.equal(0);
 
 		//@TODO: Improve verification of reset temporary password.
 	});
@@ -65,5 +67,6 @@ describe('Reset user password', function () {
 
 		expect(testUser).to.not.be.null;
 		expect(testUser.lockedDueToFailedAuth).to.be.false;
+		expect(testUser.incorrectPasswordAttemptCount).to.equal(0);
 	});
 });
