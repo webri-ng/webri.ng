@@ -81,4 +81,6 @@ viewRouter.get('/donate', genericViewController('donate'));
 viewRouter.get('/faq', genericViewController('faq'));
 viewRouter.get('/news/feed', newsUpdateFeedController);
 viewRouter.get('/news/:updateId', newsUpdateViewController);
+viewRouter.get('/privacy-policy', genericViewController('privacyPolicy'));
+viewRouter.get('/terms-of-service', genericViewController('termsOfService'));
 viewRouter.use(viewErrorHandler);

@@ -179,6 +179,12 @@ footer {
 	margin-top: $global-element-margin;
 	font-size: 0.8rem;
 	text-align: center;
+
+	nav {
+		a {
+			margin-right: 4px;
+		}
+	}
 }
 
 
@@ -256,6 +262,14 @@ textarea#example-code {
 		margin: 1.25rem 0;
 		padding: 0;
 		font-size: 1.25rem;
+	}
+}
+
+#terms-of-service {
+	padding-left: 1.4rem;
+
+	li {
+		margin-bottom: 0.6rem;
 	}
 }
 
