@@ -28,6 +28,45 @@ export const getRandomSiteController = async (
 ) => getNewSiteController(GetNewSiteMethod.Random, req, res, next);
 
 /**
+ * @note: Express automatically decodes URI components in the query parameters,
+ * so we don't need to decode them ourselves.
+ */
+function getReferringUrlFromRequest(req: Request): string | undefined {
+	const { via } = req.query;
+
+	if (!via) {
+		return undefined;
+	}
+
+	if (Array.isArray(via)) {
+		return via[0].toString();
+	}
+
+	return via.toString();
+}
+
+function getIndexFromRequest(req: Request): number | undefined {
+	const { index } = req.query;
+
+	if (!index) {
+		return undefined;
+	}
+
+	let currentIndex: number;
+	if (Array.isArray(index)) {
+		currentIndex = parseInt(index[0].toString());
+	} else {
+		currentIndex = parseInt(index.toString());
+	}
+
+	if (Number.isNaN(currentIndex)) {
+		return undefined;
+	}
+
+	return currentIndex;
+}
+
+/**
  * Get next site controller.
  * @param {Request} req Express request body.
  * @param {Response} res Express Response.
@@ -40,29 +79,9 @@ async function getNewSiteController(
 	next: NextFunction
 ): Promise<void> {
 	const { webringUrl } = req.params;
-	const { index, via } = req.query;
 
-	let currentIndex: number | undefined;
-	if (index) {
-		if (Array.isArray(index)) {
-			currentIndex = parseInt(index[0].toString());
-		} else {
-			currentIndex = parseInt(index.toString());
-		}
-
-		if (Number.isNaN(currentIndex)) {
-			currentIndex = undefined;
-		}
-	}
-
-	let referringUrl: string | undefined;
-	if (via) {
-		if (Array.isArray(via)) {
-			referringUrl = via[0].toString();
-		} else {
-			referringUrl = via.toString();
-		}
-	}
+	const currentIndex = getIndexFromRequest(req);
+	const referringUrl = getReferringUrlFromRequest(req);
 
 	try {
 		const webring = await webringService.getWebringByUrlOrFail(webringUrl);
