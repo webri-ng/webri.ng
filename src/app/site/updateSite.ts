@@ -1,8 +1,6 @@
-import { getSite } from '.';
-import { siteNotFoundError } from '../../api/api-error-response';
+import { getSiteOrFail } from '.';
 import { appDataSource } from '../../infra/database';
 import { Site, UUID } from '../../model';
-import { ApiReturnableError } from '../error';
 
 /**
  * Updates an existing site entity.
@@ -16,10 +14,7 @@ export async function updateSite(
 	name: string,
 	url: string
 ): Promise<Site> {
-	const site = await getSite(siteId);
-	if (!site) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(siteNotFoundError);
-	}
+	const site = await getSiteOrFail(siteId);
 
 	/**
 	 * 'Normalised' site URL.

@@ -4,7 +4,8 @@ import { Site, UUID } from '../../model';
 import { ApiReturnableError } from '../error';
 import {
 	invalidIdentifierError,
-	invalidSiteIdErrorMessage
+	invalidSiteIdErrorMessage,
+	siteNotFoundError
 } from '../../api/api-error-response';
 import { appDataSource } from '../../infra/database';
 
@@ -48,4 +49,16 @@ export async function getSite(
 		siteId,
 		dateDeleted: IsNull()
 	});
+}
+
+export async function getSiteOrFail(
+	siteId: UUID,
+	options?: GetSiteOptions
+): Promise<Site> {
+	const site = await getSite(siteId, options);
+	if (!site) {
+		throw ApiReturnableError.fromApiErrorResponseDetails(siteNotFoundError);
+	}
+
+	return site;
 }

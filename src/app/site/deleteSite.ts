@@ -1,8 +1,6 @@
 import { Site, UUID } from '../../model';
 import { EntityManager } from 'typeorm';
-import { siteNotFoundError } from '../../api/api-error-response';
-import { ApiReturnableError } from '../error';
-import { getSite } from '.';
+import { getSiteOrFail } from '.';
 import { appDataSource } from '../../infra/database';
 
 /**
@@ -35,12 +33,9 @@ export async function deleteSite(
 	siteId: UUID,
 	options: DeleteSiteOptions = {}
 ): Promise<Site> {
-	const site: Site | null = await getSite(siteId, {
+	const site = await getSiteOrFail(siteId, {
 		transactionalEntityManager: options.transactionalEntityManager || undefined
 	});
-	if (!site) {
-		throw ApiReturnableError.fromApiErrorResponseDetails(siteNotFoundError);
-	}
 
 	const deletionDate: Date = options.deletionDate || new Date();
 
