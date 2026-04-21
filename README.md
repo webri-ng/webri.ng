@@ -1,7 +1,7 @@
 # Webri.ng
 
 This repository contains the source for the webri.ng website, and its supporting database. The website's front, and back-end are both contained within this repository.
-The site's code is written in Typescript. Pug is used for rendering the front-end pages. Database connectivity is implemented using the `pg` module with `TypeORM` as an ORM to interface with a `PostgreSQL` database. Testing is implemented using Mocha and Chai.
+The site's code is written in Typescript. Pug is used for rendering the front-end pages. Database connectivity is implemented using the `pg` module with **TypeORM** as an ORM to interface with a **PostgreSQL** database. Testing is implemented using **Mocha** and **Chai**.
 
 
 ### Source tree
@@ -16,7 +16,9 @@ Refer to `styleguide.md` for development practices.
 The main entry point for the built application is `src/dist/index.js`.
 
 ### Local development
-Before you can bootstrap the server locally, you will need to run the local mock services and initialise the database. The database schema, and application user can be created using the `src/db/setup` script.
+Before you can bootstrap the server locally, you will need to run the local mock services and initialise the database. The database schema, and application user can be created using the `src/db/setup`/`make database` script.
+
+A [Development Container](https://containers.dev/) is provided in the `.devcontainer` directory, which provides a complete environment for running and developing the application.
 
 #### Setup dependencies
 In order to run the server setup locally you will need the following applications installed:
@@ -24,13 +26,13 @@ In order to run the server setup locally you will need the following application
 
 #### First-time configuration
 In order to setup the application for local development:
-* Initialise local development mock services by running the `docker-compose.yml` file in the main `/src` directory.
-* Initialise the database schema, application's database credentials and seed data by running the `npm run start:initdb` script. This is a shorthand for running the `setup` script in the `src/db` directory. This will initialise the database schema, and set up the application user.
+* Initialise local development mock services by running the `docker-compose.yml` file in the main `/src` directory. Alternatively the [Development Container](https://containers.dev/) can be opened in your IDE.
+* Initialise the database schema, application's database credentials and seed data by running the `src/db/setup`/`make database` script. This will initialise the database schema, and set up the application user.
 * From here you should be able to run the server locally using `npm run start:dev`. Refer to `src/package.json` for more specific NPM configuration.
 
 ### Environment Variables
 Provided below is a table of the environment variables which can be used to configure the application.
-These are necessary for running a staging/production instance of the application. All required env vars are provided in the default development environment config. 
+These are necessary for running a staging/production instance of the application. All required environment variables are provided in the default development environment config. 
 For more details refer to modules in the `src/config` directory.
 
 | Key |Description  |

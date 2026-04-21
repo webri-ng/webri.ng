@@ -1,0 +1,21 @@
+{
+  "name": "webri.ng",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/webri.ng",
+  "postCreateCommand": "cd /workspaces/webri.ng/src && npm install && ./db/setup",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "App" }
+  },
+  "shutdownAction": "stopCompose",
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ckolkman.vscode-postgres"
+      ]
+    }
+  }
+}

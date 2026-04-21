@@ -1,7 +1,7 @@
-version: "3.8"
 services:
   database:
-    image: postgres:11
+    # PostgreSQL 14 is used in production.
+    image: postgres:14
     environment:
       - POSTGRES_USER=webmaster
       - POSTGRES_PASSWORD=pw
@@ -14,7 +14,7 @@ services:
     ports:
       - '5000:80'    # Web interface.
       - '3725:25'    # SMTP server.
-      - '143:143'    # IMAP server.
+      - '1437:143'   # IMAP server.
     volumes:
         - smtp4dev-data:/smtp4dev
     environment:

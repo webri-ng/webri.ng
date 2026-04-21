@@ -1,0 +1,16 @@
+include:
+  - ../docker-compose.yml
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspaces/webri.ng:cached
+    command: sleep infinity
+    env_file:
+      - .env.development
+    depends_on:
+      - database
+      - smtp4dev
