@@ -65,10 +65,10 @@
 		"express-rate-limit": "^7.3.0",
 		"jsdom": "^16.7.0",
 		"nodemailer": "^8.0.5",
-		"pg": "^8.11.3",
+		"pg": "^8.20.0",
 		"pug": "^3.0.2",
-		"reflect-metadata": "^0.2.1",
-		"typeorm": "^0.3.12",
+		"reflect-metadata": "^0.2.2",
+		"typeorm": "^0.3.28",
 		"uuid": "^11.1.0",
 		"winston": "^3.11.0"
 	},
