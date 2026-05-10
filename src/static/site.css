@@ -36,10 +36,18 @@ body > header a.title {
   margin-bottom: 0.25rem;
   letter-spacing: 0.25rem;
 }
-body > header nav a:not(:last-child) {
+body > header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+body > header nav ul li {
+  display: inline;
+}
+body > header nav ul li:not(:last-child) {
   margin-right: 0.5rem;
 }
-body > header nav a:not(:last-child):after {
+body > header nav ul li:not(:last-child):after {
   content: "|";
   margin-left: 0.5rem;
 }
@@ -130,7 +138,13 @@ footer {
   font-size: 0.8rem;
   text-align: center;
 }
-footer nav a {
+footer nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+footer nav ul li {
+  display: inline;
   margin-right: 4px;
 }
 

@@ -1,15 +1,16 @@
 header
 	a.title(href='/') webri.ng
-	nav
-		if user
-			a(href='/webring/new') New Webring
-		a(href='/faq') FAQ
-		a(href='/contact') Contact
-		if user
-			a(href='/user') User Profile
-			a(href='/user/logout') Logout
-		else 
-			a(href='/user/login') Login
-			a(href='/user/register') Register
-		a(href='/news/feed') Updates RSS
-		a(href='/donate') Donate
+	nav(aria-label='Site navigation')
+		ul
+			if user
+				li: a(href='/webring/new') New Webring
+			li: a(href='/faq') FAQ
+			li: a(href='/contact') Contact
+			if user
+				li: a(href='/user') User Profile
+				li: a(href='/user/logout') Logout
+			else
+				li: a(href='/user/login') Login
+				li: a(href='/user/register') Register
+			li: a(href='/news/feed') Updates RSS
+			li: a(href='/donate') Donate
