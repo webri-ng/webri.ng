@@ -17,7 +17,7 @@ block content
 			input#password(type='password' name='password' minlength=2 maxlength=128 required='')
 		div.form-field
 			label(for='confirmPassword') Confirm Password:
-			input#confirm-password(type='password' name='confirmPassword' required='')
+			input#confirmPassword(type='password' name='confirmPassword' required='')
 		div.form-buttons
 			button(type='submit') Register
-		div#register-error-message.error-message #{errorMessage}
+		div#register-error-message.error-message(aria-live='polite') #{errorMessage}

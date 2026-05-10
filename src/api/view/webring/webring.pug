@@ -13,7 +13,7 @@ block content
 			if isUserOwner
 				a(href='/webring/' + webring.url + '/delete') Delete Webring
 
-	h2 Add this webring to your site
+	h2 How to Add This Webring to Your Site
 	div
 		p
 			| Copy the following markup to your website so your visitors can navigate your webring.
@@ -36,6 +36,7 @@ block content
 				| to point to the wrong site.
 				| Sites currently using the old markup do not need to upgrade.
 
+		label.example-code-label(for='example-code') Example markup for your site!
 		textarea#example-code(rows=6)
 			| <div style="width: fit-content; border: 2px outset; text-align:center">
 			| 	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of #{webring.name}.</p>
@@ -62,4 +63,4 @@ block content
 			else
 				p This webring does not have any sites yet.
 
-		div#sites-error-message.error-message
+		div#sites-error-message.error-message(aria-live='polite')

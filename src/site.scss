@@ -29,6 +29,16 @@ a {
 	}
 }
 
+.skip-link {
+	position: absolute;
+	top: -100%;
+	left: 0;
+
+	&:focus {
+		top: 0;
+	}
+}
+
 
 body {
 	background-color: $background-color-body;
@@ -233,6 +243,11 @@ footer {
 			}
 		}
 	}
+}
+
+.example-code-label {
+	font-weight: bold;
+	display: block;
 }
 
 textarea#example-code {

@@ -15,9 +15,11 @@ html(lang="en")
 			meta(http-equiv='refresh', content=`3; url=${redirectLink}`)
 
 	body
+		a.skip-link(href='#main-content') Skip to main content
+
 		include include/header.pug
 
-		div.content-block
+		main.content-block#main-content(tabindex='-1')
 			block content
 
 		include include/footer.pug

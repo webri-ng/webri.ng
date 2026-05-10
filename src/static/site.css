@@ -11,6 +11,15 @@ a:hover {
   color: hsl(140, 8%, 10%);
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 body {
   background-color: hsl(140, 10%, 80%);
   box-sizing: border-box;
@@ -174,6 +183,11 @@ footer nav ul li {
 }
 #webring-detail-site-list li .site-controls button {
   margin-right: 0.2rem;
+}
+
+.example-code-label {
+  font-weight: bold;
+  display: block;
 }
 
 textarea#example-code {

@@ -10,10 +10,10 @@ block content
 			label(for='email') Email:
 			input#email(type='email' name='email' required='')
 		div.form-field
-			label(for='name') Password:
+			label(for='password') Password:
 			input#password(type='password' name='password' required='')
 		div.form-buttons
 			button(type='submit') Login
-		div#login-error-message.error-message #{errorMessage}
+		div#login-error-message.error-message(aria-live='polite') #{errorMessage}
 	p
 		a(href='/user/forgot-password') Forgotten Your Password?

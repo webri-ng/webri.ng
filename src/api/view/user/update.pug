@@ -13,5 +13,5 @@ block content
 			label(for='email') Email: 
 			input#email(type='email' name='email' required value=user.email)
 		div.form-buttons
-			button(type='button', onclick="updateUser()") Update
-		div#update-user-error-message.error-message
+			button(type='button', onclick='updateUser()') Update
+		div#update-user-error-message.error-message(aria-live='polite')
