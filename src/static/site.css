@@ -82,21 +82,31 @@ body .content-block h2 {
 .webring-list li {
   margin-bottom: 0.5rem;
 }
-.webring-list li a.name {
-  font-weight: bold;
+.webring-list li h3 {
+  font-size: 1rem;
+  margin: 0;
 }
 .webring-list li .description {
   color: hsl(140, 8%, 18%);
   font-size: 0.8rem;
+  margin-top: 0;
 }
 
 .webring-list-navigation {
   margin-top: 1rem;
 }
-.webring-list-navigation a:not(:last-child) {
+.webring-list-navigation ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.webring-list-navigation ul li {
+  display: inline;
+}
+.webring-list-navigation ul li:not(:last-child) {
   margin-right: 0.5rem;
 }
-.webring-list-navigation a:not(:last-child):after {
+.webring-list-navigation ul li:not(:last-child):after {
   content: "|";
   margin-left: 0.5rem;
 }

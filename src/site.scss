@@ -113,13 +113,15 @@ body {
 	li {
 		margin-bottom: 0.5rem;
 
-		a.name {
-			font-weight: bold;
+		h3 {
+			font-size: 1rem;
+			margin: 0;
 		}
 
 		.description {
 			color: $font-color-lighter;
 			font-size: 0.8rem;
+			margin-top: 0;
 		}
 	}
 }
@@ -128,13 +130,21 @@ body {
 .webring-list-navigation {
 	margin-top: 1rem;
 
-	a {
-		&:not(:last-child) {
-			margin-right: 0.5rem;
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 
-			&:after {
-				content: '|';
-				margin-left: 0.5rem;
+		li {
+			display: inline;
+
+			&:not(:last-child) {
+				margin-right: 0.5rem;
+
+				&:after {
+					content: '|';
+					margin-left: 0.5rem;
+				}
 			}
 		}
 	}

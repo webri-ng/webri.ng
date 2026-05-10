@@ -1,16 +1,17 @@
 ul.webring-list
 	each webring in webrings
-		li 
-			a(href='/webring/' + encodeURIComponent(webring.url)).name #{webring.name}
-			div.description
+		li
+			h3: a(href='/webring/' + encodeURIComponent(webring.url)) #{webring.name}
+			p.description
 				if webring.description.length > 100
 					| #{webring.description.substring(0, 100)}...
 				else
 					| #{webring.description}
 
-div.webring-list-navigation
-	if totalPages > 1
-		if currentPage > 1
-			a(href='/user?page=' + previousPageNumber) Previous Page
-		if currentPage < totalPages
-			a(href='/user?page=' + nextPageNumber) Next Page
+if totalPages > 1
+	nav.webring-list-navigation(aria-label='Page navigation')
+		ul
+			if currentPage > 1
+				li: a(href='/user?page=' + previousPageNumber) Previous Page
+			if currentPage < totalPages
+				li: a(href='/user?page=' + nextPageNumber) Next Page
