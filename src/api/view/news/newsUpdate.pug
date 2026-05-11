@@ -6,6 +6,6 @@ block title
 block content
 	h1= newsUpdate.title
 	div#news-update
-		div.date= newsUpdate.dateCreated
+		time.date(datetime=newsUpdate.dateCreated)= newsUpdate.dateCreated
 		div.content
 			| !{newsUpdate.content}

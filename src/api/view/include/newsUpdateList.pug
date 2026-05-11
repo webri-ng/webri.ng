@@ -3,5 +3,5 @@ ul#news
 		li 
 			a(href=newsUpdate.link)
 				div.title= newsUpdate.title
-				div.date= newsUpdate.dateCreated
+				time.date(datetime=newsUpdate.dateCreated)= newsUpdate.dateCreated
 				div.description= newsUpdate.description

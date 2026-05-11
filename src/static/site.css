@@ -7,8 +7,12 @@ html {
 a {
   color: inherit;
 }
-a:hover {
+a:hover, a:focus-visible {
   color: hsl(140, 8%, 10%);
+}
+a:focus-visible {
+  outline: 2px solid hsl(140, 8%, 15%);
+  outline-offset: 2px;
 }
 
 .skip-link {
@@ -214,6 +218,7 @@ textarea#example-code {
 }
 
 #news-update .date {
+  display: block;
   margin-bottom: 1rem;
 }
 
@@ -253,9 +258,13 @@ button {
   padding: 2px 6px;
   cursor: pointer;
 }
-button:hover {
+button:hover, button:focus-visible {
   background-color: hsl(140, 8%, 72%);
   color: hsl(140, 8%, 10%);
+}
+button:focus-visible {
+  outline: 2px solid hsl(140, 8%, 15%);
+  outline-offset: 2px;
 }
 button:disabled {
   background-color: hsl(140, 8%, 60%);

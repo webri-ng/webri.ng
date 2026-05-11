@@ -5,7 +5,7 @@ block title
 
 block content
 	h1 #{webring.name}
-	div.detail-descripion #{webring.description}
+	div.detail-description #{webring.description}
 	if isUserModerator
 		div.controls
 			a(href='/webring/' + webring.url + '/add') Add New Site
@@ -20,15 +20,15 @@ block content
 			| Alternatively, get creative and design your own!
 		p
 			| In many cases, simply using the 
-			i random site 
+			em random site 
 			| link will suffice!
 		p
 			| To get the HTML code for linking a particular site to the webring, use the 
-			i Get Example Markup 
+			em Get Example Markup 
 			| button below it in the list.
 
 		p
-			i 
+			em
 				| Note: The URL parameter for identifying a website's position in the webring has changed from a 
 				| numerical index, to the site's URL. The old numerical 'index' parameter will still work correctly,
 				| however for new sites the 'via' parameter is recommended.
@@ -37,7 +37,7 @@ block content
 				| Sites currently using the old markup do not need to upgrade.
 
 		label.example-code-label(for='example-code') Example markup for your site!
-		textarea#example-code(rows=6)
+		textarea#example-code(rows=6, readonly)
 			| <div style="width: fit-content; border: 2px outset; text-align:center">
 			| 	<p style="margin: 0; padding: 0.1em; border: 2px inset">This site is a member of #{webring.name}.</p>
 			| 	<div style="margin: 0; padding: 0.1em; border: 2px inset">
