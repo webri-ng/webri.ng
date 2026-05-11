@@ -6,7 +6,7 @@ block title
 block content
 	h1 Add Site to Webring
 	form(action='/webring/' + webring.url + '/add/form', method='post')#add-new-site-form
-		input#url(type='hidden' name="webringUrl" value=webring.url)
+		input(type='hidden' name="webringUrl" value=webring.url)
 		div.form-field
 			label(for='name') Site Name: 
 			input#name(type='text' name='name' minlength=2 maxlength=80 required='')

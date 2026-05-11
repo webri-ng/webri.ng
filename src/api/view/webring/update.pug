@@ -6,7 +6,7 @@ block title
 block content
 	h1 Update
 	form#update-webring-form
-		input#url(type='hidden' name="webringUrl" value=webring.url)
+		input(type='hidden' name="webringUrl" value=webring.url)
 		div.form-field
 			label(for='name') Webring Name
 			div.description
@@ -23,7 +23,7 @@ block content
 				| If this will be a public webring, this will be the short description shown alongside your webring's name.
 			textarea#description(name='description') #{webring.description}
 		div.form-field
-			label(for='privateRing') Private Webring?
+			label(for='private-ring') Private Webring?
 			div.description
 				| Selecting this checkbox will mean that your webring will not be indexed on the main page, or be visible to unauthorised users.
 			input#private-ring(type='checkbox' name='privateRing' checked=webring.private)
