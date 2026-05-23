@@ -559,3 +559,15 @@ function validateUpdatePasswordFormSubmission(event) {
 		return;
 	}
 }
+
+function initialise() {
+	// Attach event listeners to the pure HTML forms, if present.
+	// Attaching event listeners here supports progressive enhancement.
+	document
+		.getElementById('register-form')
+		?.addEventListener('submit', validateRegisterFormSubmission);
+
+	document
+		.getElementById('update-password-form')
+		?.addEventListener('submit', validateUpdatePasswordFormSubmission);
+}

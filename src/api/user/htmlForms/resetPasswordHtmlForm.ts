@@ -17,9 +17,9 @@ export async function resetPasswordHtmlFormController(
 	res: Response,
 	next: NextFunction
 ): Promise<void> {
-	const { email } = req.body;
-
 	try {
+		const { email } = req.body;
+
 		await userService.resetPassword(email, {
 			requestMetadata: res.locals.requestMetadata
 		});

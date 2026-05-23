@@ -15,12 +15,9 @@ export const addNewSiteHtmlFormRequestSchema: Schema = {
 		},
 		url: {
 			type: 'string'
-		},
-		webringUrl: {
-			type: 'string'
 		}
 	},
-	required: ['name', 'url', 'webringUrl'],
+	required: ['name', 'url'],
 	additionalProperties: false
 };
 

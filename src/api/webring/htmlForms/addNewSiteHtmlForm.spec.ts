@@ -84,8 +84,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
 				name: createRandomString(),
-				url: testUtils.createRandomSiteUrl(),
-				webringUrl: 'nonexistenturl'
+				url: testUtils.createRandomSiteUrl()
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -100,8 +99,7 @@ describe('Add new site HTML form API', function () {
 			.post(`/webring/${testWebring.url}/add/form`)
 			.send({
 				name: createRandomString(),
-				url: testUtils.createRandomSiteUrl(),
-				webringUrl: testWebring.url
+				url: testUtils.createRandomSiteUrl()
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -123,8 +121,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUser3Session.sessionId}`)
 			.send({
 				name: createRandomString(),
-				url: testUtils.createRandomSiteUrl(),
-				webringUrl: testWebring.url
+				url: testUtils.createRandomSiteUrl()
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -149,8 +146,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
 				name,
-				url,
-				webringUrl: testWebring.url
+				url
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -175,8 +171,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
 				name,
-				url,
-				webringUrl: testWebring.url
+				url
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -199,8 +194,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUserSession.sessionId}`)
 			.send({
 				name,
-				url,
-				webringUrl: testWebring.url
+				url
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;
@@ -219,8 +213,7 @@ describe('Add new site HTML form API', function () {
 			.set('Cookie', `session=${testUser2Session.sessionId}`)
 			.send({
 				name,
-				url,
-				webringUrl: testWebring.url
+				url
 			})
 			.end(function (err, res) {
 				expect(err).to.be.null;

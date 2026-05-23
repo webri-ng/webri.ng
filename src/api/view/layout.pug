@@ -15,7 +15,7 @@ html(lang="en")
 		if redirectLink
 			meta(http-equiv='refresh', content=`3; url=${redirectLink}`)
 
-	body
+	body(onload='initialise()')
 		a.skip-link(href='#main-content') Skip to main content
 
 		include include/header.pug
