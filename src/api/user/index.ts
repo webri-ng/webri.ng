@@ -65,6 +65,53 @@ userApiRouter.post(
 	resetPasswordController
 );
 
+userViewRouter.get(
+	'/logout',
+	authenticateSessionController,
+	logoutViewController
+);
+
+userViewRouter.get(
+	'/login',
+	genericViewController(
+		siteConfig.useHtmlForms ? 'user/htmlForms/login' : 'user/login'
+	)
+);
+
+userViewRouter.get(
+	'/register',
+	genericViewController(
+		siteConfig.useHtmlForms ? 'user/htmlForms/register' : 'user/register'
+	)
+);
+
+userViewRouter.get(
+	'/update',
+	authenticateSessionController,
+	genericViewController(
+		siteConfig.useHtmlForms ? 'user/htmlForms/update' : 'user/update'
+	)
+);
+
+userViewRouter.get(
+	'/update-password',
+	authenticateSessionController,
+	genericViewController(
+		siteConfig.useHtmlForms
+			? 'user/htmlForms/updatePassword'
+			: 'user/updatePassword'
+	)
+);
+
+userViewRouter.get(
+	'/forgot-password',
+	genericViewController(
+		siteConfig.useHtmlForms
+			? 'user/htmlForms/forgotPassword'
+			: 'user/forgotPassword'
+	)
+);
+
 // Forgot password endpoint for the front-end pure HTML form.
 userViewRouter.post(
 	'/reset-password/form',
@@ -101,53 +148,3 @@ userViewRouter.post(
 	validateRequestBody(updatePasswordHtmlFormRequestSchema),
 	updatePasswordHtmlFormController
 );
-
-userViewRouter.get(
-	'/logout',
-	authenticateSessionController,
-	logoutViewController
-);
-
-if (siteConfig.useHtmlForms) {
-	userViewRouter.get('/login', genericViewController('user/htmlForms/login'));
-
-	userViewRouter.get(
-		'/register',
-		genericViewController('user/htmlForms/register')
-	);
-	userViewRouter.get(
-		'/update',
-		authenticateSessionController,
-		genericViewController('user/htmlForms/update')
-	);
-	userViewRouter.get(
-		'/update-password',
-		authenticateSessionController,
-		genericViewController('user/htmlForms/updatePassword')
-	);
-	userViewRouter.get(
-		'/forgot-password',
-		genericViewController('user/htmlForms/forgotPassword')
-	);
-} else {
-	userViewRouter.get('/login', genericViewController('user/login'));
-
-	userViewRouter.get('/register', genericViewController('user/register'));
-
-	userViewRouter.get(
-		'/update',
-		authenticateSessionController,
-		genericViewController('user/update')
-	);
-
-	userViewRouter.get(
-		'/update-password',
-		authenticateSessionController,
-		genericViewController('user/updatePassword')
-	);
-
-	userViewRouter.get(
-		'/forgot-password',
-		genericViewController('user/forgotPassword')
-	);
-}

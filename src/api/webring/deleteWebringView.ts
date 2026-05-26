@@ -29,8 +29,6 @@ export async function deleteWebringViewController(
 	const { isUserModerator, isUserOwner } =
 		await webringService.getUserPermissionsForWebring(webring, user);
 
-	console.log(isUserModerator, isUserOwner);
-
 	// If it's a private webring, and the user is not authorised, show the 404 page.
 	if (webring.private) {
 		if (!(isUserModerator || isUserOwner)) {

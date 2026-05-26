@@ -1,0 +1,13 @@
+extends ../../layout.pug
+
+block title
+	| Delete Webring | webri.ng
+
+block content
+	h1 Delete Webring
+	p Are you sure you want to delete this webring?
+	form(action='/webring/' + webring.url + '/delete/form', method='post')
+		div.form-buttons
+			button(type='submit') Delete Webring!
+			a(href='/webring/' + webring.url) No! Take me back!
+	div#delete-webring-error-message.error-message(aria-live='polite') #{errorMessage}
