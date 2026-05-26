@@ -29,6 +29,8 @@ export async function updateWebringViewController(
 		await webringService.getUserPermissionsForWebring(webring, user);
 
 	// If it's a private webring, and the user is not authorised, show the 404 page.
+	// This is done so that private webrings can't be enumerated by an
+	// unauthorised user.
 	if (webring.private) {
 		if (!(isUserModerator || isUserOwner)) {
 			return res.status(404).render('webring/notFound', {
