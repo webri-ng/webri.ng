@@ -570,4 +570,16 @@ function initialise() {
 	document
 		.getElementById('update-password-form')
 		?.addEventListener('submit', validateUpdatePasswordFormSubmission);
+
+	// Replace the fallback remove site links on the webring detail page with
+	// buttons that send fetch requests, if they are present.
+	document.querySelectorAll('a.remove-site-link').forEach((link) => {
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.textContent = 'Remove';
+		button.addEventListener('click', () =>
+			removeSite(link.dataset.webringUrl, link.dataset.siteUrl)
+		);
+		link.replaceWith(button);
+	});
 }

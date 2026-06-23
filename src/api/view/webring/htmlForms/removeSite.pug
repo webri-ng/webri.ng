@@ -1,0 +1,16 @@
+extends ../../layout.pug
+
+block title
+	| Remove Site from Webring | webri.ng
+
+block content
+	h1 Remove Site from Webring
+	p 
+		| Are you sure you want to remove 
+		b '#{site.url}'
+		|  from your webring?
+	form(action=`/webring/${webring.url}/sites/${encodeURIComponent(site.url)}/remove`, method='post')
+		div.form-buttons
+			button(type='submit') Remove Site
+			a(href='/webring/' + webring.url) No! Take me back!
+		div#remove-site-error-message.error-message(aria-live='polite') #{errorMessage}

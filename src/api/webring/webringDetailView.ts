@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { webringService } from '../../app';
 import { GetWebringSearchField } from '../../app/webring';
+import { siteConfig } from '../../config';
 
 /**
  * Webring detail view controller.
@@ -44,6 +45,7 @@ export async function webringDetailViewController(
 		isUserModerator,
 		isUserOwner,
 		user,
+		useHtmlForms: siteConfig.useHtmlForms,
 		sites,
 		webring
 	});

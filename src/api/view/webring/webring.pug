@@ -56,7 +56,15 @@ block content
 						div.site-controls
 							button(onclick='getExampleMarkup(\'' + webring.name + '\',\'' + webring.url + '\',\'' + site.url + '\')') Get Example Markup
 							if isUserModerator
-								button(onclick='removeSite(\'' + webring.url + '\',\'' + site.url + '\')') Remove
+								if useHtmlForms
+									a.remove-site-link(
+										href=`/webring/${webring.url}/sites/${encodeURIComponent(site.url)}/remove`,
+										data-webring-url=webring.url,
+										data-site-url=site.url
+									) Remove
+								else
+									button(onclick='removeSite(\"' + webring.url + '\", \"' + site.url + '\")') Remove
+
 		else
 			if isUserModerator
 				p This webring does not have any sites yet. Feel free to add some!

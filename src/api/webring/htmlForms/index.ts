@@ -5,3 +5,5 @@ export * from './deleteWebringHtmlForm';
 export * from './deleteWebringHtmlFormView';
 export * from './updateHtmlForm';
 export * from './updateHtmlFormView';
+export * from './removeSiteHtmlForm';
+export * from './removeSiteHtmlFormView';

@@ -36,7 +36,9 @@ import {
 	deleteWebringHtmlFormViewController,
 	updateWebringHtmlFormController,
 	updateWebringHtmlFormRequestSchema,
-	updateWebringHtmlFormViewController
+	updateWebringHtmlFormViewController,
+	removeSiteHtmlFormController,
+	removeSiteHtmlFormViewController
 } from './htmlForms';
 import { siteConfig } from '../../config';
 
@@ -133,6 +135,18 @@ webringApiRouter.delete(
 	'/:webringUrl',
 	authenticateSessionController,
 	deleteWebringController
+);
+
+webringViewRouter.get(
+	'/:webringUrl/sites/:siteUrl/remove',
+	authenticateSessionController,
+	removeSiteHtmlFormViewController
+);
+
+webringViewRouter.post(
+	'/:webringUrl/sites/:siteUrl/remove',
+	authenticateSessionController,
+	removeSiteHtmlFormController
 );
 
 webringApiRouter.get('/:webringUrl/sites', getSitesController);
