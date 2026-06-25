@@ -24,6 +24,7 @@ export function createSessionCookieResponse(
 		// flag, and won't send the cookie over HTTP if the Secure attribute is
 		// set. Breaking local development.
 		secure: globalConfig.baseDomainUrl.startsWith('https://'),
-		maxAge: session.secondsRemaining
+		maxAge: session.secondsRemaining,
+		sameSite: 'lax'
 	});
 }
