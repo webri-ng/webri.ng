@@ -74,6 +74,7 @@ webringViewRouter.post(
 
 webringViewRouter.get(
 	'/new',
+	authenticateSessionController,
 	genericViewController(
 		siteConfig.useHtmlForms ? 'webring/htmlForms/new' : 'webring/new'
 	)
