@@ -15,6 +15,7 @@ export function removeSessionCookieResponse(
 	return res.clearCookie('session', {
 		expires: session?.expiryDate || undefined,
 		httpOnly: true,
-		secure: globalConfig.baseDomainUrl.startsWith('https://')
+		secure: globalConfig.baseDomainUrl.startsWith('https://'),
+		sameSite: 'lax'
 	});
 }
